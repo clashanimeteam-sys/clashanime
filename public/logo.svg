@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="ClashAnime logo">
+  <defs>
+    <linearGradient id="red" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#b91c1c"/>
+    </linearGradient>
+    <linearGradient id="grey" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#52525b"/>
+      <stop offset="100%" stop-color="#27272a"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="54" fill="url(#red)"/>
+  <path d="M88 60c0 15.5-12.5 28-28 28S32 75.5 32 60s12.5-28 28-28" fill="none" stroke="#7f1d1d" stroke-width="6" stroke-linecap="round"/>
+  <path d="M60 24 L78 88 L60 72 L42 88 Z" fill="url(#grey)"/>
+  <path d="M48 64h24" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+</svg>
