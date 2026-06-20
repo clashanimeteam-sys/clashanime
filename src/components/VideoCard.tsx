@@ -121,7 +121,7 @@ export function VideoCard({ video, rank }: VideoCardProps) {
 
       <div className="space-y-3 p-4">
         <Link href={`/video/${video.id}`}>
-          <h2 className="line-clamp-2 text-sm font-semibold leading-snug text-foreground transition-colors hover:text-accent">
+          <h2 className="line-clamp-2 text-sm font-semibold leading-snug text-black transition-colors hover:text-accent dark:text-white">
             {video.title}
           </h2>
         </Link>

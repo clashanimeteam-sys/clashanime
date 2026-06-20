@@ -2,18 +2,18 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #111111;
+  --foreground: #000000;
   --surface: #ffffff;
   --sidebar: #ffffff;
-  --muted: #6b7280;
-  --border: #eeeeee;
+  --muted: #52525b;
+  --border: #e4e4e7;
   --brand: #b31b1b;
   --accent: #b31b1b;
 }
 
 .dark {
   --background: #000000;
-  --foreground: #f4f4f5;
+  --foreground: #ffffff;
   --surface: #000000;
   --sidebar: #000000;
   --muted: #a1a1aa;

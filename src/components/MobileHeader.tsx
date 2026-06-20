@@ -36,7 +36,7 @@ export function MobileHeader() {
                 className={`rounded-md px-2 py-1 text-[10px] font-semibold transition-colors ${
                   locale === item.code
                     ? "bg-accent text-white"
-                    : "text-muted hover:text-foreground"
+                    : "text-zinc-600 hover:text-black dark:text-zinc-400 dark:hover:text-white"
                 }`}
                 aria-pressed={locale === item.code}
               >

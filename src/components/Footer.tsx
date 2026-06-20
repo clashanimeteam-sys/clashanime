@@ -10,13 +10,13 @@ export function Footer() {
     <footer className="mt-auto border-t border-border bg-white dark:bg-black">
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div>
-          <p className="text-sm font-semibold text-foreground">
+          <p className="text-sm font-semibold text-black dark:text-white">
             {t.brand.name}.com
           </p>
-          <p className="mt-1 text-xs text-muted">{t.footer.tagline}</p>
+          <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">{t.footer.tagline}</p>
         </div>
 
-        <nav className="flex flex-wrap gap-4 text-xs text-muted">
+        <nav className="flex flex-wrap gap-4 text-xs text-zinc-600 dark:text-zinc-400">
           <Link href="/terms" className="transition-colors hover:text-accent">
             {t.footer.terms}
           </Link>

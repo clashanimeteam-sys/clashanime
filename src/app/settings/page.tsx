@@ -7,8 +7,8 @@ export default function SettingsPage() {
 
   return (
     <div className="mx-auto max-w-3xl bg-white px-4 py-8 dark:bg-black sm:px-6">
-      <h1 className="text-3xl font-bold text-foreground">{t.nav.settings}</h1>
-      <p className="mt-3 text-sm text-muted">
+      <h1 className="text-3xl font-bold text-black dark:text-white">{t.nav.settings}</h1>
+      <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
         Theme and language controls are available in the sidebar.
       </p>
     </div>

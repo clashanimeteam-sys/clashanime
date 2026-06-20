@@ -92,7 +92,7 @@ export function Sidebar() {
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 active
                   ? "bg-accent/15 text-accent"
-                  : "text-muted hover:bg-white hover:text-foreground dark:hover:bg-black"
+                  : "text-zinc-600 hover:bg-white hover:text-black dark:text-zinc-400 dark:hover:bg-black dark:hover:text-white"
               }`}
             >
               <NavIcon icon={item.icon} />
@@ -108,7 +108,7 @@ export function Sidebar() {
           className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
             pathname === "/settings"
               ? "bg-accent/15 text-accent"
-              : "text-muted hover:bg-white hover:text-foreground dark:hover:bg-black"
+              : "text-zinc-600 hover:bg-white hover:text-black dark:text-zinc-400 dark:hover:bg-black dark:hover:text-white"
           }`}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
@@ -132,7 +132,7 @@ export function Sidebar() {
                 className={`rounded-md px-2 py-1 text-[11px] font-semibold transition-colors ${
                   locale === item.code
                     ? "bg-accent text-white"
-                    : "text-muted hover:text-foreground"
+                    : "text-zinc-600 hover:text-black dark:text-zinc-400 dark:hover:text-white"
                 }`}
                 aria-pressed={locale === item.code}
               >

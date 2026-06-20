@@ -67,7 +67,7 @@ export function VideoCardActions({
           className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
             liked
               ? "border-accent bg-accent/10 text-accent"
-              : "border-border text-foreground hover:border-accent/40 hover:text-accent"
+              : "border-border text-zinc-700 hover:border-accent/40 hover:text-accent dark:text-zinc-300"
           }`}
         >
           <svg
@@ -85,7 +85,7 @@ export function VideoCardActions({
         <button
           type="button"
           aria-label={t.video.comments}
-          className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-accent/40 hover:text-accent"
+          className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-zinc-700 transition-colors hover:border-accent/40 hover:text-accent dark:text-zinc-300"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -105,7 +105,7 @@ export function VideoCardActions({
           type="button"
           onClick={handleShare}
           aria-label={t.video.share}
-          className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-accent/40 hover:text-accent"
+          className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-zinc-700 transition-colors hover:border-accent/40 hover:text-accent dark:text-zinc-300"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +127,7 @@ export function VideoCardActions({
           type="button"
           onClick={handleReport}
           aria-label={t.video.report}
-          className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-1.5 text-xs font-medium text-muted transition-colors hover:border-red-400/50 hover:text-red-500"
+          className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-1.5 text-xs font-medium text-zinc-500 transition-colors hover:border-red-400/50 hover:text-red-500 dark:text-zinc-400"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -145,7 +145,7 @@ export function VideoCardActions({
       </div>
 
       {(shareStatus || reported) && (
-        <p className="text-xs text-muted" role="status">
+        <p className="text-xs text-zinc-500 dark:text-zinc-400" role="status">
           {shareStatus ?? t.video.reportSubmitted}
         </p>
       )}
