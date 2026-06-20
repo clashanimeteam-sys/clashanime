@@ -5,6 +5,7 @@ import { AppShell } from "@/components/AppShell";
 import { MobileHeader } from "@/components/MobileHeader";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { LocaleProvider } from "@/providers/LocaleProvider";
+import { MaintenanceGate } from "@/providers/MaintenanceGate";
 import { NavigationLoadingProvider } from "@/providers/NavigationLoadingProvider";
 import { StickersProvider } from "@/providers/StickersProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
@@ -34,7 +35,8 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <ThemeProvider>
       <LocaleProvider>
-        <NavigationLoadingProvider>
+        <MaintenanceGate>
+          <NavigationLoadingProvider>
           <AuthProvider>
             <StickersProvider>
               <VideoOverlayProvider>
@@ -49,7 +51,8 @@ export function Providers({ children }: ProvidersProps) {
               </VideoOverlayProvider>
             </StickersProvider>
           </AuthProvider>
-        </NavigationLoadingProvider>
+          </NavigationLoadingProvider>
+        </MaintenanceGate>
       </LocaleProvider>
     </ThemeProvider>
   );
