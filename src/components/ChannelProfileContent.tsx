@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { FollowButton } from "@/components/FollowButton";
-import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { VideoCard } from "@/components/VideoCard";
 import { profileToVideoChannel } from "@/components/VideoCardChannel";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
@@ -129,94 +128,61 @@ export function ChannelProfileContent({ username }: ChannelProfileContentProps) 
   const displayName = profile.display_name ?? profile.username;
 
   return (
-    <div className="mx-auto max-w-6xl bg-white dark:bg-black">
-      <div className="relative h-40 overflow-hidden bg-zinc-200 sm:h-52 dark:bg-zinc-900">
-        {profile.banner_url ? (
-          <Image
-            src={profile.banner_url}
-            alt=""
-            fill
-            className="object-cover"
-            unoptimized
-          />
-        ) : null}
+    <div className="mx-auto max-w-6xl bg-white px-4 pb-10 dark:bg-black sm:px-6">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950">
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-900">
+            {profile.avatar_url ? (
+              <Image
+                src={profile.avatar_url}
+                alt={displayName}
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-lg font-bold text-zinc-500">
+                {getInitials(displayName)}
+              </div>
+            )}
+          </div>
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="truncate text-xl font-bold text-black dark:text-white">{displayName}</h1>
+              {profile.is_verified ? <VerifiedBadge size="sm" /> : null}
+            </div>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">@{profile.username}</p>
+          </div>
+        </div>
+
+        <FollowButton
+          channelId={profile.id}
+          initialFollowing={isFollowing}
+          initialFollowerCount={followerCount}
+          onFollowerCountChange={setFollowerCount}
+        />
       </div>
 
-      <div className="px-4 pb-10 sm:px-6">
-        <div className="-mt-12 flex flex-col gap-4 sm:-mt-14 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
-            <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-white bg-zinc-200 sm:h-28 sm:w-28 dark:border-black dark:bg-zinc-900">
-              {profile.avatar_url ? (
-                <Image
-                  src={profile.avatar_url}
-                  alt={displayName}
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center text-xl font-bold text-zinc-500">
-                  {getInitials(displayName)}
-                </div>
-              )}
-            </div>
-
-            <div className="min-w-0 pt-12 sm:pt-14">
-              <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-2xl font-bold leading-tight text-black sm:text-3xl dark:text-white">
-                  {displayName}
-                </h1>
-                {profile.is_verified ? <VerifiedBadge size="md" /> : null}
-              </div>
-              <div className="mt-2 flex flex-wrap items-center gap-3">
-                <HunterLevelBadge level={profile.level} points={profile.points} size="md" />
-                <span className="text-sm font-semibold text-zinc-600 dark:text-zinc-300">
-                  {(profile.points ?? 0).toLocaleString()} {t.points.pointsLabel}
-                </span>
-              </div>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">@{profile.username}</p>
-              <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-                {videos.length} {t.profile.videosCount}
-              </p>
-              {profile.bio ? (
-                <p className="mt-3 max-w-xl text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
-                  {profile.bio}
-                </p>
-              ) : null}
-            </div>
+      <section className="rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950">
+        <h2 className="text-lg font-semibold text-black dark:text-white">{t.profile.channelVideos}</h2>
+        {videos.length === 0 ? (
+          <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">{t.profile.noChannelVideos}</p>
+        ) : (
+          <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {videos.map((video, index) => (
+              <VideoCard key={video.id} video={video} rank={index + 1} />
+            ))}
           </div>
-
-          <div className="pt-12 sm:pt-14">
-            <FollowButton
-              channelId={profile.id}
-              initialFollowing={isFollowing}
-              initialFollowerCount={followerCount}
-              onFollowerCountChange={setFollowerCount}
-            />
-          </div>
-        </div>
-
-        <div className="mt-10 border-t border-zinc-200 pt-6 dark:border-zinc-800">
-          <h2 className="text-lg font-semibold text-black dark:text-white">{t.profile.channelVideos}</h2>
-          {videos.length === 0 ? (
-            <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">{t.profile.noChannelVideos}</p>
-          ) : (
-            <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {videos.map((video, index) => (
-                <VideoCard key={video.id} video={video} rank={index + 1} />
-              ))}
-            </div>
-          )}
-        </div>
-
-        {user && (
-          <p className="mt-8 text-center text-sm text-zinc-500">
-            <Link href="/profile" className="underline hover:text-black dark:hover:text-white">
-              {t.profile.manageChannel}
-            </Link>
-          </p>
         )}
-      </div>
+      </section>
+
+      {user ? (
+        <p className="mt-6 text-center text-sm text-zinc-500">
+          <Link href="/profile" className="underline hover:text-black dark:hover:text-white">
+            {t.profile.manageChannel}
+          </Link>
+        </p>
+      ) : null}
     </div>
   );
 }

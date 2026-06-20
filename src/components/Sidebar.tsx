@@ -18,14 +18,15 @@ const mainNavItems = [
   { key: "exclusives" as const, href: "/exclusives", icon: "star" },
 ];
 
-const hunterNavItems = [
+const profileNavItems = [
+  { key: "channelSettings" as const, hash: "settings", icon: "settings" },
   { key: "hunterSystem" as const, hash: "hunter-system", icon: "trophy" },
   { key: "bountyRewards" as const, hash: "bounty-log", icon: "coins" },
   { key: "inviteFriends" as const, hash: "referral", icon: "invite" },
 ];
 
 function profileSectionHref(hash: string, loggedIn: boolean) {
-  const target = `/profile#${hash}`;
+  const target = hash === "settings" ? "/profile" : `/profile#${hash}`;
   return loggedIn ? target : `/login?next=${encodeURIComponent(target)}`;
 }
 
@@ -95,6 +96,14 @@ function NavIcon({ icon }: { icon: string }) {
       </svg>
     );
   }
+  if (icon === "settings") {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+        <circle cx="12" cy="12" r="3" />
+        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+      </svg>
+    );
+  }
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-hidden>
       <path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.8 7.2 17l.9-5.4L4.2 7.7l5.4-.8L12 2z" />
@@ -116,6 +125,7 @@ export function Sidebar() {
   const { t } = useLocale();
   const showAdminLink = isStaff(profile);
   const [hash, setHash] = useState("");
+  const isProfilePage = pathname === "/profile";
 
   useEffect(() => {
     const updateHash = () => setHash(window.location.hash.replace(/^#/, ""));
@@ -150,22 +160,27 @@ export function Sidebar() {
           );
         })}
 
-        <div
-          className="my-2 border-t border-zinc-200 dark:border-zinc-800"
-          role="separator"
-          aria-hidden
-        />
+        {isProfilePage ? (
+          <>
+            <div
+              className="my-2 border-t border-zinc-200 dark:border-zinc-800"
+              role="separator"
+              aria-hidden
+            />
 
-        {hunterNavItems.map((item) => {
-          const href = profileSectionHref(item.hash, Boolean(user));
-          const active = pathname === "/profile" && hash === item.hash;
-          return (
-            <Link key={item.key} href={href} className={navLinkClass(active)}>
-              <NavIcon icon={item.icon} />
-              {t.nav[item.key]}
-            </Link>
-          );
-        })}
+            {profileNavItems.map((item) => {
+              const href = profileSectionHref(item.hash, Boolean(user));
+              const active =
+                hash === item.hash || (item.hash === "settings" && !hash);
+              return (
+                <Link key={item.key} href={href} className={navLinkClass(active)}>
+                  <NavIcon icon={item.icon} />
+                  {t.nav[item.key]}
+                </Link>
+              );
+            })}
+          </>
+        ) : null}
       </nav>
 
       <div className="space-y-3 border-t border-zinc-200 p-3 dark:border-zinc-800">

@@ -7,15 +7,26 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { FollowerCount } from "@/components/FollowButton";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { PointsPanel } from "@/components/PointsPanel";
-import { VideoCard } from "@/components/VideoCard";
-import { profileToVideoChannel } from "@/components/VideoCardChannel";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 import { getPublicStorageUrl } from "@/lib/upload";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
-import type { Profile, Video } from "@/lib/types";
+import type { Profile } from "@/lib/types";
+
+type ProfileSection = "settings" | "hunter-system" | "bounty-log" | "referral";
+
+function parseProfileSection(hash: string): ProfileSection {
+  if (hash === "hunter-system" || hash === "bounty-log" || hash === "referral") {
+    return hash;
+  }
+  return "settings";
+}
+
+function settingsBoxClassName(extra = "") {
+  return `rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950 ${extra}`.trim();
+}
 
 function getInitials(name: string) {
   return name
@@ -33,7 +44,7 @@ export function ProfileContent() {
   const config = useMemo(() => getSupabaseConfig(), []);
 
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [videos, setVideos] = useState<Video[]>([]);
+  const [videoCount, setVideoCount] = useState(0);
   const [displayName, setDisplayName] = useState("");
   const [bio, setBio] = useState("");
   const [loading, setLoading] = useState(true);
@@ -43,6 +54,7 @@ export function ProfileContent() {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [followerCount, setFollowerCount] = useState(0);
+  const [activeSection, setActiveSection] = useState<ProfileSection>("settings");
 
   const hasChanges =
     profile !== null &&
@@ -92,31 +104,22 @@ export function ProfileContent() {
       return;
     }
 
-    const [{ count: followers }, { data: videoData }] = await Promise.all([
+    const [{ count: followers }, { count: videos }] = await Promise.all([
       supabase
         .from("channel_follows")
         .select("*", { count: "exact", head: true })
         .eq("following_id", profileData.id),
       supabase
         .from("videos")
-        .select(
-          "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, hashtags, duration_seconds, user_id, moderation_status, rejection_reason",
-        )
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false }),
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", user.id),
     ]);
 
     setFollowerCount(followers ?? 0);
+    setVideoCount(videos ?? 0);
     setProfile(profileData);
     setDisplayName(profileData.display_name ?? profileData.username);
     setBio(profileData.bio ?? "");
-    setVideos(
-      (videoData ?? []).map((video) => ({
-        ...video,
-        trending_score: 0,
-        channel: profileToVideoChannel(profileData, followers ?? 0),
-      })),
-    );
     setLoading(false);
   }, [supabase, user]);
 
@@ -132,15 +135,13 @@ export function ProfileContent() {
   useEffect(() => {
     if (loading || authLoading) return;
 
-    const scrollToHash = () => {
-      const hash = window.location.hash.replace(/^#/, "");
-      if (!hash) return;
-      document.getElementById(hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const syncSection = () => {
+      setActiveSection(parseProfileSection(window.location.hash.replace(/^#/, "")));
     };
 
-    window.requestAnimationFrame(scrollToHash);
-    window.addEventListener("hashchange", scrollToHash);
-    return () => window.removeEventListener("hashchange", scrollToHash);
+    syncSection();
+    window.addEventListener("hashchange", syncSection);
+    return () => window.removeEventListener("hashchange", syncSection);
   }, [loading, authLoading]);
 
   async function uploadImage(
@@ -255,211 +256,205 @@ export function ProfileContent() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl bg-white dark:bg-black">
-      <div className="relative h-40 overflow-hidden bg-zinc-200 sm:h-52 dark:bg-zinc-900">
-        {profile.banner_url ? (
-          <Image
-            src={profile.banner_url}
-            alt=""
-            fill
-            className="object-cover"
-            unoptimized
-          />
-        ) : null}
-        <label className="absolute top-4 right-4 cursor-pointer rounded-full border border-zinc-300 bg-white/90 px-3 py-1.5 text-xs font-medium text-black backdrop-blur-sm dark:border-zinc-700 dark:bg-black/80 dark:text-white">
-          {uploadingBanner ? t.profile.uploading : t.profile.changeBanner}
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            disabled={uploadingBanner}
-            onChange={(event) => {
-              const file = event.target.files?.[0];
-              if (file) {
-                uploadImage("banners", file, "banner_url", setUploadingBanner);
-              }
-            }}
-          />
-        </label>
-      </div>
-
-      <div className="px-4 pb-10 sm:px-6">
-        <div className="-mt-12 flex flex-col gap-3 sm:-mt-14 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
-            <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-white bg-zinc-200 sm:h-28 sm:w-28 dark:border-black dark:bg-zinc-900">
-              {profile.avatar_url ? (
+    <div className="mx-auto max-w-6xl bg-white px-4 pb-10 dark:bg-black sm:px-6">
+      {activeSection === "settings" ? (
+        <>
+          <div className={settingsBoxClassName("overflow-hidden p-0")}>
+            <div className="relative h-40 overflow-hidden bg-zinc-200 sm:h-52 dark:bg-zinc-900">
+              {profile.banner_url ? (
                 <Image
-                  src={profile.avatar_url}
-                  alt={profile.display_name ?? profile.username}
+                  src={profile.banner_url}
+                  alt=""
                   fill
                   className="object-cover"
                   unoptimized
                 />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center text-xl font-bold text-zinc-500">
-                  {getInitials(displayName || profile.username)}
-                </div>
-              )}
-              <label className="absolute inset-x-0 bottom-0 cursor-pointer bg-black/60 py-1 text-center text-[10px] font-medium text-white">
-                {uploadingAvatar ? "..." : t.profile.changeAvatar}
+              ) : null}
+              <label className="absolute top-4 right-4 cursor-pointer rounded-full border border-zinc-300 bg-white/90 px-3 py-1.5 text-xs font-medium text-black backdrop-blur-sm dark:border-zinc-700 dark:bg-black/80 dark:text-white">
+                {uploadingBanner ? t.profile.uploading : t.profile.changeBanner}
                 <input
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  disabled={uploadingAvatar}
+                  disabled={uploadingBanner}
                   onChange={(event) => {
                     const file = event.target.files?.[0];
                     if (file) {
-                      uploadImage("avatars", file, "avatar_url", setUploadingAvatar);
+                      uploadImage("banners", file, "banner_url", setUploadingBanner);
                     }
                   }}
                 />
               </label>
             </div>
 
-            <div className="min-w-0 pt-12 sm:pt-14">
-              <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-2xl font-bold leading-tight text-black sm:text-3xl dark:text-white">
-                  {displayName.trim() || profile.username}
-                </h1>
-                {profile.is_verified ? <VerifiedBadge size="md" /> : null}
+            <div className="p-5">
+              <div className="-mt-12 flex flex-col gap-3 sm:-mt-14 sm:flex-row sm:items-start sm:justify-between">
+                <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
+                  <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-white bg-zinc-200 sm:h-28 sm:w-28 dark:border-zinc-950 dark:bg-zinc-900">
+                    {profile.avatar_url ? (
+                      <Image
+                        src={profile.avatar_url}
+                        alt={profile.display_name ?? profile.username}
+                        fill
+                        className="object-cover"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-xl font-bold text-zinc-500">
+                        {getInitials(displayName || profile.username)}
+                      </div>
+                    )}
+                    <label className="absolute inset-x-0 bottom-0 cursor-pointer bg-black/60 py-1 text-center text-[10px] font-medium text-white">
+                      {uploadingAvatar ? "..." : t.profile.changeAvatar}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        disabled={uploadingAvatar}
+                        onChange={(event) => {
+                          const file = event.target.files?.[0];
+                          if (file) {
+                            uploadImage("avatars", file, "avatar_url", setUploadingAvatar);
+                          }
+                        }}
+                      />
+                    </label>
+                  </div>
+
+                  <div className="min-w-0 pt-12 sm:pt-14">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h1 className="text-2xl font-bold leading-tight text-black sm:text-3xl dark:text-white">
+                        {displayName.trim() || profile.username}
+                      </h1>
+                      {profile.is_verified ? <VerifiedBadge size="md" /> : null}
+                    </div>
+                    <div className="mt-2 flex flex-wrap items-center gap-3">
+                      <HunterLevelBadge level={profile.level} points={profile.points} size="md" />
+                      <span className="text-sm font-semibold text-zinc-600 dark:text-zinc-300">
+                        {(profile.points ?? 0).toLocaleString()} {t.points.pointsLabel}
+                      </span>
+                    </div>
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                      <Link
+                        href={`/channel/${profile.username}`}
+                        className="hover:text-black dark:hover:text-white"
+                      >
+                        @{profile.username}
+                      </Link>
+                    </p>
+                    <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-zinc-600 dark:text-zinc-400">
+                      <span>
+                        {videoCount} {t.profile.videosCount}
+                      </span>
+                      <span aria-hidden>·</span>
+                      <FollowerCount count={followerCount} />
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2 pt-12 sm:pt-14">
+                  <Link
+                    href="/upload"
+                    className="rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-black"
+                  >
+                    {t.upload.create}
+                  </Link>
+                </div>
               </div>
-              <div className="mt-2 flex flex-wrap items-center gap-3">
-                <HunterLevelBadge level={profile.level} points={profile.points} size="md" />
-                <span className="text-sm font-semibold text-zinc-600 dark:text-zinc-300">
-                  {(profile.points ?? 0).toLocaleString()} {t.points.pointsLabel}
-                </span>
-              </div>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                <Link
-                  href={`/channel/${profile.username}`}
-                  className="hover:text-black dark:hover:text-white"
-                >
-                  @{profile.username}
-                </Link>
-              </p>
-              <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-zinc-600 dark:text-zinc-400">
-                <span>
-                  {videos.length} {t.profile.videosCount}
-                </span>
-                <span aria-hidden>·</span>
-                <FollowerCount count={followerCount} />
-              </p>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2 pt-12 sm:pt-14">
-            <Link
-              href="/upload"
-              className="rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-black"
-            >
-              {t.upload.create}
-            </Link>
+          <form
+            id="settings"
+            className={`${settingsBoxClassName("mt-6")} grid gap-4 sm:grid-cols-2`}
+            onSubmit={(event) => {
+              event.preventDefault();
+              if (hasChanges && !saving) {
+                saveProfile();
+              }
+            }}
+          >
+            <div className="sm:col-span-2">
+              <h2 className="text-lg font-semibold text-black dark:text-white">{t.nav.channelSettings}</h2>
+            </div>
+            <label className="block">
+              <span className="mb-1 block text-sm font-medium text-black dark:text-white">
+                {t.profile.displayName}
+              </span>
+              <input
+                value={displayName}
+                onChange={(event) => {
+                  setDisplayName(event.target.value);
+                  setMessage(null);
+                }}
+                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-black dark:text-white"
+              />
+            </label>
+            <label className="block sm:col-span-2">
+              <span className="mb-1 block text-sm font-medium text-black dark:text-white">
+                {t.profile.bio}
+              </span>
+              <textarea
+                value={bio}
+                onChange={(event) => {
+                  setBio(event.target.value);
+                  setMessage(null);
+                }}
+                rows={3}
+                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-black dark:text-white"
+              />
+            </label>
+
+            <div className="flex flex-wrap items-center gap-3 sm:col-span-2">
+              <button
+                type="submit"
+                disabled={saving || !hasChanges}
+                className="rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-black"
+              >
+                {saving ? t.profile.saving : t.profile.saveChanges}
+              </button>
+              {hasChanges && !saving && (
+                <span className="text-sm text-amber-600 dark:text-amber-400">
+                  {t.profile.unsavedChanges}
+                </span>
+              )}
+            </div>
+          </form>
+
+          <div className={`${settingsBoxClassName("mt-6")}`}>
             <button
               type="button"
-              onClick={saveProfile}
-              disabled={saving || !hasChanges}
-              className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-950"
+              onClick={handleSignOut}
+              className="rounded-full border border-red-300 px-5 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 dark:border-red-900/60 dark:text-red-400 dark:hover:bg-red-950/40"
             >
-              {saving ? t.profile.saving : t.profile.saveChanges}
+              {t.auth.signOut}
             </button>
           </div>
-        </div>
+        </>
+      ) : null}
 
-        <form
-          className="mt-6 grid gap-4 sm:grid-cols-2"
-          onSubmit={(event) => {
-            event.preventDefault();
-            if (hasChanges && !saving) {
-              saveProfile();
-            }
-          }}
-        >
-          <label className="block">
-            <span className="mb-1 block text-sm font-medium text-black dark:text-white">
-              {t.profile.displayName}
-            </span>
-            <input
-              value={displayName}
-              onChange={(event) => {
-                setDisplayName(event.target.value);
-                setMessage(null);
-              }}
-              className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-black dark:text-white"
-            />
-          </label>
-          <label className="block sm:col-span-2">
-            <span className="mb-1 block text-sm font-medium text-black dark:text-white">
-              {t.profile.bio}
-            </span>
-            <textarea
-              value={bio}
-              onChange={(event) => {
-                setBio(event.target.value);
-                setMessage(null);
-              }}
-              rows={3}
-              className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-black dark:text-white"
-            />
-          </label>
+      {activeSection === "hunter-system" ? (
+        <PointsPanel profile={profile} onProfileRefresh={loadProfile} section="hunter-system" />
+      ) : null}
 
-          <div className="flex flex-wrap items-center gap-3 sm:col-span-2">
-            <button
-              type="submit"
-              disabled={saving || !hasChanges}
-              className="rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-black"
-            >
-              {saving ? t.profile.saving : t.profile.saveChanges}
-            </button>
-            {hasChanges && !saving && (
-              <span className="text-sm text-amber-600 dark:text-amber-400">
-                {t.profile.unsavedChanges}
-              </span>
-            )}
-          </div>
-        </form>
+      {activeSection === "bounty-log" ? (
+        <PointsPanel profile={profile} onProfileRefresh={loadProfile} section="bounty-log" />
+      ) : null}
 
-        <div className="mt-8 border-t border-zinc-200 pt-6 dark:border-zinc-800">
-          <button
-            type="button"
-            onClick={handleSignOut}
-            className="rounded-full border border-red-300 px-5 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 dark:border-red-900/60 dark:text-red-400 dark:hover:bg-red-950/40"
-          >
-            {t.auth.signOut}
-          </button>
-        </div>
+      {activeSection === "referral" ? (
+        <PointsPanel profile={profile} onProfileRefresh={loadProfile} section="referral" />
+      ) : null}
 
-        <PointsPanel profile={profile} onProfileRefresh={loadProfile} />
-
-        {message && (
-          <p className="mt-4 text-sm text-emerald-600 dark:text-emerald-400" role="status">
-            {message}
-          </p>
-        )}
-        {error && (
-          <p className="mt-4 text-sm text-red-500" role="alert">
-            {error}
-          </p>
-        )}
-
-        <div className="mt-10 border-t border-zinc-200 pt-6 dark:border-zinc-800">
-          <h2 className="text-lg font-semibold text-black dark:text-white">{t.profile.myVideos}</h2>
-          {videos.length === 0 ? (
-            <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">{t.profile.noVideos}</p>
-          ) : (
-            <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {videos.map((video, index) => (
-                <VideoCard
-                  key={video.id}
-                  video={video}
-                  rank={index + 1}
-                  showModerationStatus
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
+      {message && (
+        <p className="mt-4 text-sm text-emerald-600 dark:text-emerald-400" role="status">
+          {message}
+        </p>
+      )}
+      {error && (
+        <p className="mt-4 text-sm text-red-500" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

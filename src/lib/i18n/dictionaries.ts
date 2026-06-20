@@ -14,6 +14,7 @@ export type Dictionary = {
     hunterSystem: string;
     bountyRewards: string;
     inviteFriends: string;
+    channelSettings: string;
     settings: string;
   };
   home: {
@@ -538,6 +539,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       hunterSystem: "Bounty Hunter System",
       bountyRewards: "Latest bounty rewards",
       inviteFriends: "Invite friends",
+      channelSettings: "Channel settings",
       settings: "Settings",
     },
     home: {
@@ -1075,6 +1077,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       hunterSystem: "賞金ハンターシステム",
       bountyRewards: "最新の報酬",
       inviteFriends: "友達を招待",
+      channelSettings: "チャンネル設定",
       settings: "設定",
     },
     home: {
@@ -1608,6 +1611,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       hunterSystem: "نظام صياد الجوائز",
       bountyRewards: "آخر مكافآت الجوائز",
       inviteFriends: "ادعُ أصدقاءك",
+      channelSettings: "إعدادات القناة",
       settings: "الإعدادات",
     },
     home: {
