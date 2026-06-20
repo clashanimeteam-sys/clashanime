@@ -14,9 +14,10 @@ import { createBrowserClient } from "@/lib/supabase/client";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 import { getPublicStorageUrl } from "@/lib/upload";
 import {
-  canChangeProfileDisplayName,
-  getDisplayNameCooldownRemainingDays,
+  canChangeProfileDisplayNameForProfile,
+  getProfileDisplayNameCooldownRemainingDays,
   isDisplayNameCooldownError,
+  rememberDisplayNameChange,
 } from "@/lib/profileDisplayName";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -59,10 +60,8 @@ export function ProfileContent() {
   const displayNameChanged =
     profile !== null &&
     displayName.trim() !== (profile.display_name ?? profile.username);
-  const canChangeDisplayName = canChangeProfileDisplayName(profile?.display_name_changed_at);
-  const displayNameCooldownDays = getDisplayNameCooldownRemainingDays(
-    profile?.display_name_changed_at,
-  );
+  const canChangeDisplayName = canChangeProfileDisplayNameForProfile(profile);
+  const displayNameCooldownDays = getProfileDisplayNameCooldownRemainingDays(profile);
   const bioChanged = profile !== null && bio.trim() !== (profile.bio ?? "");
 
   const hasChanges =
@@ -135,6 +134,9 @@ export function ProfileContent() {
     setProfile(profileData);
     setDisplayName(profileData.display_name ?? profileData.username);
     setBio(profileData.bio ?? "");
+    if (profileData.display_name_changed_at) {
+      rememberDisplayNameChange(profileData.id, profileData.display_name_changed_at);
+    }
     setVideos(
       (videoData ?? []).map((video) => ({
         ...video,
@@ -153,6 +155,11 @@ export function ProfileContent() {
     }
     loadProfile();
   }, [authLoading, user, router, loadProfile]);
+
+  useEffect(() => {
+    if (!profile || canChangeProfileDisplayNameForProfile(profile)) return;
+    setDisplayName(profile.display_name ?? profile.username);
+  }, [profile]);
 
   async function uploadImage(
     bucket: "avatars" | "banners",
@@ -214,13 +221,14 @@ export function ProfileContent() {
     const nextBio = bio.trim();
     const nameChanged = nextDisplayName !== (profile.display_name ?? profile.username);
 
-    if (nameChanged && !canChangeProfileDisplayName(profile.display_name_changed_at)) {
+    if (nameChanged && !canChangeProfileDisplayNameForProfile(profile)) {
       setError(
         t.profile.displayNameCooldown.replace(
           "{days}",
-          String(getDisplayNameCooldownRemainingDays(profile.display_name_changed_at)),
+          String(getProfileDisplayNameCooldownRemainingDays(profile)),
         ),
       );
+      setDisplayName(profile.display_name ?? profile.username);
       return;
     }
 
@@ -228,40 +236,86 @@ export function ProfileContent() {
     setError(null);
     setMessage(null);
 
-    const patch: {
-      bio: string;
-      updated_at: string;
-      display_name?: string;
-    } = {
-      bio: nextBio,
-      updated_at: new Date().toISOString(),
-    };
+    let savedProfile: Profile | null = null;
+    let saveError: { message: string } | null = null;
 
-    if (nameChanged) {
-      patch.display_name = nextDisplayName;
+    const rpcResult = await supabase.rpc("update_own_profile_settings", {
+      p_bio: nextBio,
+      p_display_name: nextDisplayName,
+    });
+
+    if (!rpcResult.error && rpcResult.data) {
+      savedProfile = rpcResult.data as Profile;
+    } else {
+      const missingRpc =
+        rpcResult.error?.code === "PGRST202" ||
+        rpcResult.error?.message.includes("update_own_profile_settings") ||
+        rpcResult.error?.message.includes("Could not find the function");
+
+      if (!missingRpc) {
+        saveError = rpcResult.error;
+      } else {
+        const patch: {
+          bio: string;
+          updated_at: string;
+          display_name?: string;
+          display_name_changed_at?: string;
+        } = {
+          bio: nextBio,
+          updated_at: new Date().toISOString(),
+        };
+
+        if (nameChanged) {
+          patch.display_name = nextDisplayName;
+          patch.display_name_changed_at = new Date().toISOString();
+        }
+
+        let directResult = await supabase
+          .from("profiles")
+          .update(patch)
+          .eq("id", user.id)
+          .select("*")
+          .single();
+
+        if (directResult.error && nameChanged && patch.display_name_changed_at) {
+          const { display_name_changed_at: _ignored, ...patchWithoutCooldown } = patch;
+          directResult = await supabase
+            .from("profiles")
+            .update(patchWithoutCooldown)
+            .eq("id", user.id)
+            .select("*")
+            .single();
+        }
+
+        savedProfile = directResult.data;
+        saveError = directResult.error;
+      }
     }
 
-    const { data: updated, error: updateError } = await supabase
-      .from("profiles")
-      .update(patch)
-      .eq("id", user.id)
-      .select("*")
-      .single();
-
-    if (updateError) {
+    if (saveError || !savedProfile) {
       setSaving(false);
       setError(
-        isDisplayNameCooldownError(updateError.message)
+        saveError && isDisplayNameCooldownError(saveError.message)
           ? t.profile.displayNameCooldown.replace(
               "{days}",
-              String(getDisplayNameCooldownRemainingDays(profile.display_name_changed_at)),
+              String(getProfileDisplayNameCooldownRemainingDays(profile)),
             )
-          : updateError.message,
+          : (saveError?.message ?? "Could not save profile."),
       );
+      if (saveError && isDisplayNameCooldownError(saveError.message)) {
+        setDisplayName(profile.display_name ?? profile.username);
+      }
       return;
     }
 
-    if (nameChanged) {
+    const savedNameChanged =
+      nextDisplayName !== (profile.display_name ?? profile.username);
+
+    if (savedNameChanged) {
+      const changedAt = savedProfile.display_name_changed_at ?? new Date().toISOString();
+      rememberDisplayNameChange(user.id, changedAt);
+      savedProfile = { ...savedProfile, display_name_changed_at: changedAt };
+
       await supabase.auth.updateUser({
         data: {
           full_name: nextDisplayName,
@@ -269,9 +323,9 @@ export function ProfileContent() {
       });
     }
 
-    setProfile(updated);
-    setDisplayName(updated.display_name ?? updated.username);
-    setBio(updated.bio ?? "");
+    setProfile(savedProfile);
+    setDisplayName(savedProfile.display_name ?? savedProfile.username);
+    setBio(savedProfile.bio ?? "");
     setSaving(false);
     setMessage(t.profile.saved);
     await refreshProfile();
