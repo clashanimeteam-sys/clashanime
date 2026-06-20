@@ -2,6 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
+import { useLocale } from "@/providers/LocaleProvider";
 
 function subscribe() {
   return () => {};
@@ -17,13 +18,14 @@ function getServerSnapshot() {
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
+  const { t } = useLocale();
   const mounted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   if (!mounted) {
     return (
       <button
         type="button"
-        aria-label="Toggle theme"
+        aria-label={t.theme.toggle}
         className="h-9 w-9 rounded-lg border border-border bg-surface"
       />
     );
@@ -35,8 +37,8 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-surface text-foreground transition-colors hover:border-brand/40 hover:text-brand"
+      aria-label={isDark ? t.theme.light : t.theme.dark}
+      className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-surface text-foreground transition-colors hover:border-accent/40 hover:text-accent"
     >
       {isDark ? (
         <svg

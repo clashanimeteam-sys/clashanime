@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
-import { ThemeProvider } from "@/providers/ThemeProvider";
+import { Providers } from "@/components/Providers";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -22,13 +20,18 @@ export const metadata: Metadata = {
   },
   description:
     "Watch anime duels ranked in real time. Like, comment, and climb the trending grid on ClashAnime.com.",
-  metadataBase: new URL("https://clashanime.com"),
+  metadataBase: new URL("https://www.clashanime.com"),
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
   openGraph: {
     title: "ClashAnime — Anime Duel Grid",
     description:
       "Anime duels ranked by community engagement. Share clips and climb the grid.",
     siteName: "ClashAnime",
     type: "website",
+    images: [{ url: "/logo.png" }],
   },
 };
 
@@ -43,12 +46,8 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-background text-foreground">
-        <ThemeProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </ThemeProvider>
+      <body className="min-h-full bg-background text-foreground">
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
