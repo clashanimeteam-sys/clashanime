@@ -6,6 +6,7 @@ export type ListenMoeTrack = {
 
 type ListenMoeArtist = {
   name?: string | null;
+  image?: string | null;
 };
 
 type ListenMoeAlbum = {
@@ -33,11 +34,19 @@ function parseTrack(payload: ListenMoePayload | null | undefined): ListenMoeTrac
 
   const artist = song.artists?.[0]?.name?.trim() || "Unknown artist";
   const cover = song.albums?.[0]?.image?.trim();
+  const artistImage = song.artists?.[0]?.image?.trim();
+
+  let artworkUrl: string | null = null;
+  if (cover) {
+    artworkUrl = `https://cdn.listen.moe/covers/${cover}`;
+  } else if (artistImage) {
+    artworkUrl = `https://cdn.listen.moe/artists/${artistImage}`;
+  }
 
   return {
     title: song.title,
     artist,
-    artworkUrl: cover ? `https://cdn.listen.moe/covers/${cover}` : null,
+    artworkUrl,
   };
 }
 

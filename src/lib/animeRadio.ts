@@ -4,6 +4,9 @@ export type RadioStation = {
   id: RadioStationId;
   streamUrl: string;
   listenMoeGateway?: string;
+  coverImage: string;
+  accentFrom: string;
+  accentTo: string;
 };
 
 export const RADIO_STATIONS: RadioStation[] = [
@@ -11,10 +14,16 @@ export const RADIO_STATIONS: RadioStation[] = [
     id: "anime-ost",
     streamUrl: "https://listen.moe/stream",
     listenMoeGateway: "wss://listen.moe/gateway_v2",
+    coverImage: "https://listen.moe/images/jpop.jpg",
+    accentFrom: "#ff015b",
+    accentTo: "#ff6b35",
   },
   {
     id: "lofi-anime",
     streamUrl: "https://radio.plaza.one/mp3",
+    coverImage: "https://listen.moe/images/kpop.jpg",
+    accentFrom: "#7c3aed",
+    accentTo: "#22d3ee",
   },
 ];
 

@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cdn.listen.moe",
       },
+      {
+        protocol: "https",
+        hostname: "listen.moe",
+      },
     ],
   },
 };

@@ -112,11 +112,14 @@ export type Dictionary = {
     volume: string;
     nowPlaying: string;
     liveBroadcast: string;
+    liveOnAir: string;
     loading: string;
     stationOst: string;
     stationOstDesc: string;
     stationLofi: string;
     stationLofiDesc: string;
+    pickStation: string;
+    activeStation: string;
     openFullPlayer: string;
     streamError: string;
     poweredBy: string;
@@ -666,11 +669,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       volume: "Volume",
       nowPlaying: "Now playing",
       liveBroadcast: "Live broadcast",
+      liveOnAir: "On air",
       loading: "Connecting...",
       stationOst: "Anime OST & Openings",
       stationOstDesc: "24/7 anime songs powered by LISTEN.moe.",
       stationLofi: "Lofi Anime Beats",
       stationLofiDesc: "Chill retro beats for studying, editing, and browsing.",
+      pickStation: "Pick your vibe",
+      activeStation: "Live",
       openFullPlayer: "Open radio",
       streamError: "Could not connect to the stream. Try again in a moment.",
       poweredBy: "Anime OST stream by LISTEN.moe. Lofi beats via Nightwave Plaza.",
@@ -1227,11 +1233,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       volume: "音量",
       nowPlaying: "再生中",
       liveBroadcast: "ライブ配信",
+      liveOnAir: "オンエア",
       loading: "接続中...",
       stationOst: "アニメOST & OP",
       stationOstDesc: "LISTEN.moe による24時間アニメ曲。",
       stationLofi: "Lofi Anime Beats",
       stationLofiDesc: "作業・閲覧向けのチルなレトロビート。",
+      pickStation: "ステーションを選ぶ",
+      activeStation: "再生中",
       openFullPlayer: "ラジオを開く",
       streamError: "ストリームに接続できませんでした。しばらくして再試行してください。",
       poweredBy: "OST配信: LISTEN.moe / Lofi: Nightwave Plaza",
@@ -1785,11 +1794,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       volume: "الصوت",
       nowPlaying: "يُشغَّل الآن",
       liveBroadcast: "بث مباشر",
+      liveOnAir: "على الهواء",
       loading: "جارٍ الاتصال...",
       stationOst: "OST وافتتاحيات الأنمي",
       stationOstDesc: "أغاني أنمي على مدار الساعة عبر LISTEN.moe.",
       stationLofi: "Lofi Anime Beats",
       stationLofiDesc: "إيقاعات هادئة للدراسة والتصفح والمونتاج.",
+      pickStation: "اختر المحطة",
+      activeStation: "مباشر",
       openFullPlayer: "فتح الراديو",
       streamError: "تعذّر الاتصال بالبث. حاول مرة أخرى بعد قليل.",
       poweredBy: "بث OST من LISTEN.moe · إيقاعات Lofi من Nightwave Plaza.",
