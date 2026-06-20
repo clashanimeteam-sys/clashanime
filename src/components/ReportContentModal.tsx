@@ -38,11 +38,11 @@ export function ReportContentModal({
 
   return (
     <ModalPortal open={open}>
-      <div className="fixed inset-0 z-[200] flex items-end justify-center p-4 sm:items-center">
+      <div className="fixed inset-0 z-[9999] flex items-end justify-center sm:items-center">
         <button
           type="button"
           aria-label={t.auth.close}
-          className="absolute inset-0 bg-black/70 backdrop-blur-[2px]"
+          className="absolute inset-0 bg-black/80 backdrop-blur-[2px]"
           onClick={onClose}
         />
 
@@ -50,7 +50,7 @@ export function ReportContentModal({
           role="dialog"
           aria-modal="true"
           aria-labelledby="report-modal-title"
-          className="relative z-10 max-h-[min(90dvh,720px)] w-full max-w-2xl overflow-y-auto rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-950 sm:p-6"
+          className="relative z-10 m-4 max-h-[min(92dvh,760px)] w-[min(100%,42rem)] overflow-y-auto rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-950 sm:p-6"
         >
         <div className="mb-5 flex items-start justify-between gap-4">
           <div className="min-w-0">

@@ -167,14 +167,14 @@ export function VideoCommentsModal({
   return (
     <ModalPortal open={open}>
       <div
-        className="fixed inset-0 z-[200] flex items-center justify-center bg-black/85 p-0 sm:p-4"
+        className="fixed inset-0 z-[9999] flex items-stretch justify-center bg-black/90 sm:items-center sm:p-4"
         role="dialog"
         aria-modal="true"
         aria-label={t.video.comments}
         onClick={onClose}
       >
       <div
-        className="flex h-[100dvh] w-full max-w-5xl flex-col overflow-hidden bg-white sm:h-[min(90dvh,760px)] sm:rounded-2xl dark:bg-black md:flex-row"
+        className="flex h-[100dvh] w-full max-w-6xl flex-col overflow-hidden bg-white sm:h-[min(92dvh,820px)] sm:rounded-2xl dark:bg-black md:flex-row"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="relative flex min-h-0 w-full shrink-0 items-center justify-center bg-black md:h-auto md:w-[55%]">

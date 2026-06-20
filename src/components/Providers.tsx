@@ -6,6 +6,7 @@ import { MobileHeader } from "@/components/MobileHeader";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { LocaleProvider } from "@/providers/LocaleProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
+import { VideoOverlayProvider } from "@/providers/VideoOverlayProvider";
 
 type ProvidersProps = {
   children: React.ReactNode;
@@ -32,14 +33,16 @@ export function Providers({ children }: ProvidersProps) {
     <ThemeProvider>
       <LocaleProvider>
         <AuthProvider>
-          {authRoute || adminRoute ? (
-            children
-          ) : (
-            <>
-              <MobileHeader />
-              <AppShell>{children}</AppShell>
-            </>
-          )}
+          <VideoOverlayProvider>
+            {authRoute || adminRoute ? (
+              children
+            ) : (
+              <>
+                <MobileHeader />
+                <AppShell>{children}</AppShell>
+              </>
+            )}
+          </VideoOverlayProvider>
         </AuthProvider>
       </LocaleProvider>
     </ThemeProvider>

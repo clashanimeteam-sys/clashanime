@@ -67,6 +67,7 @@ export default function RootLayout({
     >
       <body className="min-h-full bg-white text-black dark:bg-black dark:text-white">
         <Providers>{children}</Providers>
+        <div id="clashanime-portal" />
       </body>
     </html>
   );

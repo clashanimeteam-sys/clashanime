@@ -1,7 +1,7 @@
 "use client";
 
 import { RefObject, useEffect, useRef, useState } from "react";
-import { ReportContentModal } from "@/components/ReportContentModal";
+import { useVideoOverlay } from "@/providers/VideoOverlayProvider";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -22,9 +22,9 @@ export function VideoSettingsMenu({
 }: VideoSettingsMenuProps) {
   const { t } = useLocale();
   const { user } = useAuth();
+  const { openReport } = useVideoOverlay();
   const menuRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
-  const [reportOpen, setReportOpen] = useState(false);
   const [speed, setSpeed] = useState(1);
   const [muted, setMuted] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
@@ -112,7 +112,7 @@ export function VideoSettingsMenu({
     }
 
     setOpen(false);
-    setReportOpen(true);
+    openReport({ videoId, title });
   }
 
   if (disabled) return null;
@@ -210,13 +210,6 @@ export function VideoSettingsMenu({
           {status}
         </p>
       ) : null}
-
-      <ReportContentModal
-        open={reportOpen}
-        onClose={() => setReportOpen(false)}
-        videoId={videoId}
-        videoTitle={title}
-      />
     </div>
   );
 }

@@ -17,5 +17,7 @@ export function ModalPortal({ children, open }: ModalPortalProps) {
 
   if (!open || !mounted) return null;
 
-  return createPortal(children, document.body);
+  const target = document.getElementById("clashanime-portal") ?? document.body;
+
+  return createPortal(children, target);
 }
