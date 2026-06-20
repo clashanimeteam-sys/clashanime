@@ -41,9 +41,21 @@ function UserAvatar({
 }
 
 export function AuthTopBar() {
-  const { user, loading, signOut } = useAuth();
+  const { user, profile, loading, signOut } = useAuth();
   const { t } = useLocale();
   const pathname = usePathname();
+
+  const displayName =
+    profile?.display_name ??
+    user?.user_metadata?.full_name ??
+    user?.email ??
+    "Clash Anime";
+
+  const avatarUrl =
+    profile?.avatar_url ??
+    user?.user_metadata?.avatar_url ??
+    user?.user_metadata?.picture ??
+    null;
 
   if (pathname === "/login" || pathname === "/signup" || pathname.startsWith("/auth/")) {
     return null;
@@ -74,14 +86,7 @@ export function AuthTopBar() {
               className="rounded-full transition-opacity hover:opacity-80"
               aria-label={t.profile.customize}
             >
-              <UserAvatar
-                name={user.user_metadata?.full_name ?? user.email ?? "Clash Anime"}
-                avatarUrl={
-                  user.user_metadata?.avatar_url ??
-                  user.user_metadata?.picture ??
-                  null
-                }
-              />
+              <UserAvatar name={displayName} avatarUrl={avatarUrl} />
             </Link>
             <button
               type="button"

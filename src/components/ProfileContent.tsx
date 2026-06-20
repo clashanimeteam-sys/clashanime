@@ -22,7 +22,7 @@ function getInitials(name: string) {
 
 export function ProfileContent() {
   const router = useRouter();
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, refreshProfile } = useAuth();
   const { t } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const config = useMemo(() => getSupabaseConfig(), []);
@@ -156,6 +156,16 @@ export function ProfileContent() {
     setProfile({ ...profile, [field]: publicUrl });
     setMessage(field === "avatar_url" ? t.profile.avatarSaved : t.profile.bannerSaved);
     setUploading(false);
+
+    if (field === "avatar_url") {
+      await supabase.auth.updateUser({
+        data: {
+          avatar_url: publicUrl,
+          picture: publicUrl,
+        },
+      });
+      await refreshProfile();
+    }
   }
 
   async function saveProfile() {
@@ -196,6 +206,7 @@ export function ProfileContent() {
     setBio(updated.bio ?? "");
     setSaving(false);
     setMessage(t.profile.saved);
+    await refreshProfile();
   }
 
   if (authLoading || loading) {
