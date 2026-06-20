@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { FollowerCount } from "@/components/FollowButton";
 import { VideoCard } from "@/components/VideoCard";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getSupabaseConfig } from "@/lib/supabase/config";
@@ -37,6 +38,7 @@ export function ProfileContent() {
   const [uploadingBanner, setUploadingBanner] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [followerCount, setFollowerCount] = useState(0);
 
   const hasChanges =
     profile !== null &&
@@ -86,14 +88,21 @@ export function ProfileContent() {
       return;
     }
 
-    const { data: videoData } = await supabase
-      .from("videos")
-      .select(
-        "id, title, thumbnail_url, video_url, likes_count, comments_count, created_at, hashtags, duration_seconds, user_id",
-      )
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false });
+    const [{ count: followers }, { data: videoData }] = await Promise.all([
+      supabase
+        .from("channel_follows")
+        .select("*", { count: "exact", head: true })
+        .eq("following_id", profileData.id),
+      supabase
+        .from("videos")
+        .select(
+          "id, title, thumbnail_url, video_url, likes_count, comments_count, created_at, hashtags, duration_seconds, user_id",
+        )
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false }),
+    ]);
 
+    setFollowerCount(followers ?? 0);
     setProfile(profileData);
     setDisplayName(profileData.display_name ?? profileData.username);
     setBio(profileData.bio ?? "");
@@ -288,9 +297,20 @@ export function ProfileContent() {
               <h1 className="text-2xl font-bold leading-tight text-black sm:text-3xl dark:text-white">
                 {displayName.trim() || profile.username}
               </h1>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">@{profile.username}</p>
-              <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-                {videos.length} {t.profile.videosCount}
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                <Link
+                  href={`/channel/${profile.username}`}
+                  className="hover:text-black dark:hover:text-white"
+                >
+                  @{profile.username}
+                </Link>
+              </p>
+              <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-zinc-600 dark:text-zinc-400">
+                <span>
+                  {videos.length} {t.profile.videosCount}
+                </span>
+                <span aria-hidden>·</span>
+                <FollowerCount count={followerCount} />
               </p>
             </div>
           </div>

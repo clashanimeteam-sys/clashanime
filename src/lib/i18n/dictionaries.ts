@@ -92,6 +92,15 @@ export type Dictionary = {
     myVideos: string;
     noVideos: string;
     videosCount: string;
+    follow: string;
+    unfollow: string;
+    followers: string;
+    followingLoading: string;
+    loadingChannel: string;
+    channelNotFound: string;
+    channelVideos: string;
+    noChannelVideos: string;
+    manageChannel: string;
   };
   upload: {
     create: string;
@@ -207,6 +216,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
       myVideos: "Your videos",
       noVideos: "No videos yet. Upload your first duel clip.",
       videosCount: "videos",
+      follow: "Follow",
+      unfollow: "Unfollow",
+      followers: "followers",
+      followingLoading: "...",
+      loadingChannel: "Loading channel...",
+      channelNotFound: "Channel not found.",
+      channelVideos: "Videos",
+      noChannelVideos: "This channel has no videos yet.",
+      manageChannel: "Manage your channel",
     },
     upload: {
       create: "Create",
@@ -320,6 +338,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
       myVideos: "あなたの動画",
       noVideos: "まだ動画がありません。最初のデュエルをアップロードしましょう。",
       videosCount: "本の動画",
+      follow: "フォロー",
+      unfollow: "フォロー解除",
+      followers: "フォロワー",
+      followingLoading: "...",
+      loadingChannel: "チャンネルを読み込み中...",
+      channelNotFound: "チャンネルが見つかりません。",
+      channelVideos: "動画",
+      noChannelVideos: "このチャンネルにはまだ動画がありません。",
+      manageChannel: "チャンネルを管理",
     },
     upload: {
       create: "作成",
@@ -433,6 +460,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
       myVideos: "فيديوهاتك",
       noVideos: "لا توجد فيديوهات بعد. ارفع أول نزال.",
       videosCount: "فيديو",
+      follow: "متابعة",
+      unfollow: "إلغاء المتابعة",
+      followers: "متابع",
+      followingLoading: "...",
+      loadingChannel: "جارٍ تحميل القناة...",
+      channelNotFound: "القناة غير موجودة.",
+      channelVideos: "الفيديوهات",
+      noChannelVideos: "لا توجد فيديوهات في هذه القناة بعد.",
+      manageChannel: "إدارة قناتك",
     },
     upload: {
       create: "إنشاء",
