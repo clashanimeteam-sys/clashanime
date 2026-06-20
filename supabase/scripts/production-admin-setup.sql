@@ -1,4 +1,7 @@
--- Admin roles, site settings, and staff moderation policies
+-- Run this in Supabase SQL Editor for production project:
+-- https://supabase.com/dashboard/project/doqiuduigbdoczdzsima/sql/new
+--
+-- Production uses doqiuduigbdoczdzsima (not the local CLI-linked project).
 
 alter table public.profiles
   add column if not exists role text not null default 'user'
@@ -98,38 +101,47 @@ create trigger guard_profile_privileged_fields_trigger
   for each row
   execute function public.guard_profile_privileged_fields();
 
+drop policy if exists "Staff can view all videos" on public.videos;
 create policy "Staff can view all videos"
   on public.videos for select
   using (public.is_staff());
 
+drop policy if exists "Staff can moderate videos" on public.videos;
 create policy "Staff can moderate videos"
   on public.videos for update
   using (public.is_staff());
 
+drop policy if exists "Staff can delete videos" on public.videos;
 create policy "Staff can delete videos"
   on public.videos for delete
   using (public.is_staff());
 
+drop policy if exists "Staff can view all reports" on public.content_reports;
 create policy "Staff can view all reports"
   on public.content_reports for select
   using (public.is_staff());
 
+drop policy if exists "Staff can update reports" on public.content_reports;
 create policy "Staff can update reports"
   on public.content_reports for update
   using (public.is_staff());
 
+drop policy if exists "Admins can update any profile" on public.profiles;
 create policy "Admins can update any profile"
   on public.profiles for update
   using (public.is_admin());
 
+drop policy if exists "Anyone can read site settings" on public.site_settings;
 create policy "Anyone can read site settings"
   on public.site_settings for select
   using (true);
 
+drop policy if exists "Admins can insert site settings" on public.site_settings;
 create policy "Admins can insert site settings"
   on public.site_settings for insert
   with check (public.is_admin());
 
+drop policy if exists "Admins can update site settings" on public.site_settings;
 create policy "Admins can update site settings"
   on public.site_settings for update
   using (public.is_admin());
@@ -137,8 +149,13 @@ create policy "Admins can update site settings"
 grant execute on function public.is_staff() to authenticated;
 grant execute on function public.is_admin() to authenticated;
 
--- Bootstrap first admin (site owner)
+-- Site owner account on production
 update public.profiles
 set role = 'admin'
-where username in ('clashanimeteam', 'wisam')
+where username = 'clashanimeteam'
+   or id = 'e0399a69-015b-4b18-bdc8-3e790fba2f04';
+
+select id, username, display_name, role
+from public.profiles
+where username = 'clashanimeteam'
    or id = 'e0399a69-015b-4b18-bdc8-3e790fba2f04';

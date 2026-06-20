@@ -58,6 +58,11 @@ export function AdminShell({ children }: AdminShellProps) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-zinc-950 px-4 text-center text-zinc-300">
         <p className="max-w-md text-sm">{t.admin.accessDenied}</p>
+        {profile ? (
+          <p className="max-w-md text-xs text-zinc-500">
+            @{profile.username} · role: {profile.role ?? "user"}
+          </p>
+        ) : null}
         <Link
           href="/"
           className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white"
