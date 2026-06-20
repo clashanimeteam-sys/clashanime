@@ -251,8 +251,8 @@ export function ProfileContent() {
       </div>
 
       <div className="px-4 pb-10 sm:px-6">
-        <div className="-mt-12 flex flex-col gap-3 sm:-mt-14 sm:flex-row sm:items-end sm:justify-between">
-          <div className="flex min-w-0 flex-1 items-end gap-3 sm:gap-4">
+        <div className="-mt-12 flex flex-col gap-3 sm:-mt-14 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
             <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-white bg-zinc-200 sm:h-28 sm:w-28 dark:border-black dark:bg-zinc-900">
               {profile.avatar_url ? (
                 <Image
@@ -284,8 +284,8 @@ export function ProfileContent() {
               </label>
             </div>
 
-            <div className="min-w-0 pb-1">
-              <h1 className="text-2xl font-bold text-black sm:text-3xl dark:text-white">
+            <div className="min-w-0 pt-12 sm:pt-14">
+              <h1 className="text-2xl font-bold leading-tight text-black sm:text-3xl dark:text-white">
                 {displayName.trim() || profile.username}
               </h1>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">@{profile.username}</p>
@@ -295,7 +295,7 @@ export function ProfileContent() {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2 sm:pb-1">
+          <div className="flex flex-wrap gap-2 pt-12 sm:pt-14">
             <Link
               href="/upload"
               className="rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-black"
