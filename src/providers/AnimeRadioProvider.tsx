@@ -28,13 +28,14 @@ type AnimeRadioContextValue = {
   isPlaying: boolean;
   isLoading: boolean;
   hasStarted: boolean;
+  pausedByUser: boolean;
   volume: number;
   muted: boolean;
   nowPlaying: RadioNowPlaying | null;
   error: string | null;
   selectStation: (stationId: RadioStationId) => void;
   play: () => Promise<void>;
-  pause: () => void;
+  pause: (options?: { byUser?: boolean }) => void;
   togglePlay: () => Promise<void>;
   setVolume: (volume: number) => void;
   toggleMute: () => void;
@@ -56,6 +57,7 @@ export function AnimeRadioProvider({ children }: AnimeRadioProviderProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const [pausedByUser, setPausedByUser] = useState(persisted?.pausedByUser ?? false);
   const [volume, setVolumeState] = useState(persisted?.volume ?? DEFAULT_RADIO_VOLUME);
   const [muted, setMuted] = useState(persisted?.muted ?? false);
   const [nowPlaying, setNowPlaying] = useState<RadioNowPlaying | null>(null);
@@ -64,14 +66,22 @@ export function AnimeRadioProvider({ children }: AnimeRadioProviderProps) {
   const station = useMemo(() => getRadioStation(stationId), [stationId]);
 
   const persist = useCallback(
-    (next: Partial<{ stationId: RadioStationId; volume: number; muted: boolean }>) => {
+    (
+      next: Partial<{
+        stationId: RadioStationId;
+        volume: number;
+        muted: boolean;
+        pausedByUser: boolean;
+      }>,
+    ) => {
       writePersistedRadioState({
         stationId: next.stationId ?? stationId,
         volume: next.volume ?? volume,
         muted: next.muted ?? muted,
+        pausedByUser: next.pausedByUser ?? pausedByUser,
       });
     },
-    [stationId, volume, muted],
+    [stationId, volume, muted, pausedByUser],
   );
 
   const attachStream = useCallback(async (nextStationId: RadioStationId) => {
@@ -102,6 +112,8 @@ export function AnimeRadioProvider({ children }: AnimeRadioProviderProps) {
     const audio = audioRef.current;
     if (!audio) return;
 
+    setPausedByUser(false);
+    persist({ pausedByUser: false });
     setHasStarted(true);
     setError(null);
 
@@ -119,17 +131,25 @@ export function AnimeRadioProvider({ children }: AnimeRadioProviderProps) {
     } catch {
       await attachStream(stationId);
     }
-  }, [attachStream, stationId]);
+  }, [attachStream, stationId, persist]);
 
-  const pause = useCallback(() => {
-    audioRef.current?.pause();
-    setIsPlaying(false);
-    setIsLoading(false);
-  }, []);
+  const pause = useCallback(
+    (options?: { byUser?: boolean }) => {
+      audioRef.current?.pause();
+      setIsPlaying(false);
+      setIsLoading(false);
+
+      if (options?.byUser) {
+        setPausedByUser(true);
+        persist({ pausedByUser: true });
+      }
+    },
+    [persist],
+  );
 
   const togglePlay = useCallback(async () => {
     if (isPlaying) {
-      pause();
+      pause({ byUser: true });
       return;
     }
     await play();
@@ -231,6 +251,7 @@ export function AnimeRadioProvider({ children }: AnimeRadioProviderProps) {
       isPlaying,
       isLoading,
       hasStarted,
+      pausedByUser,
       volume,
       muted,
       nowPlaying,
@@ -247,6 +268,7 @@ export function AnimeRadioProvider({ children }: AnimeRadioProviderProps) {
       isPlaying,
       isLoading,
       hasStarted,
+      pausedByUser,
       volume,
       muted,
       nowPlaying,

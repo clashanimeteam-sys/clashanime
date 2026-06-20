@@ -50,6 +50,7 @@ export type PersistedRadioState = {
   stationId: RadioStationId;
   volume: number;
   muted: boolean;
+  pausedByUser?: boolean;
 };
 
 export function readPersistedRadioState(): PersistedRadioState | null {
@@ -69,6 +70,7 @@ export function readPersistedRadioState(): PersistedRadioState | null {
           ? Math.min(1, Math.max(0, parsed.volume))
           : DEFAULT_RADIO_VOLUME,
       muted: Boolean(parsed.muted),
+      pausedByUser: Boolean(parsed.pausedByUser),
     };
   } catch {
     return null;

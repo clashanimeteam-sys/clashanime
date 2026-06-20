@@ -18,8 +18,9 @@ function isRadioBlockedRoute(pathname: string) {
 
 export function AnimeRadioController() {
   const pathname = usePathname();
-  const { isPlaying, play, pause, setVolume } = useAnimeRadio();
+  const { isPlaying, pausedByUser, play, pause, setVolume } = useAnimeRadio();
   const isPlayingRef = useRef(isPlaying);
+  const pausedByUserRef = useRef(pausedByUser);
   const resumeAfterVideoRef = useRef(false);
   const autoplayAttemptedRef = useRef(false);
   const [flagsReady, setFlagsReady] = useState(false);
@@ -27,6 +28,7 @@ export function AnimeRadioController() {
   const [autoplayEnabled, setAutoplayEnabled] = useState(true);
 
   isPlayingRef.current = isPlaying;
+  pausedByUserRef.current = pausedByUser;
 
   useEffect(() => {
     const supabase = createBrowserClient();
@@ -52,17 +54,17 @@ export function AnimeRadioController() {
       return;
     }
 
-    if (resumeAfterVideoRef.current && radioEnabled) {
+    if (resumeAfterVideoRef.current && radioEnabled && !pausedByUserRef.current) {
       resumeAfterVideoRef.current = false;
       void play();
     }
   }, [pathname, pause, play, radioEnabled]);
 
   useEffect(() => {
-    if (!flagsReady || !radioEnabled || !autoplayEnabled) return;
+    if (!flagsReady || !radioEnabled || !autoplayEnabled || pausedByUser) return;
 
     const tryAutoplay = () => {
-      if (autoplayAttemptedRef.current) return;
+      if (autoplayAttemptedRef.current || pausedByUserRef.current) return;
       if (isRadioBlockedRoute(pathname) || pathname.startsWith("/video/")) return;
 
       autoplayAttemptedRef.current = true;
@@ -74,6 +76,7 @@ export function AnimeRadioController() {
     tryAutoplay();
 
     function unlockOnInteraction() {
+      if (pausedByUserRef.current) return;
       if (autoplayAttemptedRef.current && isPlayingRef.current) return;
       if (!radioEnabled || !autoplayEnabled) return;
       if (isRadioBlockedRoute(pathname) || pathname.startsWith("/video/")) return;
@@ -83,7 +86,7 @@ export function AnimeRadioController() {
 
     document.addEventListener("pointerdown", unlockOnInteraction);
     return () => document.removeEventListener("pointerdown", unlockOnInteraction);
-  }, [flagsReady, radioEnabled, autoplayEnabled, pathname, play]);
+  }, [flagsReady, radioEnabled, autoplayEnabled, pausedByUser, pathname, play]);
 
   return null;
 }
