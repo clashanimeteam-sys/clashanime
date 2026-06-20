@@ -7,7 +7,7 @@ export function Footer() {
   const { t } = useLocale();
 
   return (
-    <footer className="mt-auto border-t border-border bg-white dark:bg-black">
+    <footer className="mt-auto border-t border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black">
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div>
           <p className="text-sm font-semibold text-black dark:text-white">
