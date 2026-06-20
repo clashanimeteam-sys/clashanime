@@ -5,6 +5,8 @@ export type RadioStation = {
   streamUrl: string;
   listenMoeGateway?: string;
   coverImage: string;
+  backdropImages: string[];
+  backdropCharacter?: string;
   accentFrom: string;
   accentTo: string;
 };
@@ -15,6 +17,11 @@ export const RADIO_STATIONS: RadioStation[] = [
     streamUrl: "https://listen.moe/stream",
     listenMoeGateway: "wss://listen.moe/gateway_v2",
     coverImage: "https://listen.moe/images/jpop.jpg",
+    backdropImages: [
+      "https://listen.moe/images/jpop.jpg",
+      "https://listen.moe/images/share.jpg",
+    ],
+    backdropCharacter: "https://listen.moe/images/girls/chitose.png",
     accentFrom: "#ff015b",
     accentTo: "#ff6b35",
   },
@@ -22,6 +29,11 @@ export const RADIO_STATIONS: RadioStation[] = [
     id: "lofi-anime",
     streamUrl: "https://radio.plaza.one/mp3",
     coverImage: "https://listen.moe/images/kpop.jpg",
+    backdropImages: [
+      "https://listen.moe/images/kpop.jpg",
+      "https://listen.moe/images/share.jpg",
+    ],
+    backdropCharacter: "https://listen.moe/images/girls/chitose.png",
     accentFrom: "#7c3aed",
     accentTo: "#22d3ee",
   },
