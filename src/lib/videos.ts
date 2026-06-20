@@ -149,3 +149,26 @@ export async function getTrendingVideos(): Promise<Video[]> {
   const withChannels = await attachChannels(supabase, data);
   return sortByTrending(withChannels);
 }
+
+export async function getVideoById(id: string): Promise<Video | null> {
+  const supabase = await createServerClient();
+
+  if (!supabase) {
+    return MOCK_VIDEOS.find((video) => video.id === id) ?? null;
+  }
+
+  const { data, error } = await supabase
+    .from("videos")
+    .select(
+      "id, title, thumbnail_url, video_url, likes_count, comments_count, created_at, user_id, hashtags, duration_seconds, description",
+    )
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error || !data) {
+    return null;
+  }
+
+  const [video] = await attachChannels(supabase, [data]);
+  return video;
+}

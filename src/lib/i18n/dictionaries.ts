@@ -33,6 +33,9 @@ export type Dictionary = {
     silverMedal: string;
     bronzeMedal: string;
     rank: string;
+    unavailable: string;
+    backHome: string;
+    notFound: string;
   };
   theme: {
     light: string;
@@ -157,6 +160,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       silverMedal: "Silver medal",
       bronzeMedal: "Bronze medal",
       rank: "Rank",
+      unavailable: "This video is not available yet.",
+      backHome: "Back to trending",
+      notFound: "Video not found.",
     },
     theme: {
       light: "Switch to light mode",
@@ -279,6 +285,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       silverMedal: "銀メダル",
       bronzeMedal: "銅メダル",
       rank: "順位",
+      unavailable: "この動画はまだ視聴できません。",
+      backHome: "トレンドに戻る",
+      notFound: "動画が見つかりません。",
     },
     theme: {
       light: "ライトモードに切り替え",
@@ -401,6 +410,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       silverMedal: "ميدالية فضية",
       bronzeMedal: "ميدالية برونزية",
       rank: "الترتيب",
+      unavailable: "هذا الفيديو غير متاح بعد.",
+      backHome: "العودة إلى الرائج",
+      notFound: "الفيديو غير موجود.",
     },
     theme: {
       light: "التبديل إلى الوضع النهاري",
