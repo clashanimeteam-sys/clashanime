@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "stickers:build": "node scripts/build-anime-sticker-catalog.mjs",
     "start": "next start",
     "lint": "eslint"
   },

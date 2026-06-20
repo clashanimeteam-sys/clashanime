@@ -99,4 +99,4 @@ select
   (select count(*) from public.anime_stickers) as sticker_count,
   (select count(*) from storage.buckets where id = 'anime-stickers') as bucket_count;
 
--- Next step: run production-anime-stickers-seed.sql to insert the default reaction GIFs.
+-- Next step: run production-anime-stickers-seed-full.sql (402 anime, 1029 GIFs).

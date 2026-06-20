@@ -303,6 +303,9 @@ export type Dictionary = {
   stickers: {
     loading: string;
     empty: string;
+    searchPlaceholder: string;
+    searchResults: string;
+    searchHint: string;
   };
   upload: {
     create: string;
@@ -828,6 +831,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
     stickers: {
       loading: "Loading stickers...",
       empty: "No anime stickers yet.",
+      searchPlaceholder: "Search anime or reaction...",
+      searchResults: "{count} stickers found",
+      searchHint: "Use search to browse all anime series.",
     },
     upload: {
       create: "Create",
@@ -1354,6 +1360,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
     stickers: {
       loading: "ステッカーを読み込み中...",
       empty: "アニメステッカーはまだありません。",
+      searchPlaceholder: "アニメやリアクションを検索...",
+      searchResults: "{count} 件見つかりました",
+      searchHint: "検索ですべての作品を探せます。",
     },
     upload: {
       create: "作成",
@@ -1882,6 +1891,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
     stickers: {
       loading: "جارٍ تحميل الستيكرات...",
       empty: "لا توجد ستيكرات أنمي بعد.",
+      searchPlaceholder: "ابحث عن أنمي أو رد فعل...",
+      searchResults: "تم العثور على {count} ستيكر",
+      searchHint: "استخدم البحث للتنقل بين كل الأنمي.",
     },
     upload: {
       create: "إنشاء",
