@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BrandMark } from "@/components/BrandMark";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -15,7 +16,12 @@ export function AuthTopBar() {
   }
 
   return (
-    <div className="flex items-center justify-end gap-3 border-b border-zinc-200 px-4 py-3 dark:border-zinc-800 sm:px-6">
+    <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3 dark:border-zinc-800 sm:px-6">
+      <div className="md:hidden">
+        <BrandMark />
+      </div>
+      <div className="hidden md:block" aria-hidden />
+      <div className="flex items-center gap-3">
       {loading ? (
         <span className="h-9 w-24 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-900" />
       ) : user ? (
@@ -47,6 +53,7 @@ export function AuthTopBar() {
           </Link>
         </>
       )}
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { BrandMark } from "@/components/BrandMark";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type AuthShellHeaderProps = {
@@ -11,7 +12,8 @@ export function AuthShellHeader({ mode }: AuthShellHeaderProps) {
   const { t } = useLocale();
 
   return (
-    <div className="flex items-center justify-end border-b border-zinc-200 px-4 py-3 dark:border-zinc-800 sm:px-6">
+    <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3 dark:border-zinc-800 sm:px-6">
+      <BrandMark />
       {mode === "login" ? (
         <Link
           href="/signup"

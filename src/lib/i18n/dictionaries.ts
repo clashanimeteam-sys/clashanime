@@ -65,6 +65,7 @@ export type Dictionary = {
     emailPlaceholder: string;
     continueEmail: string;
     close: string;
+    backHome: string;
     emailSent: string;
     invalidEmail: string;
     noAccount: string;
@@ -143,6 +144,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       emailPlaceholder: "Email Address",
       continueEmail: "Continue with Email",
       close: "Close and go back",
+      backHome: "Back to Clash Anime home",
       emailSent: "Check your email for the login link.",
       invalidEmail: "Enter a valid email address.",
       noAccount: "Don't have an account?",
@@ -219,6 +221,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       emailPlaceholder: "メールアドレス",
       continueEmail: "メールで続行",
       close: "閉じて戻る",
+      backHome: "Clash Animeホームに戻る",
       emailSent: "ログインリンクをメールで確認してください。",
       invalidEmail: "有効なメールアドレスを入力してください。",
       noAccount: "アカウントをお持ちでないですか？",
@@ -295,6 +298,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       emailPlaceholder: "عنوان البريد الإلكتروني",
       continueEmail: "المتابعة بالبريد الإلكتروني",
       close: "إغلاق والعودة",
+      backHome: "العودة إلى الصفحة الرئيسية لـ Clash Anime",
       emailSent: "تحقق من بريدك الإلكتروني للحصول على رابط تسجيل الدخول.",
       invalidEmail: "أدخل عنوان بريد إلكتروني صالحاً.",
       noAccount: "ليس لديك حساب؟",
