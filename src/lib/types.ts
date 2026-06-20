@@ -15,6 +15,7 @@ export type Profile = {
   points?: number;
   level?: number;
   referred_by?: string | null;
+  display_name_changed_at?: string | null;
   created_at: string;
   updated_at: string;
 };

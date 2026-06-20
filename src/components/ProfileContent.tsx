@@ -13,6 +13,11 @@ import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 import { getPublicStorageUrl } from "@/lib/upload";
+import {
+  canChangeProfileDisplayName,
+  getDisplayNameCooldownRemainingDays,
+  isDisplayNameCooldownError,
+} from "@/lib/profileDisplayName";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 import { useProfileSection } from "@/providers/ProfileSectionProvider";
@@ -51,10 +56,18 @@ export function ProfileContent() {
   const [error, setError] = useState<string | null>(null);
   const [followerCount, setFollowerCount] = useState(0);
 
+  const displayNameChanged =
+    profile !== null &&
+    displayName.trim() !== (profile.display_name ?? profile.username);
+  const canChangeDisplayName = canChangeProfileDisplayName(profile?.display_name_changed_at);
+  const displayNameCooldownDays = getDisplayNameCooldownRemainingDays(
+    profile?.display_name_changed_at,
+  );
+  const bioChanged = profile !== null && bio.trim() !== (profile.bio ?? "");
+
   const hasChanges =
     profile !== null &&
-    (displayName.trim() !== (profile.display_name ?? profile.username) ||
-      bio.trim() !== (profile.bio ?? ""));
+    ((displayNameChanged && canChangeDisplayName) || bioChanged);
 
   const loadProfile = useCallback(async () => {
     if (!supabase || !user) return;
@@ -197,35 +210,64 @@ export function ProfileContent() {
   async function saveProfile() {
     if (!supabase || !user || !profile) return;
 
+    const nextDisplayName = displayName.trim() || profile.username;
+    const nextBio = bio.trim();
+    const nameChanged = nextDisplayName !== (profile.display_name ?? profile.username);
+
+    if (nameChanged && !canChangeProfileDisplayName(profile.display_name_changed_at)) {
+      setError(
+        t.profile.displayNameCooldown.replace(
+          "{days}",
+          String(getDisplayNameCooldownRemainingDays(profile.display_name_changed_at)),
+        ),
+      );
+      return;
+    }
+
     setSaving(true);
     setError(null);
     setMessage(null);
 
-    const nextDisplayName = displayName.trim() || profile.username;
-    const nextBio = bio.trim();
+    const patch: {
+      bio: string;
+      updated_at: string;
+      display_name?: string;
+    } = {
+      bio: nextBio,
+      updated_at: new Date().toISOString(),
+    };
+
+    if (nameChanged) {
+      patch.display_name = nextDisplayName;
+    }
 
     const { data: updated, error: updateError } = await supabase
       .from("profiles")
-      .update({
-        display_name: nextDisplayName,
-        bio: nextBio,
-        updated_at: new Date().toISOString(),
-      })
+      .update(patch)
       .eq("id", user.id)
       .select("*")
       .single();
 
     if (updateError) {
       setSaving(false);
-      setError(updateError.message);
+      setError(
+        isDisplayNameCooldownError(updateError.message)
+          ? t.profile.displayNameCooldown.replace(
+              "{days}",
+              String(getDisplayNameCooldownRemainingDays(profile.display_name_changed_at)),
+            )
+          : updateError.message,
+      );
       return;
     }
 
-    await supabase.auth.updateUser({
-      data: {
-        full_name: nextDisplayName,
-      },
-    });
+    if (nameChanged) {
+      await supabase.auth.updateUser({
+        data: {
+          full_name: nextDisplayName,
+        },
+      });
+    }
 
     setProfile(updated);
     setDisplayName(updated.display_name ?? updated.username);
@@ -381,11 +423,28 @@ export function ProfileContent() {
               <input
                 value={displayName}
                 onChange={(event) => {
+                  if (!canChangeDisplayName) return;
                   setDisplayName(event.target.value);
                   setMessage(null);
                 }}
-                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-black dark:text-white"
+                readOnly={!canChangeDisplayName}
+                aria-readonly={!canChangeDisplayName}
+                className={`w-full rounded-lg border px-3 py-2 text-sm outline-none focus:border-zinc-500 dark:text-white ${
+                  canChangeDisplayName
+                    ? "border-zinc-300 bg-white text-black dark:border-zinc-700 dark:bg-black"
+                    : "cursor-not-allowed border-zinc-200 bg-zinc-100 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400"
+                }`}
               />
+              {!canChangeDisplayName ? (
+                <p className="mt-2 text-xs text-amber-600 dark:text-amber-400">
+                  {t.profile.displayNameCooldown.replace(
+                    "{days}",
+                    String(displayNameCooldownDays),
+                  )}
+                </p>
+              ) : (
+                <p className="mt-2 text-xs text-zinc-500">{t.profile.displayNameCooldownDays}</p>
+              )}
             </label>
             <label className="block sm:col-span-2">
               <span className="mb-1 block text-sm font-medium text-black dark:text-white">

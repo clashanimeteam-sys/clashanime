@@ -186,6 +186,8 @@ export type Dictionary = {
     noChannelVideos: string;
     manageChannel: string;
     verifiedBadge: string;
+    displayNameCooldown: string;
+    displayNameCooldownDays: string;
   };
   points: {
     systemTitle: string;
@@ -718,6 +720,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       noChannelVideos: "This channel has no videos yet.",
       manageChannel: "Manage your channel",
       verifiedBadge: "Verified channel",
+      displayNameCooldown: "You can change your channel name again in {days} day(s).",
+      displayNameCooldownDays: "Channel name can only be changed once every 14 days.",
     },
     points: {
       systemTitle: "Bounty Hunter Rewards",
@@ -1254,6 +1258,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       noChannelVideos: "このチャンネルにはまだ動画がありません。",
       manageChannel: "チャンネルを管理",
       verifiedBadge: "認証済みチャンネル",
+      displayNameCooldown: "チャンネル名はあと {days} 日で変更できます。",
+      displayNameCooldownDays: "チャンネル名は14日に1回だけ変更できます。",
     },
     points: {
       systemTitle: "バウンティハンター報酬",
@@ -1791,6 +1797,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       noChannelVideos: "لا توجد فيديوهات في هذه القناة بعد.",
       manageChannel: "إدارة قناتك",
       verifiedBadge: "قناة موثّقة",
+      displayNameCooldown: "يمكنك تغيير اسم القناة بعد {days} يوماً.",
+      displayNameCooldownDays: "يمكن تغيير اسم القناة مرة واحدة كل 14 يوماً فقط.",
     },
     points: {
       systemTitle: "نظام صياد الجوائز",
