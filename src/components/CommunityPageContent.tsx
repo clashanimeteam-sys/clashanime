@@ -215,7 +215,7 @@ export function CommunityPageContent() {
     setImageFile(null);
     setImagePreview(null);
     setAcceptedPolicy(false);
-    setMessage(t.points.communityPostSuccess);
+    setMessage(t.communityFeed.postPublished);
     await loadPosts();
   }
 
@@ -249,9 +249,10 @@ export function CommunityPageContent() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-black dark:text-white">{t.pages.communityTitle}</h1>
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{t.points.communitySubtitle}</p>
-        <p className="mt-2 rounded-xl border border-accent/20 bg-accent/5 px-3 py-2 text-xs text-zinc-700 dark:text-zinc-300">
+        <h1 className="text-start text-2xl font-bold text-black dark:text-white sm:text-3xl">
+          {t.pages.communityTitle}
+        </h1>
+        <p className="mt-3 rounded-xl border border-accent/20 bg-accent/5 px-3 py-2 text-xs text-zinc-700 dark:text-zinc-300">
           {t.communityFeed.animeOnlyNotice}{" "}
           <Link href="/community-guidelines" className="font-semibold text-accent hover:underline">
             {t.footer.communityGuidelines}
@@ -313,8 +314,7 @@ export function CommunityPageContent() {
             </span>
           </label>
 
-          <div className="mt-3 flex items-center justify-between gap-3">
-            <p className="text-xs text-zinc-500">{t.points.communityPostReward}</p>
+          <div className="mt-3 flex justify-end">
             <button
               type="submit"
               disabled={posting || (!body.trim() && !imageFile) || !acceptedPolicy}

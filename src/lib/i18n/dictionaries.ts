@@ -255,6 +255,7 @@ export type Dictionary = {
     };
   };
   communityFeed: {
+    postPublished: string;
     animeOnlyNotice: string;
     postPlaceholder: string;
     addImage: string;
@@ -577,7 +578,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "All approved videos, newest first. Each card shows its global rank. Top 10 also appear in Clash.",
       exclusivesTitle: "Exclusives",
       exclusivesSubtitle: "Clips from verified creators on ClashAnime.",
-      communityTitle: "Community",
+      communityTitle: "Anime Community",
       communitySubtitle: "Follow creators, comment on duels, and climb the grid together.",
       communityBody:
         "Community features are expanding soon. Explore channels from video cards, follow creators, and join the conversation on each clip.",
@@ -751,8 +752,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       },
     },
     communityFeed: {
+      postPublished: "Post published.",
       animeOnlyNotice: "Community posts must be anime-related only. Off-topic, political, or adult content is prohibited.",
-      postPlaceholder: "Share anime thoughts, fan art, clips, or updates...",
+      postPlaceholder:
+        "The clash arena is open.. share your favorite moment in the anime world!",
       addImage: "Add image",
       removeImage: "Remove",
       invalidImage: "Please choose a valid image file.",
@@ -1078,7 +1081,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "承認済みの全動画を新しい順に表示。各カードに世界ランクを表示。トップ10はクラッシュにも表示されます。",
       exclusivesTitle: "限定",
       exclusivesSubtitle: "認証済みクリエイターのクリップ。",
-      communityTitle: "コミュニティ",
+      communityTitle: "アニメコミュニティ",
       communitySubtitle: "クリエイターをフォローし、コメントしてグリッドを競おう。",
       communityBody:
         "コミュニティ機能は近日拡張予定です。動画カードからチャンネルを探索し、各クリップで会話に参加してください。",
@@ -1249,8 +1252,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       },
     },
     communityFeed: {
+      postPublished: "投稿しました。",
       animeOnlyNotice: "コミュニティ投稿はアニメ関連のみ。政治・成人・無関係な内容は禁止です。",
-      postPlaceholder: "アニメの感想、ファンアート、クリップ、更新を共有...",
+      postPlaceholder: "決闘場は開いています.. アニメ世界の最高の瞬間を共有しよう！",
       addImage: "画像を追加",
       removeImage: "削除",
       invalidImage: "有効な画像ファイルを選択してください。",
@@ -1576,7 +1580,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "كل الفيديوهات المعتمدة من الأحدث، مع رقم المركز العالمي. المركز ١–١٠ يظهر أيضاً في النزالات.",
       exclusivesTitle: "حصري",
       exclusivesSubtitle: "مقاطع من القنوات الموثّقة على ClashAnime.",
-      communityTitle: "المجتمع",
+      communityTitle: "مجتمع الأنمي",
       communitySubtitle: "تابع المبدعين، علّق على النزالات، وتسلّق الشبكة معاً.",
       communityBody:
         "ميزات المجتمع قيد التوسع قريباً. استكشف القنوات من بطاقات الفيدio وشارك في النقاش على كل مقطع.",
@@ -1749,8 +1753,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       },
     },
     communityFeed: {
+      postPublished: "تم النشر.",
       animeOnlyNotice: "منشورات المجتمع يجب أن تكون مرتبطة بالأنمي فقط. يُمنع المحتوى السياسي أو الإباحي أو خارج الموضوع.",
-      postPlaceholder: "شارك أفكاراً عن الأنمي، فنّاً، مقاطع، أو تحديثات...",
+      postPlaceholder: "ساحة النزال مفتوحة.. شاركنا لحظتك المفضلة في عالم الأنمي!",
       addImage: "إضافة صورة",
       removeImage: "إزالة",
       invalidImage: "اختر ملف صورة صالحاً.",
