@@ -1,5 +1,6 @@
 "use client";
 
+import { AuthTopBar } from "@/components/AuthTopBar";
 import { Footer } from "@/components/Footer";
 import { Sidebar } from "@/components/Sidebar";
 
@@ -14,6 +15,7 @@ export function AppShell({ children }: AppShellProps) {
         <Sidebar />
       </div>
       <div className="flex min-h-screen flex-1 flex-col bg-white dark:bg-black">
+        <AuthTopBar />
         <main className="flex-1 bg-white dark:bg-black">{children}</main>
         <Footer />
       </div>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Locale } from "@/lib/types";
 
@@ -14,6 +15,7 @@ const locales: { code: Locale; label: string }[] = [
 
 export function MobileHeader() {
   const { locale, setLocale, t } = useLocale();
+  const { user, loading, signOut } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black md:hidden">
@@ -23,6 +25,23 @@ export function MobileHeader() {
         </Link>
 
         <div className="flex items-center gap-2">
+          {!loading && !user && (
+            <Link
+              href="/signup"
+              className="rounded-md border border-zinc-300 px-2 py-1 text-[10px] font-semibold text-black dark:border-zinc-700 dark:text-white"
+            >
+              {t.auth.signUp}
+            </Link>
+          )}
+          {!loading && user && (
+            <button
+              type="button"
+              onClick={() => signOut()}
+              className="text-[10px] font-semibold text-zinc-600 dark:text-zinc-400"
+            >
+              {t.auth.signOut}
+            </button>
+          )}
           <div
             className="flex items-center rounded-lg border border-zinc-200 bg-white p-0.5 dark:border-zinc-800 dark:bg-black"
             role="group"

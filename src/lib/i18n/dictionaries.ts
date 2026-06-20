@@ -48,6 +48,23 @@ export type Dictionary = {
     dmca: string;
     reportContent: string;
   };
+  auth: {
+    logIn: string;
+    signUp: string;
+    signOut: string;
+    loginTitle: string;
+    signupTitle: string;
+    loginSubtitle: string;
+    signupSubtitle: string;
+    continueGoogleLogin: string;
+    continueGoogleSignup: string;
+    noAccount: string;
+    hasAccount: string;
+    loading: string;
+    signingIn: string;
+    callbackError: string;
+    configError: string;
+  };
 };
 
 export const dictionaries: Record<Locale, Dictionary> = {
@@ -100,6 +117,23 @@ export const dictionaries: Record<Locale, Dictionary> = {
       dmca: "DMCA",
       reportContent: "Report Content",
     },
+    auth: {
+      logIn: "Log In",
+      signUp: "Sign Up",
+      signOut: "Sign Out",
+      loginTitle: "Log in to Clash Anime",
+      signupTitle: "Sign up to Clash Anime",
+      loginSubtitle: "Continue with your Google account to join the duel grid.",
+      signupSubtitle: "Create your account with Google and start uploading duels.",
+      continueGoogleLogin: "Continue with Google",
+      continueGoogleSignup: "Continue with Google",
+      noAccount: "Don't have an account?",
+      hasAccount: "Already have an account?",
+      loading: "Connecting...",
+      signingIn: "Signing you in...",
+      callbackError: "Authentication failed. Please try again.",
+      configError: "Auth is not configured yet.",
+    },
   },
   ja: {
     brand: {
@@ -150,6 +184,23 @@ export const dictionaries: Record<Locale, Dictionary> = {
       dmca: "DMCA",
       reportContent: "コンテンツを報告",
     },
+    auth: {
+      logIn: "ログイン",
+      signUp: "新規登録",
+      signOut: "ログアウト",
+      loginTitle: "Clash Animeにログイン",
+      signupTitle: "Clash Animeに登録",
+      loginSubtitle: "Googleアカウントでデュエルグリッドに参加します。",
+      signupSubtitle: "Googleでアカウントを作成してデュエルを始めましょう。",
+      continueGoogleLogin: "Googleで続行",
+      continueGoogleSignup: "Googleで続行",
+      noAccount: "アカウントをお持ちでないですか？",
+      hasAccount: "すでにアカウントをお持ちですか？",
+      loading: "接続中...",
+      signingIn: "ログイン処理中...",
+      callbackError: "認証に失敗しました。もう一度お試しください。",
+      configError: "認証がまだ設定されていません。",
+    },
   },
   ar: {
     brand: {
@@ -199,6 +250,23 @@ export const dictionaries: Record<Locale, Dictionary> = {
       terms: "شروط الاستخدام",
       dmca: "DMCA",
       reportContent: "الإبلاغ عن محتوى",
+    },
+    auth: {
+      logIn: "تسجيل الدخول",
+      signUp: "إنشاء حساب",
+      signOut: "تسجيل الخروج",
+      loginTitle: "تسجيل الدخول إلى Clash Anime",
+      signupTitle: "إنشاء حساب في Clash Anime",
+      loginSubtitle: "تابع بحساب Google للانضمام إلى شبكة النزالات.",
+      signupSubtitle: "أنشئ حسابك عبر Google وابدأ برفع النزالات.",
+      continueGoogleLogin: "المتابعة مع Google",
+      continueGoogleSignup: "المتابعة مع Google",
+      noAccount: "ليس لديك حساب؟",
+      hasAccount: "لديك حساب بالفعل؟",
+      loading: "جارٍ الاتصال...",
+      signingIn: "جارٍ تسجيل الدخول...",
+      callbackError: "فشلت المصادقة. حاول مرة أخرى.",
+      configError: "المصادقة غير مُعدّة بعد.",
     },
   },
 };
