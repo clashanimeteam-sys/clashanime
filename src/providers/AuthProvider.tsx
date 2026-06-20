@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -19,7 +20,7 @@ type AuthContextValue = {
   profile: Profile | null;
   loading: boolean;
   profileLoading: boolean;
-  refreshProfile: () => Promise<void>;
+  refreshProfile: (options?: { silent?: boolean }) => Promise<void>;
   signOut: () => Promise<void>;
 };
 
@@ -35,25 +36,29 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(Boolean(supabase));
   const [profileLoading, setProfileLoading] = useState(false);
+  const profileUserIdRef = useRef<string | null>(null);
 
-  const refreshProfile = useCallback(async () => {
-    if (!supabase || !session?.user) {
+  const refreshProfile = useCallback(async (options?: { silent?: boolean }) => {
+    const userId = session?.user?.id;
+    if (!supabase || !userId) {
       setProfile(null);
       setProfileLoading(false);
       return;
     }
 
-    setProfileLoading(true);
+    if (!options?.silent) {
+      setProfileLoading(true);
+    }
 
     const { data } = await supabase
       .from("profiles")
       .select("*")
-      .eq("id", session.user.id)
+      .eq("id", userId)
       .maybeSingle();
 
     setProfile(data);
     setProfileLoading(false);
-  }, [supabase, session?.user]);
+  }, [supabase, session?.user?.id]);
 
   useEffect(() => {
     if (!supabase) return;
@@ -81,19 +86,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [supabase]);
 
   useEffect(() => {
-    if (!session?.user) {
+    const userId = session?.user?.id;
+    if (!userId) {
       setProfile(null);
+      profileUserIdRef.current = null;
       return;
     }
 
-    refreshProfile();
-  }, [session?.user, refreshProfile]);
+    if (profileUserIdRef.current === userId) return;
+
+    profileUserIdRef.current = userId;
+    void refreshProfile();
+  }, [session?.user?.id, refreshProfile]);
 
   const signOut = useCallback(async () => {
     if (!supabase) return;
     await supabase.auth.signOut();
     setSession(null);
     setProfile(null);
+    profileUserIdRef.current = null;
   }, [supabase]);
 
   const value = useMemo(

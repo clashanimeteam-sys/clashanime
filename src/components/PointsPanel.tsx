@@ -57,12 +57,10 @@ export function PointsPanel({ profile, onProfileRefresh, section }: PointsPanelP
   const [submittingVerification, setSubmittingVerification] = useState(false);
   const [copied, setCopied] = useState(false);
   const [transactions, setTransactions] = useState<PointTransaction[]>([]);
-  const [loadingTransactions, setLoadingTransactions] = useState(true);
+  const [loadingTransactions, setLoadingTransactions] = useState(false);
 
   const loadTransactions = useCallback(async () => {
     if (!supabase) return;
-
-    setLoadingTransactions(true);
 
     const { data } = await supabase
       .from("point_transactions")
@@ -76,8 +74,10 @@ export function PointsPanel({ profile, onProfileRefresh, section }: PointsPanelP
   }, [supabase, profile.id]);
 
   useEffect(() => {
-    loadTransactions();
-  }, [loadTransactions, totalPoints]);
+    if (section !== "bounty-log") return;
+    setLoadingTransactions(true);
+    void loadTransactions();
+  }, [loadTransactions, section]);
 
   async function copyReferralLink() {
     try {
@@ -111,7 +111,7 @@ export function PointsPanel({ profile, onProfileRefresh, section }: PointsPanelP
     setVerificationStatus(t.points.verificationSubmitted);
     setVerificationMessage("");
     await onProfileRefresh?.();
-    await refreshProfile();
+    await refreshProfile({ silent: true });
   }
 
   const hunterSystemContent = (

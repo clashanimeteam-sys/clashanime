@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FollowerCount } from "@/components/FollowButton";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { PointsPanel } from "@/components/PointsPanel";
@@ -56,6 +56,7 @@ export function ProfileContent() {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [followerCount, setFollowerCount] = useState(0);
+  const loadedProfileUserRef = useRef<string | null>(null);
 
   const displayNameChanged =
     profile !== null &&
@@ -153,12 +154,15 @@ export function ProfileContent() {
 
   useEffect(() => {
     if (authLoading) return;
-    if (!user) {
+    if (!user?.id) {
+      loadedProfileUserRef.current = null;
       router.replace("/login");
       return;
     }
-    loadProfile();
-  }, [authLoading, user, router, loadProfile]);
+    if (loadedProfileUserRef.current === user.id) return;
+    loadedProfileUserRef.current = user.id;
+    void loadProfile();
+  }, [authLoading, user?.id, router, loadProfile]);
 
   useEffect(() => {
     if (!profile || canChangeProfileDisplayNameForProfile(profile)) return;
@@ -214,7 +218,7 @@ export function ProfileContent() {
           picture: publicUrl,
         },
       });
-      await refreshProfile();
+      await refreshProfile({ silent: true });
     }
   }
 

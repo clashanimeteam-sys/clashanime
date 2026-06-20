@@ -30,7 +30,7 @@ export function RankPositionTrack({ points, storedLevel }: RankPositionTrackProp
             return (
               <div key={levelDef.level} className="flex flex-col items-center gap-2">
                 <div
-                  className={`flex h-14 w-14 items-center justify-center rounded-xl border text-lg font-black transition-all sm:h-16 sm:w-16 ${
+                  className={`flex h-14 w-14 items-center justify-center rounded-xl border text-lg font-black sm:h-16 sm:w-16 ${
                     isCurrent
                       ? `${style.badge} ${style.glow} scale-110 ring-2 ${style.ring}`
                       : isPast
