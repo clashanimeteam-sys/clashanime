@@ -2,23 +2,28 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { CommentThread, updateCommentInTree } from "@/components/CommentThread";
 import { CommunityPostActions } from "@/components/CommunityPostActions";
 import { CommunityReportModal } from "@/components/CommunityReportModal";
+import { EmojiPicker } from "@/components/EmojiPicker";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { useRequireSubscription } from "@/hooks/useRequireSubscription";
 import {
-  deleteCommunityComment,
   fetchCommunityComments,
   fetchCommunityPost,
+  pinCommunityComment,
   postCommunityComment,
-  type CommunityComment,
+  toggleCommunityCommentLike,
+  unpinCommunityComment,
   type CommunityPostDetail,
 } from "@/lib/communityEngagement";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getSignupUrl } from "@/lib/subscriptionGate";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
+import type { VideoComment } from "@/lib/types";
 
 type CommunityPostPageContentProps = {
   postId: string;
@@ -34,16 +39,31 @@ function getInitials(name: string) {
 
 export function CommunityPostPageContent({ postId }: CommunityPostPageContentProps) {
   const { user } = useAuth();
+  const { requireSubscription } = useRequireSubscription();
   const { t } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [post, setPost] = useState<CommunityPostDetail | null>(null);
-  const [comments, setComments] = useState<CommunityComment[]>([]);
-  const [body, setBody] = useState("");
+  const [comments, setComments] = useState<VideoComment[]>([]);
+  const [ownerId, setOwnerId] = useState<string | null>(null);
+  const [pinnedCommentId, setPinnedCommentId] = useState<string | null>(null);
+  const [commentBody, setCommentBody] = useState("");
+  const [replyTo, setReplyTo] = useState<VideoComment | null>(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [loading, setLoading] = useState(true);
   const [posting, setPosting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [reportOpen, setReportOpen] = useState(false);
+
+  const loadComments = useCallback(async () => {
+    if (!supabase) return;
+
+    const data = await fetchCommunityComments(supabase, postId, user?.id);
+    setComments(data.comments);
+    setOwnerId(data.postOwnerId);
+    setPinnedCommentId(data.pinnedCommentId);
+  }, [postId, supabase, user?.id]);
 
   const loadPage = useCallback(async () => {
     if (!supabase) return;
@@ -51,54 +71,62 @@ export function CommunityPostPageContent({ postId }: CommunityPostPageContentPro
     setLoading(true);
     setError(null);
 
-    const [postData, commentRows] = await Promise.all([
-      fetchCommunityPost(supabase, postId),
-      fetchCommunityComments(supabase, postId),
-    ]);
-
+    const postData = await fetchCommunityPost(supabase, postId);
     setPost(postData);
-    setComments(commentRows);
     setLoading(false);
-  }, [postId, supabase]);
+
+    if (postData) {
+      await loadComments();
+    }
+  }, [loadComments, postId, supabase]);
 
   useEffect(() => {
     loadPage();
   }, [loadPage]);
 
+  function handleCommentUpdate(commentId: string, patch: Partial<VideoComment>) {
+    setComments((current) => updateCommentInTree(current, commentId, patch));
+  }
+
+  function handleReply(comment: VideoComment) {
+    if (!requireSubscription()) return;
+
+    setReplyTo(comment);
+    inputRef.current?.focus();
+  }
+
+  function appendEmoji(emoji: string) {
+    setCommentBody((current) => `${current}${emoji}`);
+    setShowEmojiPicker(false);
+    inputRef.current?.focus();
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!supabase || !user || !body.trim()) return;
+    if (!supabase || !requireSubscription() || !user || !commentBody.trim()) return;
 
     setPosting(true);
     setError(null);
 
-    const counts = await postCommunityComment(supabase, postId, user.id, body);
-    if (!counts) {
+    const counts = await postCommunityComment(
+      supabase,
+      postId,
+      user.id,
+      commentBody,
+      replyTo?.id ?? null,
+    );
+
+    if (counts) {
+      setCommentBody("");
+      setReplyTo(null);
+      setPost((current) => (current ? { ...current, comments_count: counts.comments_count } : current));
+      await loadComments();
+      inputRef.current?.focus();
+    } else {
       setError(t.communityFeed.actionFailed);
-      setPosting(false);
-      return;
     }
 
-    setBody("");
-    const rows = await fetchCommunityComments(supabase, postId);
-    setComments(rows);
-    setPost((current) => (current ? { ...current, comments_count: counts.comments_count } : current));
     setPosting(false);
-  }
-
-  async function handleDeleteComment(commentId: string) {
-    if (!supabase || !user) return;
-    if (!window.confirm(t.communityFeed.confirmDeleteComment)) return;
-
-    const ok = await deleteCommunityComment(supabase, commentId);
-    if (!ok) {
-      setError(t.communityFeed.actionFailed);
-      return;
-    }
-
-    const rows = await fetchCommunityComments(supabase, postId);
-    setComments(rows);
-    setPost((current) => (current ? { ...current, comments_count: rows.length } : current));
   }
 
   if (loading) {
@@ -122,6 +150,9 @@ export function CommunityPostPageContent({ postId }: CommunityPostPageContentPro
 
   const label = post.display_name?.trim() || post.username;
   const preview = post.body || t.communityFeed.imagePostPreview;
+  const replyLabel = replyTo
+    ? `${t.video.replyingTo} ${replyTo.display_name?.trim() || replyTo.username}`
+    : null;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
@@ -191,88 +222,95 @@ export function CommunityPostPageContent({ postId }: CommunityPostPageContentPro
           {post.comments_count.toLocaleString()} {t.communityFeed.commentsCountLabel}
         </p>
 
-        <div className="mt-6 space-y-4">
+        <div className="mt-6">
           {comments.length === 0 ? (
             <p className="rounded-2xl border border-zinc-200 p-6 text-sm text-zinc-500 dark:border-zinc-800">
               {t.communityFeed.noComments}
             </p>
           ) : (
-            comments.map((comment) => {
-              const commentLabel = comment.display_name?.trim() || comment.username;
-              return (
-                <article
+            <ul className="space-y-4">
+              {comments.map((comment) => (
+                <CommentThread
                   key={comment.id}
-                  className="rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-black"
-                >
-                  <div className="flex gap-3">
-                    <Link
-                      href={`/channel/${comment.username}`}
-                      className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800"
-                    >
-                      {comment.avatar_url ? (
-                        <Image src={comment.avatar_url} alt={commentLabel} fill className="object-cover" unoptimized />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center text-xs font-bold text-zinc-500">
-                          {getInitials(commentLabel)}
-                        </div>
-                      )}
-                    </Link>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <Link
-                          href={`/channel/${comment.username}`}
-                          className="text-sm font-semibold text-black dark:text-white"
-                        >
-                          {commentLabel}
-                        </Link>
-                        {comment.is_verified ? <VerifiedBadge size="sm" /> : null}
-                        <span className="text-xs text-zinc-500">
-                          {new Date(comment.created_at).toLocaleString()}
-                        </span>
-                        {user?.id === comment.user_id ? (
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteComment(comment.id)}
-                            className="text-xs text-red-500 hover:underline"
-                          >
-                            {t.communityFeed.deleteComment}
-                          </button>
-                        ) : null}
-                      </div>
-                      <p className="mt-2 whitespace-pre-wrap text-sm text-zinc-700 dark:text-zinc-200">
-                        {comment.body}
-                      </p>
-                    </div>
-                  </div>
-                </article>
-              );
-            })
+                  comment={comment}
+                  ownerId={ownerId}
+                  pinnedCommentId={pinnedCommentId}
+                  onReply={handleReply}
+                  onRefresh={loadComments}
+                  onPinChange={setPinnedCommentId}
+                  onCommentUpdate={handleCommentUpdate}
+                  onToggleLike={(commentId, liked) =>
+                    user
+                      ? toggleCommunityCommentLike(supabase!, commentId, user.id, liked)
+                      : Promise.resolve(null)
+                  }
+                  onPin={(commentId) =>
+                    user && ownerId
+                      ? pinCommunityComment(supabase!, postId, commentId, user.id)
+                      : Promise.resolve(null)
+                  }
+                  onUnpin={() =>
+                    user ? unpinCommunityComment(supabase!, postId, user.id) : Promise.resolve(false)
+                  }
+                />
+              ))}
+            </ul>
           )}
         </div>
 
         {user ? (
-          <form onSubmit={handleSubmit} className="mt-6 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-black">
-            <label className="block text-sm font-semibold text-black dark:text-white">
-              {t.communityFeed.commentPlaceholder}
-            </label>
-            <textarea
-              value={body}
-              onChange={(event) => setBody(event.target.value)}
-              rows={4}
-              maxLength={500}
-              placeholder={t.communityFeed.commentPlaceholder}
-              className="mt-2 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-accent dark:border-zinc-700 dark:bg-black dark:text-white"
-            />
-            <div className="mt-3 flex items-center justify-between gap-3">
-              {error ? <p className="text-xs text-red-500">{error}</p> : <span />}
+          <form
+            onSubmit={handleSubmit}
+            className="mt-6 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-black"
+          >
+            {replyLabel ? (
+              <div className="mb-3 flex items-center justify-between gap-2 text-xs font-semibold text-zinc-500">
+                <span>{replyLabel}</span>
+                <button
+                  type="button"
+                  onClick={() => setReplyTo(null)}
+                  className="text-accent hover:underline"
+                >
+                  {t.auth.close}
+                </button>
+              </div>
+            ) : null}
+
+            <div className="relative flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setShowEmojiPicker((open) => !open)}
+                aria-label={t.video.addEmoji}
+                className="shrink-0 text-lg text-zinc-500 transition-colors hover:text-black dark:hover:text-white"
+              >
+                😊
+              </button>
+
+              {showEmojiPicker ? <EmojiPicker onPick={appendEmoji} /> : null}
+
+              <input
+                ref={inputRef}
+                value={commentBody}
+                onChange={(event) => setCommentBody(event.target.value)}
+                maxLength={500}
+                placeholder={t.video.commentPlaceholder}
+                className="min-w-0 flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-accent dark:border-zinc-700 dark:bg-black dark:text-white"
+              />
+
               <button
                 type="submit"
-                disabled={posting || !body.trim()}
-                className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+                disabled={posting || !commentBody.trim()}
+                className="shrink-0 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
               >
-                {posting ? t.communityFeed.postingComment : t.communityFeed.postComment}
+                {posting ? t.video.postingComment : t.video.postComment}
               </button>
             </div>
+
+            {error ? (
+              <p className="mt-2 text-xs text-red-500" role="alert">
+                {error}
+              </p>
+            ) : null}
           </form>
         ) : (
           <p className="mt-6 rounded-2xl border border-zinc-200 p-4 text-sm text-zinc-600 dark:border-zinc-800 dark:text-zinc-300">

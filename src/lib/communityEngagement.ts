@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import type { VideoComment } from "@/lib/types";
 
 export type CommunityReaction = "like" | "dislike";
 
@@ -9,15 +10,10 @@ export type CommunityPostCounts = {
   shares_count: number;
 };
 
-export type CommunityComment = {
-  id: string;
-  body: string;
-  created_at: string;
-  user_id: string;
-  username: string;
-  display_name: string | null;
-  avatar_url: string | null;
-  is_verified?: boolean;
+export type CommunityCommentsData = {
+  postOwnerId: string | null;
+  pinnedCommentId: string | null;
+  comments: VideoComment[];
 };
 
 export type CommunityPostDetail = {
@@ -37,6 +33,74 @@ export type CommunityPostDetail = {
   level?: number;
   points?: number;
 };
+
+type RawComment = {
+  id: string;
+  body: string;
+  created_at: string;
+  user_id: string;
+  parent_id: string | null;
+  likes_count: number;
+};
+
+function buildCommentTree(
+  rows: RawComment[],
+  profiles: Map<
+    string,
+    {
+      username: string;
+      display_name: string | null;
+      avatar_url: string | null;
+      is_verified?: boolean;
+    }
+  >,
+  likedCommentIds: Set<string>,
+  pinnedCommentId: string | null,
+): VideoComment[] {
+  const map = new Map<string, VideoComment>();
+
+  for (const row of rows) {
+    const profile = profiles.get(row.user_id);
+    map.set(row.id, {
+      id: row.id,
+      body: row.body,
+      created_at: row.created_at,
+      user_id: row.user_id,
+      username: profile?.username ?? "user",
+      display_name: profile?.display_name ?? null,
+      avatar_url: profile?.avatar_url ?? null,
+      is_verified: profile?.is_verified,
+      parent_id: row.parent_id,
+      likes_count: row.likes_count,
+      liked_by_me: likedCommentIds.has(row.id),
+      replies: [],
+    });
+  }
+
+  const roots: VideoComment[] = [];
+
+  for (const comment of map.values()) {
+    if (comment.parent_id && map.has(comment.parent_id)) {
+      map.get(comment.parent_id)?.replies.push(comment);
+    } else if (!comment.parent_id) {
+      roots.push(comment);
+    }
+  }
+
+  for (const comment of map.values()) {
+    comment.replies.sort(
+      (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+    );
+  }
+
+  roots.sort((a, b) => {
+    if (a.id === pinnedCommentId) return -1;
+    if (b.id === pinnedCommentId) return 1;
+    return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+  });
+
+  return roots;
+}
 
 export async function fetchCommunityPost(
   supabase: SupabaseClient,
@@ -158,36 +222,52 @@ export async function incrementCommunityPostShares(
 export async function fetchCommunityComments(
   supabase: SupabaseClient,
   postId: string,
-): Promise<CommunityComment[]> {
-  const { data: comments, error } = await supabase
-    .from("community_post_comments")
-    .select("id, body, created_at, user_id")
-    .eq("post_id", postId)
-    .order("created_at", { ascending: true });
+  currentUserId?: string | null,
+): Promise<CommunityCommentsData> {
+  const [{ data: post }, { data: comments, error }] = await Promise.all([
+    supabase.from("community_posts").select("user_id, pinned_comment_id").eq("id", postId).maybeSingle(),
+    supabase
+      .from("community_post_comments")
+      .select("id, body, created_at, user_id, parent_id, likes_count")
+      .eq("post_id", postId)
+      .order("created_at", { ascending: true }),
+  ]);
 
-  if (error || !comments?.length) return [];
+  if (error || !comments?.length) {
+    return {
+      postOwnerId: post?.user_id ?? null,
+      pinnedCommentId: post?.pinned_comment_id ?? null,
+      comments: [],
+    };
+  }
 
+  const commentIds = comments.map((comment) => comment.id);
   const userIds = [...new Set(comments.map((comment) => comment.user_id))];
-  const { data: profiles } = await supabase
-    .from("profiles")
-    .select("id, username, display_name, avatar_url, is_verified")
-    .in("id", userIds);
+
+  const [{ data: profiles }, { data: likedRows }] = await Promise.all([
+    supabase.from("profiles").select("id, username, display_name, avatar_url, is_verified").in("id", userIds),
+    currentUserId
+      ? supabase
+          .from("community_post_comment_likes")
+          .select("comment_id")
+          .eq("user_id", currentUserId)
+          .in("comment_id", commentIds)
+      : Promise.resolve({ data: [] as { comment_id: string }[] }),
+  ]);
 
   const profileMap = new Map((profiles ?? []).map((profile) => [profile.id, profile]));
+  const likedCommentIds = new Set((likedRows ?? []).map((row) => row.comment_id));
 
-  return comments.map((comment) => {
-    const profile = profileMap.get(comment.user_id);
-    return {
-      id: comment.id,
-      body: comment.body,
-      created_at: comment.created_at,
-      user_id: comment.user_id,
-      username: profile?.username ?? "user",
-      display_name: profile?.display_name ?? null,
-      avatar_url: profile?.avatar_url ?? null,
-      is_verified: profile?.is_verified,
-    };
-  });
+  return {
+    postOwnerId: post?.user_id ?? null,
+    pinnedCommentId: post?.pinned_comment_id ?? null,
+    comments: buildCommentTree(
+      comments as RawComment[],
+      profileMap,
+      likedCommentIds,
+      post?.pinned_comment_id ?? null,
+    ),
+  };
 }
 
 export async function postCommunityComment(
@@ -195,6 +275,7 @@ export async function postCommunityComment(
   postId: string,
   userId: string,
   body: string,
+  parentId?: string | null,
 ): Promise<CommunityPostCounts | null> {
   const trimmed = body.trim();
   if (!trimmed) return null;
@@ -203,10 +284,88 @@ export async function postCommunityComment(
     post_id: postId,
     user_id: userId,
     body: trimmed,
+    parent_id: parentId ?? null,
   });
 
   if (error) return null;
   return fetchCommunityPostCounts(supabase, postId);
+}
+
+export async function toggleCommunityCommentLike(
+  supabase: SupabaseClient,
+  commentId: string,
+  userId: string,
+  liked: boolean,
+): Promise<number | null> {
+  if (liked) {
+    const { error } = await supabase
+      .from("community_post_comment_likes")
+      .delete()
+      .eq("comment_id", commentId)
+      .eq("user_id", userId);
+
+    if (error) return null;
+  } else {
+    const { error } = await supabase.from("community_post_comment_likes").insert({
+      comment_id: commentId,
+      user_id: userId,
+    });
+
+    if (error) return null;
+  }
+
+  const { data } = await supabase
+    .from("community_post_comments")
+    .select("likes_count")
+    .eq("id", commentId)
+    .maybeSingle();
+
+  return data?.likes_count ?? null;
+}
+
+export async function pinCommunityComment(
+  supabase: SupabaseClient,
+  postId: string,
+  commentId: string,
+  ownerId: string,
+): Promise<string | null> {
+  const { data: comment } = await supabase
+    .from("community_post_comments")
+    .select("id, post_id, user_id, parent_id")
+    .eq("id", commentId)
+    .maybeSingle();
+
+  if (
+    !comment ||
+    comment.post_id !== postId ||
+    comment.user_id !== ownerId ||
+    comment.parent_id
+  ) {
+    return null;
+  }
+
+  const { error } = await supabase
+    .from("community_posts")
+    .update({ pinned_comment_id: commentId })
+    .eq("id", postId)
+    .eq("user_id", ownerId);
+
+  if (error) return null;
+  return commentId;
+}
+
+export async function unpinCommunityComment(
+  supabase: SupabaseClient,
+  postId: string,
+  ownerId: string,
+): Promise<boolean> {
+  const { error } = await supabase
+    .from("community_posts")
+    .update({ pinned_comment_id: null })
+    .eq("id", postId)
+    .eq("user_id", ownerId);
+
+  return !error;
 }
 
 export async function deleteCommunityComment(

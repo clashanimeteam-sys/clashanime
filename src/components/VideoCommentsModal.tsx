@@ -11,7 +11,7 @@ import { useRequireSubscription } from "@/hooks/useRequireSubscription";
 import { getSignupUrl } from "@/lib/subscriptionGate";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useScrollLock } from "@/lib/useScrollLock";
-import { fetchVideoComments, postVideoComment } from "@/lib/videoEngagement";
+import { fetchVideoComments, pinVideoComment, postVideoComment, toggleCommentLike, unpinVideoComment } from "@/lib/videoEngagement";
 import { blockPublicVideoContextMenu, PUBLIC_VIDEO_CONTROLS_LIST } from "@/lib/videoPlayer";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -283,14 +283,24 @@ export function VideoCommentsModal({
                   <CommentThread
                     key={comment.id}
                     comment={comment}
-                    videoId={videoId}
-                    videoOwnerId={ownerId}
+                    ownerId={ownerId}
                     pinnedCommentId={pinnedCommentId}
                     onClose={onClose}
                     onReply={handleReply}
                     onRefresh={loadComments}
                     onPinChange={setPinnedCommentId}
                     onCommentUpdate={handleCommentUpdate}
+                    onToggleLike={(commentId, liked) =>
+                      user ? toggleCommentLike(supabase!, commentId, user.id, liked) : Promise.resolve(null)
+                    }
+                    onPin={(commentId) =>
+                      user && ownerId
+                        ? pinVideoComment(supabase!, videoId, commentId, user.id)
+                        : Promise.resolve(null)
+                    }
+                    onUnpin={() =>
+                      user ? unpinVideoComment(supabase!, videoId, user.id) : Promise.resolve(false)
+                    }
                   />
                 ))}
               </ul>

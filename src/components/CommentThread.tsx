@@ -5,9 +5,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { useRequireSubscription } from "@/hooks/useRequireSubscription";
-import { createBrowserClient } from "@/lib/supabase/client";
 import { formatRelativeTime } from "@/lib/format";
-import { pinVideoComment, toggleCommentLike, unpinVideoComment } from "@/lib/videoEngagement";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { VideoComment } from "@/lib/types";
@@ -22,21 +20,22 @@ function getInitials(name: string) {
 
 type CommentThreadProps = {
   comment: VideoComment;
-  videoId: string;
-  videoOwnerId: string | null;
+  ownerId: string | null;
   pinnedCommentId: string | null;
   depth?: number;
-  onClose: () => void;
+  onClose?: () => void;
   onReply: (comment: VideoComment) => void;
   onRefresh: () => void;
   onPinChange: (commentId: string | null) => void;
   onCommentUpdate: (commentId: string, patch: Partial<VideoComment>) => void;
+  onToggleLike: (commentId: string, liked: boolean) => Promise<number | null>;
+  onPin: (commentId: string) => Promise<string | null>;
+  onUnpin: () => Promise<boolean>;
 };
 
 export function CommentThread({
   comment,
-  videoId,
-  videoOwnerId,
+  ownerId,
   pinnedCommentId,
   depth = 0,
   onClose,
@@ -44,11 +43,13 @@ export function CommentThread({
   onRefresh,
   onPinChange,
   onCommentUpdate,
+  onToggleLike,
+  onPin,
+  onUnpin,
 }: CommentThreadProps) {
   const { user } = useAuth();
   const { requireSubscription } = useRequireSubscription();
   const { locale, t } = useLocale();
-  const supabase = useMemo(() => createBrowserClient(), []);
 
   const [expanded, setExpanded] = useState(depth > 0);
   const [liking, setLiking] = useState(false);
@@ -59,20 +60,19 @@ export function CommentThread({
   const canPin =
     Boolean(
       user &&
-        videoOwnerId &&
-        user.id === videoOwnerId &&
+        ownerId &&
+        user.id === ownerId &&
         comment.user_id === user.id &&
         !comment.parent_id,
     );
   const replyCount = comment.replies.length;
 
   async function handleLike() {
-    if (!supabase || !requireSubscription()) return;
-    if (!user) return;
+    if (!requireSubscription()) return;
 
     setLiking(true);
 
-    const nextCount = await toggleCommentLike(supabase, comment.id, user.id, comment.liked_by_me);
+    const nextCount = await onToggleLike(comment.id, comment.liked_by_me);
 
     if (nextCount !== null) {
       onCommentUpdate(comment.id, {
@@ -85,15 +85,13 @@ export function CommentThread({
   }
 
   async function handlePin() {
-    if (!supabase || !user || !videoOwnerId) return;
-
     setPinning(true);
 
     if (isPinned) {
-      const ok = await unpinVideoComment(supabase, videoId, user.id);
+      const ok = await onUnpin();
       if (ok) onPinChange(null);
     } else {
-      const pinned = await pinVideoComment(supabase, videoId, comment.id, user.id);
+      const pinned = await onPin(comment.id);
       if (pinned) onPinChange(pinned);
     }
 
@@ -215,8 +213,7 @@ export function CommentThread({
                 <CommentThread
                   key={reply.id}
                   comment={reply}
-                  videoId={videoId}
-                  videoOwnerId={videoOwnerId}
+                  ownerId={ownerId}
                   pinnedCommentId={pinnedCommentId}
                   depth={depth + 1}
                   onClose={onClose}
@@ -224,6 +221,9 @@ export function CommentThread({
                   onRefresh={onRefresh}
                   onPinChange={onPinChange}
                   onCommentUpdate={onCommentUpdate}
+                  onToggleLike={onToggleLike}
+                  onPin={onPin}
+                  onUnpin={onUnpin}
                 />
               ))}
             </ul>
