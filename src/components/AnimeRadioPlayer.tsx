@@ -61,7 +61,6 @@ export function AnimeRadioPlayer() {
               {t.radio.badge}
             </p>
             <h1 className="mt-2 text-3xl font-bold text-white sm:text-4xl">{t.radio.title}</h1>
-            <p className="mt-3 max-w-2xl text-sm text-zinc-300 sm:text-base">{t.radio.subtitle}</p>
           </div>
         </section>
 
@@ -207,8 +206,6 @@ export function AnimeRadioPlayer() {
             })}
           </div>
         </section>
-
-        <p className="relative mt-6 text-center text-[11px] text-zinc-500">{t.radio.poweredBy}</p>
       </div>
     </div>
   );
