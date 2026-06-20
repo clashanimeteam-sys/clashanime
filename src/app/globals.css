@@ -73,3 +73,16 @@
     color: var(--color-zinc-700);
   }
 }
+
+@keyframes radio-bar {
+  0%,
+  100% {
+    transform: scaleY(0.45);
+    opacity: 0.55;
+  }
+
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}

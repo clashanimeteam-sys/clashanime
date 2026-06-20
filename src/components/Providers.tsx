@@ -1,9 +1,11 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { AnimeRadioMiniBar } from "@/components/AnimeRadioMiniBar";
 import { AppShell } from "@/components/AppShell";
 import { MobileHeader } from "@/components/MobileHeader";
 import { AuthProvider } from "@/providers/AuthProvider";
+import { AnimeRadioProvider } from "@/providers/AnimeRadioProvider";
 import { LocaleProvider } from "@/providers/LocaleProvider";
 import { MaintenanceGate } from "@/providers/MaintenanceGate";
 import { NavigationLoadingProvider } from "@/providers/NavigationLoadingProvider";
@@ -38,6 +40,7 @@ export function Providers({ children }: ProvidersProps) {
         <MaintenanceGate>
           <NavigationLoadingProvider>
           <AuthProvider>
+            <AnimeRadioProvider>
             <StickersProvider>
               <VideoOverlayProvider>
             {authRoute || adminRoute ? (
@@ -46,10 +49,12 @@ export function Providers({ children }: ProvidersProps) {
               <>
                 <MobileHeader />
                 <AppShell>{children}</AppShell>
+                <AnimeRadioMiniBar />
               </>
             )}
               </VideoOverlayProvider>
             </StickersProvider>
+            </AnimeRadioProvider>
           </AuthProvider>
           </NavigationLoadingProvider>
         </MaintenanceGate>

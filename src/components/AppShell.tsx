@@ -5,6 +5,7 @@ import { AuthTopBar } from "@/components/AuthTopBar";
 import { Footer } from "@/components/Footer";
 import { Sidebar } from "@/components/Sidebar";
 import { ProfileSectionProvider } from "@/providers/ProfileSectionProvider";
+import { useAnimeRadio } from "@/providers/AnimeRadioProvider";
 
 type AppShellProps = {
   children: React.ReactNode;
@@ -13,6 +14,8 @@ type AppShellProps = {
 export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
   const isVideoPage = pathname.startsWith("/video/");
+  const { hasStarted } = useAnimeRadio();
+  const reserveMiniBarSpace = hasStarted && pathname !== "/music";
 
   return (
     <ProfileSectionProvider>
@@ -22,7 +25,11 @@ export function AppShell({ children }: AppShellProps) {
         </div>
         <div className="flex min-h-screen flex-1 flex-col bg-white dark:bg-black">
           <AuthTopBar />
-          <main className={`flex-1 bg-white dark:bg-black ${isVideoPage ? "overflow-hidden" : ""}`}>
+          <main
+            className={`flex-1 bg-white dark:bg-black ${isVideoPage ? "overflow-hidden" : ""} ${
+              reserveMiniBarSpace ? "pb-24" : ""
+            }`}
+          >
             {children}
           </main>
           {!isVideoPage && <Footer />}

@@ -100,6 +100,27 @@ export type Dictionary = {
     emptyVideos: string;
     emptyExclusives: string;
   };
+  radio: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    keepListening: string;
+    play: string;
+    pause: string;
+    mute: string;
+    unmute: string;
+    volume: string;
+    nowPlaying: string;
+    liveBroadcast: string;
+    loading: string;
+    stationOst: string;
+    stationOstDesc: string;
+    stationLofi: string;
+    stationLofiDesc: string;
+    openFullPlayer: string;
+    streamError: string;
+    poweredBy: string;
+  };
   legal: {
     reportTitle: string;
     reportIntro: string;
@@ -626,11 +647,33 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communityBody:
         "Community features are expanding soon. Explore channels from video cards, follow creators, and join the conversation on each clip.",
       musicTitle: "Music",
-      musicSubtitle: "Anime soundtracks and audio duels.",
+      musicSubtitle: "Anime OST radio and lofi beats while you browse.",
       musicBody:
-        "Music battles are coming soon. Upload original audio edits and soundtrack clashes in a future update.",
+        "Start the player below and keep listening as you explore videos, community posts, and your channel.",
       emptyVideos: "No approved videos yet.",
       emptyExclusives: "No exclusive clips from verified creators yet.",
+    },
+    radio: {
+      badge: "24/7 stream",
+      title: "Anime Radio",
+      subtitle:
+        "Stream anime openings, soundtracks, and lofi beats without leaving Clash Anime.",
+      keepListening: "Keep listening while you browse videos, community, and your profile.",
+      play: "Play radio",
+      pause: "Pause",
+      mute: "Mute",
+      unmute: "Unmute",
+      volume: "Volume",
+      nowPlaying: "Now playing",
+      liveBroadcast: "Live broadcast",
+      loading: "Connecting...",
+      stationOst: "Anime OST & Openings",
+      stationOstDesc: "24/7 anime songs powered by LISTEN.moe.",
+      stationLofi: "Lofi Anime Beats",
+      stationLofiDesc: "Chill retro beats for studying, editing, and browsing.",
+      openFullPlayer: "Open radio",
+      streamError: "Could not connect to the stream. Try again in a moment.",
+      poweredBy: "Anime OST stream by LISTEN.moe. Lofi beats via Nightwave Plaza.",
     },
     legal: {
       reportTitle: "Report Content",
@@ -1167,10 +1210,31 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communityBody:
         "コミュニティ機能は近日拡張予定です。動画カードからチャンネルを探索し、各クリップで会話に参加してください。",
       musicTitle: "ミュージック",
-      musicSubtitle: "アニメサウンドトラックとオーディオデュエル。",
-      musicBody: "ミュージックバトルは近日公開予定です。",
+      musicSubtitle: "アニメOSTラジオとLofiビーツを流しながらサイト内を回れます。",
+      musicBody: "下のプレイヤーを開始して、動画やコミュニティを見ながら聴き続けられます。",
       emptyVideos: "承認済みの動画はまだありません。",
       emptyExclusives: "認証済みクリエイターの限定クリップはまだありません。",
+    },
+    radio: {
+      badge: "24/7 配信",
+      title: "アニメラジオ",
+      subtitle: "Clash Animeから離れずに、アニメOP・OST・Lofiを聴けます。",
+      keepListening: "動画、コミュニティ、プロフィールを見ながら再生を続けられます。",
+      play: "再生",
+      pause: "一時停止",
+      mute: "ミュート",
+      unmute: "ミュート解除",
+      volume: "音量",
+      nowPlaying: "再生中",
+      liveBroadcast: "ライブ配信",
+      loading: "接続中...",
+      stationOst: "アニメOST & OP",
+      stationOstDesc: "LISTEN.moe による24時間アニメ曲。",
+      stationLofi: "Lofi Anime Beats",
+      stationLofiDesc: "作業・閲覧向けのチルなレトロビート。",
+      openFullPlayer: "ラジオを開く",
+      streamError: "ストリームに接続できませんでした。しばらくして再試行してください。",
+      poweredBy: "OST配信: LISTEN.moe / Lofi: Nightwave Plaza",
     },
     legal: {
       reportTitle: "コンテンツを報告",
@@ -1704,10 +1768,31 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communityBody:
         "ميزات المجتمع قيد التوسع قريباً. استكشف القنوات من بطاقات الفيدio وشارك في النقاش على كل مقطع.",
       musicTitle: "الموسيقى",
-      musicSubtitle: "موسيقى أنime ونزالات صوتية.",
-      musicBody: "معارك الموسيقى قادمة قريباً في تحديث لاحق.",
+      musicSubtitle: "راديو أنمي OST وإيقاعات Lofi أثناء تصفحك للموقع.",
+      musicBody: "شغّل المشغّل أدناه واستمر بالاستماع أثناء مشاهدة الفيديوهات والمجتمع وقناتك.",
       emptyVideos: "لا توجد فيدioهات معتمدة بعد.",
       emptyExclusives: "لا توجد مقاطع حصرية من قنوات موثّقة بعد.",
+    },
+    radio: {
+      badge: "بث مباشر 24/7",
+      title: "راديو الأنمي",
+      subtitle: "استمع إلى موسيقى الأنمي وOST وإيقاعات Lofi دون مغادرة Clash Anime.",
+      keepListening: "استمر بالاستماع أثناء تصفح الفيديوهات والمجتمع وملفك الشخصي.",
+      play: "تشغيل الراديو",
+      pause: "إيقاف مؤقت",
+      mute: "كتم",
+      unmute: "إلغاء الكتم",
+      volume: "الصوت",
+      nowPlaying: "يُشغَّل الآن",
+      liveBroadcast: "بث مباشر",
+      loading: "جارٍ الاتصال...",
+      stationOst: "OST وافتتاحيات الأنمي",
+      stationOstDesc: "أغاني أنمي على مدار الساعة عبر LISTEN.moe.",
+      stationLofi: "Lofi Anime Beats",
+      stationLofiDesc: "إيقاعات هادئة للدراسة والتصفح والمونتاج.",
+      openFullPlayer: "فتح الراديو",
+      streamError: "تعذّر الاتصال بالبث. حاول مرة أخرى بعد قليل.",
+      poweredBy: "بث OST من LISTEN.moe · إيقاعات Lofi من Nightwave Plaza.",
     },
     legal: {
       reportTitle: "الإبلاغ عن محتوى",

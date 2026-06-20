@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cdn.gifukai.com",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.listen.moe",
+      },
     ],
   },
 };
