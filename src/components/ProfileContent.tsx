@@ -38,6 +38,11 @@ export function ProfileContent() {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const hasChanges =
+    profile !== null &&
+    (displayName.trim() !== (profile.display_name ?? profile.username) ||
+      bio.trim() !== (profile.bio ?? ""));
+
   const loadProfile = useCallback(async () => {
     if (!supabase || !user) return;
 
@@ -160,27 +165,36 @@ export function ProfileContent() {
     setError(null);
     setMessage(null);
 
-    const { error: updateError } = await supabase
+    const nextDisplayName = displayName.trim() || profile.username;
+    const nextBio = bio.trim();
+
+    const { data: updated, error: updateError } = await supabase
       .from("profiles")
       .update({
-        display_name: displayName.trim() || profile.username,
-        bio: bio.trim(),
+        display_name: nextDisplayName,
+        bio: nextBio,
         updated_at: new Date().toISOString(),
       })
-      .eq("id", user.id);
-
-    setSaving(false);
+      .eq("id", user.id)
+      .select("*")
+      .single();
 
     if (updateError) {
+      setSaving(false);
       setError(updateError.message);
       return;
     }
 
-    setProfile({
-      ...profile,
-      display_name: displayName.trim() || profile.username,
-      bio: bio.trim(),
+    await supabase.auth.updateUser({
+      data: {
+        full_name: nextDisplayName,
+      },
     });
+
+    setProfile(updated);
+    setDisplayName(updated.display_name ?? updated.username);
+    setBio(updated.bio ?? "");
+    setSaving(false);
     setMessage(t.profile.saved);
   }
 
@@ -261,7 +275,7 @@ export function ProfileContent() {
 
             <div>
               <h1 className="text-2xl font-bold text-black sm:text-3xl dark:text-white">
-                {profile.display_name ?? profile.username}
+                {displayName.trim() || profile.username}
               </h1>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">@{profile.username}</p>
               <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
@@ -280,22 +294,33 @@ export function ProfileContent() {
             <button
               type="button"
               onClick={saveProfile}
-              disabled={saving}
-              className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-zinc-50 disabled:opacity-60 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-950"
+              disabled={saving || !hasChanges}
+              className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-950"
             >
-              {saving ? t.profile.saving : t.profile.customize}
+              {saving ? t.profile.saving : t.profile.saveChanges}
             </button>
           </div>
         </div>
 
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        <form
+          className="mt-6 grid gap-4 sm:grid-cols-2"
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (hasChanges && !saving) {
+              saveProfile();
+            }
+          }}
+        >
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-black dark:text-white">
               {t.profile.displayName}
             </span>
             <input
               value={displayName}
-              onChange={(event) => setDisplayName(event.target.value)}
+              onChange={(event) => {
+                setDisplayName(event.target.value);
+                setMessage(null);
+              }}
               className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-black dark:text-white"
             />
           </label>
@@ -305,12 +330,30 @@ export function ProfileContent() {
             </span>
             <textarea
               value={bio}
-              onChange={(event) => setBio(event.target.value)}
+              onChange={(event) => {
+                setBio(event.target.value);
+                setMessage(null);
+              }}
               rows={3}
               className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-black dark:text-white"
             />
           </label>
-        </div>
+
+          <div className="flex flex-wrap items-center gap-3 sm:col-span-2">
+            <button
+              type="submit"
+              disabled={saving || !hasChanges}
+              className="rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-black"
+            >
+              {saving ? t.profile.saving : t.profile.saveChanges}
+            </button>
+            {hasChanges && !saving && (
+              <span className="text-sm text-amber-600 dark:text-amber-400">
+                {t.profile.unsavedChanges}
+              </span>
+            )}
+          </div>
+        </form>
 
         {message && (
           <p className="mt-4 text-sm text-emerald-600 dark:text-emerald-400" role="status">

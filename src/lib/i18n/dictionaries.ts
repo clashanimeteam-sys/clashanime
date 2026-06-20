@@ -78,6 +78,8 @@ export type Dictionary = {
   profile: {
     loading: string;
     customize: string;
+    saveChanges: string;
+    unsavedChanges: string;
     saving: string;
     saved: string;
     displayName: string;
@@ -191,6 +193,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
     profile: {
       loading: "Loading your channel...",
       customize: "Customize channel",
+      saveChanges: "Save changes",
+      unsavedChanges: "You have unsaved changes.",
       saving: "Saving...",
       saved: "Channel updated.",
       displayName: "Channel name",
@@ -302,6 +306,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
     profile: {
       loading: "チャンネルを読み込み中...",
       customize: "チャンネルを編集",
+      saveChanges: "変更を保存",
+      unsavedChanges: "未保存の変更があります。",
       saving: "保存中...",
       saved: "チャンネルを更新しました。",
       displayName: "チャンネル名",
@@ -413,6 +419,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
     profile: {
       loading: "جارٍ تحميل قناتك...",
       customize: "تخصيص القناة",
+      saveChanges: "حفظ التغييرات",
+      unsavedChanges: "لديك تغييرات غير محفوظة.",
       saving: "جارٍ الحفظ...",
       saved: "تم تحديث القناة.",
       displayName: "اسم القناة",
