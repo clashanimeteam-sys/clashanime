@@ -5,11 +5,13 @@ import Link from "next/link";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { VideoCardChannel } from "@/components/VideoCardChannel";
 import { useLocale } from "@/providers/LocaleProvider";
-import type { Video } from "@/lib/types";
+import type { ModerationStatus, Video } from "@/lib/types";
+import { getModerationStatusLabel } from "@/lib/moderation";
 
 type VideoCardProps = {
   video: Video;
   rank: number;
+  showModerationStatus?: boolean;
 };
 
 type MedalTier = "gold" | "silver" | "bronze" | null;
@@ -81,8 +83,11 @@ function RankBadge({ rank }: { rank: number }) {
   );
 }
 
-export function VideoCard({ video, rank }: VideoCardProps) {
+export function VideoCard({ video, rank, showModerationStatus = false }: VideoCardProps) {
   const { t } = useLocale();
+  const moderationStatus = video.moderation_status;
+  const showBadge =
+    showModerationStatus && moderationStatus && moderationStatus !== "approved";
 
   return (
     <article
@@ -120,6 +125,10 @@ export function VideoCard({ video, rank }: VideoCardProps) {
           </div>
 
           <RankBadge rank={rank} />
+
+          {showBadge && moderationStatus ? (
+            <ModerationBadge status={moderationStatus} />
+          ) : null}
 
           <span className="absolute bottom-3 end-3 inline-flex items-center gap-1 rounded-full bg-black/75 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
             <svg
@@ -164,5 +173,25 @@ export function VideoCard({ video, rank }: VideoCardProps) {
         {video.channel ? <VideoCardChannel channel={video.channel} /> : null}
       </div>
     </article>
+  );
+}
+
+function ModerationBadge({ status }: { status: ModerationStatus }) {
+  const { t } = useLocale();
+  const label = getModerationStatusLabel(status, t.moderation);
+
+  const styles: Record<ModerationStatus, string> = {
+    approved: "bg-emerald-500/90 text-white",
+    review: "bg-amber-500/90 text-amber-950",
+    pending: "bg-zinc-600/90 text-white",
+    rejected: "bg-red-600/90 text-white",
+  };
+
+  return (
+    <span
+      className={`absolute end-3 top-3 rounded-full px-2.5 py-1 text-[10px] font-bold shadow-lg backdrop-blur-sm ${styles[status]}`}
+    >
+      {label}
+    </span>
   );
 }

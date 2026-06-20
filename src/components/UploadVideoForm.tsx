@@ -3,6 +3,11 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
+import { computeContentFingerprints } from "@/lib/contentFingerprint";
+import {
+  getScanRejectionMessage,
+  type ScanUploadResult,
+} from "@/lib/moderation";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 import {
@@ -27,12 +32,15 @@ export function UploadVideoForm() {
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [duration, setDuration] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const [scanning, setScanning] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function handleVideoChange(file: File | undefined) {
     if (!file) return;
 
     setError(null);
+    setSuccessMessage(null);
 
     try {
       const seconds = await getVideoDuration(file);
@@ -71,7 +79,43 @@ export function UploadVideoForm() {
     }
 
     setLoading(true);
+    setScanning(true);
     setError(null);
+    setSuccessMessage(null);
+
+    let fingerprints;
+
+    try {
+      fingerprints = await computeContentFingerprints(videoFile, thumbnailFile);
+    } catch {
+      setLoading(false);
+      setScanning(false);
+      setError(t.upload.scanFailed);
+      return;
+    }
+
+    const { data: scanData, error: scanError } = await supabase.rpc("scan_upload_content", {
+      p_file_hash: fingerprints.fileHash,
+      p_perceptual_hash: fingerprints.perceptualHash,
+      p_thumb_hash: fingerprints.thumbHash,
+      p_user_id: user.id,
+    });
+
+    setScanning(false);
+
+    if (scanError) {
+      setLoading(false);
+      setError(scanError.message);
+      return;
+    }
+
+    const scan = scanData as ScanUploadResult;
+
+    if (scan.status === "rejected") {
+      setLoading(false);
+      setError(getScanRejectionMessage(scan.reason, t.moderation));
+      return;
+    }
 
     const clipId = crypto.randomUUID();
     const videoPath = `${user.id}/${clipId}.mp4`;
@@ -98,6 +142,7 @@ export function UploadVideoForm() {
       });
 
     if (thumbUploadError) {
+      await supabase.storage.from("clips").remove([videoPath]);
       setError(thumbUploadError.message);
       setLoading(false);
       return;
@@ -115,23 +160,41 @@ export function UploadVideoForm() {
       hashtags: tags,
       duration_seconds: duration,
       description: tags.length ? tags.map((tag) => `#${tag}`).join(" ") : "",
+      moderation_status: scan.status,
+      file_hash: fingerprints.fileHash,
+      perceptual_hash: fingerprints.perceptualHash,
+      thumb_hash: fingerprints.thumbHash,
+      scanned_at: new Date().toISOString(),
     });
 
     setLoading(false);
 
     if (insertError) {
+      await supabase.storage.from("clips").remove([videoPath]);
+      await supabase.storage.from("thumbnails").remove([thumbPath]);
       setError(insertError.message);
+      return;
+    }
+
+    if (scan.status === "review" || scan.status === "pending") {
+      setSuccessMessage(t.upload.reviewPending);
+      window.setTimeout(() => router.push("/profile"), 1800);
       return;
     }
 
     router.push("/profile");
   }
 
+  const busy = loading || scanning;
+
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-5 px-4 py-8 sm:px-6">
       <div>
         <h1 className="text-3xl font-bold text-black dark:text-white">{t.upload.title}</h1>
         <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{t.upload.subtitle}</p>
+        <p className="mt-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300">
+          {t.upload.originalOnly}
+        </p>
       </div>
 
       <label className="block">
@@ -208,12 +271,18 @@ export function UploadVideoForm() {
         </p>
       )}
 
+      {successMessage && (
+        <p className="text-sm text-emerald-600 dark:text-emerald-400" role="status">
+          {successMessage}
+        </p>
+      )}
+
       <button
         type="submit"
-        disabled={loading}
+        disabled={busy}
         className="rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60 dark:bg-white dark:text-black"
       >
-        {loading ? t.upload.uploading : t.upload.publish}
+        {scanning ? t.upload.scanning : loading ? t.upload.uploading : t.upload.publish}
       </button>
     </form>
   );

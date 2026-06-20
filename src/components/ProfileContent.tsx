@@ -97,7 +97,7 @@ export function ProfileContent() {
       supabase
         .from("videos")
         .select(
-          "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, hashtags, duration_seconds, user_id",
+          "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, hashtags, duration_seconds, user_id, moderation_status, rejection_reason",
         )
         .eq("user_id", user.id)
         .order("created_at", { ascending: false }),
@@ -406,7 +406,12 @@ export function ProfileContent() {
           ) : (
             <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {videos.map((video, index) => (
-                <VideoCard key={video.id} video={video} rank={index + 1} />
+                <VideoCard
+                  key={video.id}
+                  video={video}
+                  rank={index + 1}
+                  showModerationStatus
+                />
               ))}
             </div>
           )}

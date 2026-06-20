@@ -38,6 +38,8 @@ export type VideoCommentsData = {
   comments: VideoComment[];
 };
 
+export type ModerationStatus = "pending" | "approved" | "rejected" | "review";
+
 export type Video = {
   id: string;
   title: string;
@@ -54,6 +56,8 @@ export type Video = {
   hashtags?: string[];
   duration_seconds?: number | null;
   description?: string;
+  moderation_status?: ModerationStatus;
+  rejection_reason?: string | null;
 };
 
 export const MIN_CLIP_SECONDS = 10;

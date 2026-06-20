@@ -139,6 +139,7 @@ export async function getTrendingVideos(): Promise<Video[]> {
     .select(
       "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, user_id",
     )
+    .eq("moderation_status", "approved")
     .order("likes_count", { ascending: false })
     .limit(24);
 

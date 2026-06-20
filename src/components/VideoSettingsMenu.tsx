@@ -1,6 +1,9 @@
 "use client";
 
-import { RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useMemo, useRef, useState } from "react";
+import { submitContentReport } from "@/lib/contentReports";
+import { createBrowserClient } from "@/lib/supabase/client";
+import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
 const SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 2] as const;
@@ -19,6 +22,8 @@ export function VideoSettingsMenu({
   disabled = false,
 }: VideoSettingsMenuProps) {
   const { t } = useLocale();
+  const { user } = useAuth();
+  const supabase = useMemo(() => createBrowserClient(), []);
   const menuRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [speed, setSpeed] = useState(1);
@@ -100,8 +105,21 @@ export function VideoSettingsMenu({
     }
   }
 
-  function handleReport() {
-    showStatus(t.video.reportSubmitted);
+  async function handleReport() {
+    if (!supabase || !user) {
+      showStatus(t.video.actionFailed);
+      setOpen(false);
+      return;
+    }
+
+    const ok = await submitContentReport(supabase, videoId, user.id);
+
+    if (ok) {
+      showStatus(t.video.reportSubmitted);
+    } else {
+      showStatus(t.video.actionFailed);
+    }
+
     setOpen(false);
   }
 

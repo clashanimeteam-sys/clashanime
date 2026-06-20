@@ -133,6 +133,7 @@ export type Dictionary = {
     create: string;
     title: string;
     subtitle: string;
+    originalOnly: string;
     loading: string;
     videoFile: string;
     thumbnailFile: string;
@@ -144,8 +145,24 @@ export type Dictionary = {
     durationError: string;
     invalidVideo: string;
     requiredFields: string;
+    scanning: string;
     uploading: string;
     publish: string;
+    reviewPending: string;
+    scanFailed: string;
+  };
+  moderation: {
+    duplicateFile: string;
+    duplicateThumbnail: string;
+    duplicateVisual: string;
+    missingFingerprint: string;
+    authRequired: string;
+    rejectedGeneric: string;
+    statusApproved: string;
+    statusReview: string;
+    statusPending: string;
+    statusRejected: string;
+    originalBadge: string;
   };
 };
 
@@ -284,6 +301,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       create: "Create",
       title: "Upload duel clip",
       subtitle: "Short vertical clips only: 10 seconds to 1 minute.",
+      originalOnly:
+        "Only original content is allowed. Each upload is scanned automatically for duplicates before publishing.",
       loading: "Loading upload...",
       videoFile: "Video file",
       thumbnailFile: "Cover image",
@@ -295,8 +314,28 @@ export const dictionaries: Record<Locale, Dictionary> = {
       durationError: "Clip must be between 10 seconds and 1 minute.",
       invalidVideo: "Could not read this video file.",
       requiredFields: "Add a video, cover image, and title.",
+      scanning: "Checking original content...",
       uploading: "Uploading...",
       publish: "Publish",
+      reviewPending:
+        "Your clip was uploaded and is under review. It will appear publicly once approved.",
+      scanFailed: "Could not verify this file. Try again with a different export.",
+    },
+    moderation: {
+      duplicateFile:
+        "This exact video file was already uploaded to ClashAnime. Only original content is allowed.",
+      duplicateThumbnail:
+        "This cover image matches another upload. Use an original thumbnail.",
+      duplicateVisual:
+        "This clip looks like a duplicate of existing content. Upload your own original edit.",
+      missingFingerprint: "Could not fingerprint this file. Try re-exporting the video.",
+      authRequired: "Sign in to upload videos.",
+      rejectedGeneric: "This upload was blocked by content protection.",
+      statusApproved: "Live",
+      statusReview: "Under review",
+      statusPending: "Pending",
+      statusRejected: "Rejected",
+      originalBadge: "Original",
     },
   },
   ja: {
@@ -433,6 +472,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       create: "作成",
       title: "デュエルクリップをアップロード",
       subtitle: "縦型ショート動画のみ：10秒から1分まで。",
+      originalOnly:
+        "オリジナルコンテンツのみ投稿できます。公開前に自動で重複チェックを行います。",
       loading: "アップロードを読み込み中...",
       videoFile: "動画ファイル",
       thumbnailFile: "カバー画像",
@@ -444,8 +485,28 @@ export const dictionaries: Record<Locale, Dictionary> = {
       durationError: "クリップは10秒から1分の間である必要があります。",
       invalidVideo: "この動画ファイルを読み取れませんでした。",
       requiredFields: "動画、カバー画像、タイトルを追加してください。",
+      scanning: "オリジナル性を確認中...",
       uploading: "アップロード中...",
       publish: "公開",
+      reviewPending:
+        "クリップはアップロードされ、審査中です。承認後に公開されます。",
+      scanFailed: "ファイルを検証できませんでした。別の書き出しで再試行してください。",
+    },
+    moderation: {
+      duplicateFile:
+        "この動画ファイルはすでにClashAnimeにアップロードされています。オリジナルのみ投稿できます。",
+      duplicateThumbnail:
+        "このカバー画像は別の投稿と一致します。オリジナルのサムネイルを使用してください。",
+      duplicateVisual:
+        "このクリップは既存コンテンツの重複の可能性があります。自分のオリジナル編集をアップロードしてください。",
+      missingFingerprint: "ファイルの指紋を取得できませんでした。動画を再書き出ししてください。",
+      authRequired: "動画をアップロードするにはログインしてください。",
+      rejectedGeneric: "コンテンツ保護によりこのアップロードはブロックされました。",
+      statusApproved: "公開中",
+      statusReview: "審査中",
+      statusPending: "保留",
+      statusRejected: "拒否",
+      originalBadge: "オリジナル",
     },
   },
   ar: {
@@ -582,6 +643,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       create: "إنشاء",
       title: "رفع مقطع نزال",
       subtitle: "مقاطع قصيرة عمودية فقط: من 10 ثوانٍ إلى دقيقة.",
+      originalOnly:
+        "يُسمح بالمحتوى الأصلي فقط. يُفحص كل رفع تلقائياً للكشف عن التكرار قبل النشر.",
       loading: "جارٍ تحميل الرفع...",
       videoFile: "ملف الفيديو",
       thumbnailFile: "صورة الغلاف",
@@ -593,8 +656,28 @@ export const dictionaries: Record<Locale, Dictionary> = {
       durationError: "يجب أن يكون المقطع بين 10 ثوانٍ ودقيقة واحدة.",
       invalidVideo: "تعذر قراءة ملف الفيديو.",
       requiredFields: "أضف فيديو وصورة غلاف وعنواناً.",
+      scanning: "جارٍ التحقق من أصالة المحتوى...",
       uploading: "جارٍ الرفع...",
       publish: "نشر",
+      reviewPending:
+        "تم رفع المقطع وهو قيد المراجعة. سيظهر للعامة بعد الموافقة.",
+      scanFailed: "تعذر التحقق من الملف. جرّب تصديراً مختلفاً للفيديو.",
+    },
+    moderation: {
+      duplicateFile:
+        "تم رفع هذا الملف بالفعل إلى ClashAnime. يُسمح بالمحتوى الأصلي فقط.",
+      duplicateThumbnail:
+        "صورة الغلاف مطابقة لرفع آخر. استخدم صورة غلاف أصلية.",
+      duplicateVisual:
+        "يبدو هذا المقطع نسخة مكررة من محتوى موجود. ارفع montage أصلياً خاصاً بك.",
+      missingFingerprint: "تعذر إنشاء بصمة للملف. أعد تصدير الفيديو.",
+      authRequired: "سجّل الدخول لرفع الفيديوهات.",
+      rejectedGeneric: "تم حظر هذا الرفع بواسطة حماية المحتوى.",
+      statusApproved: "منشور",
+      statusReview: "قيد المراجعة",
+      statusPending: "معلق",
+      statusRejected: "مرفوض",
+      originalBadge: "أصلي",
     },
   },
 };

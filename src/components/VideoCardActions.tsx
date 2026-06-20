@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { VideoCommentsModal } from "@/components/VideoCommentsModal";
 import { createBrowserClient } from "@/lib/supabase/client";
+import { submitContentReport } from "@/lib/contentReports";
 import {
   checkVideoLiked,
   fetchVideoCounts,
@@ -147,8 +148,21 @@ export function VideoCardActions({
   }
 
   function handleReport() {
-    setReported(true);
-    window.setTimeout(() => setReported(false), 2500);
+    if (!supabase || !user) {
+      requireAuth();
+      return;
+    }
+
+    setError(null);
+
+    submitContentReport(supabase, videoId, user.id).then((ok) => {
+      if (ok) {
+        setReported(true);
+        window.setTimeout(() => setReported(false), 2500);
+      } else {
+        setError(t.video.actionFailed);
+      }
+    });
   }
 
   return (
