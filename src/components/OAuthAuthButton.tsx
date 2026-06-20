@@ -10,6 +10,7 @@ type OAuthProvider = Extract<Provider, "google" | "github" | "facebook">;
 type OAuthAuthButtonProps = {
   provider: OAuthProvider;
   mode: "login" | "signup";
+  onError: (message: string) => void;
 };
 
 function GoogleIcon() {
@@ -59,20 +60,19 @@ function getProviderIcon(provider: OAuthProvider) {
   return <FacebookIcon />;
 }
 
-export function OAuthAuthButton({ provider, mode }: OAuthAuthButtonProps) {
+export function OAuthAuthButton({ provider, mode, onError }: OAuthAuthButtonProps) {
   const { t } = useLocale();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   async function handleOAuth() {
     const supabase = createBrowserClient();
     if (!supabase) {
-      setError(t.auth.configError);
+      onError(t.auth.configError);
       return;
     }
 
     setLoading(true);
-    setError(null);
+    onError("");
 
     const redirectTo = `${window.location.origin}/auth/callback?next=/`;
 
@@ -97,13 +97,13 @@ export function OAuthAuthButton({ provider, mode }: OAuthAuthButtonProps) {
     });
 
     if (authError) {
-      setError(authError.message);
+      onError(authError.message);
       setLoading(false);
       return;
     }
 
     if (!data?.url) {
-      setError(t.auth.callbackError);
+      onError(t.auth.callbackError);
       setLoading(false);
       return;
     }
@@ -112,21 +112,14 @@ export function OAuthAuthButton({ provider, mode }: OAuthAuthButtonProps) {
   }
 
   return (
-    <div className="space-y-2">
-      <button
-        type="button"
-        onClick={handleOAuth}
-        disabled={loading}
-        className="flex w-full items-center justify-center gap-3 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-medium text-black transition-colors hover:bg-zinc-50 disabled:opacity-60 dark:border-zinc-700 dark:bg-black dark:text-white dark:hover:bg-zinc-950"
-      >
-        {getProviderIcon(provider)}
-        {loading ? t.auth.loading : getProviderLabel(provider, mode, t)}
-      </button>
-      {error && (
-        <p className="text-center text-xs text-red-500" role="alert">
-          {error}
-        </p>
-      )}
-    </div>
+    <button
+      type="button"
+      onClick={handleOAuth}
+      disabled={loading}
+      className="flex w-full items-center justify-center gap-3 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-medium text-black transition-colors hover:bg-zinc-50 disabled:opacity-60 dark:border-zinc-700 dark:bg-black dark:text-white dark:hover:bg-zinc-950"
+    >
+      {getProviderIcon(provider)}
+      {loading ? t.auth.loading : getProviderLabel(provider, mode, t)}
+    </button>
   );
 }

@@ -62,6 +62,11 @@ export type Dictionary = {
     continueGithubSignup: string;
     continueFacebookLogin: string;
     continueFacebookSignup: string;
+    emailPlaceholder: string;
+    continueEmail: string;
+    close: string;
+    emailSent: string;
+    invalidEmail: string;
     noAccount: string;
     hasAccount: string;
     loading: string;
@@ -135,6 +140,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       continueGithubSignup: "Continue with GitHub",
       continueFacebookLogin: "Continue with Facebook",
       continueFacebookSignup: "Continue with Facebook",
+      emailPlaceholder: "Email Address",
+      continueEmail: "Continue with Email",
+      close: "Close and go back",
+      emailSent: "Check your email for the login link.",
+      invalidEmail: "Enter a valid email address.",
       noAccount: "Don't have an account?",
       hasAccount: "Already have an account?",
       loading: "Connecting...",
@@ -206,6 +216,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       continueGithubSignup: "GitHubで続行",
       continueFacebookLogin: "Facebookで続行",
       continueFacebookSignup: "Facebookで続行",
+      emailPlaceholder: "メールアドレス",
+      continueEmail: "メールで続行",
+      close: "閉じて戻る",
+      emailSent: "ログインリンクをメールで確認してください。",
+      invalidEmail: "有効なメールアドレスを入力してください。",
       noAccount: "アカウントをお持ちでないですか？",
       hasAccount: "すでにアカウントをお持ちですか？",
       loading: "接続中...",
@@ -277,6 +292,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       continueGithubSignup: "المتابعة مع GitHub",
       continueFacebookLogin: "المتابعة مع Facebook",
       continueFacebookSignup: "المتابعة مع Facebook",
+      emailPlaceholder: "عنوان البريد الإلكتروني",
+      continueEmail: "المتابعة بالبريد الإلكتروني",
+      close: "إغلاق والعودة",
+      emailSent: "تحقق من بريدك الإلكتروني للحصول على رابط تسجيل الدخول.",
+      invalidEmail: "أدخل عنوان بريد إلكتروني صالحاً.",
       noAccount: "ليس لديك حساب؟",
       hasAccount: "لديك حساب بالفعل؟",
       loading: "جارٍ الاتصال...",
