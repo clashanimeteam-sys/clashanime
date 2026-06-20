@@ -130,17 +130,17 @@ export function CommentThread({
                   {t.video.pinned}
                 </p>
               ) : null}
-              <p className="text-sm leading-relaxed text-black dark:text-white">
-                <span className="me-2 inline-flex max-w-full items-center gap-1 align-middle">
-                  <Link
-                    href={`/channel/${comment.username}`}
-                    className="truncate font-bold hover:underline"
-                    onClick={onClose}
-                  >
-                    {name}
-                  </Link>
-                  {comment.is_verified ? <VerifiedBadge className="shrink-0" /> : null}
-                </span>
+              <div className="inline-flex max-w-full items-center gap-1">
+                <Link
+                  href={`/channel/${comment.username}`}
+                  className="truncate text-sm font-bold text-black hover:underline dark:text-white"
+                  onClick={onClose}
+                >
+                  {name}
+                </Link>
+                {comment.is_verified ? <VerifiedBadge className="shrink-0" /> : null}
+              </div>
+              <p className="mt-1 text-sm leading-relaxed text-zinc-800 dark:text-zinc-100">
                 {comment.body}
               </p>
               <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-zinc-500">
