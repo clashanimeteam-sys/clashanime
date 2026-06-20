@@ -81,7 +81,7 @@ function sortByTrending(videos: Video[]): Video[] {
 }
 
 export async function getTrendingVideos(): Promise<Video[]> {
-  const supabase = createServerClient();
+  const supabase = await createServerClient();
 
   if (!supabase) {
     return sortByTrending(MOCK_VIDEOS);
