@@ -182,6 +182,12 @@ export type Dictionary = {
   points: {
     systemTitle: string;
     hunterRank: string;
+    bountyRewardsTitle: string;
+    bountyRewardsHint: string;
+    bountyUnlocked: string;
+    bountyLocked: string;
+    bountyLogTitle: string;
+    bountyLogEmpty: string;
     rank: string;
     pointsLabel: string;
     totalPoints: string;
@@ -231,6 +237,14 @@ export type Dictionary = {
       videoUpload: string;
       communityPost: string;
       trendingBonus: string;
+    };
+    transactionReasons: {
+      referral_click: string;
+      referral_signup: string;
+      video_like: string;
+      video_upload: string;
+      community_post: string;
+      trending_bonus: string;
     };
   };
   upload: {
@@ -376,6 +390,10 @@ export type Dictionary = {
       reviewQueue: string;
       openReports: string;
       bannedUsers: string;
+      activeHunters: string;
+      pendingVerifications: string;
+      communityPosts: string;
+      bountyEvents: string;
     };
     quickActions: {
       reviewVideos: string;
@@ -595,8 +613,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       verifiedBadge: "Verified channel",
     },
     points: {
-      systemTitle: "Hunter System",
-      hunterRank: "Hunter Rank",
+      systemTitle: "Bounty Hunter Rewards",
+      hunterRank: "Your Hunter Rank",
+      bountyRewardsTitle: "Rank bounties",
+      bountyRewardsHint: "Unlock exclusive rewards as you climb the Solo Leveling ranks.",
+      bountyUnlocked: "Unlocked",
+      bountyLocked: "Locked",
+      bountyLogTitle: "Recent bounty earnings",
+      bountyLogEmpty: "No bounty earnings yet. Start inviting friends or posting in Community.",
       rank: "Rank",
       pointsLabel: "points",
       totalPoints: "Total points",
@@ -646,6 +670,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         videoUpload: "Upload an approved original clip",
         communityPost: "Publish in Community",
         trendingBonus: "Your clip reaches the trending grid",
+      },
+      transactionReasons: {
+        referral_click: "Invite link visit",
+        referral_signup: "Friend signed up",
+        video_like: "Video like",
+        video_upload: "Approved upload",
+        community_post: "Community post",
+        trending_bonus: "Trending bounty",
       },
     },
     upload: {
@@ -798,6 +830,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
         reviewQueue: "Review queue",
         openReports: "Open reports",
         bannedUsers: "Banned users",
+        activeHunters: "Active hunters",
+        pendingVerifications: "Verification requests",
+        communityPosts: "Community posts",
+        bountyEvents: "Bounty events",
       },
       quickActions: {
         reviewVideos: "Review videos",
@@ -1012,8 +1048,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       verifiedBadge: "認証済みチャンネル",
     },
     points: {
-      systemTitle: "ハンターシステム",
+      systemTitle: "バウンティハンター報酬",
       hunterRank: "ハンターランク",
+      bountyRewardsTitle: "ランク報酬",
+      bountyRewardsHint: "ソロレベルング風ランクを上げて限定報酬を解放。",
+      bountyUnlocked: "解放済み",
+      bountyLocked: "未解放",
+      bountyLogTitle: "最近の報酬獲得",
+      bountyLogEmpty: "まだ報酬がありません。友達を招待するかコミュニティに投稿してください。",
       rank: "ランク",
       pointsLabel: "ポイント",
       totalPoints: "合計ポイント",
@@ -1063,6 +1105,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         videoUpload: "承認されたオリジナル動画のアップロード",
         communityPost: "コミュニティへの投稿",
         trendingBonus: "トレンドグリッド入り",
+      },
+      transactionReasons: {
+        referral_click: "招待リンク訪問",
+        referral_signup: "友達の新規登録",
+        video_like: "動画いいね",
+        video_upload: "承認済みアップロード",
+        community_post: "コミュニティ投稿",
+        trending_bonus: "トレンド報酬",
       },
     },
     upload: {
@@ -1215,6 +1265,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
         reviewQueue: "審査待ち",
         openReports: "未処理の報告",
         bannedUsers: "停止ユーザー",
+        activeHunters: "アクティブハンター",
+        pendingVerifications: "認証リクエスト",
+        communityPosts: "コミュニティ投稿",
+        bountyEvents: "報酬イベント",
       },
       quickActions: {
         reviewVideos: "動画を審査",
@@ -1431,8 +1485,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       verifiedBadge: "قناة موثّقة",
     },
     points: {
-      systemTitle: "نظام الصياد",
+      systemTitle: "نظام صياد الجوائز",
       hunterRank: "رتبة الصياد",
+      bountyRewardsTitle: "جوائز الرتب",
+      bountyRewardsHint: "افتح مكافآت حصرية كلما ارتفعت في رتب Solo Leveling.",
+      bountyUnlocked: "مفتوحة",
+      bountyLocked: "مقفلة",
+      bountyLogTitle: "آخر مكافآت الجوائز",
+      bountyLogEmpty: "لا توجد مكافآت بعد. ادعُ أصدقاءك أو انشر في المجتمع.",
       rank: "الرتبة",
       pointsLabel: "نقطة",
       totalPoints: "إجمالي النقاط",
@@ -1482,6 +1542,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         videoUpload: "رفع مقطع أصلي معتمد",
         communityPost: "نشر في صفحة المجتمع",
         trendingBonus: "وصول مقطعك إلى شبكة الترند",
+      },
+      transactionReasons: {
+        referral_click: "زيارة رابط الدعوة",
+        referral_signup: "تسجيل صديق",
+        video_like: "إعجاب بفيديو",
+        video_upload: "رفع معتمد",
+        community_post: "منشور مجتمع",
+        trending_bonus: "جائزة الترند",
       },
     },
     upload: {
@@ -1634,6 +1702,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
         reviewQueue: "قائمة المراجعة",
         openReports: "بلاغات مفتوحة",
         bannedUsers: "محظورون",
+        activeHunters: "صيادون نشطون",
+        pendingVerifications: "طلبات التوثيق",
+        communityPosts: "منشورات المجتمع",
+        bountyEvents: "أحداث الجوائز",
       },
       quickActions: {
         reviewVideos: "مراجعة الفيديوهات",

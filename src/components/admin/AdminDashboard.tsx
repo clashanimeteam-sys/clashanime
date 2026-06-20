@@ -11,6 +11,10 @@ type DashboardStats = {
   reviewVideos: number;
   openReports: number;
   bannedUsers: number;
+  activeHunters: number;
+  pendingVerifications: number;
+  communityPosts: number;
+  bountyEvents: number;
 };
 
 export function AdminDashboard() {
@@ -32,6 +36,10 @@ export function AdminDashboard() {
         { count: reviewVideos },
         { count: openReports },
         { count: bannedUsers },
+        { count: activeHunters },
+        { count: pendingVerifications },
+        { count: communityPosts },
+        { count: bountyEvents },
       ] = await Promise.all([
         client.from("profiles").select("*", { count: "exact", head: true }),
         client.from("videos").select("*", { count: "exact", head: true }),
@@ -44,6 +52,13 @@ export function AdminDashboard() {
           .select("*", { count: "exact", head: true })
           .eq("status", "open"),
         client.from("profiles").select("*", { count: "exact", head: true }).eq("is_banned", true),
+        client.from("profiles").select("*", { count: "exact", head: true }).gt("points", 0),
+        client
+          .from("verification_requests")
+          .select("*", { count: "exact", head: true })
+          .eq("status", "pending"),
+        client.from("community_posts").select("*", { count: "exact", head: true }),
+        client.from("point_transactions").select("*", { count: "exact", head: true }),
       ]);
 
       setStats({
@@ -52,6 +67,10 @@ export function AdminDashboard() {
         reviewVideos: reviewVideos ?? 0,
         openReports: openReports ?? 0,
         bannedUsers: bannedUsers ?? 0,
+        activeHunters: activeHunters ?? 0,
+        pendingVerifications: pendingVerifications ?? 0,
+        communityPosts: communityPosts ?? 0,
+        bountyEvents: bountyEvents ?? 0,
       });
       setLoading(false);
     }
@@ -61,6 +80,10 @@ export function AdminDashboard() {
 
   const cards = [
     { label: t.admin.stats.users, value: stats?.users ?? 0, href: "/admin/users" },
+    { label: t.admin.stats.activeHunters, value: stats?.activeHunters ?? 0, href: "/admin/users" },
+    { label: t.admin.stats.bountyEvents, value: stats?.bountyEvents ?? 0, href: "/admin/users" },
+    { label: t.admin.stats.pendingVerifications, value: stats?.pendingVerifications ?? 0, href: "/admin/users" },
+    { label: t.admin.stats.communityPosts, value: stats?.communityPosts ?? 0, href: "/community" },
     { label: t.admin.stats.videos, value: stats?.videos ?? 0, href: "/admin/videos" },
     { label: t.admin.stats.reviewQueue, value: stats?.reviewVideos ?? 0, href: "/admin/videos?status=review" },
     { label: t.admin.stats.openReports, value: stats?.openReports ?? 0, href: "/admin/reports" },
@@ -105,6 +128,11 @@ export function AdminDashboard() {
         <QuickLink
           title={t.admin.quickActions.manageUsers}
           description={t.admin.quickActions.manageUsersDesc}
+          href="/admin/users"
+        />
+        <QuickLink
+          title={t.points.systemTitle}
+          description={t.points.bountyRewardsHint}
           href="/admin/users"
         />
         <QuickLink

@@ -26,6 +26,33 @@ export const LEVELS: LevelDefinition[] = [
   { level: 4, key: "legend", rank: "S", minPoints: 5001, maxPoints: null },
 ];
 
+export const BOUNTY_REWARD_KEYS = ["voteComment", "upload", "doubleVote", "legend"] as const;
+
+export type BountyRewardKey = (typeof BOUNTY_REWARD_KEYS)[number];
+
+export function getUnlockedBountyRewards(level: number): BountyRewardKey[] {
+  const rewards: BountyRewardKey[] = ["voteComment"];
+  if (level >= 2) rewards.push("upload");
+  if (level >= 3) rewards.push("doubleVote");
+  if (level >= 4) rewards.push("legend");
+  return rewards;
+}
+
+export function getBountiesForLevel(level: HunterLevel): BountyRewardKey[] {
+  switch (level) {
+    case 1:
+      return ["voteComment"];
+    case 2:
+      return ["voteComment", "upload"];
+    case 3:
+      return ["voteComment", "upload", "doubleVote"];
+    case 4:
+      return ["voteComment", "upload", "doubleVote", "legend"];
+    default:
+      return ["voteComment"];
+  }
+}
+
 export function pointsToLevel(points: number): HunterLevel {
   if (points >= 5001) return 4;
   if (points >= 2001) return 3;
@@ -52,6 +79,8 @@ export function getLevelProgress(points: number) {
     next,
     progress,
     pointsToNext: next ? Math.max(next.minPoints - points, 0) : 0,
+    nextRank: next?.rank ?? null,
+    nextLevelKey: next?.key ?? null,
   };
 }
 
