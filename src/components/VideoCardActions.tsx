@@ -64,7 +64,7 @@ export function VideoCardActions({
           onClick={handleLike}
           aria-pressed={liked}
           aria-label={liked ? t.video.unlike : t.video.like}
-          className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+          className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
             liked
               ? "border-accent bg-accent/10 text-accent"
               : "border-zinc-300 text-zinc-700 hover:border-accent/40 hover:text-accent dark:border-zinc-700 dark:text-zinc-200"
@@ -85,7 +85,7 @@ export function VideoCardActions({
         <button
           type="button"
           aria-label={t.video.comments}
-          className="inline-flex items-center gap-1.5 rounded-full border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-700 transition-colors hover:border-accent/40 hover:text-accent dark:border-zinc-700 dark:text-zinc-200"
+          className="inline-flex items-center gap-1.5 rounded-full border border-zinc-300 px-3 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:border-accent/40 hover:text-accent dark:border-zinc-700 dark:text-zinc-200"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -105,7 +105,7 @@ export function VideoCardActions({
           type="button"
           onClick={handleShare}
           aria-label={t.video.share}
-          className="inline-flex items-center gap-1.5 rounded-full border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-700 transition-colors hover:border-accent/40 hover:text-accent dark:border-zinc-700 dark:text-zinc-200"
+          className="inline-flex items-center gap-1.5 rounded-full border border-zinc-300 px-3 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:border-accent/40 hover:text-accent dark:border-zinc-700 dark:text-zinc-200"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +127,7 @@ export function VideoCardActions({
           type="button"
           onClick={handleReport}
           aria-label={t.video.report}
-          className="inline-flex items-center gap-1 rounded-full border border-zinc-300 px-2.5 py-1.5 text-xs font-medium text-zinc-500 transition-colors hover:border-red-400/50 hover:text-red-500 dark:border-zinc-700 dark:text-zinc-300"
+          className="inline-flex items-center gap-1 rounded-full border border-zinc-300 px-2.5 py-1.5 text-xs font-semibold text-zinc-600 transition-colors hover:border-red-400/50 hover:text-red-500 dark:border-zinc-700 dark:text-zinc-200"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

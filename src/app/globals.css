@@ -7,7 +7,7 @@
   --foreground: #000000;
   --surface: #ffffff;
   --sidebar: #ffffff;
-  --muted: #52525b;
+  --muted: #3f3f46;
   --border: #e4e4e7;
   --brand: #b31b1b;
   --accent: #b31b1b;
@@ -18,7 +18,7 @@
   --foreground: #ffffff;
   --surface: #000000;
   --sidebar: #000000;
-  --muted: #a1a1aa;
+  --muted: #d4d4d8;
   --border: #27272a;
   --brand: #b31b1b;
   --accent: #f97316;
@@ -36,10 +36,39 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-display: var(--font-orbitron), var(--font-geist-sans);
+  --font-channel: var(--font-plus-jakarta), var(--font-geist-sans);
+  --font-weight-normal: 500;
+  --font-weight-medium: 600;
+  --font-weight-semibold: 700;
+  --font-weight-bold: 800;
+  --font-weight-black: 900;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+@layer base {
+  html {
+    font-weight: 500;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+    font-weight: inherit;
+  }
+
+  html[lang="ar"] body {
+    font-family: var(--font-cairo), var(--font-sans), Arial, Helvetica, sans-serif;
+  }
+
+  .dark :is(.text-zinc-400, .text-zinc-500) {
+    color: var(--color-zinc-300);
+  }
+
+  .dark .text-zinc-600 {
+    color: var(--color-zinc-300);
+  }
+
+  :not(.dark) :is(.text-zinc-500, .text-zinc-600) {
+    color: var(--color-zinc-700);
+  }
 }

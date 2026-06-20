@@ -39,7 +39,7 @@ export function VideoCardChannel({ channel }: VideoCardChannelProps) {
           </div>
         )}
       </div>
-      <span className="min-w-0 truncate text-xs font-medium text-zinc-700 transition-colors group-hover/channel:text-accent dark:text-zinc-300">
+      <span className="font-channel min-w-0 truncate text-xs font-semibold text-zinc-800 transition-colors group-hover/channel:text-accent dark:text-zinc-100">
         {label}
       </span>
     </Link>
