@@ -155,6 +155,7 @@ export function VideoCard({ video, rank }: VideoCardProps) {
           preview={{
             thumbnailUrl: video.thumbnail_url,
             videoUrl: video.video_url || undefined,
+            videoOwnerId: video.user_id,
             channel: video.channel,
             hashtags: video.hashtags,
           }}

@@ -43,6 +43,15 @@ export type Dictionary = {
     actionFailed: string;
     noComments: string;
     loginToComment: string;
+    reply: string;
+    replyingTo: string;
+    viewReplies: string;
+    hideReplies: string;
+    commentLikes: string;
+    pinComment: string;
+    unpinComment: string;
+    pinned: string;
+    addEmoji: string;
   };
   theme: {
     light: string;
@@ -177,6 +186,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
       actionFailed: "Could not save. Try again.",
       noComments: "No comments yet. Be the first to comment.",
       loginToComment: "to post a comment.",
+      reply: "Reply",
+      replyingTo: "Replying to",
+      viewReplies: "View replies ({count})",
+      hideReplies: "Hide replies",
+      commentLikes: "likes",
+      pinComment: "Pin",
+      unpinComment: "Unpin",
+      pinned: "Pinned",
+      addEmoji: "Add emoji",
     },
     theme: {
       light: "Switch to light mode",
@@ -309,6 +327,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
       actionFailed: "保存できませんでした。もう一度お試しください。",
       noComments: "まだコメントがありません。最初のコメントをどうぞ。",
       loginToComment: "してコメントを投稿。",
+      reply: "返信",
+      replyingTo: "返信先",
+      viewReplies: "返信を表示 ({count})",
+      hideReplies: "返信を非表示",
+      commentLikes: "いいね",
+      pinComment: "固定",
+      unpinComment: "固定解除",
+      pinned: "固定済み",
+      addEmoji: "絵文字を追加",
     },
     theme: {
       light: "ライトモードに切り替え",
@@ -441,6 +468,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
       actionFailed: "تعذّر الحفظ. حاول مرة أخرى.",
       noComments: "لا توجد تعليقات بعد. كن أول من يعلّق.",
       loginToComment: "لنشر تعليق.",
+      reply: "رد",
+      replyingTo: "الرد على",
+      viewReplies: "عرض الردود ({count})",
+      hideReplies: "إخفاء الردود",
+      commentLikes: "إعجاب",
+      pinComment: "تثبيت",
+      unpinComment: "إلغاء التثبيت",
+      pinned: "مثبّت",
+      addEmoji: "إضافة إيموجي",
     },
     theme: {
       light: "التبديل إلى الوضع النهاري",

@@ -3,8 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { CommentThread, updateCommentInTree } from "@/components/CommentThread";
+import { EmojiPicker } from "@/components/EmojiPicker";
 import { createBrowserClient } from "@/lib/supabase/client";
-import { formatRelativeTime } from "@/lib/format";
 import { fetchVideoComments, postVideoComment } from "@/lib/videoEngagement";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -25,6 +26,7 @@ type VideoCommentsModalProps = {
   title: string;
   thumbnailUrl: string;
   videoUrl?: string;
+  videoOwnerId?: string | null;
   channel?: VideoChannel | null;
   hashtags?: string[];
   likesCount: number;
@@ -44,6 +46,7 @@ export function VideoCommentsModal({
   title,
   thumbnailUrl,
   videoUrl,
+  videoOwnerId,
   channel,
   hashtags,
   likesCount,
@@ -56,13 +59,17 @@ export function VideoCommentsModal({
   onCommentsCountChange,
 }: VideoCommentsModalProps) {
   const { user } = useAuth();
-  const { locale, t } = useLocale();
+  const { t } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [comments, setComments] = useState<VideoComment[]>([]);
+  const [ownerId, setOwnerId] = useState<string | null>(videoOwnerId ?? null);
+  const [pinnedCommentId, setPinnedCommentId] = useState<string | null>(null);
   const [loadingComments, setLoadingComments] = useState(false);
   const [commentBody, setCommentBody] = useState("");
+  const [replyTo, setReplyTo] = useState<VideoComment | null>(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [posting, setPosting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -70,10 +77,12 @@ export function VideoCommentsModal({
     if (!supabase) return;
 
     setLoadingComments(true);
-    const rows = await fetchVideoComments(supabase, videoId);
-    setComments(rows);
+    const data = await fetchVideoComments(supabase, videoId, user?.id);
+    setComments(data.comments);
+    setOwnerId(data.videoOwnerId ?? videoOwnerId ?? null);
+    setPinnedCommentId(data.pinnedCommentId);
     setLoadingComments(false);
-  }, [supabase, videoId]);
+  }, [supabase, videoId, user?.id, videoOwnerId]);
 
   useEffect(() => {
     if (!open) return;
@@ -99,6 +108,26 @@ export function VideoCommentsModal({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [open, onClose]);
 
+  function handleCommentUpdate(commentId: string, patch: Partial<VideoComment>) {
+    setComments((current) => updateCommentInTree(current, commentId, patch));
+  }
+
+  function handleReply(comment: VideoComment) {
+    if (!user) {
+      window.location.href = "/login";
+      return;
+    }
+
+    setReplyTo(comment);
+    inputRef.current?.focus();
+  }
+
+  function appendEmoji(emoji: string) {
+    setCommentBody((current) => `${current}${emoji}`);
+    setShowEmojiPicker(false);
+    inputRef.current?.focus();
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -107,11 +136,18 @@ export function VideoCommentsModal({
     setPosting(true);
     setError(null);
 
-    const counts = await postVideoComment(supabase, videoId, user.id, commentBody);
+    const counts = await postVideoComment(
+      supabase,
+      videoId,
+      user.id,
+      commentBody,
+      replyTo?.id ?? null,
+    );
 
     if (counts) {
       onCommentsCountChange(counts.comments_count);
       setCommentBody("");
+      setReplyTo(null);
       await loadComments();
       inputRef.current?.focus();
     } else {
@@ -124,6 +160,9 @@ export function VideoCommentsModal({
   if (!open) return null;
 
   const channelLabel = channel?.display_name?.trim() || channel?.username;
+  const replyLabel = replyTo
+    ? `${t.video.replyingTo} ${replyTo.display_name?.trim() || replyTo.username}`
+    : null;
 
   return (
     <div
@@ -235,49 +274,20 @@ export function VideoCommentsModal({
               <p className="text-sm font-semibold text-zinc-500">{t.video.noComments}</p>
             ) : (
               <ul className="space-y-4">
-                {comments.map((comment) => {
-                  const name = comment.display_name?.trim() || comment.username;
-
-                  return (
-                    <li key={comment.id} className="flex gap-3">
-                      <Link
-                        href={`/channel/${comment.username}`}
-                        className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800"
-                        onClick={onClose}
-                      >
-                        {comment.avatar_url ? (
-                          <Image
-                            src={comment.avatar_url}
-                            alt={name}
-                            fill
-                            className="object-cover"
-                            unoptimized
-                          />
-                        ) : (
-                          <div className="flex h-full w-full items-center justify-center text-[10px] font-bold text-zinc-500">
-                            {getInitials(name)}
-                          </div>
-                        )}
-                      </Link>
-
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm leading-relaxed text-black dark:text-white">
-                          <Link
-                            href={`/channel/${comment.username}`}
-                            className="me-2 font-bold hover:underline"
-                            onClick={onClose}
-                          >
-                            {name}
-                          </Link>
-                          {comment.body}
-                        </p>
-                        <p className="mt-1 text-xs font-semibold text-zinc-500">
-                          {formatRelativeTime(comment.created_at, locale)}
-                        </p>
-                      </div>
-                    </li>
-                  );
-                })}
+                {comments.map((comment) => (
+                  <CommentThread
+                    key={comment.id}
+                    comment={comment}
+                    videoId={videoId}
+                    videoOwnerId={ownerId}
+                    pinnedCommentId={pinnedCommentId}
+                    onClose={onClose}
+                    onReply={handleReply}
+                    onRefresh={loadComments}
+                    onPinChange={setPinnedCommentId}
+                    onCommentUpdate={handleCommentUpdate}
+                  />
+                ))}
               </ul>
             )}
           </div>
@@ -349,22 +359,49 @@ export function VideoCommentsModal({
             </div>
 
             {user ? (
-              <form onSubmit={handleSubmit} className="flex items-center gap-2 border-t border-zinc-100 pt-3 dark:border-zinc-900">
-                <input
-                  ref={inputRef}
-                  value={commentBody}
-                  onChange={(event) => setCommentBody(event.target.value)}
-                  maxLength={500}
-                  placeholder={t.video.commentPlaceholder}
-                  className="min-w-0 flex-1 bg-transparent text-sm font-semibold text-black outline-none placeholder:text-zinc-400 dark:text-white"
-                />
-                <button
-                  type="submit"
-                  disabled={posting || !commentBody.trim()}
-                  className="shrink-0 text-sm font-bold text-accent disabled:opacity-40"
-                >
-                  {posting ? t.video.postingComment : t.video.postComment}
-                </button>
+              <form onSubmit={handleSubmit} className="border-t border-zinc-100 pt-3 dark:border-zinc-900">
+                {replyLabel ? (
+                  <div className="mb-2 flex items-center justify-between gap-2 text-xs font-semibold text-zinc-500">
+                    <span>{replyLabel}</span>
+                    <button
+                      type="button"
+                      onClick={() => setReplyTo(null)}
+                      className="text-accent hover:underline"
+                    >
+                      {t.auth.close}
+                    </button>
+                  </div>
+                ) : null}
+
+                <div className="relative flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowEmojiPicker((open) => !open)}
+                    aria-label={t.video.addEmoji}
+                    className="shrink-0 text-lg text-zinc-500 transition-colors hover:text-black dark:hover:text-white"
+                  >
+                    😊
+                  </button>
+
+                  {showEmojiPicker ? <EmojiPicker onPick={appendEmoji} /> : null}
+
+                  <input
+                    ref={inputRef}
+                    value={commentBody}
+                    onChange={(event) => setCommentBody(event.target.value)}
+                    maxLength={500}
+                    placeholder={t.video.commentPlaceholder}
+                    className="min-w-0 flex-1 bg-transparent text-sm font-semibold text-black outline-none placeholder:text-zinc-400 dark:text-white"
+                  />
+
+                  <button
+                    type="submit"
+                    disabled={posting || !commentBody.trim()}
+                    className="shrink-0 text-sm font-bold text-accent disabled:opacity-40"
+                  >
+                    {posting ? t.video.postingComment : t.video.postComment}
+                  </button>
+                </div>
               </form>
             ) : (
               <p className="border-t border-zinc-100 pt-3 text-sm font-semibold text-zinc-500 dark:border-zinc-900">

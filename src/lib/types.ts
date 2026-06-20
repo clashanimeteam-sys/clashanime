@@ -26,6 +26,16 @@ export type VideoComment = {
   username: string;
   display_name: string | null;
   avatar_url: string | null;
+  parent_id: string | null;
+  likes_count: number;
+  liked_by_me: boolean;
+  replies: VideoComment[];
+};
+
+export type VideoCommentsData = {
+  videoOwnerId: string | null;
+  pinnedCommentId: string | null;
+  comments: VideoComment[];
 };
 
 export type Video = {

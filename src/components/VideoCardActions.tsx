@@ -17,6 +17,7 @@ import type { VideoChannel } from "@/lib/types";
 type VideoPreview = {
   thumbnailUrl: string;
   videoUrl?: string;
+  videoOwnerId?: string | null;
   channel?: VideoChannel | null;
   hashtags?: string[];
 };
@@ -261,6 +262,7 @@ export function VideoCardActions({
           title={title}
           thumbnailUrl={preview.thumbnailUrl}
           videoUrl={preview.videoUrl}
+          videoOwnerId={preview.videoOwnerId}
           channel={preview.channel}
           hashtags={preview.hashtags}
           likesCount={likesCount}
