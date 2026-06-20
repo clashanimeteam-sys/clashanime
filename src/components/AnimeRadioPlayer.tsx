@@ -103,7 +103,11 @@ export function AnimeRadioPlayer() {
                   <p className="mt-2 text-sm text-zinc-300 sm:text-base">{artist}</p>
                 </div>
 
-                <div className="mt-6 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+                <div
+                  data-radio-controls
+                  onPointerDown={(event) => event.stopPropagation()}
+                  className="mt-6 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
+                >
                   <button
                     type="button"
                     onClick={() => void togglePlay()}
@@ -121,7 +125,11 @@ export function AnimeRadioPlayer() {
                   </button>
                 </div>
 
-                <label className="mt-5 block">
+                <label
+                  data-radio-controls
+                  onPointerDown={(event) => event.stopPropagation()}
+                  className="mt-5 block"
+                >
                   <span className="mb-2 block text-xs font-medium text-zinc-400">{t.radio.volume}</span>
                   <input
                     type="range"

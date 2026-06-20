@@ -190,7 +190,7 @@ export function Sidebar() {
         ) : null}
       </nav>
 
-      <div className="space-y-3 border-t border-zinc-200 p-3 dark:border-zinc-800">
+      <div className="relative z-50 space-y-3 border-t border-zinc-200 p-3 dark:border-zinc-800">
         {showAdminLink ? (
           <Link
             href="/admin"

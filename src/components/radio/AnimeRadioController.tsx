@@ -75,7 +75,8 @@ export function AnimeRadioController() {
 
     tryAutoplay();
 
-    function unlockOnInteraction() {
+    function unlockOnInteraction(event: PointerEvent) {
+      if ((event.target as Element | null)?.closest("[data-radio-controls]")) return;
       if (pausedByUserRef.current) return;
       if (autoplayAttemptedRef.current && isPlayingRef.current) return;
       if (!radioEnabled || !autoplayEnabled) return;

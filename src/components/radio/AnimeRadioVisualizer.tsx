@@ -4,16 +4,22 @@ type AnimeRadioVisualizerProps = {
   active: boolean;
   bars?: number;
   compact?: boolean;
+  mini?: boolean;
 };
 
 export function AnimeRadioVisualizer({
   active,
   bars = 14,
   compact = false,
+  mini = false,
 }: AnimeRadioVisualizerProps) {
-  const barCount = compact ? 10 : bars;
-  const containerClass = compact ? "h-9 gap-1" : "h-14 gap-1.5 sm:h-16";
-  const barClass = compact ? "w-1 sm:w-1.5" : "w-1.5 sm:w-2";
+  const barCount = mini ? 8 : compact ? 10 : bars;
+  const containerClass = mini
+    ? "h-6 gap-0.5"
+    : compact
+      ? "h-9 gap-1"
+      : "h-14 gap-1.5 sm:h-16";
+  const barClass = mini ? "w-0.5" : compact ? "w-1 sm:w-1.5" : "w-1.5 sm:w-2";
 
   return (
     <div className={`flex items-end justify-center ${containerClass}`} aria-hidden>
