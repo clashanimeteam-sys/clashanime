@@ -68,11 +68,13 @@ export function ProfileContent() {
     profile !== null &&
     ((displayNameChanged && canChangeDisplayName) || bioChanged);
 
-  const loadProfile = useCallback(async () => {
+  const loadProfile = useCallback(async (options?: { silent?: boolean }) => {
     if (!supabase || !user) return;
 
-    setLoading(true);
-    setError(null);
+    if (!options?.silent) {
+      setLoading(true);
+      setError(null);
+    }
 
     let { data: profileData, error: profileError } = await supabase
       .from("profiles")
@@ -132,8 +134,10 @@ export function ProfileContent() {
     setFollowerCount(followers ?? 0);
     setVideoCount(videosTotal ?? 0);
     setProfile(profileData);
-    setDisplayName(profileData.display_name ?? profileData.username);
-    setBio(profileData.bio ?? "");
+    if (!options?.silent) {
+      setDisplayName(profileData.display_name ?? profileData.username);
+      setBio(profileData.bio ?? "");
+    }
     if (profileData.display_name_changed_at) {
       rememberDisplayNameChange(profileData.id, profileData.display_name_changed_at);
     }

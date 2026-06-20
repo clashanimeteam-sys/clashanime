@@ -79,16 +79,6 @@ export function PointsPanel({ profile, onProfileRefresh, section }: PointsPanelP
     loadTransactions();
   }, [loadTransactions, totalPoints]);
 
-  useEffect(() => {
-    const refreshLivePoints = window.setInterval(() => {
-      void onProfileRefresh?.();
-      void refreshProfile();
-      void loadTransactions();
-    }, 20000);
-
-    return () => window.clearInterval(refreshLivePoints);
-  }, [loadTransactions, onProfileRefresh, refreshProfile]);
-
   async function copyReferralLink() {
     try {
       await navigator.clipboard.writeText(referralUrl);
