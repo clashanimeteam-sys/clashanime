@@ -12,6 +12,7 @@ import { getSignupUrl } from "@/lib/subscriptionGate";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useScrollLock } from "@/lib/useScrollLock";
 import { fetchVideoComments, postVideoComment } from "@/lib/videoEngagement";
+import { blockPublicVideoContextMenu, PUBLIC_VIDEO_CONTROLS_LIST } from "@/lib/videoPlayer";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { VideoChannel, VideoComment } from "@/lib/types";
@@ -182,6 +183,8 @@ export function VideoCommentsModal({
             <video
               src={videoUrl}
               controls
+              controlsList={PUBLIC_VIDEO_CONTROLS_LIST}
+              onContextMenu={blockPublicVideoContextMenu}
               autoPlay
               playsInline
               muted

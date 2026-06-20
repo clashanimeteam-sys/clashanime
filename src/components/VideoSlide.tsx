@@ -7,6 +7,7 @@ import { VideoCardChannel } from "@/components/VideoCardChannel";
 import { VideoSettingsMenu } from "@/components/VideoSettingsMenu";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { incrementVideoViews } from "@/lib/videoEngagement";
+import { blockPublicVideoContextMenu, PUBLIC_VIDEO_CONTROLS_LIST } from "@/lib/videoPlayer";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Video } from "@/lib/types";
 
@@ -74,6 +75,8 @@ export function VideoSlide({ video, isActive }: VideoSlideProps) {
             ref={videoRef}
             src={video.video_url}
             controls
+            controlsList={PUBLIC_VIDEO_CONTROLS_LIST}
+            onContextMenu={blockPublicVideoContextMenu}
             playsInline
             preload="metadata"
             poster={video.thumbnail_url}

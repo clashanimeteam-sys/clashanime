@@ -248,6 +248,7 @@ export type Dictionary = {
     reject: string;
     sendToReview: string;
     preview: string;
+    downloadVideo: string;
     delete: string;
     confirmDeleteVideo: string;
     ban: string;
@@ -609,6 +610,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reject: "Reject",
       sendToReview: "Send to review",
       preview: "Preview",
+      downloadVideo: "Download",
       delete: "Delete",
       confirmDeleteVideo: "Delete this video permanently?",
       ban: "Ban",
@@ -965,6 +967,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reject: "拒否",
       sendToReview: "審査へ",
       preview: "プレビュー",
+      downloadVideo: "ダウンロード",
       delete: "削除",
       confirmDeleteVideo: "この動画を完全に削除しますか？",
       ban: "停止",
@@ -1323,6 +1326,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reject: "رفض",
       sendToReview: "إرسال للمراجعة",
       preview: "معاينة",
+      downloadVideo: "تنزيل",
       delete: "حذف",
       confirmDeleteVideo: "حذف هذا الفيديو نهائياً؟",
       ban: "حظر",

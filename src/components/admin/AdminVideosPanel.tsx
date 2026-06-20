@@ -255,6 +255,17 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
                 >
                   {t.admin.preview}
                 </Link>
+                {video.video_url ? (
+                  <a
+                    href={video.video_url}
+                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-lg border border-zinc-700 px-3 py-2 text-center text-xs font-semibold text-zinc-200 hover:border-zinc-500"
+                  >
+                    {t.admin.downloadVideo}
+                  </a>
+                ) : null}
                 <button
                   type="button"
                   onClick={() => deleteVideo(video.id)}
