@@ -9,6 +9,7 @@ import { CommunityReportModal } from "@/components/CommunityReportModal";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { deleteCommunityPost } from "@/lib/communityEngagement";
+import { canPostToCommunity } from "@/lib/points";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 import { getSignupUrl } from "@/lib/subscriptionGate";
@@ -46,7 +47,7 @@ const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 
 export function CommunityPageContent() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, profile, profileLoading } = useAuth();
   const { t } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const config = useMemo(() => getSupabaseConfig(), []);
@@ -172,9 +173,16 @@ export function CommunityPageContent() {
     return getPublicStorageUrl(config.url, "community-images", path);
   }
 
+  const postUnlocked = canPostToCommunity(profile);
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!supabase || !user) return;
+
+    if (!postUnlocked) {
+      setError(t.communityFeed.postLevelRequired);
+      return;
+    }
 
     const trimmed = body.trim();
     if (!trimmed && !imageFile) return;
@@ -261,6 +269,7 @@ export function CommunityPageContent() {
       </div>
 
       {user ? (
+        postUnlocked ? (
         <form onSubmit={handleSubmit} className="mb-8 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-black">
           <label className="block text-sm font-semibold text-black dark:text-white">
             {t.points.communityPostLabel}
@@ -324,6 +333,13 @@ export function CommunityPageContent() {
             </button>
           </div>
         </form>
+        ) : profileLoading ? (
+          <p className="mb-8 text-sm text-zinc-500">{t.points.communityLoading}</p>
+        ) : (
+          <p className="mb-8 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
+            {t.communityFeed.postLevelRequired}
+          </p>
+        )
       ) : (
         <p className="mb-8 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 text-sm text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300">
           <Link href={getSignupUrl("/community")} className="font-semibold text-accent hover:underline">

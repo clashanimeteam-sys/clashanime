@@ -256,6 +256,7 @@ export type Dictionary = {
   };
   communityFeed: {
     postPublished: string;
+    postLevelRequired: string;
     animeOnlyNotice: string;
     postPlaceholder: string;
     addImage: string;
@@ -719,7 +720,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communityPostSubmit: "Publish",
       communityPosting: "Publishing...",
       communityPostSuccess: "Post published. +50 points added.",
-      communitySignupHint: "to post in the community and earn points.",
+      communitySignupHint: "to view posts, comment, and interact in the community.",
       communityLoading: "Loading community posts...",
       communityEmpty: "No community posts yet. Be the first to publish.",
       levels: {
@@ -753,6 +754,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     communityFeed: {
       postPublished: "Post published.",
+      postLevelRequired:
+        "Publishing in the community is limited to Hunter ranks A and S (2001+ points). You can still view posts and comment.",
       animeOnlyNotice: "Community posts must be anime-related only. Off-topic, political, or adult content is prohibited.",
       postPlaceholder:
         "The clash arena is open.. share your favorite moment in the anime world!",
@@ -1219,7 +1222,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communityPostSubmit: "公開",
       communityPosting: "公開中...",
       communityPostSuccess: "投稿しました。+50 pt 獲得。",
-      communitySignupHint: "してコミュニティに投稿し、ポイントを獲得。",
+      communitySignupHint: "して投稿を見たり、コメントしたり、交流できます。",
       communityLoading: "投稿を読み込み中...",
       communityEmpty: "まだ投稿がありません。最初の投稿者になりましょう。",
       levels: {
@@ -1253,6 +1256,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     communityFeed: {
       postPublished: "投稿しました。",
+      postLevelRequired:
+        "コミュニティへの投稿はハンターランク A と S（2001pt以上）のみ可能です。投稿の閲覧とコメントはできます。",
       animeOnlyNotice: "コミュニティ投稿はアニメ関連のみ。政治・成人・無関係な内容は禁止です。",
       postPlaceholder: "決闘場は開いています.. アニメ世界の最高の瞬間を共有しよう！",
       addImage: "画像を追加",
@@ -1720,7 +1725,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communityPostSubmit: "نشر",
       communityPosting: "جارٍ النشر...",
       communityPostSuccess: "تم النشر. +50 نقطة.",
-      communitySignupHint: "للنشر في المجتمع وكسب النقاط.",
+      communitySignupHint: "لمشاهدة المنشورات والتعليق والتفاعل في المجتمع.",
       communityLoading: "جارٍ تحميل منشورات المجتمع...",
       communityEmpty: "لا توجد منشورات بعد. كن أول من ينشر.",
       levels: {
@@ -1754,6 +1759,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     communityFeed: {
       postPublished: "تم النشر.",
+      postLevelRequired:
+        "النشر في المجتمع متاح لرتبة الصياد A و S فقط (2001+ نقطة). يمكنك المشاهدة والتعليق على المنشورات.",
       animeOnlyNotice: "منشورات المجتمع يجب أن تكون مرتبطة بالأنمي فقط. يُمنع المحتوى السياسي أو الإباحي أو خارج الموضوع.",
       postPlaceholder: "ساحة النزال مفتوحة.. شاركنا لحظتك المفضلة في عالم الأنمي!",
       addImage: "إضافة صورة",
