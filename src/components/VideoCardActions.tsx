@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { createBrowserClient } from "@/lib/supabase/client";
 import {
@@ -9,6 +8,7 @@ import {
   incrementVideoShares,
   toggleVideoLike,
 } from "@/lib/videoEngagement";
+import { useRequireSubscription } from "@/hooks/useRequireSubscription";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 import { useVideoOverlay } from "@/providers/VideoOverlayProvider";
@@ -45,8 +45,8 @@ export function VideoCardActions({
   preview,
   variant = "default",
 }: VideoCardActionsProps) {
-  const router = useRouter();
   const { user } = useAuth();
+  const { requireSubscription } = useRequireSubscription();
   const { t } = useLocale();
   const { openComments, openReport, syncCommentsSession, commentsVideoId } = useVideoOverlay();
   const supabase = useMemo(() => createBrowserClient(), []);
@@ -103,17 +103,8 @@ export function VideoCardActions({
     syncCommentsSession,
   ]);
 
-  function requireAuth() {
-    router.push("/login");
-  }
-
   async function handleLike() {
-    if (!supabase) return;
-
-    if (!user) {
-      requireAuth();
-      return;
-    }
+    if (!supabase || !requireSubscription() || !user) return;
 
     setLoadingLike(true);
     setError(null);
@@ -131,7 +122,7 @@ export function VideoCardActions({
   }
 
   async function handleShare() {
-    if (!supabase) return;
+    if (!supabase || !requireSubscription()) return;
 
     const url =
       typeof window !== "undefined"
@@ -167,17 +158,14 @@ export function VideoCardActions({
   }
 
   function handleReport() {
-    if (!user) {
-      router.push(`/login?next=${encodeURIComponent(`/report?video=${videoId}`)}`);
-      return;
-    }
+    if (!requireSubscription(`/report?video=${videoId}`)) return;
 
     setError(null);
     openReport({ videoId, title });
   }
 
   function handleCommentsOpen() {
-    if (!preview) return;
+    if (!preview || !requireSubscription()) return;
 
     openComments({
       videoId,

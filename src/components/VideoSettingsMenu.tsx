@@ -1,6 +1,7 @@
 "use client";
 
 import { RefObject, useEffect, useRef, useState } from "react";
+import { useRequireSubscription } from "@/hooks/useRequireSubscription";
 import { useVideoOverlay } from "@/providers/VideoOverlayProvider";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -23,6 +24,7 @@ export function VideoSettingsMenu({
   const { t } = useLocale();
   const { user } = useAuth();
   const { openReport } = useVideoOverlay();
+  const { requireSubscription } = useRequireSubscription();
   const menuRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [speed, setSpeed] = useState(1);
@@ -91,6 +93,8 @@ export function VideoSettingsMenu({
   }
 
   async function copyLink() {
+    if (!requireSubscription()) return;
+
     const url =
       typeof window !== "undefined"
         ? `${window.location.origin}/video/${videoId}`
@@ -105,11 +109,7 @@ export function VideoSettingsMenu({
   }
 
   function handleReport() {
-    if (!user) {
-      showStatus(t.legal.reportLoginRequired);
-      setOpen(false);
-      return;
-    }
+    if (!requireSubscription(`/report?video=${videoId}`)) return;
 
     setOpen(false);
     openReport({ videoId, title });

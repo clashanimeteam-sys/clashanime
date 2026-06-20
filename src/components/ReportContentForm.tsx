@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { submitContentReport } from "@/lib/contentReports";
+import { getSignupUrl } from "@/lib/subscriptionGate";
 import {
   isValidHttpUrl,
   parseVideoId,
@@ -103,13 +104,10 @@ export function ReportContentForm({
 
     return (
       <p className="text-sm text-zinc-600 dark:text-zinc-400">
-        <Link
-          href={`/login?next=${encodeURIComponent(nextPath)}`}
-          className="font-semibold text-accent hover:underline"
-        >
-          {t.auth.logIn}
+        <Link href={getSignupUrl(nextPath)} className="font-semibold text-accent hover:underline">
+          {t.auth.signUp}
         </Link>{" "}
-        {t.legal.reportLoginHint}
+        {t.legal.reportSignupHint}
       </p>
     );
   }

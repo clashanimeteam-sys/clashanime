@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { useRequireSubscription } from "@/hooks/useRequireSubscription";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { formatRelativeTime } from "@/lib/format";
 import { pinVideoComment, toggleCommentLike, unpinVideoComment } from "@/lib/videoEngagement";
@@ -45,8 +45,8 @@ export function CommentThread({
   onPinChange,
   onCommentUpdate,
 }: CommentThreadProps) {
-  const router = useRouter();
   const { user } = useAuth();
+  const { requireSubscription } = useRequireSubscription();
   const { locale, t } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
 
@@ -67,10 +67,8 @@ export function CommentThread({
   const replyCount = comment.replies.length;
 
   async function handleLike() {
-    if (!supabase || !user) {
-      router.push("/login");
-      return;
-    }
+    if (!supabase || !requireSubscription()) return;
+    if (!user) return;
 
     setLiking(true);
 
@@ -156,7 +154,10 @@ export function CommentThread({
                 ) : null}
                 <button
                   type="button"
-                  onClick={() => onReply(comment)}
+                  onClick={() => {
+                    if (!requireSubscription()) return;
+                    onReply(comment);
+                  }}
                   className="hover:text-black dark:hover:text-white"
                 >
                   {t.video.reply}

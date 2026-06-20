@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { useRequireSubscription } from "@/hooks/useRequireSubscription";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -19,7 +19,7 @@ export function FollowButton({
   initialFollowerCount,
   onFollowerCountChange,
 }: FollowButtonProps) {
-  const router = useRouter();
+  const { requireSubscription } = useRequireSubscription();
   const { user } = useAuth();
   const { t } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
@@ -34,12 +34,9 @@ export function FollowButton({
   }
 
   async function toggleFollow() {
-    if (!user) {
-      router.push("/login");
-      return;
-    }
+    if (!requireSubscription()) return;
 
-    if (!supabase || user.id === channelId) return;
+    if (!supabase || !user || user.id === channelId) return;
 
     setLoading(true);
 

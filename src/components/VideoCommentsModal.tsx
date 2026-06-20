@@ -7,6 +7,8 @@ import { CommentThread, updateCommentInTree } from "@/components/CommentThread";
 import { EmojiPicker } from "@/components/EmojiPicker";
 import { ModalPortal } from "@/components/ModalPortal";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { useRequireSubscription } from "@/hooks/useRequireSubscription";
+import { getSignupUrl } from "@/lib/subscriptionGate";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useScrollLock } from "@/lib/useScrollLock";
 import { fetchVideoComments, postVideoComment } from "@/lib/videoEngagement";
@@ -63,6 +65,7 @@ export function VideoCommentsModal({
 }: VideoCommentsModalProps) {
   const { user } = useAuth();
   const { t } = useLocale();
+  const { requireSubscription } = useRequireSubscription();
   const supabase = useMemo(() => createBrowserClient(), []);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -113,10 +116,7 @@ export function VideoCommentsModal({
   }
 
   function handleReply(comment: VideoComment) {
-    if (!user) {
-      window.location.href = "/login";
-      return;
-    }
+    if (!requireSubscription()) return;
 
     setReplyTo(comment);
     inputRef.current?.focus();
@@ -131,7 +131,7 @@ export function VideoCommentsModal({
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!supabase || !user || !commentBody.trim()) return;
+    if (!supabase || !requireSubscription() || !user || !commentBody.trim()) return;
 
     setPosting(true);
     setError(null);
@@ -407,10 +407,10 @@ export function VideoCommentsModal({
               </form>
             ) : (
               <p className="border-t border-zinc-100 pt-3 text-sm font-semibold text-zinc-500 dark:border-zinc-900">
-                <Link href="/login" className="text-accent hover:underline">
-                  {t.auth.logIn}
+                <Link href={getSignupUrl(`/video/${videoId}`)} className="text-accent hover:underline">
+                  {t.auth.signUp}
                 </Link>{" "}
-                {t.video.loginToComment}
+                {t.video.signupToComment}
               </p>
             )}
 

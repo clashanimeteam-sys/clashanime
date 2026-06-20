@@ -44,6 +44,7 @@ export type Dictionary = {
     actionFailed: string;
     noComments: string;
     loginToComment: string;
+    signupToComment: string;
     reply: string;
     replyingTo: string;
     viewReplies: string;
@@ -97,6 +98,7 @@ export type Dictionary = {
     reportIntro: string;
     reportLoginRequired: string;
     reportLoginHint: string;
+    reportSignupHint: string;
     reportVideoId: string;
     reportVideoIdHint: string;
     reportReasonLabel: string;
@@ -392,6 +394,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       actionFailed: "Could not save. Try again.",
       noComments: "No comments yet. Be the first to comment.",
       loginToComment: "to post a comment.",
+      signupToComment: "to like, comment, share, or report videos.",
       reply: "Reply",
       replyingTo: "Replying to",
       viewReplies: "View replies ({count})",
@@ -446,8 +449,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reportTitle: "Report Content",
       reportIntro:
         "Report copyright issues, stolen re-uploads, spam, or other policy violations. Verified reports are reviewed in the admin panel.",
-      reportLoginRequired: "Log in to submit a report.",
+      reportLoginRequired: "Sign up to submit a report.",
       reportLoginHint: "to submit a content report.",
+      reportSignupHint: "to submit a content report.",
       reportVideoId: "Video ID or URL",
       reportVideoIdHint: "Paste the video ID from the URL (e.g. clashanime.com/video/abc-123)",
       reportReasonLabel: "Reason",
@@ -749,6 +753,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       actionFailed: "保存できませんでした。もう一度お試しください。",
       noComments: "まだコメントがありません。最初のコメントをどうぞ。",
       loginToComment: "してコメントを投稿。",
+      signupToComment: "して動画にいいね、コメント、共有、報告。",
       reply: "返信",
       replyingTo: "返信先",
       viewReplies: "返信を表示 ({count})",
@@ -801,8 +806,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
     legal: {
       reportTitle: "コンテンツを報告",
       reportIntro: "著作権、再アップロード、スパムなどの違反を報告してください。",
-      reportLoginRequired: "報告にはログインが必要です。",
+      reportLoginRequired: "報告には登録が必要です。",
       reportLoginHint: "してコンテンツを報告。",
+      reportSignupHint: "してコンテンツを報告。",
       reportVideoId: "動画IDまたはURL",
       reportVideoIdHint: "URLの動画IDを貼り付け（例: clashanime.com/video/abc-123）",
       reportReasonLabel: "理由",
@@ -1103,6 +1109,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       actionFailed: "تعذّر الحفظ. حاول مرة أخرى.",
       noComments: "لا توجد تعليقات بعد. كن أول من يعلّق.",
       loginToComment: "لنشر تعليق.",
+      signupToComment: "للإعجاب أو التعليق أو المشاركة أو الإبلاغ عن الفيديوهات.",
       reply: "رد",
       replyingTo: "الرد على",
       viewReplies: "عرض الردود ({count})",
@@ -1156,8 +1163,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reportTitle: "الإبلاغ عن محتوى",
       reportIntro:
         "أبلغ عن انتهاك حقوق النشر، أو إعادة رفع مسروق، أو spam، أو مخالفات أخرى. البلاغات تُراجع في لوحة التحكم.",
-      reportLoginRequired: "سجّل الدخول لإرسال بلاغ.",
+      reportLoginRequired: "أنشئ حساباً لإرسال بلاغ.",
       reportLoginHint: "لإرسال بلاغ عن محتوى.",
+      reportSignupHint: "لإرسال بلاغ عن محتوى.",
       reportVideoId: "معرّف الفيديو أو الرابط",
       reportVideoIdHint: "الصق معرّف الفيديو من الرابط (مثال: clashanime.com/video/abc-123)",
       reportReasonLabel: "السبب",
