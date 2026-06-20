@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { AuthProviderButtons } from "@/components/AuthProviderButtons";
 import { AuthShellHeader } from "@/components/AuthShellHeader";
-import { GoogleAuthButton } from "@/components/GoogleAuthButton";
 import { SiteTitle } from "@/components/SiteTitle";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -28,7 +28,7 @@ export function AuthPage({ mode }: { mode: "login" | "signup" }) {
           </p>
 
           <div className="mt-6">
-            <GoogleAuthButton mode={mode} />
+            <AuthProviderButtons mode={mode} />
           </div>
 
           <p className="mt-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
