@@ -74,7 +74,7 @@ export function OAuthAuthButton({ provider, mode, onError }: OAuthAuthButtonProp
     setLoading(true);
     onError("");
 
-    const redirectTo = `${window.location.origin}/auth/callback?next=/`;
+    const redirectTo = `${window.location.origin}/auth/callback?next=/profile`;
 
     const options =
       provider === "google"

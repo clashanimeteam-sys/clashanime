@@ -68,12 +68,12 @@ export function Sidebar() {
           <BrandLogo priority />
         </Link>
 
-        <button
-          type="button"
-          className="mt-4 w-full rounded-lg bg-accent px-3 py-2 text-xs font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
+        <Link
+          href="/upload"
+          className="mt-4 block w-full rounded-lg bg-accent px-3 py-2 text-center text-xs font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
         >
           {t.home.upload}
-        </button>
+        </Link>
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 p-3" aria-label="Main navigation">

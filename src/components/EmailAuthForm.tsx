@@ -34,7 +34,7 @@ export function EmailAuthForm({ mode, onError, onSuccess }: EmailAuthFormProps) 
 
     setLoading(true);
 
-    const redirectTo = `${window.location.origin}/auth/callback?next=/`;
+    const redirectTo = `${window.location.origin}/auth/callback?next=/profile`;
     const { error } = await supabase.auth.signInWithOtp({
       email: trimmed,
       options: {

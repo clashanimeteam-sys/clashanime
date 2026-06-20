@@ -75,6 +75,40 @@ export type Dictionary = {
     callbackError: string;
     configError: string;
   };
+  profile: {
+    loading: string;
+    customize: string;
+    saving: string;
+    saved: string;
+    displayName: string;
+    bio: string;
+    changeAvatar: string;
+    changeBanner: string;
+    avatarSaved: string;
+    bannerSaved: string;
+    uploading: string;
+    myVideos: string;
+    noVideos: string;
+    videosCount: string;
+  };
+  upload: {
+    create: string;
+    title: string;
+    subtitle: string;
+    loading: string;
+    videoFile: string;
+    thumbnailFile: string;
+    videoTitle: string;
+    videoTitlePlaceholder: string;
+    hashtags: string;
+    hashtagsPlaceholder: string;
+    durationLabel: string;
+    durationError: string;
+    invalidVideo: string;
+    requiredFields: string;
+    uploading: string;
+    publish: string;
+  };
 };
 
 export const dictionaries: Record<Locale, Dictionary> = {
@@ -154,6 +188,40 @@ export const dictionaries: Record<Locale, Dictionary> = {
       callbackError: "Authentication failed. Please try again.",
       configError: "Auth is not configured yet.",
     },
+    profile: {
+      loading: "Loading your channel...",
+      customize: "Customize channel",
+      saving: "Saving...",
+      saved: "Channel updated.",
+      displayName: "Channel name",
+      bio: "About",
+      changeAvatar: "Photo",
+      changeBanner: "Cover",
+      avatarSaved: "Profile photo updated.",
+      bannerSaved: "Cover image updated.",
+      uploading: "Uploading...",
+      myVideos: "Your videos",
+      noVideos: "No videos yet. Upload your first duel clip.",
+      videosCount: "videos",
+    },
+    upload: {
+      create: "Create",
+      title: "Upload duel clip",
+      subtitle: "Short vertical clips only: 10 seconds to 1 minute.",
+      loading: "Loading upload...",
+      videoFile: "Video file",
+      thumbnailFile: "Cover image",
+      videoTitle: "Title",
+      videoTitlePlaceholder: "Give your duel a title",
+      hashtags: "Hashtags",
+      hashtagsPlaceholder: "#anime #duel #clash",
+      durationLabel: "Duration",
+      durationError: "Clip must be between 10 seconds and 1 minute.",
+      invalidVideo: "Could not read this video file.",
+      requiredFields: "Add a video, cover image, and title.",
+      uploading: "Uploading...",
+      publish: "Publish",
+    },
   },
   ja: {
     brand: {
@@ -231,6 +299,40 @@ export const dictionaries: Record<Locale, Dictionary> = {
       callbackError: "認証に失敗しました。もう一度お試しください。",
       configError: "認証がまだ設定されていません。",
     },
+    profile: {
+      loading: "チャンネルを読み込み中...",
+      customize: "チャンネルを編集",
+      saving: "保存中...",
+      saved: "チャンネルを更新しました。",
+      displayName: "チャンネル名",
+      bio: "概要",
+      changeAvatar: "写真",
+      changeBanner: "カバー",
+      avatarSaved: "プロフィール写真を更新しました。",
+      bannerSaved: "カバー画像を更新しました。",
+      uploading: "アップロード中...",
+      myVideos: "あなたの動画",
+      noVideos: "まだ動画がありません。最初のデュエルをアップロードしましょう。",
+      videosCount: "本の動画",
+    },
+    upload: {
+      create: "作成",
+      title: "デュエルクリップをアップロード",
+      subtitle: "縦型ショート動画のみ：10秒から1分まで。",
+      loading: "アップロードを読み込み中...",
+      videoFile: "動画ファイル",
+      thumbnailFile: "カバー画像",
+      videoTitle: "タイトル",
+      videoTitlePlaceholder: "デュエルにタイトルを付ける",
+      hashtags: "ハッシュタグ",
+      hashtagsPlaceholder: "#anime #duel #clash",
+      durationLabel: "長さ",
+      durationError: "クリップは10秒から1分の間である必要があります。",
+      invalidVideo: "この動画ファイルを読み取れませんでした。",
+      requiredFields: "動画、カバー画像、タイトルを追加してください。",
+      uploading: "アップロード中...",
+      publish: "公開",
+    },
   },
   ar: {
     brand: {
@@ -307,6 +409,40 @@ export const dictionaries: Record<Locale, Dictionary> = {
       signingIn: "جارٍ تسجيل الدخول...",
       callbackError: "فشلت المصادقة. حاول مرة أخرى.",
       configError: "المصادقة غير مُعدّة بعد.",
+    },
+    profile: {
+      loading: "جارٍ تحميل قناتك...",
+      customize: "تخصيص القناة",
+      saving: "جارٍ الحفظ...",
+      saved: "تم تحديث القناة.",
+      displayName: "اسم القناة",
+      bio: "نبذة",
+      changeAvatar: "صورة",
+      changeBanner: "غلاف",
+      avatarSaved: "تم تحديث صورة القناة.",
+      bannerSaved: "تم تحديث صورة الغلاف.",
+      uploading: "جارٍ الرفع...",
+      myVideos: "فيديوهاتك",
+      noVideos: "لا توجد فيديوهات بعد. ارفع أول نزال.",
+      videosCount: "فيديو",
+    },
+    upload: {
+      create: "إنشاء",
+      title: "رفع مقطع نزال",
+      subtitle: "مقاطع قصيرة عمودية فقط: من 10 ثوانٍ إلى دقيقة.",
+      loading: "جارٍ تحميل الرفع...",
+      videoFile: "ملف الفيديو",
+      thumbnailFile: "صورة الغلاف",
+      videoTitle: "العنوان",
+      videoTitlePlaceholder: "أضف عنواناً للنزال",
+      hashtags: "الهاشتاغات",
+      hashtagsPlaceholder: "#anime #duel #clash",
+      durationLabel: "المدة",
+      durationError: "يجب أن يكون المقطع بين 10 ثوانٍ ودقيقة واحدة.",
+      invalidVideo: "تعذر قراءة ملف الفيديو.",
+      requiredFields: "أضف فيديو وصورة غلاف وعنواناً.",
+      uploading: "جارٍ الرفع...",
+      publish: "نشر",
     },
   },
 };
