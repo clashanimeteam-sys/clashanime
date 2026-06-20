@@ -52,6 +52,13 @@ export const metadata: Metadata = {
     type: "website",
     images: [{ url: "/logo.png" }],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Clash Anime",
+    description:
+      "Anime clips ranked by community engagement. Share videos and climb the grid on ClashAnime.com.",
+    images: ["/logo.png"],
+  },
 };
 
 export default function RootLayout({
