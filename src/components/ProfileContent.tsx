@@ -336,7 +336,7 @@ export function ProfileContent() {
     setBio(savedProfile.bio ?? "");
     setSaving(false);
     setMessage(t.profile.saved);
-    await refreshProfile();
+    await refreshProfile({ silent: true });
   }
 
   function handleSignOut() {
