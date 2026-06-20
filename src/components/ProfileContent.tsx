@@ -27,7 +27,7 @@ function getInitials(name: string) {
 
 export function ProfileContent() {
   const router = useRouter();
-  const { user, loading: authLoading, refreshProfile } = useAuth();
+  const { user, loading: authLoading, refreshProfile, signOut } = useAuth();
   const { t } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const config = useMemo(() => getSupabaseConfig(), []);
@@ -223,6 +223,11 @@ export function ProfileContent() {
     await refreshProfile();
   }
 
+  function handleSignOut() {
+    if (!window.confirm(t.auth.confirmSignOut)) return;
+    void signOut();
+  }
+
   if (authLoading || loading) {
     return (
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
@@ -399,6 +404,16 @@ export function ProfileContent() {
             )}
           </div>
         </form>
+
+        <div className="mt-8 border-t border-zinc-200 pt-6 dark:border-zinc-800">
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="rounded-full border border-red-300 px-5 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 dark:border-red-900/60 dark:text-red-400 dark:hover:bg-red-950/40"
+          >
+            {t.auth.signOut}
+          </button>
+        </div>
 
         <PointsPanel profile={profile} onProfileRefresh={loadProfile} />
 

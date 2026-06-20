@@ -41,7 +41,7 @@ function UserAvatar({
 }
 
 export function AuthTopBar() {
-  const { user, profile, loading, signOut } = useAuth();
+  const { user, profile, loading } = useAuth();
   const { t } = useLocale();
   const pathname = usePathname();
 
@@ -88,13 +88,6 @@ export function AuthTopBar() {
             >
               <UserAvatar name={displayName} avatarUrl={avatarUrl} />
             </Link>
-            <button
-              type="button"
-              onClick={() => signOut()}
-              className="hidden rounded-lg border border-zinc-300 px-3 py-1.5 text-sm font-medium text-black transition-colors hover:bg-zinc-50 sm:inline-flex dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-950"
-            >
-              {t.auth.signOut}
-            </button>
           </>
         ) : (
           <>

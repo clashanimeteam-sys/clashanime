@@ -127,6 +127,7 @@ export type Dictionary = {
     logIn: string;
     signUp: string;
     signOut: string;
+    confirmSignOut: string;
     loginTitle: string;
     signupTitle: string;
     loginSubtitle: string;
@@ -653,6 +654,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       logIn: "Log In",
       signUp: "Sign Up",
       signOut: "Sign Out",
+      confirmSignOut: "Are you sure you want to sign out?",
       loginTitle: "Log in to Clash Anime",
       signupTitle: "Sign up to Clash Anime",
       loginSubtitle: "Continue with Google, GitHub, or Facebook to join the duel grid.",
@@ -1183,6 +1185,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       logIn: "ログイン",
       signUp: "新規登録",
       signOut: "ログアウト",
+      confirmSignOut: "ログアウトしますか？",
       loginTitle: "Clash Animeにログイン",
       signupTitle: "Clash Animeに登録",
       loginSubtitle: "Google、GitHub、またはFacebookでデュエルグリッドに参加します。",
@@ -1714,6 +1717,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       logIn: "تسجيل الدخول",
       signUp: "إنشاء حساب",
       signOut: "تسجيل الخروج",
+      confirmSignOut: "هل أنت متأكد أنك تريد تسجيل الخروج؟",
       loginTitle: "تسجيل الدخول إلى Clash Anime",
       signupTitle: "إنشاء حساب في Clash Anime",
       loginSubtitle: "تابع بحساب Google أو GitHub أو Facebook للانضمام إلى شبكة النزالات.",
