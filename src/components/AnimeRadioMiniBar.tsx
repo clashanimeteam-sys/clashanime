@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getRadioStation } from "@/lib/animeRadio";
+import { AnimeRadioArtwork } from "@/components/radio/AnimeRadioArtwork";
 import { AnimeRadioVisualizer } from "@/components/radio/AnimeRadioVisualizer";
 import { useAnimeRadio } from "@/providers/AnimeRadioProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -45,7 +46,7 @@ export function AnimeRadioMiniBar() {
       <div
         data-radio-controls
         onPointerDown={(event) => event.stopPropagation()}
-        className={`pointer-events-auto relative w-full max-w-lg overflow-hidden rounded-full border border-white/15 bg-zinc-950/92 shadow-[0_10px_40px_rgba(0,0,0,0.45),0_0_0_1px_rgba(255,255,255,0.04)_inset] backdrop-blur-xl sm:max-w-2xl ${
+        className={`pointer-events-auto relative w-full max-w-lg rounded-full border border-white/15 bg-zinc-950/92 shadow-[0_10px_40px_rgba(0,0,0,0.45),0_0_0_1px_rgba(255,255,255,0.04)_inset] backdrop-blur-xl sm:max-w-2xl ${
           isPlaying ? "shadow-accent/15 ring-1 ring-accent/25" : ""
         }`}
         style={{
@@ -59,29 +60,19 @@ export function AnimeRadioMiniBar() {
           />
         ) : null}
 
-        <div className="relative flex items-center gap-2 px-2.5 py-2 sm:gap-3 sm:px-4 sm:py-2.5">
-          <div className="hidden shrink-0 ps-0.5 sm:flex">
+        <div className="relative flex items-center gap-2 px-2.5 py-1.5 sm:gap-3 sm:px-4 sm:py-2">
+          <div className="hidden shrink-0 sm:flex">
             <AnimeRadioVisualizer active={isPlaying} mini />
           </div>
 
-          <div className="relative h-9 w-9 shrink-0 sm:h-10 sm:w-10">
-            <div
-              className={`absolute inset-0 rounded-full ${isPlaying ? "animate-[radio-glow_2.2s_ease-in-out_infinite]" : "opacity-40"}`}
-              style={{
-                background: `linear-gradient(135deg, ${station.accentFrom}88, ${station.accentTo}66)`,
-              }}
-            />
-            <div className="absolute inset-0.5 overflow-hidden rounded-full border border-white/25 relative">
-              <Image
-                src={displayArt}
-                alt=""
-                fill
-                className="object-cover"
-                sizes="40px"
-                unoptimized
-              />
-            </div>
-          </div>
+          <AnimeRadioArtwork
+            src={displayArt}
+            alt={title}
+            isPlaying={isPlaying}
+            accentFrom={station.accentFrom}
+            accentTo={station.accentTo}
+            size="mini"
+          />
 
           <div className="min-w-0 flex-1 pe-1">
             <div className="flex items-center gap-1.5">
