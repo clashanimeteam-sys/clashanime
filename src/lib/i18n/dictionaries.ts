@@ -188,6 +188,12 @@ export type Dictionary = {
     bountyLocked: string;
     bountyLogTitle: string;
     bountyLogEmpty: string;
+    currentPositionTitle: string;
+    youAreHere: string;
+    globalRankPosition: string;
+    pointsInRank: string;
+    readyToRankUp: string;
+    levelSyncNote: string;
     rank: string;
     pointsLabel: string;
     totalPoints: string;
@@ -621,11 +627,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bountyLocked: "Locked",
       bountyLogTitle: "Recent bounty earnings",
       bountyLogEmpty: "No bounty earnings yet. Start inviting friends or posting in Community.",
+      currentPositionTitle: "Your current rank",
+      youAreHere: "You are here",
+      globalRankPosition: "Rank {current} of {total}",
+      pointsInRank: "{current} / {max} points in this rank",
+      readyToRankUp: "Ready to rank up to {rank}!",
+      levelSyncNote: "Your rank is syncing from your latest points.",
       rank: "Rank",
       pointsLabel: "points",
       totalPoints: "Total points",
       nextLevel: "Next rank",
-      pointsToNext: "{count} points to next rank",
+      pointsToNext: "{count} points to reach {rank}",
       maxLevelReached: "Maximum rank reached.",
       perksTitle: "Rank perks",
       howToEarn: "How to earn points",
@@ -1056,11 +1068,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bountyLocked: "未解放",
       bountyLogTitle: "最近の報酬獲得",
       bountyLogEmpty: "まだ報酬がありません。友達を招待するかコミュニティに投稿してください。",
+      currentPositionTitle: "現在のランク",
+      youAreHere: "現在地",
+      globalRankPosition: "全 {total} ランク中 {current}",
+      pointsInRank: "このランク {current} / {max} pt",
+      readyToRankUp: "{rank} へ昇格可能！",
+      levelSyncNote: "最新ポイントからランクを同期中です。",
       rank: "ランク",
       pointsLabel: "ポイント",
       totalPoints: "合計ポイント",
       nextLevel: "次のランク",
-      pointsToNext: "次のランクまで {count} pt",
+      pointsToNext: "次のランク {rank} まで {count} pt",
       maxLevelReached: "最高ランクに到達しました。",
       perksTitle: "ランク特典",
       howToEarn: "ポイントの獲得方法",
@@ -1493,11 +1511,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bountyLocked: "مقفلة",
       bountyLogTitle: "آخر مكافآت الجوائز",
       bountyLogEmpty: "لا توجد مكافآت بعد. ادعُ أصدقاءك أو انشر في المجتمع.",
+      currentPositionTitle: "مركزك الحالي",
+      youAreHere: "أنت هنا",
+      globalRankPosition: "الرتبة {current} من {total}",
+      pointsInRank: "{current} / {max} نقطة في هذه الرتبة",
+      readyToRankUp: "جاهز للترقية إلى {rank}!",
+      levelSyncNote: "يتم مزامنة رتبتك من أحدث نقاطك.",
       rank: "الرتبة",
       pointsLabel: "نقطة",
       totalPoints: "إجمالي النقاط",
       nextLevel: "الرتبة التالية",
-      pointsToNext: "{count} نقطة للرتبة التالية",
+      pointsToNext: "{count} نقطة للوصول إلى {rank}",
       maxLevelReached: "وصلت إلى أعلى رتبة.",
       perksTitle: "مزايا الرتبة",
       howToEarn: "كيف تكسب النقاط",

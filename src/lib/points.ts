@@ -68,16 +68,22 @@ export function getLevelProgress(points: number) {
   const level = pointsToLevel(points);
   const current = getLevelDefinition(level);
   const next = LEVELS.find((entry) => entry.level === level + 1) ?? null;
-  const floor = current.minPoints;
-  const ceiling = next?.minPoints ?? current.minPoints;
-  const span = Math.max(ceiling - floor, 1);
-  const progress = next ? Math.min(100, Math.round(((points - floor) / span) * 100)) : 100;
+  const rankMin = current.minPoints;
+  const rankMax = next ? next.minPoints - 1 : points;
+  const rankSpan = Math.max(rankMax - rankMin + 1, 1);
+  const pointsInRank = Math.min(Math.max(points - rankMin + 1, 0), rankSpan);
+  const tierProgress = next ? Math.min(100, Math.round((pointsInRank / rankSpan) * 100)) : 100;
 
   return {
     level,
     current,
     next,
-    progress,
+    progress: tierProgress,
+    tierProgress,
+    pointsInRank,
+    rankMin,
+    rankMax,
+    rankSpan,
     pointsToNext: next ? Math.max(next.minPoints - points, 0) : 0,
     nextRank: next?.rank ?? null,
     nextLevelKey: next?.key ?? null,

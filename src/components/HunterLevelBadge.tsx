@@ -1,6 +1,6 @@
 "use client";
 
-import { getLevelDefinition, LEVEL_STYLES } from "@/lib/points";
+import { getLevelDefinition, LEVEL_STYLES, pointsToLevel } from "@/lib/points";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type HunterLevelBadgeProps = {
@@ -23,7 +23,7 @@ export function HunterLevelBadge({
   showLabel = true,
 }: HunterLevelBadgeProps) {
   const { t } = useLocale();
-  const resolvedLevel = level ?? 1;
+  const resolvedLevel = points != null ? pointsToLevel(points) : (level ?? 1);
   const definition = getLevelDefinition(resolvedLevel);
   const style = LEVEL_STYLES[definition.rank];
   const levelName = t.points.levels[definition.key];

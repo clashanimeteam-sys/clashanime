@@ -1,6 +1,6 @@
 "use client";
 
-import { getBountiesForLevel, getLevelDefinition, LEVELS, LEVEL_STYLES } from "@/lib/points";
+import { getBountiesForLevel, LEVELS, LEVEL_STYLES } from "@/lib/points";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type BountyRewardsGridProps = {
@@ -65,12 +65,4 @@ export function BountyRewardsGrid({ currentLevel }: BountyRewardsGridProps) {
       </div>
     </div>
   );
-}
-
-export function getNextRankLabel(
-  nextLevelKey: ReturnType<typeof getLevelDefinition>["key"] | null | undefined,
-  t: { points: { levels: Record<string, string> } },
-) {
-  if (!nextLevelKey) return null;
-  return t.points.levels[nextLevelKey];
 }

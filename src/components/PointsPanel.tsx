@@ -1,13 +1,14 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
-import { BountyRewardsGrid, getNextRankLabel } from "@/components/BountyRewardsGrid";
+import { BountyRewardsGrid } from "@/components/BountyRewardsGrid";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
+import { RankPositionTrack } from "@/components/RankPositionTrack";
 import {
   canUploadVideos,
-  getLevelProgress,
   getReferralUrl,
   POINT_VALUES,
+  pointsToLevel,
 } from "@/lib/points";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
@@ -38,10 +39,10 @@ export function PointsPanel({ profile, onProfileRefresh }: PointsPanelProps) {
   const { refreshProfile } = useAuth();
   const supabase = useMemo(() => createBrowserClient(), []);
 
-  const progress = getLevelProgress(profile.points ?? 0);
+  const totalPoints = profile.points ?? 0;
+  const computedLevel = pointsToLevel(totalPoints);
   const referralUrl = getReferralUrl(profile.username);
   const uploadUnlocked = canUploadVideos(profile);
-  const nextRankLabel = getNextRankLabel(progress.nextLevelKey, t);
 
   const [verificationMessage, setVerificationMessage] = useState("");
   const [verificationStatus, setVerificationStatus] = useState<string | null>(null);
@@ -69,7 +70,17 @@ export function PointsPanel({ profile, onProfileRefresh }: PointsPanelProps) {
 
   useEffect(() => {
     loadTransactions();
-  }, [loadTransactions]);
+  }, [loadTransactions, totalPoints]);
+
+  useEffect(() => {
+    const refreshLivePoints = window.setInterval(() => {
+      void onProfileRefresh?.();
+      void refreshProfile();
+      void loadTransactions();
+    }, 20000);
+
+    return () => window.clearInterval(refreshLivePoints);
+  }, [loadTransactions, onProfileRefresh, refreshProfile]);
 
   async function copyReferralLink() {
     try {
@@ -116,52 +127,36 @@ export function PointsPanel({ profile, onProfileRefresh }: PointsPanelProps) {
           <h2 className="mt-1 text-xl font-bold text-black dark:text-white">{t.points.hunterRank}</h2>
           <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{t.points.bountyRewardsHint}</p>
         </div>
-        <HunterLevelBadge level={profile.level} points={profile.points} size="lg" />
+        <HunterLevelBadge level={computedLevel} points={totalPoints} size="lg" />
       </div>
 
-      <div className="mt-5 grid gap-4 sm:grid-cols-2">
-        <div className="rounded-xl border border-zinc-200 bg-white/90 p-4 backdrop-blur dark:border-zinc-800 dark:bg-black/80">
-          <p className="text-sm text-zinc-500">{t.points.totalPoints}</p>
-          <p className="mt-1 text-3xl font-black text-black dark:text-white">
-            {(profile.points ?? 0).toLocaleString()}
-          </p>
-          {progress.next ? (
-            <div className="mt-4">
-              <div className="mb-1 flex items-center justify-between text-xs text-zinc-500">
-                <span>
-                  {nextRankLabel
-                    ? `${t.points.nextLevel}: ${nextRankLabel}`
-                    : t.points.nextLevel}
-                </span>
-                <span>{progress.progress}%</span>
-              </div>
-              <div className="h-2 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-accent to-orange-400 transition-all"
-                  style={{ width: `${progress.progress}%` }}
-                />
-              </div>
-              <p className="mt-2 text-xs text-zinc-500">
-                {t.points.pointsToNext.replace("{count}", progress.pointsToNext.toLocaleString())}
-              </p>
-            </div>
-          ) : (
-            <p className="mt-3 text-xs font-semibold text-amber-500">{t.points.maxLevelReached}</p>
-          )}
-        </div>
+      <RankPositionTrack points={totalPoints} storedLevel={profile.level} />
 
+      <div className="mt-5 grid gap-4 sm:grid-cols-2">
         <div className="rounded-xl border border-zinc-200 bg-white/90 p-4 backdrop-blur dark:border-zinc-800 dark:bg-black/80">
           <p className="text-sm font-semibold text-black dark:text-white">{t.points.perksTitle}</p>
           <ul className="mt-3 space-y-2 text-sm text-zinc-600 dark:text-zinc-300">
             <li>{uploadUnlocked ? "✓" : "○"} {t.points.perks.voteComment}</li>
             <li>{uploadUnlocked ? "✓" : "○"} {t.points.perks.upload}</li>
-            <li>{progress.level >= 3 ? "✓" : "○"} {t.points.perks.doubleVote}</li>
-            <li>{progress.level >= 4 || profile.is_verified ? "✓" : "○"} {t.points.perks.legend}</li>
+            <li>{computedLevel >= 3 ? "✓" : "○"} {t.points.perks.doubleVote}</li>
+            <li>{computedLevel >= 4 || profile.is_verified ? "✓" : "○"} {t.points.perks.legend}</li>
+          </ul>
+        </div>
+
+        <div className="rounded-xl border border-zinc-200 bg-white/90 p-4 backdrop-blur dark:border-zinc-800 dark:bg-black/80">
+          <p className="text-sm font-semibold text-black dark:text-white">{t.points.howToEarn}</p>
+          <ul className="mt-3 grid gap-2 text-sm text-zinc-600 dark:text-zinc-300">
+            <li>+{POINT_VALUES.referralClick} · {t.points.earn.referralClick}</li>
+            <li>+{POINT_VALUES.referralSignup} · {t.points.earn.referralSignup}</li>
+            <li>+{POINT_VALUES.videoLike} · {t.points.earn.videoLike}</li>
+            <li>+{POINT_VALUES.videoUpload} · {t.points.earn.videoUpload}</li>
+            <li>+{POINT_VALUES.communityPost} · {t.points.earn.communityPost}</li>
+            <li>+{POINT_VALUES.trendingBonus} · {t.points.earn.trendingBonus}</li>
           </ul>
         </div>
       </div>
 
-      <BountyRewardsGrid currentLevel={progress.level} />
+      <BountyRewardsGrid currentLevel={computedLevel} />
 
       <div className="mt-5 rounded-xl border border-zinc-200 bg-white/90 p-4 backdrop-blur dark:border-zinc-800 dark:bg-black/80">
         <h3 className="text-sm font-semibold text-black dark:text-white">{t.points.bountyLogTitle}</h3>
@@ -189,18 +184,6 @@ export function PointsPanel({ profile, onProfileRefresh }: PointsPanelProps) {
       </div>
 
       <div className="mt-5 rounded-xl border border-zinc-200 bg-white/90 p-4 backdrop-blur dark:border-zinc-800 dark:bg-black/80">
-        <h3 className="text-sm font-semibold text-black dark:text-white">{t.points.howToEarn}</h3>
-        <ul className="mt-3 grid gap-2 text-sm text-zinc-600 sm:grid-cols-2 dark:text-zinc-300">
-          <li>+{POINT_VALUES.referralClick} · {t.points.earn.referralClick}</li>
-          <li>+{POINT_VALUES.referralSignup} · {t.points.earn.referralSignup}</li>
-          <li>+{POINT_VALUES.videoLike} · {t.points.earn.videoLike}</li>
-          <li>+{POINT_VALUES.videoUpload} · {t.points.earn.videoUpload}</li>
-          <li>+{POINT_VALUES.communityPost} · {t.points.earn.communityPost}</li>
-          <li>+{POINT_VALUES.trendingBonus} · {t.points.earn.trendingBonus}</li>
-        </ul>
-      </div>
-
-      <div className="mt-5 rounded-xl border border-zinc-200 bg-white/90 p-4 backdrop-blur dark:border-zinc-800 dark:bg-black/80">
         <h3 className="text-sm font-semibold text-black dark:text-white">{t.points.referralTitle}</h3>
         <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{t.points.referralHint}</p>
         <div className="mt-3 flex flex-col gap-2 sm:flex-row">
@@ -223,7 +206,7 @@ export function PointsPanel({ profile, onProfileRefresh }: PointsPanelProps) {
         <h3 className="text-sm font-semibold text-black dark:text-white">{t.points.verificationTitle}</h3>
         {profile.is_verified ? (
           <p className="mt-2 text-sm text-emerald-600 dark:text-emerald-400">{t.points.alreadyVerified}</p>
-        ) : progress.level >= 4 ? (
+        ) : computedLevel >= 4 ? (
           <p className="mt-2 text-sm text-amber-500">{t.points.legendAutoVerify}</p>
         ) : (
           <>
