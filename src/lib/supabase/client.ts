@@ -1,17 +1,28 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { getSupabaseConfig } from "@/lib/supabase/config";
 
 let browserClient: SupabaseClient | null = null;
+let browserConfigKey: string | null = null;
 
 export function createBrowserClient(): SupabaseClient | null {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const config = getSupabaseConfig();
 
-  if (!supabaseUrl || !supabaseAnonKey) {
+  if (!config) {
     return null;
   }
 
-  if (!browserClient) {
-    browserClient = createClient(supabaseUrl, supabaseAnonKey);
+  const configKey = `${config.url}:${config.anonKey}`;
+
+  if (!browserClient || browserConfigKey !== configKey) {
+    browserClient = createClient(config.url, config.anonKey, {
+      auth: {
+        flowType: "pkce",
+        detectSessionInUrl: true,
+        persistSession: true,
+        autoRefreshToken: true,
+      },
+    });
+    browserConfigKey = configKey;
   }
 
   return browserClient;

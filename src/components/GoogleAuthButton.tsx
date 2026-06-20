@@ -35,40 +35,67 @@ function GoogleIcon() {
 export function GoogleAuthButton({ mode, className = "" }: GoogleAuthButtonProps) {
   const { t } = useLocale();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleGoogleAuth() {
     const supabase = createBrowserClient();
-    if (!supabase) return;
+    if (!supabase) {
+      setError(t.auth.configError);
+      return;
+    }
 
     setLoading(true);
+    setError(null);
 
-    const redirectTo = `${window.location.origin}/auth/callback?next=${mode === "signup" ? "/" : "/"}`;
+    const redirectTo = `${window.location.origin}/auth/callback?next=/`;
 
-    await supabase.auth.signInWithOAuth({
+    const { data, error: authError } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
         redirectTo,
+        skipBrowserRedirect: true,
         queryParams: {
           access_type: "offline",
           prompt: "consent",
         },
       },
     });
+
+    if (authError) {
+      setError(authError.message);
+      setLoading(false);
+      return;
+    }
+
+    if (!data?.url) {
+      setError(t.auth.callbackError);
+      setLoading(false);
+      return;
+    }
+
+    window.location.assign(data.url);
   }
 
   return (
-    <button
-      type="button"
-      onClick={handleGoogleAuth}
-      disabled={loading}
-      className={`flex w-full items-center justify-center gap-3 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-medium text-black transition-colors hover:bg-zinc-50 disabled:opacity-60 dark:border-zinc-700 dark:bg-black dark:text-white dark:hover:bg-zinc-950 ${className}`}
-    >
-      <GoogleIcon />
-      {loading
-        ? t.auth.loading
-        : mode === "signup"
-          ? t.auth.continueGoogleSignup
-          : t.auth.continueGoogleLogin}
-    </button>
+    <div className="space-y-2">
+      <button
+        type="button"
+        onClick={handleGoogleAuth}
+        disabled={loading}
+        className={`flex w-full items-center justify-center gap-3 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-medium text-black transition-colors hover:bg-zinc-50 disabled:opacity-60 dark:border-zinc-700 dark:bg-black dark:text-white dark:hover:bg-zinc-950 ${className}`}
+      >
+        <GoogleIcon />
+        {loading
+          ? t.auth.loading
+          : mode === "signup"
+            ? t.auth.continueGoogleSignup
+            : t.auth.continueGoogleLogin}
+      </button>
+      {error && (
+        <p className="text-center text-xs text-red-500" role="alert">
+          {error}
+        </p>
+      )}
+    </div>
   );
 }
