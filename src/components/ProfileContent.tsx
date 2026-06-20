@@ -251,51 +251,51 @@ export function ProfileContent() {
       </div>
 
       <div className="px-4 pb-10 sm:px-6">
-        <div className="relative -mt-12 flex flex-col gap-4 sm:-mt-14 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
-            <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-white bg-zinc-200 sm:h-28 sm:w-28 dark:border-black dark:bg-zinc-900">
-              {profile.avatar_url ? (
-                <Image
-                  src={profile.avatar_url}
-                  alt={profile.display_name ?? profile.username}
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center text-xl font-bold text-zinc-500">
-                  {getInitials(displayName || profile.username)}
-                </div>
-              )}
-              <label className="absolute inset-x-0 bottom-0 cursor-pointer bg-black/60 py-1 text-center text-[10px] font-medium text-white">
-                {uploadingAvatar ? "..." : t.profile.changeAvatar}
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  disabled={uploadingAvatar}
-                  onChange={(event) => {
-                    const file = event.target.files?.[0];
-                    if (file) {
-                      uploadImage("avatars", file, "avatar_url", setUploadingAvatar);
-                    }
-                  }}
-                />
-              </label>
-            </div>
+        <div className="-mt-12 sm:-mt-14">
+          <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-white bg-zinc-200 sm:h-28 sm:w-28 dark:border-black dark:bg-zinc-900">
+            {profile.avatar_url ? (
+              <Image
+                src={profile.avatar_url}
+                alt={profile.display_name ?? profile.username}
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-xl font-bold text-zinc-500">
+                {getInitials(displayName || profile.username)}
+              </div>
+            )}
+            <label className="absolute inset-x-0 bottom-0 cursor-pointer bg-black/60 py-1 text-center text-[10px] font-medium text-white">
+              {uploadingAvatar ? "..." : t.profile.changeAvatar}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                disabled={uploadingAvatar}
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
+                  if (file) {
+                    uploadImage("avatars", file, "avatar_url", setUploadingAvatar);
+                  }
+                }}
+              />
+            </label>
+          </div>
+        </div>
 
-            <div className="pt-1 sm:pt-10">
-              <h1 className="text-2xl font-bold text-black sm:text-3xl dark:text-white">
-                {displayName.trim() || profile.username}
-              </h1>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">@{profile.username}</p>
-              <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-                {videos.length} {t.profile.videosCount}
-              </p>
-            </div>
+        <div className="mt-5 flex flex-col gap-4 sm:mt-6 sm:flex-row sm:items-center sm:justify-between sm:pl-32">
+          <div>
+            <h1 className="text-2xl font-bold text-black sm:text-3xl dark:text-white">
+              {displayName.trim() || profile.username}
+            </h1>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">@{profile.username}</p>
+            <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+              {videos.length} {t.profile.videosCount}
+            </p>
           </div>
 
-          <div className="flex flex-wrap gap-2 sm:pt-10">
+          <div className="flex flex-wrap gap-2">
             <Link
               href="/upload"
               className="rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-black"
