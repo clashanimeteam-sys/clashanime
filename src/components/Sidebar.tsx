@@ -92,7 +92,7 @@ export function Sidebar() {
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 active
                   ? "bg-accent/15 text-accent"
-                  : "text-muted hover:bg-surface hover:text-foreground"
+                  : "text-muted hover:bg-background hover:text-foreground"
               }`}
             >
               <NavIcon icon={item.icon} />
@@ -108,7 +108,7 @@ export function Sidebar() {
           className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
             pathname === "/settings"
               ? "bg-accent/15 text-accent"
-              : "text-muted hover:bg-surface hover:text-foreground"
+              : "text-muted hover:bg-background hover:text-foreground"
           }`}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
@@ -120,7 +120,7 @@ export function Sidebar() {
 
         <div className="flex items-center justify-between gap-2">
           <div
-            className="flex items-center rounded-lg border border-border bg-surface p-0.5"
+            className="flex items-center rounded-lg border border-border bg-background p-0.5"
             role="group"
             aria-label={t.locale.label}
           >

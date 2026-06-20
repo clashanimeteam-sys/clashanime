@@ -83,7 +83,7 @@ function RankBadge({ rank }: { rank: number }) {
 export function VideoCard({ video, rank }: VideoCardProps) {
   return (
     <article
-      className={`group overflow-hidden rounded-2xl border bg-surface shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/10 ${
+      className={`group overflow-hidden rounded-2xl border bg-background shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/10 ${
         rank <= 3
           ? "border-accent/25 hover:border-accent/40"
           : "border-border hover:border-accent/30"

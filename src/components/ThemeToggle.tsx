@@ -26,7 +26,7 @@ export function ThemeToggle() {
       <button
         type="button"
         aria-label={t.theme.toggle}
-        className="h-9 w-9 rounded-lg border border-border bg-surface"
+        className="h-9 w-9 rounded-lg border border-border bg-background"
       />
     );
   }
@@ -38,7 +38,7 @@ export function ThemeToggle() {
       type="button"
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label={isDark ? t.theme.light : t.theme.dark}
-      className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-surface text-foreground transition-colors hover:border-accent/40 hover:text-accent"
+      className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background text-foreground transition-colors hover:border-accent/40 hover:text-accent"
     >
       {isDark ? (
         <svg

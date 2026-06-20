@@ -3,21 +3,21 @@
 :root {
   --background: #ffffff;
   --foreground: #111111;
-  --surface: #f4f4f5;
-  --sidebar: #fafafa;
+  --surface: #ffffff;
+  --sidebar: #ffffff;
   --muted: #6b7280;
-  --border: #e5e7eb;
+  --border: #eeeeee;
   --brand: #b31b1b;
   --accent: #b31b1b;
 }
 
 .dark {
-  --background: #121212;
+  --background: #000000;
   --foreground: #f4f4f5;
-  --surface: #1e1e1e;
-  --sidebar: #181818;
+  --surface: #000000;
+  --sidebar: #000000;
   --muted: #a1a1aa;
-  --border: #2e2e2e;
+  --border: #1a1a1a;
   --brand: #b31b1b;
   --accent: #f97316;
 }

@@ -16,7 +16,7 @@ export function MobileHeader() {
   const { locale, setLocale, t } = useLocale();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-md md:hidden">
+    <header className="sticky top-0 z-50 border-b border-border bg-background md:hidden">
       <div className="flex h-16 items-center justify-between gap-3 px-4">
         <Link href="/" className="flex items-center">
           <BrandLogo className="h-[4.5rem] w-[4.5rem]" priority />
@@ -24,7 +24,7 @@ export function MobileHeader() {
 
         <div className="flex items-center gap-2">
           <div
-            className="flex items-center rounded-lg border border-border bg-surface p-0.5"
+            className="flex items-center rounded-lg border border-border bg-background p-0.5"
             role="group"
             aria-label={t.locale.label}
           >
