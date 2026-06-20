@@ -8,6 +8,8 @@ const DOTLOTTIE_SCRIPT =
 const LOTTIE_SRC =
   "https://lottie.host/b1b5b12f-3bef-47d3-b193-15f7b7f7370b/bgVULaRa5q.lottie";
 
+const LOTTIE_SIZE = "min(88vw, 72vh, 720px)";
+
 type PageLoadingLottieProps = {
   show?: boolean;
 };
@@ -30,8 +32,8 @@ export function PageLoadingLottie({ show = true }: PageLoadingLottieProps) {
     player.setAttribute("src", LOTTIE_SRC);
     player.setAttribute("autoplay", "");
     player.setAttribute("loop", "");
-    player.style.width = "300px";
-    player.style.height = "300px";
+    player.style.width = LOTTIE_SIZE;
+    player.style.height = LOTTIE_SIZE;
     container.replaceChildren(player);
 
     return () => {
@@ -56,9 +58,12 @@ export function PageLoadingLottie({ show = true }: PageLoadingLottieProps) {
         aria-live="polite"
         aria-busy="true"
       >
-        <div ref={containerRef}>
+        <div ref={containerRef} className="flex items-center justify-center">
           {!scriptReady ? (
-            <div className="h-[300px] w-[300px] animate-pulse rounded-full bg-zinc-200 dark:bg-zinc-800" />
+            <div
+              className="animate-pulse rounded-full bg-zinc-200 dark:bg-zinc-800"
+              style={{ width: LOTTIE_SIZE, height: LOTTIE_SIZE }}
+            />
           ) : null}
         </div>
       </div>
