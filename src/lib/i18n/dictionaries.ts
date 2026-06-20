@@ -53,6 +53,13 @@ export type Dictionary = {
     pinned: string;
     addEmoji: string;
     swipeVideos: string;
+    settings: string;
+    playbackSpeed: string;
+    normalSpeed: string;
+    mute: string;
+    unmute: string;
+    fullscreen: string;
+    copyLink: string;
   };
   theme: {
     light: string;
@@ -197,6 +204,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       pinned: "Pinned",
       addEmoji: "Add emoji",
       swipeVideos: "Swipe up or down for next video",
+      settings: "Video settings",
+      playbackSpeed: "Playback speed",
+      normalSpeed: "Normal",
+      mute: "Mute",
+      unmute: "Unmute",
+      fullscreen: "Fullscreen",
+      copyLink: "Copy link",
     },
     theme: {
       light: "Switch to light mode",
@@ -339,6 +353,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       pinned: "固定済み",
       addEmoji: "絵文字を追加",
       swipeVideos: "上下にスワイプして次の動画へ",
+      settings: "動画設定",
+      playbackSpeed: "再生速度",
+      normalSpeed: "標準",
+      mute: "ミュート",
+      unmute: "ミュート解除",
+      fullscreen: "全画面",
+      copyLink: "リンクをコピー",
     },
     theme: {
       light: "ライトモードに切り替え",
@@ -481,6 +502,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       pinned: "مثبّت",
       addEmoji: "إضافة إيموجي",
       swipeVideos: "مرّر لأعلى أو لأسفل للفيديو التالي",
+      settings: "إعدادات الفيديو",
+      playbackSpeed: "سرعة التشغيل",
+      normalSpeed: "عادي",
+      mute: "كتم الصوت",
+      unmute: "تشغيل الصوت",
+      fullscreen: "ملء الشاشة",
+      copyLink: "نسخ الرابط",
     },
     theme: {
       light: "التبديل إلى الوضع النهاري",

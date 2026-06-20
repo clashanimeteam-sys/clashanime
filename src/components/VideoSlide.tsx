@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { VideoCardChannel } from "@/components/VideoCardChannel";
+import { VideoSettingsMenu } from "@/components/VideoSettingsMenu";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { incrementVideoViews } from "@/lib/videoEngagement";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -68,17 +69,26 @@ export function VideoSlide({ video, isActive }: VideoSlideProps) {
       className="relative h-[calc(100dvh-3.5rem)] w-full shrink-0 snap-start snap-always bg-black"
     >
       {hasVideo ? (
-        <video
-          ref={videoRef}
-          src={video.video_url}
-          controls
-          playsInline
-          preload="metadata"
-          poster={video.thumbnail_url}
-          className="absolute inset-0 h-full w-full object-contain"
-        >
-          {t.video.unavailable}
-        </video>
+        <>
+          <video
+            ref={videoRef}
+            src={video.video_url}
+            controls
+            playsInline
+            preload="metadata"
+            poster={video.thumbnail_url}
+            className="absolute inset-0 h-full w-full object-contain"
+          >
+            {t.video.unavailable}
+          </video>
+          {isActive ? (
+            <VideoSettingsMenu
+              videoRef={videoRef}
+              videoId={video.id}
+              title={video.title}
+            />
+          ) : null}
+        </>
       ) : (
         <>
           <Image
@@ -94,7 +104,7 @@ export function VideoSlide({ video, isActive }: VideoSlideProps) {
         </>
       )}
 
-      <span className="pointer-events-none absolute end-4 top-14 inline-flex items-center gap-1 rounded-full bg-black/75 px-2.5 py-1 text-xs font-bold text-white backdrop-blur-sm">
+      <span className="pointer-events-none absolute end-4 top-16 inline-flex items-center gap-1 rounded-full bg-black/75 px-2.5 py-1 text-xs font-bold text-white backdrop-blur-sm">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -110,7 +120,7 @@ export function VideoSlide({ video, isActive }: VideoSlideProps) {
         {viewsCount.toLocaleString()} {t.video.views}
       </span>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent px-4 pb-5 pt-16 sm:px-6">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent px-4 pb-24 pt-16 sm:px-6">
         <div className="pointer-events-auto space-y-3">
           <h1 className="text-lg font-bold leading-snug text-white sm:text-xl">{video.title}</h1>
 
