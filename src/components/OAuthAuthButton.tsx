@@ -10,6 +10,7 @@ type OAuthProvider = Extract<Provider, "google" | "github" | "facebook">;
 type OAuthAuthButtonProps = {
   provider: OAuthProvider;
   mode: "login" | "signup";
+  disabled?: boolean;
   onError: (message: string) => void;
 };
 
@@ -60,7 +61,7 @@ function getProviderIcon(provider: OAuthProvider) {
   return <FacebookIcon />;
 }
 
-export function OAuthAuthButton({ provider, mode, onError }: OAuthAuthButtonProps) {
+export function OAuthAuthButton({ provider, mode, disabled = false, onError }: OAuthAuthButtonProps) {
   const { t } = useLocale();
   const [loading, setLoading] = useState(false);
 
@@ -115,7 +116,7 @@ export function OAuthAuthButton({ provider, mode, onError }: OAuthAuthButtonProp
     <button
       type="button"
       onClick={handleOAuth}
-      disabled={loading}
+      disabled={loading || disabled}
       className="flex w-full items-center justify-center gap-3 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-medium text-black transition-colors hover:bg-zinc-50 disabled:opacity-60 dark:border-zinc-700 dark:bg-black dark:text-white dark:hover:bg-zinc-950"
     >
       {getProviderIcon(provider)}

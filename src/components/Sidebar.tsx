@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
 import { LocaleFlags } from "@/components/LocaleFlags";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { isStaff } from "@/lib/admin";
+import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
 const navItems = [
@@ -59,7 +61,9 @@ function NavIcon({ icon }: { icon: string }) {
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { profile } = useAuth();
   const { t } = useLocale();
+  const showAdminLink = isStaff(profile);
 
   return (
     <aside className="sticky top-0 flex min-h-screen w-56 shrink-0 flex-col border-e border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black lg:w-60">
@@ -97,6 +101,25 @@ export function Sidebar() {
       </nav>
 
       <div className="space-y-3 border-t border-zinc-200 p-3 dark:border-zinc-800">
+        {showAdminLink ? (
+          <Link
+            href="/admin"
+            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+              pathname.startsWith("/admin")
+                ? "bg-accent/15 text-accent"
+                : "text-zinc-600 hover:bg-white hover:text-black dark:text-zinc-400 dark:hover:bg-black dark:hover:text-white"
+            }`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <rect x="14" y="14" width="7" height="7" rx="1" />
+            </svg>
+            {t.admin.panelTitle}
+          </Link>
+        ) : null}
+
         <Link
           href="/settings"
           className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${

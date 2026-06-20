@@ -1,5 +1,7 @@
 export type Locale = "en" | "ja" | "ar";
 
+export type UserRole = "user" | "moderator" | "admin";
+
 export type Profile = {
   id: string;
   username: string;
@@ -7,6 +9,8 @@ export type Profile = {
   avatar_url: string | null;
   banner_url: string | null;
   bio: string | null;
+  role?: UserRole;
+  is_banned?: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -58,6 +62,8 @@ export type Video = {
   description?: string;
   moderation_status?: ModerationStatus;
   rejection_reason?: string | null;
+  suspicion_score?: number;
+  suspicion_flags?: string[];
 };
 
 export const MIN_CLIP_SECONDS = 10;

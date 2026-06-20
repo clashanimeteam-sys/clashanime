@@ -19,15 +19,20 @@ function isAuthRoute(pathname: string) {
   );
 }
 
+function isAdminRoute(pathname: string) {
+  return pathname.startsWith("/admin");
+}
+
 export function Providers({ children }: ProvidersProps) {
   const pathname = usePathname();
   const authRoute = isAuthRoute(pathname);
+  const adminRoute = isAdminRoute(pathname);
 
   return (
     <ThemeProvider>
       <LocaleProvider>
         <AuthProvider>
-          {authRoute ? (
+          {authRoute || adminRoute ? (
             children
           ) : (
             <>

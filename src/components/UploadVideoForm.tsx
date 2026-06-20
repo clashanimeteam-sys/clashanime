@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { computeContentFingerprints } from "@/lib/contentFingerprint";
 import { analyzeContentAuthenticity } from "@/lib/contentHeuristics";
 import {
@@ -16,13 +16,14 @@ import {
   getVideoDuration,
   parseHashtags,
 } from "@/lib/upload";
+import { fetchPublicSiteFlags } from "@/lib/siteSettings";
 import { MAX_CLIP_SECONDS, MIN_CLIP_SECONDS } from "@/lib/types";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
 export function UploadVideoForm() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const { t } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const config = useMemo(() => getSupabaseConfig(), []);
@@ -36,6 +37,12 @@ export function UploadVideoForm() {
   const [scanning, setScanning] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [uploadsAllowed, setUploadsAllowed] = useState(true);
+
+  useEffect(() => {
+    if (!supabase) return;
+    fetchPublicSiteFlags(supabase).then((flags) => setUploadsAllowed(flags.allowUploads));
+  }, [supabase]);
 
   async function handleVideoChange(file: File | undefined) {
     if (!file) return;
@@ -66,6 +73,16 @@ export function UploadVideoForm() {
 
     if (!supabase || !user || !config) {
       setError(t.auth.configError);
+      return;
+    }
+
+    if (profile?.is_banned) {
+      setError(t.upload.accountBanned);
+      return;
+    }
+
+    if (!uploadsAllowed) {
+      setError(t.upload.uploadsDisabled);
       return;
     }
 
