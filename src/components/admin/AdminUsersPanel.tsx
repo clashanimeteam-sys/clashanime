@@ -13,11 +13,21 @@ type UserRow = Profile & {
   video_count?: number;
 };
 
+type VerificationRequestRow = {
+  id: string;
+  user_id: string;
+  message: string | null;
+  created_at: string;
+  username?: string;
+  display_name?: string | null;
+};
+
 export function AdminUsersPanel() {
   const { user, profile: currentProfile } = useAuth();
   const { t } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [users, setUsers] = useState<UserRow[]>([]);
+  const [verificationRequests, setVerificationRequests] = useState<VerificationRequestRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +43,7 @@ export function AdminUsersPanel() {
 
     const { data, error: fetchError } = await supabase
       .from("profiles")
-      .select("id, username, display_name, role, is_banned, is_verified, created_at, updated_at, avatar_url, banner_url, bio")
+      .select("id, username, display_name, role, is_banned, is_verified, points, level, created_at, updated_at, avatar_url, banner_url, bio")
       .order("created_at", { ascending: false })
       .limit(200);
 
@@ -62,6 +72,28 @@ export function AdminUsersPanel() {
         video_count: countMap.get(row.id) ?? 0,
       })),
     );
+
+    const { data: requests } = await supabase
+      .from("verification_requests")
+      .select("id, user_id, message, created_at")
+      .eq("status", "pending")
+      .order("created_at", { ascending: false });
+
+    const requestRows = requests ?? [];
+    const requestUserIds = [...new Set(requestRows.map((row) => row.user_id))];
+    const { data: requestProfiles } = requestUserIds.length
+      ? await supabase.from("profiles").select("id, username, display_name").in("id", requestUserIds)
+      : { data: [] as Array<{ id: string; username: string; display_name: string | null }> };
+    const requestProfileMap = new Map((requestProfiles ?? []).map((profile) => [profile.id, profile]));
+
+    setVerificationRequests(
+      requestRows.map((row) => ({
+        ...row,
+        username: requestProfileMap.get(row.user_id)?.username,
+        display_name: requestProfileMap.get(row.user_id)?.display_name ?? null,
+      })),
+    );
+
     setLoading(false);
   }, [supabase]);
 
@@ -109,6 +141,48 @@ export function AdminUsersPanel() {
     await loadUsers();
   }
 
+  async function handleVerificationRequest(requestId: string, userId: string, approve: boolean) {
+    if (!supabase || !user) return;
+
+    setMessage(null);
+    setError(null);
+
+    if (approve) {
+      const { error: verifyError } = await supabase
+        .from("profiles")
+        .update({ is_verified: true, updated_at: new Date().toISOString() })
+        .eq("id", userId);
+
+      if (verifyError) {
+        setError(verifyError.message);
+        return;
+      }
+
+      await logModerationAction(supabase, {
+        targetUserId: userId,
+        staffId: user.id,
+        action: "verify_channel",
+      });
+    }
+
+    const { error: requestError } = await supabase
+      .from("verification_requests")
+      .update({
+        status: approve ? "approved" : "rejected",
+        handled_at: new Date().toISOString(),
+        handled_by: user.id,
+      })
+      .eq("id", requestId);
+
+    if (requestError) {
+      setError(requestError.message);
+      return;
+    }
+
+    setMessage(t.admin.saved);
+    await loadUsers();
+  }
+
   const filtered = users.filter((user) => {
     const haystack = `${user.username} ${user.display_name ?? ""}`.toLowerCase();
     return haystack.includes(query.trim().toLowerCase());
@@ -136,6 +210,45 @@ export function AdminUsersPanel() {
         className="w-full max-w-md rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-white outline-none focus:border-accent"
       />
 
+      {verificationRequests.length > 0 ? (
+        <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 p-4">
+          <h2 className="text-base font-semibold text-amber-200">{t.admin.verificationRequests}</h2>
+          <div className="mt-4 space-y-3">
+            {verificationRequests.map((request) => (
+              <article key={request.id} className="rounded-xl border border-zinc-800 bg-zinc-900/70 p-4">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <p className="font-medium text-white">
+                      {request.display_name ?? request.username ?? request.user_id}
+                    </p>
+                    <p className="text-sm text-zinc-500">@{request.username ?? "unknown"}</p>
+                    {request.message ? (
+                      <p className="mt-2 text-sm text-zinc-300">{request.message}</p>
+                    ) : null}
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleVerificationRequest(request.id, request.user_id, true)}
+                      className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white"
+                    >
+                      {t.admin.approveVerification}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleVerificationRequest(request.id, request.user_id, false)}
+                      className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-200"
+                    >
+                      {t.admin.rejectVerification}
+                    </button>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
       {loading ? (
         <p className="text-sm text-zinc-400">{t.admin.loading}</p>
       ) : (
@@ -144,6 +257,8 @@ export function AdminUsersPanel() {
             <thead className="bg-zinc-900 text-zinc-400">
               <tr>
                 <th className="px-4 py-3 text-start">{t.admin.table.user}</th>
+                <th className="px-4 py-3 text-start">{t.admin.points}</th>
+                <th className="px-4 py-3 text-start">{t.admin.level}</th>
                 <th className="px-4 py-3 text-start">{t.admin.table.role}</th>
                 <th className="px-4 py-3 text-start">{t.admin.table.videos}</th>
                 <th className="px-4 py-3 text-start">{t.admin.table.status}</th>
@@ -157,6 +272,8 @@ export function AdminUsersPanel() {
                     <div className="font-medium text-white">{user.display_name ?? user.username}</div>
                     <div className="text-zinc-500">@{user.username}</div>
                   </td>
+                  <td className="px-4 py-3 text-zinc-300">{(user.points ?? 0).toLocaleString()}</td>
+                  <td className="px-4 py-3 text-zinc-300">{user.level ?? 1}</td>
                   <td className="px-4 py-3">
                     <select
                       value={user.role ?? "user"}

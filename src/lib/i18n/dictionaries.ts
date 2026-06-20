@@ -179,6 +179,60 @@ export type Dictionary = {
     manageChannel: string;
     verifiedBadge: string;
   };
+  points: {
+    systemTitle: string;
+    hunterRank: string;
+    rank: string;
+    pointsLabel: string;
+    totalPoints: string;
+    nextLevel: string;
+    pointsToNext: string;
+    maxLevelReached: string;
+    perksTitle: string;
+    howToEarn: string;
+    referralTitle: string;
+    referralHint: string;
+    copyReferral: string;
+    linkCopied: string;
+    verificationTitle: string;
+    verificationHint: string;
+    verificationPlaceholder: string;
+    requestVerification: string;
+    verificationSubmitting: string;
+    verificationSubmitted: string;
+    alreadyVerified: string;
+    legendAutoVerify: string;
+    communitySubtitle: string;
+    communityPostLabel: string;
+    communityPostPlaceholder: string;
+    communityPostReward: string;
+    communityPostSubmit: string;
+    communityPosting: string;
+    communityPostSuccess: string;
+    communitySignupHint: string;
+    communityLoading: string;
+    communityEmpty: string;
+    levels: {
+      rookie: string;
+      challenger: string;
+      elite: string;
+      legend: string;
+    };
+    perks: {
+      voteComment: string;
+      upload: string;
+      doubleVote: string;
+      legend: string;
+    };
+    earn: {
+      referralClick: string;
+      referralSignup: string;
+      videoLike: string;
+      videoUpload: string;
+      communityPost: string;
+      trendingBonus: string;
+    };
+  };
   upload: {
     create: string;
     title: string;
@@ -202,6 +256,7 @@ export type Dictionary = {
     scanFailed: string;
     uploadsDisabled: string;
     accountBanned: string;
+    levelRequired: string;
   };
   moderation: {
     duplicateFile: string;
@@ -258,6 +313,11 @@ export type Dictionary = {
     verified: string;
     verify: string;
     unverify: string;
+    points: string;
+    level: string;
+    verificationRequests: string;
+    approveVerification: string;
+    rejectVerification: string;
     viewChannel: string;
     suspicionScore: string;
     rejectionReason: string;
@@ -534,6 +594,60 @@ export const dictionaries: Record<Locale, Dictionary> = {
       manageChannel: "Manage your channel",
       verifiedBadge: "Verified channel",
     },
+    points: {
+      systemTitle: "Hunter System",
+      hunterRank: "Hunter Rank",
+      rank: "Rank",
+      pointsLabel: "points",
+      totalPoints: "Total points",
+      nextLevel: "Next rank",
+      pointsToNext: "{count} points to next rank",
+      maxLevelReached: "Maximum rank reached.",
+      perksTitle: "Rank perks",
+      howToEarn: "How to earn points",
+      referralTitle: "Invite friends",
+      referralHint: "Share your link. You earn points when someone visits and when they sign up.",
+      copyReferral: "Copy link",
+      linkCopied: "Link copied",
+      verificationTitle: "Channel verification",
+      verificationHint: "Request manual verification for your channel. Legend rank unlocks automatic verification.",
+      verificationPlaceholder: "Tell us why your channel should be verified...",
+      requestVerification: "Request verification",
+      verificationSubmitting: "Submitting...",
+      verificationSubmitted: "Verification request sent to the admin team.",
+      alreadyVerified: "Your channel is verified.",
+      legendAutoVerify: "Legend rank unlocks automatic verification.",
+      communitySubtitle: "Share updates with the community and earn points for every post.",
+      communityPostLabel: "Write a post",
+      communityPostPlaceholder: "Share your thoughts, clips, or updates...",
+      communityPostReward: "+50 points per post",
+      communityPostSubmit: "Publish",
+      communityPosting: "Publishing...",
+      communityPostSuccess: "Post published. +50 points added.",
+      communitySignupHint: "to post in the community and earn points.",
+      communityLoading: "Loading community posts...",
+      communityEmpty: "No community posts yet. Be the first to publish.",
+      levels: {
+        rookie: "Rookie",
+        challenger: "Challenger",
+        elite: "Elite",
+        legend: "Legend",
+      },
+      perks: {
+        voteComment: "Vote and comment on videos",
+        upload: "Upload duel clips",
+        doubleVote: "Double-weight votes (Elite)",
+        legend: "Legend badge and ranking priority",
+      },
+      earn: {
+        referralClick: "Unique visit from your invite link",
+        referralSignup: "Friend signs up through your link",
+        videoLike: "Like a video",
+        videoUpload: "Upload an approved original clip",
+        communityPost: "Publish in Community",
+        trendingBonus: "Your clip reaches the trending grid",
+      },
+    },
     upload: {
       create: "Create",
       title: "Upload duel clip",
@@ -559,6 +673,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       scanFailed: "Could not verify this file. Try again with a different export.",
       uploadsDisabled: "Video uploads are temporarily disabled.",
       accountBanned: "Your account is suspended and cannot upload videos.",
+      levelRequired: "Reach Challenger rank (501+ points) to upload videos.",
     },
     moderation: {
       duplicateFile:
@@ -620,6 +735,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       verified: "Verified",
       verify: "Verify",
       unverify: "Remove verification",
+      points: "Points",
+      level: "Level",
+      verificationRequests: "Verification requests",
+      approveVerification: "Approve verification",
+      rejectVerification: "Reject verification",
       viewChannel: "View channel",
       suspicionScore: "Suspicion score",
       rejectionReason: "Rejection reason",
@@ -891,6 +1011,60 @@ export const dictionaries: Record<Locale, Dictionary> = {
       manageChannel: "チャンネルを管理",
       verifiedBadge: "認証済みチャンネル",
     },
+    points: {
+      systemTitle: "ハンターシステム",
+      hunterRank: "ハンターランク",
+      rank: "ランク",
+      pointsLabel: "ポイント",
+      totalPoints: "合計ポイント",
+      nextLevel: "次のランク",
+      pointsToNext: "次のランクまで {count} pt",
+      maxLevelReached: "最高ランクに到達しました。",
+      perksTitle: "ランク特典",
+      howToEarn: "ポイントの獲得方法",
+      referralTitle: "友達を招待",
+      referralHint: "リンクを共有すると、訪問と登録の両方でポイントを獲得できます。",
+      copyReferral: "リンクをコピー",
+      linkCopied: "コピーしました",
+      verificationTitle: "チャンネル認証",
+      verificationHint: "手動認証をリクエストできます。Legendランクで自動認証されます。",
+      verificationPlaceholder: "認証してほしい理由を入力...",
+      requestVerification: "認証をリクエスト",
+      verificationSubmitting: "送信中...",
+      verificationSubmitted: "認証リクエストを送信しました。",
+      alreadyVerified: "このチャンネルは認証済みです。",
+      legendAutoVerify: "Legendランクで自動認証されます。",
+      communitySubtitle: "コミュニティで投稿して、投稿ごとにポイントを獲得。",
+      communityPostLabel: "投稿を書く",
+      communityPostPlaceholder: "感想、クリップ、更新情報を共有...",
+      communityPostReward: "投稿ごとに +50 pt",
+      communityPostSubmit: "公開",
+      communityPosting: "公開中...",
+      communityPostSuccess: "投稿しました。+50 pt 獲得。",
+      communitySignupHint: "してコミュニティに投稿し、ポイントを獲得。",
+      communityLoading: "投稿を読み込み中...",
+      communityEmpty: "まだ投稿がありません。最初の投稿者になりましょう。",
+      levels: {
+        rookie: "ルーキー",
+        challenger: "チャレンジャー",
+        elite: "エリート",
+        legend: "レジェンド",
+      },
+      perks: {
+        voteComment: "動画への投票とコメント",
+        upload: "デュエルクリップのアップロード",
+        doubleVote: "投票が2倍カウント（エリート）",
+        legend: "レジェンドバッジとランキング優先",
+      },
+      earn: {
+        referralClick: "招待リンクからのユニーク訪問",
+        referralSignup: "招待リンク経由の新規登録",
+        videoLike: "動画にいいね",
+        videoUpload: "承認されたオリジナル動画のアップロード",
+        communityPost: "コミュニティへの投稿",
+        trendingBonus: "トレンドグリッド入り",
+      },
+    },
     upload: {
       create: "作成",
       title: "デュエルクリップをアップロード",
@@ -916,6 +1090,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       scanFailed: "ファイルを検証できませんでした。別の書き出しで再試行してください。",
       uploadsDisabled: "動画アップロードは一時的に停止されています。",
       accountBanned: "アカウントが停止されているため、アップロードできません。",
+      levelRequired: "Challengerランク（501pt以上）でアップロードできます。",
     },
     moderation: {
       duplicateFile:
@@ -977,6 +1152,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       verified: "認証済み",
       verify: "認証する",
       unverify: "認証を解除",
+      points: "ポイント",
+      level: "レベル",
+      verificationRequests: "認証リクエスト",
+      approveVerification: "認証を承認",
+      rejectVerification: "認証を却下",
       viewChannel: "チャンネルを見る",
       suspicionScore: "疑わしさスコア",
       rejectionReason: "拒否理由",
@@ -1250,6 +1430,60 @@ export const dictionaries: Record<Locale, Dictionary> = {
       manageChannel: "إدارة قناتك",
       verifiedBadge: "قناة موثّقة",
     },
+    points: {
+      systemTitle: "نظام الصياد",
+      hunterRank: "رتبة الصياد",
+      rank: "الرتبة",
+      pointsLabel: "نقطة",
+      totalPoints: "إجمالي النقاط",
+      nextLevel: "الرتبة التالية",
+      pointsToNext: "{count} نقطة للرتبة التالية",
+      maxLevelReached: "وصلت إلى أعلى رتبة.",
+      perksTitle: "مزايا الرتبة",
+      howToEarn: "كيف تكسب النقاط",
+      referralTitle: "ادعُ أصدقاءك",
+      referralHint: "شارك رابطك. تكسب نقاطاً عند كل زيارة وعند تسجيل صديق.",
+      copyReferral: "نسخ الرابط",
+      linkCopied: "تم نسخ الرابط",
+      verificationTitle: "توثيق القناة",
+      verificationHint: "اطلب توثيقاً يدوياً لقناتك. رتبة Legend تمنح توثيقاً تلقائياً.",
+      verificationPlaceholder: "اشرح لماذا تستحق توثيق قناتك...",
+      requestVerification: "طلب التوثيق",
+      verificationSubmitting: "جارٍ الإرسال...",
+      verificationSubmitted: "تم إرسال طلب التوثيق إلى فريق الإدارة.",
+      alreadyVerified: "قناتك موثّقة.",
+      legendAutoVerify: "رتبة Legend تمنح توثيقاً تلقائياً.",
+      communitySubtitle: "انشر في المجتمع واكسب نقاطاً على كل منشور.",
+      communityPostLabel: "اكتب منشوراً",
+      communityPostPlaceholder: "شارك أفكارك أو مقاطعك أو تحديثاتك...",
+      communityPostReward: "+50 نقطة لكل منشور",
+      communityPostSubmit: "نشر",
+      communityPosting: "جارٍ النشر...",
+      communityPostSuccess: "تم النشر. +50 نقطة.",
+      communitySignupHint: "للنشر في المجتمع وكسب النقاط.",
+      communityLoading: "جارٍ تحميل منشورات المجتمع...",
+      communityEmpty: "لا توجد منشورات بعد. كن أول من ينشر.",
+      levels: {
+        rookie: "مبتدئ",
+        challenger: "منافس",
+        elite: "نخبة",
+        legend: "أسطورة",
+      },
+      perks: {
+        voteComment: "التصويت والتعليق على الفيديوهات",
+        upload: "رفع مقاطع النزال",
+        doubleVote: "صوت بقيمة مضاعفة (نخبة)",
+        legend: "شارة أسطورة وأولوية في الترتيب",
+      },
+      earn: {
+        referralClick: "زيارة فريدة من رابط دعوتك",
+        referralSignup: "تسجيل صديق عبر رابطك",
+        videoLike: "الإعجاب بفيديو",
+        videoUpload: "رفع مقطع أصلي معتمد",
+        communityPost: "نشر في صفحة المجتمع",
+        trendingBonus: "وصول مقطعك إلى شبكة الترند",
+      },
+    },
     upload: {
       create: "إنشاء",
       title: "رفع مقطع نزال",
@@ -1275,6 +1509,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       scanFailed: "تعذر التحقق من الملف. جرّب تصديراً مختلفاً للفيديو.",
       uploadsDisabled: "رفع الفيديوهات متوقف مؤقتاً.",
       accountBanned: "حسابك موقوف ولا يمكنك رفع الفيديوهات.",
+      levelRequired: "تحتاج رتبة منافس (501+ نقطة) لرفع الفيديوهات.",
     },
     moderation: {
       duplicateFile:
@@ -1336,6 +1571,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       verified: "موثّق",
       verify: "توثيق",
       unverify: "إلغاء التوثيق",
+      points: "النقاط",
+      level: "المستوى",
+      verificationRequests: "طلبات التوثيق",
+      approveVerification: "قبول التوثيق",
+      rejectVerification: "رفض التوثيق",
       viewChannel: "عرض القناة",
       suspicionScore: "درجة الاشتباه",
       rejectionReason: "سبب الرفض",

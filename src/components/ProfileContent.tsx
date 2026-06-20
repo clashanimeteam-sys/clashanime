@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { FollowerCount } from "@/components/FollowButton";
+import { HunterLevelBadge } from "@/components/HunterLevelBadge";
+import { PointsPanel } from "@/components/PointsPanel";
 import { VideoCard } from "@/components/VideoCard";
 import { profileToVideoChannel } from "@/components/VideoCardChannel";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
@@ -297,11 +299,14 @@ export function ProfileContent() {
             </div>
 
             <div className="min-w-0 pt-12 sm:pt-14">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <h1 className="text-2xl font-bold leading-tight text-black sm:text-3xl dark:text-white">
                   {displayName.trim() || profile.username}
                 </h1>
                 {profile.is_verified ? <VerifiedBadge size="md" /> : null}
+              </div>
+              <div className="mt-2">
+                <HunterLevelBadge level={profile.level} points={profile.points} size="md" />
               </div>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
                 <Link
@@ -391,6 +396,8 @@ export function ProfileContent() {
             )}
           </div>
         </form>
+
+        <PointsPanel profile={profile} onProfileRefresh={loadProfile} />
 
         {message && (
           <p className="mt-4 text-sm text-emerald-600 dark:text-emerald-400" role="status">

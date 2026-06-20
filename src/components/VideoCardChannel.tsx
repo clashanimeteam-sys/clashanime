@@ -62,6 +62,8 @@ export function profileToVideoChannel(
     display_name: string | null;
     avatar_url: string | null;
     is_verified?: boolean;
+    level?: number;
+    points?: number;
   },
   followerCount = 0,
 ): VideoChannel {
@@ -71,5 +73,7 @@ export function profileToVideoChannel(
     avatar_url: profile.avatar_url,
     follower_count: followerCount,
     is_verified: profile.is_verified,
+    level: profile.level,
+    points: profile.points,
   };
 }

@@ -68,7 +68,9 @@ function calculateTrendingScore(video: Video): number {
   const ageHours =
     (Date.now() - new Date(video.created_at).getTime()) / (1000 * 60 * 60);
   const engagement = video.likes_count + video.comments_count * 2;
-  return engagement / Math.pow(ageHours + 2, 1.5);
+  const legendBoost =
+    video.channel?.is_verified || (video.channel?.level ?? 0) >= 4 ? 1.2 : 1;
+  return (engagement * legendBoost) / Math.pow(ageHours + 2, 1.5);
 }
 
 function sortByTrending(videos: Video[]): Video[] {
@@ -94,7 +96,7 @@ async function attachChannels(
     const [{ data: profiles }, { data: follows }] = await Promise.all([
       supabase
         .from("profiles")
-        .select("id, username, display_name, avatar_url, is_verified")
+        .select("id, username, display_name, avatar_url, is_verified, level, points")
         .in("id", userIds),
       supabase.from("channel_follows").select("following_id").in("following_id", userIds),
     ]);
@@ -116,6 +118,8 @@ async function attachChannels(
           avatar_url: profile.avatar_url,
           follower_count: followerCounts.get(profile.id) ?? 0,
           is_verified: profile.is_verified,
+          level: profile.level,
+          points: profile.points,
         },
       ]),
     );
@@ -149,7 +153,13 @@ export async function getTrendingVideos(): Promise<Video[]> {
   }
 
   const withChannels = await attachChannels(supabase, data);
-  return sortByTrending(withChannels);
+  const sorted = sortByTrending(withChannels);
+
+  await Promise.all(
+    sorted.slice(0, 4).map((video) => supabase.rpc("award_trending_bonus", { target_video_id: video.id })),
+  );
+
+  return sorted;
 }
 
 const APPROVED_VIDEO_SELECT =

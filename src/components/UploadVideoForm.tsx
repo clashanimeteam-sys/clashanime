@@ -16,6 +16,7 @@ import {
   getVideoDuration,
   parseHashtags,
 } from "@/lib/upload";
+import { canUploadVideos } from "@/lib/points";
 import { fetchPublicSiteFlags } from "@/lib/siteSettings";
 import { MAX_CLIP_SECONDS, MIN_CLIP_SECONDS } from "@/lib/types";
 import { useAuth } from "@/providers/AuthProvider";
@@ -78,6 +79,11 @@ export function UploadVideoForm() {
 
     if (profile?.is_banned) {
       setError(t.upload.accountBanned);
+      return;
+    }
+
+    if (!canUploadVideos(profile)) {
+      setError(t.upload.levelRequired);
       return;
     }
 
@@ -212,6 +218,18 @@ export function UploadVideoForm() {
   }
 
   const busy = loading || scanning;
+  const uploadUnlocked = canUploadVideos(profile);
+
+  if (profile && !uploadUnlocked) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
+        <h1 className="text-3xl font-bold text-black dark:text-white">{t.upload.title}</h1>
+        <p className="mt-4 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
+          {t.upload.levelRequired}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-5 px-4 py-8 sm:px-6">

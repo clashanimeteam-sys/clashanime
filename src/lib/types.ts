@@ -12,6 +12,9 @@ export type Profile = {
   role?: UserRole;
   is_banned?: boolean;
   is_verified?: boolean;
+  points?: number;
+  level?: number;
+  referred_by?: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -22,6 +25,8 @@ export type VideoChannel = {
   avatar_url: string | null;
   follower_count?: number;
   is_verified?: boolean;
+  level?: number;
+  points?: number;
 };
 
 export type VideoComment = {
