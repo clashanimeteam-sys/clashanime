@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { AuthProviderButtons } from "@/components/AuthProviderButtons";
+import { AuthSettingsBar } from "@/components/AuthSettingsBar";
 import { AuthShellHeader } from "@/components/AuthShellHeader";
 import { EmailAuthForm } from "@/components/EmailAuthForm";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -14,9 +15,9 @@ export function AuthPage({ mode }: { mode: "login" | "signup" }) {
   const [success, setSuccess] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black">
+    <div className="flex min-h-screen flex-col bg-white dark:bg-black">
       <AuthShellHeader mode={mode} />
-      <div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center px-4 py-10">
+      <div className="flex flex-1 items-center justify-center px-4 py-10 pb-24">
         <div className="w-full max-w-sm">
           <h1 className="text-center text-3xl font-semibold tracking-tight text-black dark:text-white">
             {isLogin ? t.auth.loginTitle : t.auth.signupTitle}
@@ -54,6 +55,7 @@ export function AuthPage({ mode }: { mode: "login" | "signup" }) {
           </p>
         </div>
       </div>
+      <AuthSettingsBar />
     </div>
   );
 }

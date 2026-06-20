@@ -3,15 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
+import { LocaleFlags } from "@/components/LocaleFlags";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useLocale } from "@/providers/LocaleProvider";
-import type { Locale } from "@/lib/types";
-
-const locales: { code: Locale; label: string }[] = [
-  { code: "en", label: "EN" },
-  { code: "ja", label: "JA" },
-  { code: "ar", label: "AR" },
-];
 
 const navItems = [
   { key: "clash" as const, href: "/", icon: "flame" },
@@ -65,7 +59,7 @@ function NavIcon({ icon }: { icon: string }) {
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { locale, setLocale, t } = useLocale();
+  const { t } = useLocale();
 
   return (
     <aside className="sticky top-0 flex min-h-screen w-56 shrink-0 flex-col border-e border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black lg:w-60">
@@ -119,27 +113,7 @@ export function Sidebar() {
         </Link>
 
         <div className="flex items-center justify-between gap-2">
-          <div
-            className="flex items-center rounded-lg border border-zinc-200 bg-white p-0.5 dark:border-zinc-800 dark:bg-black"
-            role="group"
-            aria-label={t.locale.label}
-          >
-            {locales.map((item) => (
-              <button
-                key={item.code}
-                type="button"
-                onClick={() => setLocale(item.code)}
-                className={`rounded-md px-2 py-1 text-[11px] font-semibold transition-colors ${
-                  locale === item.code
-                    ? "bg-accent text-white"
-                    : "text-zinc-600 hover:text-black dark:text-zinc-400 dark:hover:text-white"
-                }`}
-                aria-pressed={locale === item.code}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
+          <LocaleFlags />
           <ThemeToggle />
         </div>
       </div>
