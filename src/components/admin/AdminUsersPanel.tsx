@@ -32,7 +32,7 @@ export function AdminUsersPanel() {
 
     const { data, error: fetchError } = await supabase
       .from("profiles")
-      .select("id, username, display_name, role, is_banned, created_at, updated_at, avatar_url, banner_url, bio")
+      .select("id, username, display_name, role, is_banned, is_verified, created_at, updated_at, avatar_url, banner_url, bio")
       .order("created_at", { ascending: false })
       .limit(200);
 
@@ -68,7 +68,10 @@ export function AdminUsersPanel() {
     loadUsers();
   }, [loadUsers]);
 
-  async function updateUser(userId: string, patch: Partial<Pick<Profile, "role" | "is_banned">>) {
+  async function updateUser(
+    userId: string,
+    patch: Partial<Pick<Profile, "role" | "is_banned" | "is_verified">>,
+  ) {
     if (!supabase || !canManage) return;
 
     setMessage(null);
@@ -149,18 +152,32 @@ export function AdminUsersPanel() {
                   </td>
                   <td className="px-4 py-3 text-zinc-300">{user.video_count ?? 0}</td>
                   <td className="px-4 py-3">
-                    {user.is_banned ? (
-                      <span className="rounded-full bg-red-500/15 px-2 py-1 text-xs font-semibold text-red-300">
-                        {t.admin.banned}
-                      </span>
-                    ) : (
-                      <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-xs font-semibold text-emerald-300">
-                        {t.admin.active}
-                      </span>
-                    )}
+                    <div className="flex flex-wrap gap-2">
+                      {user.is_banned ? (
+                        <span className="rounded-full bg-red-500/15 px-2 py-1 text-xs font-semibold text-red-300">
+                          {t.admin.banned}
+                        </span>
+                      ) : (
+                        <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-xs font-semibold text-emerald-300">
+                          {t.admin.active}
+                        </span>
+                      )}
+                      {user.is_verified ? (
+                        <span className="rounded-full bg-sky-500/15 px-2 py-1 text-xs font-semibold text-sky-300">
+                          {t.admin.verified}
+                        </span>
+                      ) : null}
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        onClick={() => updateUser(user.id, { is_verified: !user.is_verified })}
+                        className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-200 hover:border-zinc-500"
+                      >
+                        {user.is_verified ? t.admin.unverify : t.admin.verify}
+                      </button>
                       <button
                         type="button"
                         onClick={() => updateUser(user.id, { is_banned: !user.is_banned })}

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { VideoChannel } from "@/lib/types";
 
@@ -43,8 +44,9 @@ export function VideoCardChannel({ channel }: VideoCardChannelProps) {
         )}
       </div>
       <div className="min-w-0">
-        <span className="font-channel block truncate text-xs font-semibold text-zinc-800 transition-colors group-hover/channel:text-accent dark:text-zinc-100">
-          {label}
+        <span className="font-channel flex items-center gap-1 truncate text-xs font-semibold text-zinc-800 transition-colors group-hover/channel:text-accent dark:text-zinc-100">
+          <span className="truncate">{label}</span>
+          {channel.is_verified ? <VerifiedBadge /> : null}
         </span>
         <span className="block text-[10px] font-semibold text-zinc-600 dark:text-zinc-400">
           {followerCount.toLocaleString()} {t.profile.followers}
@@ -59,6 +61,7 @@ export function profileToVideoChannel(
     username: string;
     display_name: string | null;
     avatar_url: string | null;
+    is_verified?: boolean;
   },
   followerCount = 0,
 ): VideoChannel {
@@ -67,5 +70,6 @@ export function profileToVideoChannel(
     display_name: profile.display_name,
     avatar_url: profile.avatar_url,
     follower_count: followerCount,
+    is_verified: profile.is_verified,
   };
 }

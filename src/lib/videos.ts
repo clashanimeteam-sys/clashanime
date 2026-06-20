@@ -94,7 +94,7 @@ async function attachChannels(
     const [{ data: profiles }, { data: follows }] = await Promise.all([
       supabase
         .from("profiles")
-        .select("id, username, display_name, avatar_url")
+        .select("id, username, display_name, avatar_url, is_verified")
         .in("id", userIds),
       supabase.from("channel_follows").select("following_id").in("following_id", userIds),
     ]);
@@ -115,6 +115,7 @@ async function attachChannels(
           display_name: profile.display_name,
           avatar_url: profile.avatar_url,
           follower_count: followerCounts.get(profile.id) ?? 0,
+          is_verified: profile.is_verified,
         },
       ]),
     );

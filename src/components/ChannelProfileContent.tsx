@@ -7,6 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { FollowButton } from "@/components/FollowButton";
 import { VideoCard } from "@/components/VideoCard";
 import { profileToVideoChannel } from "@/components/VideoCardChannel";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -160,9 +161,12 @@ export function ChannelProfileContent({ username }: ChannelProfileContentProps) 
             </div>
 
             <div className="min-w-0 pt-12 sm:pt-14">
-              <h1 className="text-2xl font-bold leading-tight text-black sm:text-3xl dark:text-white">
-                {displayName}
-              </h1>
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-bold leading-tight text-black sm:text-3xl dark:text-white">
+                  {displayName}
+                </h1>
+                {profile.is_verified ? <VerifiedBadge size="md" /> : null}
+              </div>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">@{profile.username}</p>
               <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
                 {videos.length} {t.profile.videosCount}

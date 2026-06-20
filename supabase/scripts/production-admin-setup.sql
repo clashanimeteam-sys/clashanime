@@ -6,7 +6,8 @@
 alter table public.profiles
   add column if not exists role text not null default 'user'
     check (role in ('user', 'moderator', 'admin')),
-  add column if not exists is_banned boolean not null default false;
+  add column if not exists is_banned boolean not null default false,
+  add column if not exists is_verified boolean not null default false;
 
 create index if not exists profiles_role_idx on public.profiles (role);
 create index if not exists profiles_is_banned_idx on public.profiles (is_banned);
@@ -149,11 +150,16 @@ create policy "Admins can update site settings"
 grant execute on function public.is_staff() to authenticated;
 grant execute on function public.is_admin() to authenticated;
 
--- Site owner account on production
+-- Site owner account on production.
+-- Disable the guard trigger first; otherwise SQL Editor updates are silently reverted.
+alter table public.profiles disable trigger guard_profile_privileged_fields_trigger;
+
 update public.profiles
 set role = 'admin'
 where username = 'clashanimeteam'
    or id = 'e0399a69-015b-4b18-bdc8-3e790fba2f04';
+
+alter table public.profiles enable trigger guard_profile_privileged_fields_trigger;
 
 select id, username, display_name, role
 from public.profiles

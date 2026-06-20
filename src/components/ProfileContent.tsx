@@ -7,6 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { FollowerCount } from "@/components/FollowButton";
 import { VideoCard } from "@/components/VideoCard";
 import { profileToVideoChannel } from "@/components/VideoCardChannel";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 import { getPublicStorageUrl } from "@/lib/upload";
@@ -296,9 +297,12 @@ export function ProfileContent() {
             </div>
 
             <div className="min-w-0 pt-12 sm:pt-14">
-              <h1 className="text-2xl font-bold leading-tight text-black sm:text-3xl dark:text-white">
-                {displayName.trim() || profile.username}
-              </h1>
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-bold leading-tight text-black sm:text-3xl dark:text-white">
+                  {displayName.trim() || profile.username}
+                </h1>
+                {profile.is_verified ? <VerifiedBadge size="md" /> : null}
+              </div>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
                 <Link
                   href={`/channel/${profile.username}`}

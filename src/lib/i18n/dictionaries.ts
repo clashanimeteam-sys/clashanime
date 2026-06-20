@@ -130,6 +130,7 @@ export type Dictionary = {
     channelVideos: string;
     noChannelVideos: string;
     manageChannel: string;
+    verifiedBadge: string;
   };
   upload: {
     create: string;
@@ -206,6 +207,9 @@ export type Dictionary = {
     unban: string;
     banned: string;
     active: string;
+    verified: string;
+    verify: string;
+    unverify: string;
     viewChannel: string;
     suspicionScore: string;
     rejectionReason: string;
@@ -409,6 +413,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelVideos: "Videos",
       noChannelVideos: "This channel has no videos yet.",
       manageChannel: "Manage your channel",
+      verifiedBadge: "Verified channel",
     },
     upload: {
       create: "Create",
@@ -465,7 +470,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       dashboardTitle: "Dashboard",
       dashboardSubtitle: "Overview of users, videos, moderation, and reports.",
       usersTitle: "Subscribers",
-      usersSubtitle: "Manage roles, bans, and channel access.",
+      usersSubtitle: "Manage roles, bans, verification, and channel access.",
       videosTitle: "Videos",
       videosSubtitle: "Approve, reject, review, or delete uploaded clips.",
       reportsTitle: "Reports",
@@ -492,6 +497,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unban: "Unban",
       banned: "Banned",
       active: "Active",
+      verified: "Verified",
+      verify: "Verify",
+      unverify: "Remove verification",
       viewChannel: "View channel",
       suspicionScore: "Suspicion score",
       rejectionReason: "Rejection reason",
@@ -693,6 +701,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelVideos: "動画",
       noChannelVideos: "このチャンネルにはまだ動画がありません。",
       manageChannel: "チャンネルを管理",
+      verifiedBadge: "認証済みチャンネル",
     },
     upload: {
       create: "作成",
@@ -749,7 +758,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       dashboardTitle: "ダッシュボード",
       dashboardSubtitle: "ユーザー、動画、審査、報告の概要。",
       usersTitle: "登録者",
-      usersSubtitle: "ロール、停止、チャンネル管理。",
+      usersSubtitle: "ロール、停止、認証、チャンネル管理。",
       videosTitle: "動画",
       videosSubtitle: "承認、拒否、審査、削除。",
       reportsTitle: "報告",
@@ -776,6 +785,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unban: "停止解除",
       banned: "停止中",
       active: "有効",
+      verified: "認証済み",
+      verify: "認証する",
+      unverify: "認証を解除",
       viewChannel: "チャンネルを見る",
       suspicionScore: "疑わしさスコア",
       rejectionReason: "拒否理由",
@@ -977,6 +989,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelVideos: "الفيديوهات",
       noChannelVideos: "لا توجد فيديوهات في هذه القناة بعد.",
       manageChannel: "إدارة قناتك",
+      verifiedBadge: "قناة موثّقة",
     },
     upload: {
       create: "إنشاء",
@@ -1033,7 +1046,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       dashboardTitle: "لوحة المعلومات",
       dashboardSubtitle: "نظرة عامة على المشتركين والفيديوهات والمراجعة والبلاغات.",
       usersTitle: "المشتركون",
-      usersSubtitle: "إدارة الأدوار والحظر والقنوات.",
+      usersSubtitle: "إدارة الأدوار والحظر والتوثيق والقنوات.",
       videosTitle: "الفيديوهات",
       videosSubtitle: "قبول أو رفض أو مراجعة أو حذف المقاطع.",
       reportsTitle: "البلاغات",
@@ -1060,6 +1073,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unban: "إلغاء الحظر",
       banned: "محظور",
       active: "نشط",
+      verified: "موثّق",
+      verify: "توثيق",
+      unverify: "إلغاء التوثيق",
       viewChannel: "عرض القناة",
       suspicionScore: "درجة الاشتباه",
       rejectionReason: "سبب الرفض",
