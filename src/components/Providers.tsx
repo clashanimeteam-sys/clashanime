@@ -5,6 +5,7 @@ import { AppShell } from "@/components/AppShell";
 import { MobileHeader } from "@/components/MobileHeader";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { LocaleProvider } from "@/providers/LocaleProvider";
+import { StickersProvider } from "@/providers/StickersProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { VideoOverlayProvider } from "@/providers/VideoOverlayProvider";
 
@@ -33,7 +34,8 @@ export function Providers({ children }: ProvidersProps) {
     <ThemeProvider>
       <LocaleProvider>
         <AuthProvider>
-          <VideoOverlayProvider>
+          <StickersProvider>
+            <VideoOverlayProvider>
             {authRoute || adminRoute ? (
               children
             ) : (
@@ -42,7 +44,8 @@ export function Providers({ children }: ProvidersProps) {
                 <AppShell>{children}</AppShell>
               </>
             )}
-          </VideoOverlayProvider>
+            </VideoOverlayProvider>
+          </StickersProvider>
         </AuthProvider>
       </LocaleProvider>
     </ThemeProvider>

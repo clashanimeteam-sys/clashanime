@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { RichBodyContent } from "@/components/RichBodyContent";
 import { useRequireSubscription } from "@/hooks/useRequireSubscription";
 import { formatRelativeTime } from "@/lib/format";
 import { useAuth } from "@/providers/AuthProvider";
@@ -140,9 +141,10 @@ export function CommentThread({
                 </Link>
                 {comment.is_verified ? <VerifiedBadge className="shrink-0" /> : null}
               </div>
-              <p className="mt-1 text-sm leading-relaxed text-zinc-800 dark:text-zinc-100">
-                {comment.body}
-              </p>
+              <RichBodyContent
+                body={comment.body}
+                className="mt-1 text-sm leading-relaxed text-zinc-800 dark:text-zinc-100"
+              />
               <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-zinc-500">
                 <span>{formatRelativeTime(comment.created_at, locale)}</span>
                 {comment.likes_count > 0 ? (

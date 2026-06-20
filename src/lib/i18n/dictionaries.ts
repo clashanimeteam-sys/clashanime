@@ -55,6 +55,7 @@ export type Dictionary = {
     unpinComment: string;
     pinned: string;
     addEmoji: string;
+    addSticker: string;
     swipeVideos: string;
     settings: string;
     playbackSpeed: string;
@@ -299,6 +300,10 @@ export type Dictionary = {
     actionFailed: string;
     imagePostPreview: string;
   };
+  stickers: {
+    loading: string;
+    empty: string;
+  };
   upload: {
     create: string;
     title: string;
@@ -402,6 +407,25 @@ export type Dictionary = {
     noCommunityPosts: string;
     confirmDeleteCommunityPost: string;
     imageOnlyPost: string;
+    stickersTitle: string;
+    stickersSubtitle: string;
+    createPack: string;
+    stickerPackSlug: string;
+    stickerPackNameEn: string;
+    stickerPackNameAr: string;
+    stickerPackNameJa: string;
+    uploadSticker: string;
+    uploadStickerHint: string;
+    stickerSlug: string;
+    stickerLabel: string;
+    stickerFile: string;
+    noStickerPacks: string;
+    noStickers: string;
+    stickerCountLabel: string;
+    packCreated: string;
+    stickerCreated: string;
+    confirmDeleteSticker: string;
+    stickerTooLarge: string;
     openModeration: string;
     resolve: string;
     dismiss: string;
@@ -439,6 +463,7 @@ export type Dictionary = {
       users: string;
       videos: string;
       community: string;
+      stickers: string;
       reports: string;
       moderationLog: string;
       settings: string;
@@ -548,6 +573,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unpinComment: "Unpin",
       pinned: "Pinned",
       addEmoji: "Add emoji",
+      addSticker: "Add anime sticker",
       swipeVideos: "Swipe up or down for next video",
       settings: "Video settings",
       playbackSpeed: "Playback speed",
@@ -799,6 +825,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       actionFailed: "Could not save. Try again.",
       imagePostPreview: "Community image post",
     },
+    stickers: {
+      loading: "Loading stickers...",
+      empty: "No anime stickers yet.",
+    },
     upload: {
       create: "Create",
       title: "Upload duel clip",
@@ -909,6 +939,25 @@ export const dictionaries: Record<Locale, Dictionary> = {
       noCommunityPosts: "No community posts yet.",
       confirmDeleteCommunityPost: "Delete this community post?",
       imageOnlyPost: "Image-only post",
+      stickersTitle: "Anime stickers",
+      stickersSubtitle: "Upload curated anime GIFs and stickers for posts and comments.",
+      createPack: "Create pack",
+      stickerPackSlug: "Pack slug",
+      stickerPackNameEn: "Pack name (English)",
+      stickerPackNameAr: "Pack name (Arabic)",
+      stickerPackNameJa: "Pack name (Japanese)",
+      uploadSticker: "Upload sticker",
+      uploadStickerHint: "Use anime-only GIF, WEBP, or PNG files up to 2 MB.",
+      stickerSlug: "Sticker slug",
+      stickerLabel: "Sticker label",
+      stickerFile: "Sticker file",
+      noStickerPacks: "No sticker packs yet.",
+      noStickers: "No stickers in this pack yet.",
+      stickerCountLabel: "stickers",
+      packCreated: "Sticker pack created.",
+      stickerCreated: "Sticker uploaded.",
+      confirmDeleteSticker: "Delete this sticker permanently?",
+      stickerTooLarge: "Sticker must be 2 MB or smaller.",
       openModeration: "Open moderation",
       resolve: "Resolve",
       dismiss: "Dismiss",
@@ -946,6 +995,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         users: "Subscribers",
         videos: "Videos",
         community: "Community",
+        stickers: "Stickers",
         reports: "Reports",
         moderationLog: "Moderation log",
         settings: "Settings",
@@ -1053,6 +1103,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unpinComment: "固定解除",
       pinned: "固定済み",
       addEmoji: "絵文字を追加",
+      addSticker: "アニメステッカーを追加",
       swipeVideos: "上下にスワイプして次の動画へ",
       settings: "動画設定",
       playbackSpeed: "再生速度",
@@ -1300,6 +1351,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       actionFailed: "保存できませんでした。",
       imagePostPreview: "コミュニティ画像投稿",
     },
+    stickers: {
+      loading: "ステッカーを読み込み中...",
+      empty: "アニメステッカーはまだありません。",
+    },
     upload: {
       create: "作成",
       title: "デュエルクリップをアップロード",
@@ -1410,6 +1465,25 @@ export const dictionaries: Record<Locale, Dictionary> = {
       noCommunityPosts: "コミュニティ投稿はまだありません。",
       confirmDeleteCommunityPost: "この投稿を削除しますか？",
       imageOnlyPost: "画像のみの投稿",
+      stickersTitle: "アニメステッカー",
+      stickersSubtitle: "投稿とコメント用のアニメGIF・ステッカーを管理します。",
+      createPack: "パック作成",
+      stickerPackSlug: "パックスラッグ",
+      stickerPackNameEn: "パック名（英語）",
+      stickerPackNameAr: "パック名（アラビア語）",
+      stickerPackNameJa: "パック名（日本語）",
+      uploadSticker: "ステッカーをアップロード",
+      uploadStickerHint: "アニメ専用のGIF/WEBP/PNG（最大2MB）を使用してください。",
+      stickerSlug: "ステッカースラッグ",
+      stickerLabel: "ステッカーラベル",
+      stickerFile: "ステッカーファイル",
+      noStickerPacks: "ステッカーパックがありません。",
+      noStickers: "このパックにステッカーがありません。",
+      stickerCountLabel: "件",
+      packCreated: "パックを作成しました。",
+      stickerCreated: "ステッカーをアップロードしました。",
+      confirmDeleteSticker: "このステッカーを完全に削除しますか？",
+      stickerTooLarge: "ステッカーは2MB以下にしてください。",
       openModeration: "審査を開く",
       resolve: "解決",
       dismiss: "却下",
@@ -1447,6 +1521,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         users: "登録者",
         videos: "動画",
         community: "コミュニティ",
+        stickers: "ステッカー",
         reports: "報告",
         moderationLog: "モデレーションログ",
         settings: "設定",
@@ -1554,6 +1629,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unpinComment: "إلغاء التثبيت",
       pinned: "مثبّت",
       addEmoji: "إضافة إيموجي",
+      addSticker: "إضافة ستيكر أنمي",
       swipeVideos: "مرّر لأعلى أو لأسفل للفيديو التالي",
       settings: "إعدادات الفيديو",
       playbackSpeed: "سرعة التشغيل",
@@ -1803,6 +1879,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       actionFailed: "تعذّر الحفظ. حاول مرة أخرى.",
       imagePostPreview: "منشور صورة في المجتمع",
     },
+    stickers: {
+      loading: "جارٍ تحميل الستيكرات...",
+      empty: "لا توجد ستيكرات أنمي بعد.",
+    },
     upload: {
       create: "إنشاء",
       title: "رفع مقطع نزال",
@@ -1913,6 +1993,25 @@ export const dictionaries: Record<Locale, Dictionary> = {
       noCommunityPosts: "لا توجد منشورات بعد.",
       confirmDeleteCommunityPost: "حذف هذا المنشور؟",
       imageOnlyPost: "منشور صورة فقط",
+      stickersTitle: "ستيكرات الأنمي",
+      stickersSubtitle: "ارفع GIF وستيكرات أنمي معتمدة للمنشورات والتعليقات.",
+      createPack: "إنشاء حزمة",
+      stickerPackSlug: "معرّف الحزمة",
+      stickerPackNameEn: "اسم الحزمة (إنجليزي)",
+      stickerPackNameAr: "اسم الحزمة (عربي)",
+      stickerPackNameJa: "اسم الحزمة (ياباني)",
+      uploadSticker: "رفع ستيكر",
+      uploadStickerHint: "استخدم ملفات GIF أو WEBP أو PNG للأنمي فقط (حتى 2 ميغابايت).",
+      stickerSlug: "معرّف الستيكر",
+      stickerLabel: "اسم الستيكر",
+      stickerFile: "ملف الستيكر",
+      noStickerPacks: "لا توجد حزم ستيكرات بعد.",
+      noStickers: "لا توجد ستيكرات في هذه الحزمة.",
+      stickerCountLabel: "ستيكر",
+      packCreated: "تم إنشاء الحزمة.",
+      stickerCreated: "تم رفع الستيكر.",
+      confirmDeleteSticker: "حذف هذا الستيكر نهائياً؟",
+      stickerTooLarge: "يجب ألا يتجاوز الستيكر 2 ميغابايت.",
       openModeration: "فتح المراجعة",
       resolve: "حل",
       dismiss: "تجاهل",
@@ -1950,6 +2049,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         users: "المشتركون",
         videos: "الفيديوهات",
         community: "المجتمع",
+        stickers: "الستيكرات",
         reports: "البلاغات",
         moderationLog: "سجل المراجعة",
         settings: "الإعدادات",

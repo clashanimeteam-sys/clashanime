@@ -6,10 +6,13 @@ import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CommunityPostActions } from "@/components/CommunityPostActions";
 import { CommunityReportModal } from "@/components/CommunityReportModal";
+import { ComposerMediaButtons } from "@/components/ComposerMediaButtons";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
+import { RichBodyContent } from "@/components/RichBodyContent";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { deleteCommunityPost } from "@/lib/communityEngagement";
 import { canPostToCommunity } from "@/lib/points";
+import { appendStickerToken, bodyHasRenderableContent } from "@/lib/stickers";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 import { getSignupUrl } from "@/lib/subscriptionGate";
@@ -57,6 +60,8 @@ export function CommunityPageContent() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [acceptedPolicy, setAcceptedPolicy] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [showStickerPicker, setShowStickerPicker] = useState(false);
   const [loading, setLoading] = useState(true);
   const [posting, setPosting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -185,7 +190,7 @@ export function CommunityPageContent() {
     }
 
     const trimmed = body.trim();
-    if (!trimmed && !imageFile) return;
+    if (!bodyHasRenderableContent(body) && !imageFile) return;
 
     if (!acceptedPolicy) {
       setError(t.communityFeed.policyRequired);
@@ -283,6 +288,19 @@ export function CommunityPageContent() {
             className="mt-2 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-accent dark:border-zinc-700 dark:bg-black dark:text-white"
           />
 
+          <div className="relative mt-2">
+            <ComposerMediaButtons
+              showEmojiPicker={showEmojiPicker}
+              showStickerPicker={showStickerPicker}
+              onToggleEmojiPicker={() => setShowEmojiPicker((open) => !open)}
+              onToggleStickerPicker={() => setShowStickerPicker((open) => !open)}
+              onEmojiPick={(emoji) => setBody((current) => `${current}${emoji}`)}
+              onStickerPick={(stickerId) =>
+                setBody((current) => appendStickerToken(current, stickerId))
+              }
+            />
+          </div>
+
           {imagePreview ? (
             <div className="relative mt-3 aspect-video max-h-64 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
               <Image src={imagePreview} alt="" fill className="object-cover" unoptimized />
@@ -326,7 +344,7 @@ export function CommunityPageContent() {
           <div className="mt-3 flex justify-end">
             <button
               type="submit"
-              disabled={posting || (!body.trim() && !imageFile) || !acceptedPolicy}
+              disabled={posting || (!bodyHasRenderableContent(body) && !imageFile) || !acceptedPolicy}
               className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
             >
               {posting ? t.points.communityPosting : t.points.communityPostSubmit}
@@ -405,9 +423,10 @@ export function CommunityPageContent() {
                     </div>
 
                     {post.body ? (
-                      <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-zinc-700 dark:text-zinc-200">
-                        {post.body}
-                      </p>
+                      <RichBodyContent
+                        body={post.body}
+                        className="mt-2 text-sm leading-relaxed text-zinc-700 dark:text-zinc-200"
+                      />
                     ) : null}
 
                     {post.image_url ? (

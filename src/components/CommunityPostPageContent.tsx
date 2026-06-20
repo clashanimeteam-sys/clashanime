@@ -6,8 +6,9 @@ import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "re
 import { CommentThread, updateCommentInTree } from "@/components/CommentThread";
 import { CommunityPostActions } from "@/components/CommunityPostActions";
 import { CommunityReportModal } from "@/components/CommunityReportModal";
-import { EmojiPicker } from "@/components/EmojiPicker";
+import { ComposerMediaButtons } from "@/components/ComposerMediaButtons";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
+import { RichBodyContent } from "@/components/RichBodyContent";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { useRequireSubscription } from "@/hooks/useRequireSubscription";
 import {
@@ -21,6 +22,7 @@ import {
 } from "@/lib/communityEngagement";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getSignupUrl } from "@/lib/subscriptionGate";
+import { appendStickerToken, bodyHasRenderableContent } from "@/lib/stickers";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { VideoComment } from "@/lib/types";
@@ -51,6 +53,7 @@ export function CommunityPostPageContent({ postId }: CommunityPostPageContentPro
   const [commentBody, setCommentBody] = useState("");
   const [replyTo, setReplyTo] = useState<VideoComment | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [showStickerPicker, setShowStickerPicker] = useState(false);
   const [loading, setLoading] = useState(true);
   const [posting, setPosting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -97,13 +100,17 @@ export function CommunityPostPageContent({ postId }: CommunityPostPageContentPro
 
   function appendEmoji(emoji: string) {
     setCommentBody((current) => `${current}${emoji}`);
-    setShowEmojiPicker(false);
+    inputRef.current?.focus();
+  }
+
+  function appendSticker(stickerId: string) {
+    setCommentBody((current) => appendStickerToken(current, stickerId));
     inputRef.current?.focus();
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!supabase || !requireSubscription() || !user || !commentBody.trim()) return;
+    if (!supabase || !requireSubscription() || !user || !bodyHasRenderableContent(commentBody)) return;
 
     setPosting(true);
     setError(null);
@@ -188,9 +195,10 @@ export function CommunityPostPageContent({ postId }: CommunityPostPageContentPro
             </div>
 
             {post.body ? (
-              <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-zinc-700 dark:text-zinc-200">
-                {post.body}
-              </p>
+              <RichBodyContent
+                body={post.body}
+                className="mt-2 text-sm leading-relaxed text-zinc-700 dark:text-zinc-200"
+              />
             ) : null}
 
             {post.image_url ? (
@@ -277,16 +285,14 @@ export function CommunityPostPageContent({ postId }: CommunityPostPageContentPro
             ) : null}
 
             <div className="relative flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setShowEmojiPicker((open) => !open)}
-                aria-label={t.video.addEmoji}
-                className="shrink-0 text-lg text-zinc-500 transition-colors hover:text-black dark:hover:text-white"
-              >
-                😊
-              </button>
-
-              {showEmojiPicker ? <EmojiPicker onPick={appendEmoji} /> : null}
+              <ComposerMediaButtons
+                showEmojiPicker={showEmojiPicker}
+                showStickerPicker={showStickerPicker}
+                onToggleEmojiPicker={() => setShowEmojiPicker((open) => !open)}
+                onToggleStickerPicker={() => setShowStickerPicker((open) => !open)}
+                onEmojiPick={appendEmoji}
+                onStickerPick={appendSticker}
+              />
 
               <input
                 ref={inputRef}
@@ -299,7 +305,7 @@ export function CommunityPostPageContent({ postId }: CommunityPostPageContentPro
 
               <button
                 type="submit"
-                disabled={posting || !commentBody.trim()}
+                disabled={posting || !bodyHasRenderableContent(commentBody)}
                 className="shrink-0 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
               >
                 {posting ? t.video.postingComment : t.video.postComment}

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CommentThread, updateCommentInTree } from "@/components/CommentThread";
-import { EmojiPicker } from "@/components/EmojiPicker";
+import { ComposerMediaButtons } from "@/components/ComposerMediaButtons";
 import { ModalPortal } from "@/components/ModalPortal";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { useRequireSubscription } from "@/hooks/useRequireSubscription";
@@ -13,6 +13,7 @@ import { createBrowserClient } from "@/lib/supabase/client";
 import { useScrollLock } from "@/lib/useScrollLock";
 import { fetchVideoComments, pinVideoComment, postVideoComment, toggleCommentLike, unpinVideoComment } from "@/lib/videoEngagement";
 import { blockPublicVideoContextMenu, PUBLIC_VIDEO_CONTROLS_LIST } from "@/lib/videoPlayer";
+import { appendStickerToken, bodyHasRenderableContent } from "@/lib/stickers";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { VideoChannel, VideoComment } from "@/lib/types";
@@ -79,6 +80,7 @@ export function VideoCommentsModal({
   const [commentBody, setCommentBody] = useState("");
   const [replyTo, setReplyTo] = useState<VideoComment | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [showStickerPicker, setShowStickerPicker] = useState(false);
   const [posting, setPosting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -125,14 +127,18 @@ export function VideoCommentsModal({
 
   function appendEmoji(emoji: string) {
     setCommentBody((current) => `${current}${emoji}`);
-    setShowEmojiPicker(false);
+    inputRef.current?.focus();
+  }
+
+  function appendSticker(stickerId: string) {
+    setCommentBody((current) => appendStickerToken(current, stickerId));
     inputRef.current?.focus();
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!supabase || !requireSubscription() || !user || !commentBody.trim()) return;
+    if (!supabase || !requireSubscription() || !user || !bodyHasRenderableContent(commentBody)) return;
 
     setPosting(true);
     setError(null);
@@ -389,16 +395,14 @@ export function VideoCommentsModal({
                 ) : null}
 
                 <div className="relative flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowEmojiPicker((open) => !open)}
-                    aria-label={t.video.addEmoji}
-                    className="shrink-0 text-lg text-zinc-500 transition-colors hover:text-black dark:hover:text-white"
-                  >
-                    😊
-                  </button>
-
-                  {showEmojiPicker ? <EmojiPicker onPick={appendEmoji} /> : null}
+                  <ComposerMediaButtons
+                    showEmojiPicker={showEmojiPicker}
+                    showStickerPicker={showStickerPicker}
+                    onToggleEmojiPicker={() => setShowEmojiPicker((open) => !open)}
+                    onToggleStickerPicker={() => setShowStickerPicker((open) => !open)}
+                    onEmojiPick={appendEmoji}
+                    onStickerPick={appendSticker}
+                  />
 
                   <input
                     ref={inputRef}
@@ -411,7 +415,7 @@ export function VideoCommentsModal({
 
                   <button
                     type="submit"
-                    disabled={posting || !commentBody.trim()}
+                    disabled={posting || !bodyHasRenderableContent(commentBody)}
                     className="shrink-0 text-sm font-bold text-accent disabled:opacity-40"
                   >
                     {posting ? t.video.postingComment : t.video.postComment}
