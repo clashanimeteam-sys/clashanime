@@ -1,147 +1,155 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { VideoCardActions } from "@/components/VideoCardActions";
-import { VideoCardChannel } from "@/components/VideoCardChannel";
-import { createBrowserClient } from "@/lib/supabase/client";
-import { incrementVideoViews } from "@/lib/videoEngagement";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { VideoSlide } from "@/components/VideoSlide";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Video } from "@/lib/types";
 
 type VideoPageContentProps = {
   video: Video;
+  feed: Video[];
 };
 
-export function VideoPageContent({ video }: VideoPageContentProps) {
+function mergeFeed(current: Video, feed: Video[]): Video[] {
+  const ids = new Set<string>();
+  const merged: Video[] = [];
+
+  for (const item of [current, ...feed]) {
+    if (ids.has(item.id)) continue;
+    ids.add(item.id);
+    merged.push(item);
+  }
+
+  return merged;
+}
+
+export function VideoPageContent({ video, feed }: VideoPageContentProps) {
+  const router = useRouter();
   const { t } = useLocale();
-  const supabase = useMemo(() => createBrowserClient(), []);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [viewsCount, setViewsCount] = useState(video.views_count ?? 0);
-  const hasVideo = Boolean(video.video_url?.trim());
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const videos = useMemo(() => mergeFeed(video, feed), [video, feed]);
+  const [activeId, setActiveId] = useState(video.id);
+
+  const activeIndex = videos.findIndex((item) => item.id === activeId);
+
+  const scrollToIndex = useCallback((index: number, behavior: ScrollBehavior = "smooth") => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const slideHeight = container.clientHeight;
+    container.scrollTo({ top: index * slideHeight, behavior });
+  }, []);
+
+  const goToIndex = useCallback(
+    (index: number) => {
+      if (index < 0 || index >= videos.length) return;
+
+      const next = videos[index];
+      setActiveId(next.id);
+      scrollToIndex(index);
+      window.history.replaceState(null, "", `/video/${next.id}`);
+    },
+    [scrollToIndex, videos],
+  );
 
   useEffect(() => {
-    const element = videoRef.current;
-    if (!element || !hasVideo) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    const startPlayback = async () => {
-      try {
-        await element.play();
-      } catch {
-        element.muted = true;
-        try {
-          await element.play();
-        } catch {
-          // Browser blocked autoplay; controls remain available.
-        }
+    const startIndex = videos.findIndex((item) => item.id === video.id);
+    if (startIndex >= 0) {
+      requestAnimationFrame(() => {
+        scrollToIndex(startIndex, "auto");
+      });
+    }
+  }, [video.id, videos, scrollToIndex]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const onScroll = () => {
+      const slideHeight = container.clientHeight || 1;
+      const index = Math.round(container.scrollTop / slideHeight);
+      const next = videos[index];
+
+      if (next && next.id !== activeId) {
+        setActiveId(next.id);
+        window.history.replaceState(null, "", `/video/${next.id}`);
       }
     };
 
-    if (element.readyState >= 2) {
-      void startPlayback();
+    container.addEventListener("scroll", onScroll, { passive: true });
+    return () => container.removeEventListener("scroll", onScroll);
+  }, [activeId, videos]);
+
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        router.push("/");
+        return;
+      }
+
+      if (event.key === "ArrowDown" || event.key === "PageDown") {
+        event.preventDefault();
+        goToIndex(activeIndex + 1);
+      }
+
+      if (event.key === "ArrowUp" || event.key === "PageUp") {
+        event.preventDefault();
+        goToIndex(activeIndex - 1);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeIndex, goToIndex, router]);
+
+  function handleClose() {
+    if (window.history.length > 1) {
+      router.back();
       return;
     }
 
-    element.addEventListener("loadeddata", startPlayback, { once: true });
-    return () => element.removeEventListener("loadeddata", startPlayback);
-  }, [hasVideo, video.video_url]);
-
-  useEffect(() => {
-    if (!supabase) return;
-
-    void incrementVideoViews(supabase, video.id).then((counted) => {
-      if (counted) {
-        setViewsCount((count) => count + 1);
-      }
-    });
-  }, [supabase, video.id]);
+    router.push("/");
+  }
 
   return (
     <div className="relative h-[calc(100dvh-3.5rem)] w-full bg-black">
-      {hasVideo ? (
-        <video
-          ref={videoRef}
-          src={video.video_url}
-          autoPlay
-          controls
-          playsInline
-          preload="auto"
-          poster={video.thumbnail_url}
-          className="absolute inset-0 h-full w-full object-contain"
-        >
-          {t.video.unavailable}
-        </video>
-      ) : (
-        <>
-          <Image
-            src={video.thumbnail_url}
-            alt={video.title}
-            fill
-            className="object-contain opacity-70"
-            unoptimized
-          />
-          <div className="absolute inset-0 flex items-center justify-center bg-black/50 px-6 text-center">
-            <p className="text-sm font-semibold text-white">{t.video.unavailable}</p>
-          </div>
-        </>
-      )}
-
-      <span className="pointer-events-none absolute end-4 top-4 inline-flex items-center gap-1 rounded-full bg-black/75 px-2.5 py-1 text-xs font-bold text-white backdrop-blur-sm">
+      <button
+        type="button"
+        onClick={handleClose}
+        aria-label={t.auth.close}
+        className="absolute start-4 top-4 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-sm transition-colors hover:bg-black/80"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
-          className="h-3.5 w-3.5"
+          className="h-5 w-5"
           aria-hidden
         >
-          <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
-          <circle cx="12" cy="12" r="3" />
+          <path d="M18 6L6 18M6 6l12 12" />
         </svg>
-        {viewsCount.toLocaleString()} {t.video.views}
-      </span>
+      </button>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent px-4 pb-5 pt-16 sm:px-6">
-        <div className="pointer-events-auto space-y-3">
-          <h1 className="text-lg font-bold leading-snug text-white sm:text-xl">{video.title}</h1>
+      {videos.length > 1 ? (
+        <p className="pointer-events-none absolute start-1/2 top-4 z-20 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-[10px] font-semibold text-white/80 backdrop-blur-sm">
+          {t.video.swipeVideos}
+        </p>
+      ) : null}
 
-          {video.channel ? (
-            <div className="[&_a]:hover:bg-white/10 [&_span]:text-zinc-200">
-              <VideoCardChannel channel={video.channel} />
-            </div>
-          ) : null}
-
-          <VideoCardActions
-            videoId={video.id}
-            title={video.title}
-            initialLikes={video.likes_count}
-            initialComments={video.comments_count}
-            initialShares={video.shares_count ?? 0}
-            preview={{
-              thumbnailUrl: video.thumbnail_url,
-              videoUrl: video.video_url || undefined,
-              videoOwnerId: video.user_id,
-              channel: video.channel,
-              hashtags: video.hashtags,
-            }}
-            variant="overlay"
-          />
-
-          {video.hashtags && video.hashtags.length > 0 ? (
-            <p className="text-sm font-semibold text-zinc-300">
-              {video.hashtags.map((tag) => `#${tag}`).join(" ")}
-            </p>
-          ) : null}
-
-          <Link
-            href="/"
-            className="inline-block text-sm font-semibold text-zinc-300 transition-colors hover:text-white"
-          >
-            {t.video.backHome}
-          </Link>
-        </div>
+      <div
+        ref={containerRef}
+        className="h-full overflow-y-scroll snap-y snap-mandatory overscroll-y-contain [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {videos.map((item) => (
+          <VideoSlide key={item.id} video={item} isActive={item.id === activeId} />
+        ))}
       </div>
     </div>
   );

@@ -52,6 +52,7 @@ export type Dictionary = {
     unpinComment: string;
     pinned: string;
     addEmoji: string;
+    swipeVideos: string;
   };
   theme: {
     light: string;
@@ -195,6 +196,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unpinComment: "Unpin",
       pinned: "Pinned",
       addEmoji: "Add emoji",
+      swipeVideos: "Swipe up or down for next video",
     },
     theme: {
       light: "Switch to light mode",
@@ -336,6 +338,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unpinComment: "固定解除",
       pinned: "固定済み",
       addEmoji: "絵文字を追加",
+      swipeVideos: "上下にスワイプして次の動画へ",
     },
     theme: {
       light: "ライトモードに切り替え",
@@ -477,6 +480,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unpinComment: "إلغاء التثبيت",
       pinned: "مثبّت",
       addEmoji: "إضافة إيموجي",
+      swipeVideos: "مرّر لأعلى أو لأسفل للفيديو التالي",
     },
     theme: {
       light: "التبديل إلى الوضع النهاري",
