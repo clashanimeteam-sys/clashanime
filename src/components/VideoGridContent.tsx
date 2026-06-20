@@ -37,11 +37,12 @@ export function VideoGridContent({
           aria-label={t.home.gridLabel}
           className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         >
-          {videos.map((video, index) => (
+          {videos.map((video) => (
             <VideoCard
               key={video.id}
               video={video}
-              rank={showRank ? index + 1 : undefined}
+              rank={showRank ? video.global_rank : undefined}
+              showClashBadge={showRank}
             />
           ))}
         </section>

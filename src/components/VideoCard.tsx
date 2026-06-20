@@ -5,6 +5,7 @@ import Link from "next/link";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { VideoCardChannel } from "@/components/VideoCardChannel";
 import { useLocale } from "@/providers/LocaleProvider";
+import { isInClashTop } from "@/lib/videoRanking";
 import type { ModerationStatus, Video } from "@/lib/types";
 import { getModerationStatusLabel } from "@/lib/moderation";
 
@@ -12,6 +13,7 @@ type VideoCardProps = {
   video: Video;
   rank?: number;
   showModerationStatus?: boolean;
+  showClashBadge?: boolean;
 };
 
 type MedalTier = "gold" | "silver" | "bronze" | null;
@@ -83,7 +85,12 @@ function RankBadge({ rank }: { rank: number }) {
   );
 }
 
-export function VideoCard({ video, rank, showModerationStatus = false }: VideoCardProps) {
+export function VideoCard({
+  video,
+  rank,
+  showModerationStatus = false,
+  showClashBadge = false,
+}: VideoCardProps) {
   const { t } = useLocale();
   const moderationStatus = video.moderation_status;
   const showBadge =
@@ -126,6 +133,12 @@ export function VideoCard({ video, rank, showModerationStatus = false }: VideoCa
           </div>
 
           {rank !== undefined ? <RankBadge rank={rank} /> : null}
+
+          {showClashBadge && isInClashTop(rank) ? (
+            <span className="absolute start-3 top-12 rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-white shadow">
+              {t.video.inClashTop}
+            </span>
+          ) : null}
 
           {showBadge && moderationStatus ? (
             <ModerationBadge status={moderationStatus} />

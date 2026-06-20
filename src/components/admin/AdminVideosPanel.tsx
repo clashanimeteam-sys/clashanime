@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { getModerationStatusLabel } from "@/lib/moderation";
 import { logModerationAction, moderationActionFromStatus } from "@/lib/moderationLog";
+import { isInClashTop } from "@/lib/videoRanking";
 import { createBrowserClient } from "@/lib/supabase/client";
 import type { ModerationStatus, Video } from "@/lib/types";
 import { useAuth } from "@/providers/AuthProvider";
@@ -33,6 +34,7 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
       : "all",
   );
   const [loading, setLoading] = useState(true);
+  const [globalRanks, setGlobalRanks] = useState<Record<string, number>>({});
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -81,6 +83,16 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
         owner_username: row.user_id ? (profileMap.get(row.user_id) ?? null) : null,
       })),
     );
+
+    try {
+      const response = await fetch("/api/videos/global-ranks", { cache: "no-store" });
+      if (response.ok) {
+        setGlobalRanks((await response.json()) as Record<string, number>);
+      }
+    } catch {
+      setGlobalRanks({});
+    }
+
     setLoading(false);
   }, [supabase, statusFilter]);
 
@@ -214,6 +226,12 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
                   {t.admin.table.views}: {(video.views_count ?? 0).toLocaleString()} ·{" "}
                   {video.likes_count.toLocaleString()} · {video.comments_count.toLocaleString()}
                 </p>
+                {video.moderation_status === "approved" && globalRanks[video.id] ? (
+                  <p className="text-xs text-accent">
+                    {t.admin.globalRank}: #{globalRanks[video.id]}
+                    {isInClashTop(globalRanks[video.id]) ? ` · ${t.admin.inClashTop}` : ""}
+                  </p>
+                ) : null}
                 {(video.suspicion_score ?? 0) > 0 && (
                   <p className="text-xs text-amber-300">
                     {t.admin.suspicionScore}: {video.suspicion_score} ·{" "}

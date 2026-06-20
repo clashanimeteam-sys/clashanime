@@ -63,6 +63,7 @@ export type Video = {
   shares_count?: number;
   created_at: string;
   trending_score: number;
+  global_rank?: number;
   user_id?: string | null;
   channel?: VideoChannel | null;
   hashtags?: string[];

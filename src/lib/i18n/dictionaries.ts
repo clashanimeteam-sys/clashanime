@@ -34,6 +34,7 @@ export type Dictionary = {
     silverMedal: string;
     bronzeMedal: string;
     rank: string;
+    inClashTop: string;
     unavailable: string;
     backHome: string;
     notFound: string;
@@ -340,6 +341,8 @@ export type Dictionary = {
     rejectVerification: string;
     viewChannel: string;
     suspicionScore: string;
+    globalRank: string;
+    inClashTop: string;
     rejectionReason: string;
     reportReason: string;
     reportedBy: string;
@@ -451,7 +454,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       titlePrimary: "Clash",
       titleSecondary: " Anime",
       subtitle:
-        "Videos rise to the top based on real-time likes and comments. The fastest-growing clips win the grid.",
+        "The top 10 videos worldwide by real-time engagement. Reach global rank #10 to enter Clash.",
       gridLabel: "Clash Anime grid",
       upload: "Video Upload",
       maintenanceMode: "ClashAnime is in maintenance mode. Some features are temporarily unavailable.",
@@ -469,6 +472,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       silverMedal: "Silver medal",
       bronzeMedal: "Bronze medal",
       rank: "Rank",
+      inClashTop: "In Clash",
       unavailable: "This video is not available yet.",
       backHome: "Back to trending",
       notFound: "Video not found.",
@@ -516,7 +520,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     pages: {
       videosTitle: "All Videos",
-      videosSubtitle: "Browse the latest approved duel clips from creators on ClashAnime.",
+      videosSubtitle:
+        "All approved videos, newest first. Each card shows its global rank. Top 10 also appear in Clash.",
       exclusivesTitle: "Exclusives",
       exclusivesSubtitle: "Clips from verified creators on ClashAnime.",
       communityTitle: "Community",
@@ -786,6 +791,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       rejectVerification: "Reject verification",
       viewChannel: "View channel",
       suspicionScore: "Suspicion score",
+      globalRank: "Global rank",
+      inClashTop: "In Clash top 10",
       rejectionReason: "Rejection reason",
       reportReason: "Reason",
       reportedBy: "Reported by",
@@ -895,7 +902,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       titlePrimary: "Clash",
       titleSecondary: " Anime",
       subtitle:
-        "リアルタイムのいいねとコメントで動画が上位に上がります。最も伸びているクリップがグリッドの頂点を占めます。",
+        "リアルタイムのエンゲージメントで世界トップ10の動画のみ表示。世界10位に到達するとクラッシュに入ります。",
       gridLabel: "Clash Animeグリッド",
       upload: "動画アップロード",
       maintenanceMode: "ClashAnimeはメンテナンス中です。一部機能が一時的に利用できません。",
@@ -913,6 +920,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       silverMedal: "銀メダル",
       bronzeMedal: "銅メダル",
       rank: "順位",
+      inClashTop: "クラッシュ入り",
       unavailable: "この動画はまだ視聴できません。",
       backHome: "トレンドに戻る",
       notFound: "動画が見つかりません。",
@@ -960,7 +968,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     pages: {
       videosTitle: "すべての動画",
-      videosSubtitle: "ClashAnimeで承認された最新のデュエルクリップを閲覧。",
+      videosSubtitle:
+        "承認済みの全動画を新しい順に表示。各カードに世界ランクを表示。トップ10はクラッシュにも表示されます。",
       exclusivesTitle: "限定",
       exclusivesSubtitle: "認証済みクリエイターのクリップ。",
       communityTitle: "コミュニティ",
@@ -1227,6 +1236,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       rejectVerification: "認証を却下",
       viewChannel: "チャンネルを見る",
       suspicionScore: "疑わしさスコア",
+      globalRank: "世界ランク",
+      inClashTop: "クラッシュ上位10",
       rejectionReason: "拒否理由",
       reportReason: "理由",
       reportedBy: "報告者",
@@ -1336,7 +1347,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       titlePrimary: "Clash",
       titleSecondary: " Anime",
       subtitle:
-        "تصعد الفيديوهات إلى القمة بناءً على الإعجابات والتعليقات الفورية. المقاطع الأسرع نمواً تفوز بالشبكة.",
+        "أقوى ١٠ فيديوهات عالمياً حسب التفاعل الفوري. عند الوصول للمركز ١٠ يرتفع المقطع إلى النزالات.",
       gridLabel: "شبكة Clash Anime",
       upload: "رفع فيديو",
       maintenanceMode: "ClashAnime في وضع الصيانة. بعض الميزات غير متاحة مؤقتاً.",
@@ -1354,6 +1365,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       silverMedal: "ميدالية فضية",
       bronzeMedal: "ميدالية برونزية",
       rank: "الترتيب",
+      inClashTop: "في النزالات",
       unavailable: "هذا الفيديو غير متاح بعد.",
       backHome: "العودة إلى الرائج",
       notFound: "الفيديو غير موجود.",
@@ -1401,7 +1413,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     pages: {
       videosTitle: "كل الفيديوهات",
-      videosSubtitle: "تصفّح أحدث المقاطع المعتمدة من المبدعين على ClashAnime.",
+      videosSubtitle:
+        "كل الفيديوهات المعتمدة من الأحدث، مع رقم المركز العالمي. المركز ١–١٠ يظهر أيضاً في النزالات.",
       exclusivesTitle: "حصري",
       exclusivesSubtitle: "مقاطع من القنوات الموثّقة على ClashAnime.",
       communityTitle: "المجتمع",
@@ -1670,6 +1683,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       rejectVerification: "رفض التوثيق",
       viewChannel: "عرض القناة",
       suspicionScore: "درجة الاشتباه",
+      globalRank: "المركز العالمي",
+      inClashTop: "في النزالات (أفضل 10)",
       rejectionReason: "سبب الرفض",
       reportReason: "السبب",
       reportedBy: "بلّغ بواسطة",

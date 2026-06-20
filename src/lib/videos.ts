@@ -1,4 +1,8 @@
 import { createServerClient } from "@/lib/supabase/server";
+import {
+  assignGlobalRanks,
+  CLASH_TOP_COUNT,
+} from "@/lib/videoRanking";
 import type { Video, VideoChannel } from "@/lib/types";
 
 const MOCK_VIDEOS: Video[] = [
@@ -64,24 +68,6 @@ const MOCK_VIDEOS: Video[] = [
   },
 ];
 
-function calculateTrendingScore(video: Video): number {
-  const ageHours =
-    (Date.now() - new Date(video.created_at).getTime()) / (1000 * 60 * 60);
-  const engagement = video.likes_count + video.comments_count * 2;
-  const legendBoost =
-    video.channel?.is_verified || (video.channel?.level ?? 0) >= 4 ? 1.2 : 1;
-  return (engagement * legendBoost) / Math.pow(ageHours + 2, 1.5);
-}
-
-function sortByTrending(videos: Video[]): Video[] {
-  return [...videos]
-    .map((video) => ({
-      ...video,
-      trending_score: calculateTrendingScore(video),
-    }))
-    .sort((a, b) => b.trending_score - a.trending_score);
-}
-
 async function attachChannels(
   supabase: NonNullable<Awaited<ReturnType<typeof createServerClient>>>,
   videos: Array<Omit<Video, "trending_score" | "channel"> & { user_id?: string | null }>,
@@ -132,44 +118,14 @@ async function attachChannels(
   }));
 }
 
-export async function getTrendingVideos(): Promise<Video[]> {
-  const supabase = await createServerClient();
-
-  if (!supabase) {
-    return sortByTrending(MOCK_VIDEOS);
-  }
-
-  const { data, error } = await supabase
-    .from("videos")
-    .select(
-      "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, user_id",
-    )
-    .eq("moderation_status", "approved")
-    .order("likes_count", { ascending: false })
-    .limit(24);
-
-  if (error || !data?.length) {
-    return sortByTrending(MOCK_VIDEOS);
-  }
-
-  const withChannels = await attachChannels(supabase, data);
-  const sorted = sortByTrending(withChannels);
-
-  await Promise.all(
-    sorted.slice(0, 4).map((video) => supabase.rpc("award_trending_bonus", { target_video_id: video.id })),
-  );
-
-  return sorted;
-}
-
 const APPROVED_VIDEO_SELECT =
   "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, user_id";
 
-export async function getRecentVideos(limit = 48): Promise<Video[]> {
+async function fetchApprovedVideos(): Promise<Video[]> {
   const supabase = await createServerClient();
 
   if (!supabase) {
-    return sortByTrending(MOCK_VIDEOS).slice(0, limit);
+    return assignGlobalRanks(MOCK_VIDEOS);
   }
 
   const { data, error } = await supabase
@@ -177,13 +133,69 @@ export async function getRecentVideos(limit = 48): Promise<Video[]> {
     .select(APPROVED_VIDEO_SELECT)
     .eq("moderation_status", "approved")
     .order("created_at", { ascending: false })
-    .limit(limit);
+    .limit(500);
 
   if (error || !data?.length) {
-    return [];
+    return assignGlobalRanks(MOCK_VIDEOS);
   }
 
-  return attachChannels(supabase, data);
+  const withChannels = await attachChannels(supabase, data);
+  return assignGlobalRanks(withChannels);
+}
+
+async function awardClashTrendingBonuses(videos: Video[]): Promise<void> {
+  const supabase = await createServerClient();
+  if (!supabase) return;
+
+  await Promise.all(
+    videos
+      .slice(0, CLASH_TOP_COUNT)
+      .map((video) => supabase.rpc("award_trending_bonus", { target_video_id: video.id })),
+  );
+}
+
+export async function getGloballyRankedVideos(): Promise<Video[]> {
+  return fetchApprovedVideos();
+}
+
+/** Top 10 globally ranked videos for the Clash (النزالات) feed. */
+export async function getClashVideos(): Promise<Video[]> {
+  const ranked = await fetchApprovedVideos();
+  const top = ranked.slice(0, CLASH_TOP_COUNT);
+  await awardClashTrendingBonuses(top);
+  return top;
+}
+
+/** All approved videos, newest first, each with its global rank. */
+export async function getVideosCatalog(): Promise<Video[]> {
+  const ranked = await fetchApprovedVideos();
+  const rankById = new Map(ranked.map((video) => [video.id, video.global_rank ?? 0]));
+
+  return [...ranked]
+    .sort(
+      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+    )
+    .map((video) => ({
+      ...video,
+      global_rank: rankById.get(video.id),
+    }));
+}
+
+/** @deprecated Use getClashVideos() */
+export async function getTrendingVideos(): Promise<Video[]> {
+  return getClashVideos();
+}
+
+export async function getRecentVideos(limit = 48): Promise<Video[]> {
+  const catalog = await getVideosCatalog();
+  return catalog.slice(0, limit);
+}
+
+export async function getGlobalRankMap(): Promise<Record<string, number>> {
+  const ranked = await fetchApprovedVideos();
+  return Object.fromEntries(
+    ranked.map((video) => [video.id, video.global_rank ?? 0]),
+  );
 }
 
 export async function getVerifiedCreatorVideos(limit = 24): Promise<Video[]> {
@@ -239,5 +251,7 @@ export async function getVideoById(id: string): Promise<Video | null> {
   }
 
   const [video] = await attachChannels(supabase, [data]);
-  return video;
+  const ranked = await fetchApprovedVideos();
+  const match = ranked.find((entry) => entry.id === id);
+  return match ? { ...video, global_rank: match.global_rank, trending_score: match.trending_score } : video;
 }

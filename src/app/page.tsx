@@ -1,10 +1,10 @@
 import { HomeContent } from "@/components/HomeContent";
-import { getTrendingVideos } from "@/lib/videos";
+import { getClashVideos } from "@/lib/videos";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const videos = await getTrendingVideos();
+  const videos = await getClashVideos();
 
   return <HomeContent videos={videos} />;
 }

@@ -5,7 +5,7 @@ import {
   buildVideoShareMetadata,
   buildVideoStructuredData,
 } from "@/lib/videoMetadata";
-import { getTrendingVideos, getVideoById } from "@/lib/videos";
+import { getClashVideos, getVideoById } from "@/lib/videos";
 
 export const dynamic = "force-dynamic";
 
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: VideoPageProps): Promise<Meta
 
 export default async function VideoPage({ params }: VideoPageProps) {
   const { id } = await params;
-  const [video, feed] = await Promise.all([getVideoById(id), getTrendingVideos()]);
+  const [video, feed] = await Promise.all([getVideoById(id), getClashVideos()]);
 
   if (!video) {
     notFound();

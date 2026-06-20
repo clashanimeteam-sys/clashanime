@@ -13,6 +13,7 @@ export function VideosPageContent({ videos }: { videos: Video[] }) {
       subtitle={t.pages.videosSubtitle}
       videos={videos}
       emptyMessage={t.pages.emptyVideos}
+      showRank
     />
   );
 }
