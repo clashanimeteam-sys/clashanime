@@ -51,7 +51,7 @@ const en: LegalBundle = {
       },
       {
         heading: "5. Your responsibility for content",
-        body: "You are solely responsible for every video, thumbnail, title, comment, and profile detail you publish. This includes:\n• Ensuring you own or have permission to use all audio, video, images, and text\n• Complying with copyright, trademark, and privacy laws in your country and ours\n• The accuracy of titles and descriptions\n• Any harm caused by content you upload or comments you post\n\nClashAnime does not pre-screen all content before upload. Automated scans and human review reduce risk but do not eliminate it. You—not ClashAnime—bear primary legal responsibility for your uploads.",
+        body: "You are solely responsible for every video, thumbnail, title, comment, Community post, attached image, and profile detail you publish. This includes:\n• Ensuring you own or have permission to use all audio, video, images, and text\n• Complying with copyright, trademark, and privacy laws in your country and ours\n• Keeping Community posts strictly anime-related as required by our Community Guidelines\n• The accuracy of titles and descriptions\n• Any harm caused by content you upload or comments you post\n\nClashAnime does not pre-screen all content before upload. Automated scans and human review reduce risk but do not eliminate it. You—not ClashAnime—bear primary legal responsibility for your uploads and posts.",
       },
       {
         heading: "6. License you grant to ClashAnime",
@@ -175,7 +175,7 @@ const en: LegalBundle = {
     title: "Community Guidelines",
     updated: UPDATED_EN,
     intro:
-      "These guidelines define acceptable behavior on ClashAnime. Violations may result in content removal or account action.",
+      "These guidelines define acceptable behavior on ClashAnime. Community posts must be anime-related only. Violations may result in content removal or account action.",
     sections: [
       {
         heading: "1. Our mission",
@@ -211,10 +211,14 @@ const en: LegalBundle = {
       },
       {
         heading: "9. Reporting violations",
-        body: "See stolen content? Use /report with the video URL and explanation. Rights holders should use /dmca for formal copyright notices.",
+        body: "See stolen content? Use /report with the video URL and explanation. For Community posts, use the in-post Report button or /report. Rights holders should use /dmca for formal copyright notices.",
       },
       {
-        heading: "10. Consequences",
+        heading: "10. Community feed — anime only (mandatory)",
+        body: "Every post in the Community section must relate to anime, manga, anime games, fan art, cosplay, or creator content within the anime space.\n\nStrictly prohibited in Community posts, comments, and images:\n• Political, religious, or news content unrelated to anime\n• Adult, sexual, or pornographic material of any kind\n• Gambling, scams, spam, or unrelated advertising\n• Real-world violence or gruesome content outside anime context\n• Personal drama, dating, or topics unrelated to anime\n\nBy publishing a Community post, you confirm that your text and any attached image comply with this rule. Violations may be removed without warning, reported to staff, and may lead to account restrictions or bans.",
+      },
+      {
+        heading: "11. Consequences",
         body: "Violations may lead to:\n• Content removal\n• Upload restrictions\n• Loss of channel verification\n• Temporary suspension\n• Permanent account ban\n• Referral to rights holders or authorities where required",
       },
     ],
@@ -286,7 +290,7 @@ const ar: LegalBundle = {
       },
       {
         heading: "5. مسؤوليتك عن المحتوى",
-        body: "أنت وحدك المسؤول عن كل فيديو، صورة مصغرة، عنوان، تعليق، ووصف قناة تنشره. تشمل مسؤوليتك:\n• التأكد أنك تملك أو لديك إذن لاستخدام الصوت والفيديو والصور والنص\n• الالتزام بقوانين حقوق النشر والعلامات التجارية والخصوصية\n• صحة العناوين والأوصاف\n• أي ضرر ينتج عن محتواك أو تعليقاتك\n\nClashAnime لا تراجع كل المحتوى قبل الرفع. الفحص الآلي والمراجعة البشرية يقلّلان المخاطر لكن لا يلغيانها. المسؤولية القانونية الأساسية تقع عليك—وليس على ClashAnime—عن ما ترفعه.",
+        body: "أنت وحدك المسؤول عن كل فيديو، صورة مصغرة، عنوان، تعليق، منشور مجتمع، صورة مرفقة، ووصف قناة تنشره. تشمل مسؤوليتك:\n• التأكد أنك تملك أو لديك إذن لاستخدام الصوت والفيديو والصور والنص\n• الالتزام بقوانين حقوق النشر والعلامات التجارية والخصوصية\n• أن تكون منشورات المجتمع مرتبطة بالأنمي فقط كما تفرض إرشادات المجتمع\n• صحة العناوين والأوصاف\n• أي ضرر ينتج عن محتواك أو تعليقاتك\n\nClashAnime لا تراجع كل المحتوى قبل الرفع. المسؤولية القانونية الأساسية تقع عليك—وليس على ClashAnime—عن ما ترفعه وتنشره.",
       },
       {
         heading: "6. ترخيص المحتوى للمنصة",
@@ -410,7 +414,7 @@ const ar: LegalBundle = {
     title: "إرشادات المجتمع",
     updated: UPDATED_AR,
     intro:
-      "تحدّد هذه الإرشادات السلوك المقبول على ClashAnime. المخالفات قد تؤدي إلى حذف المحتوى أو إجراءات على الحساب.",
+      "تحدّد هذه الإرشادات السلوك المقبول على ClashAnime. منشورات المجتمع يجب أن تكون مرتبطة بالأنمي فقط. المخالفات قد تؤدي إلى حذف المحتوى أو إجراءات على الحساب.",
     sections: [
       {
         heading: "1. رسالتنا",
@@ -446,10 +450,14 @@ const ar: LegalBundle = {
       },
       {
         heading: "9. الإبلاغ",
-        body: "رأيت محتوى مسروقاً؟ استخدم /report مع رابط الفيديو. أصحاب الحقوق يستخدمون /dmca للإشعارات الرسمية.",
+        body: "رأيت محتوى مسروقاً؟ استخدم /report مع رابط الفيديو. لمنشورات المجتمع، استخدم زر الإبلاغ في المنشور. أصحاب الحقوق يستخدمون /dmca للإشعارات الرسمية.",
       },
       {
-        heading: "10. العقوبات",
+        heading: "10. المجتمع — أنمي فقط (إلزامي)",
+        body: "كل منشور في صفحة المجتمع يجب أن يرتبط بالأنمي أو المانga أو ألعاب الأنمي أو فن المعجبين أو cosplay أو محتوى المبدعين ضمن عالم الأنمي.\n\nيُمنع منعاً باتاً في المنشورات والتعليقات والصور:\n• محتوى سياسي أو ديني أو أخبار خارج موضوع الأنمي\n• أي محتوى إباحي أو جنسي\n• قمار، احتيال، spam، أو إعلانات غير مرتبطة\n• عنف واقعي أو مشاهد مروّعة خارج سياق الأنمي\n• دراما شخصية أو مواضيع لا علاقة لها بالأنمي\n\nبالنشر في المجتمع، تؤكد التزامك بهذه القاعدة. المخالفات قد تُحذف دون إنذار وتؤدي إلى تقييد الحساب أو حظره.",
+      },
+      {
+        heading: "11. العقوبات",
         body: "قد تؤدي المخالفات إلى:\n• حذف المحتوى\n• تقييد الرفع\n• إلغاء توثيق القناة\n• إيقاف مؤقت\n• حظر دائم\n• إحالة لأصحاب الحقوق أو الجهات المختصة",
       },
     ],
@@ -575,7 +583,7 @@ const ja: LegalBundle = {
   community: {
     title: "コミュニティガイドライン",
     updated: UPDATED_JA,
-    intro: "ClashAnimeで許容される行動を定義します。",
+    intro: "ClashAnimeで許容される行動を定義します。コミュニティ投稿はアニメ関連のみ必須です。",
     sections: [
       { heading: "1. 目的", body: "オリジナルのアニメデュエルクリップのためのコミュニティです。" },
       { heading: "2. オリジナルのみ", body: "再アップロード、エピソード盗用、他クリエイターの盗用は禁止。" },
@@ -585,8 +593,12 @@ const ja: LegalBundle = {
       { heading: "6. スパム禁止", body: "ボットや不正エンゲージメント操作は禁止。" },
       { heading: "7. 安全", body: "違法コンテンツ、児童に関する不適切コンテンツは禁止。" },
       { heading: "8. 審査", body: "未認証チャンネルは審査キューに入ります。" },
-      { heading: "9. 報告", body: "/report または /dmca をご利用ください。" },
-      { heading: "10. 制裁", body: "削除、制限、認証取消、停止、永久BANの対象となります。" },
+      { heading: "9. 報告", body: "動画は /report、コミュニティ投稿は投稿内の報告ボタンをご利用ください。" },
+      {
+        heading: "10. コミュニティ — アニメのみ（必須）",
+        body: "コミュニティの投稿はアニメ、漫画、アニメゲーム、ファンアート、コスプレ、またはアニメ領域のクリエイター内容に限定されます。\n\n禁止：政治・宗教・非アニメニュース、成人/性的コンテンツ、ギャンブル・詐欺・spam、非アニメの個人 drama など。投稿時に本ルールへの同意が必要です。",
+      },
+      { heading: "11. 制裁", body: "削除、制限、認証取消、停止、永久BANの対象となります。" },
     ],
   },
   dmca: {

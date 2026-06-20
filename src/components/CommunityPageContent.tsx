@@ -3,18 +3,29 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { CommunityPostActions } from "@/components/CommunityPostActions";
+import { CommunityPostCommentsModal } from "@/components/CommunityPostCommentsModal";
+import { CommunityReportModal } from "@/components/CommunityReportModal";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { deleteCommunityPost } from "@/lib/communityEngagement";
 import { createBrowserClient } from "@/lib/supabase/client";
+import { getSupabaseConfig } from "@/lib/supabase/config";
+import { getSignupUrl } from "@/lib/subscriptionGate";
+import { getPublicStorageUrl } from "@/lib/upload";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
-import { getSignupUrl } from "@/lib/subscriptionGate";
 
 type CommunityPost = {
   id: string;
   body: string;
+  image_url: string | null;
   created_at: string;
   user_id: string;
+  likes_count: number;
+  dislikes_count: number;
+  comments_count: number;
+  shares_count: number;
   username: string;
   display_name: string | null;
   avatar_url: string | null;
@@ -31,17 +42,25 @@ function getInitials(name: string) {
     .join("");
 }
 
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+
 export function CommunityPageContent() {
   const { user } = useAuth();
   const { t } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
+  const config = useMemo(() => getSupabaseConfig(), []);
 
   const [posts, setPosts] = useState<CommunityPost[]>([]);
   const [body, setBody] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [acceptedPolicy, setAcceptedPolicy] = useState(false);
   const [loading, setLoading] = useState(true);
   const [posting, setPosting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const [activeCommentsPostId, setActiveCommentsPostId] = useState<string | null>(null);
+  const [activeReportPost, setActiveReportPost] = useState<CommunityPost | null>(null);
 
   const loadPosts = useCallback(async () => {
     if (!supabase) return;
@@ -51,7 +70,9 @@ export function CommunityPageContent() {
 
     const { data, error: fetchError } = await supabase
       .from("community_posts")
-      .select("id, body, created_at, user_id")
+      .select(
+        "id, body, image_url, created_at, user_id, likes_count, dislikes_count, comments_count, shares_count",
+      )
       .order("created_at", { ascending: false })
       .limit(50);
 
@@ -86,6 +107,12 @@ export function CommunityPageContent() {
         const profile = profileMap.get(row.user_id);
         return {
           ...row,
+          body: row.body ?? "",
+          image_url: row.image_url ?? null,
+          likes_count: row.likes_count ?? 0,
+          dislikes_count: row.dislikes_count ?? 0,
+          comments_count: row.comments_count ?? 0,
+          shares_count: row.shares_count ?? 0,
           username: profile?.username ?? "user",
           display_name: profile?.display_name ?? null,
           avatar_url: profile?.avatar_url ?? null,
@@ -102,17 +129,81 @@ export function CommunityPageContent() {
     loadPosts();
   }, [loadPosts]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = window.location.hash;
+    if (!hash.startsWith("#post-")) return;
+    const id = hash.replace("#post-", "");
+    window.setTimeout(() => {
+      document.getElementById(`post-${id}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 300);
+  }, [posts]);
+
+  function handleImageSelect(file: File | null) {
+    setImageFile(null);
+    setImagePreview(null);
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setError(t.communityFeed.invalidImage);
+      return;
+    }
+
+    if (file.size > MAX_IMAGE_BYTES) {
+      setError(t.communityFeed.imageTooLarge);
+      return;
+    }
+
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+    setError(null);
+  }
+
+  async function uploadPostImage(file: File, userId: string): Promise<string | null> {
+    if (!supabase || !config) return null;
+
+    const extension = file.name.split(".").pop()?.toLowerCase() || "jpg";
+    const path = `${userId}/${Date.now()}.${extension}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("community-images")
+      .upload(path, file, { upsert: true, contentType: file.type });
+
+    if (uploadError) return null;
+    return getPublicStorageUrl(config.url, "community-images", path);
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!supabase || !user || !body.trim()) return;
+    if (!supabase || !user) return;
+
+    const trimmed = body.trim();
+    if (!trimmed && !imageFile) return;
+
+    if (!acceptedPolicy) {
+      setError(t.communityFeed.policyRequired);
+      return;
+    }
 
     setPosting(true);
     setError(null);
     setMessage(null);
 
+    let imageUrl: string | null = null;
+    if (imageFile) {
+      imageUrl = await uploadPostImage(imageFile, user.id);
+      if (!imageUrl) {
+        setError(t.communityFeed.uploadFailed);
+        setPosting(false);
+        return;
+      }
+    }
+
     const { error: insertError } = await supabase.from("community_posts").insert({
       user_id: user.id,
-      body: body.trim(),
+      body: trimmed || null,
+      image_url: imageUrl,
     });
 
     setPosting(false);
@@ -123,8 +214,38 @@ export function CommunityPageContent() {
     }
 
     setBody("");
+    setImageFile(null);
+    setImagePreview(null);
+    setAcceptedPolicy(false);
     setMessage(t.points.communityPostSuccess);
     await loadPosts();
+  }
+
+  async function handleDeletePost(postId: string) {
+    if (!supabase || !user) return;
+    if (!window.confirm(t.communityFeed.confirmDeletePost)) return;
+
+    const ok = await deleteCommunityPost(supabase, postId);
+    if (!ok) {
+      setError(t.communityFeed.actionFailed);
+      return;
+    }
+
+    setPosts((current) => current.filter((post) => post.id !== postId));
+  }
+
+  function updatePostCounts(
+    postId: string,
+    counts: {
+      likes_count: number;
+      dislikes_count: number;
+      comments_count: number;
+      shares_count: number;
+    },
+  ) {
+    setPosts((current) =>
+      current.map((post) => (post.id === postId ? { ...post, ...counts } : post)),
+    );
   }
 
   return (
@@ -132,6 +253,12 @@ export function CommunityPageContent() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-black dark:text-white">{t.pages.communityTitle}</h1>
         <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{t.points.communitySubtitle}</p>
+        <p className="mt-2 rounded-xl border border-accent/20 bg-accent/5 px-3 py-2 text-xs text-zinc-700 dark:text-zinc-300">
+          {t.communityFeed.animeOnlyNotice}{" "}
+          <Link href="/community-guidelines" className="font-semibold text-accent hover:underline">
+            {t.footer.communityGuidelines}
+          </Link>
+        </p>
       </div>
 
       {user ? (
@@ -144,14 +271,55 @@ export function CommunityPageContent() {
             onChange={(event) => setBody(event.target.value)}
             rows={4}
             maxLength={2000}
-            placeholder={t.points.communityPostPlaceholder}
+            placeholder={t.communityFeed.postPlaceholder}
             className="mt-2 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-accent dark:border-zinc-700 dark:bg-black dark:text-white"
           />
+
+          {imagePreview ? (
+            <div className="relative mt-3 aspect-video max-h-64 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <Image src={imagePreview} alt="" fill className="object-cover" unoptimized />
+              <button
+                type="button"
+                onClick={() => handleImageSelect(null)}
+                className="absolute end-2 top-2 rounded-full bg-black/70 px-2 py-1 text-xs text-white"
+              >
+                {t.communityFeed.removeImage}
+              </button>
+            </div>
+          ) : (
+            <label className="mt-3 inline-flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-zinc-300 px-3 py-2 text-xs font-semibold text-zinc-600 hover:border-accent dark:border-zinc-700 dark:text-zinc-300">
+              {t.communityFeed.addImage}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(event) => handleImageSelect(event.target.files?.[0] ?? null)}
+              />
+            </label>
+          )}
+
+          <label className="mt-4 flex items-start gap-2 text-xs text-zinc-600 dark:text-zinc-400">
+            <input
+              type="checkbox"
+              checked={acceptedPolicy}
+              onChange={(event) => setAcceptedPolicy(event.target.checked)}
+              className="mt-0.5"
+              required
+            />
+            <span>
+              {t.communityFeed.policyCheckbox}{" "}
+              <Link href="/community-guidelines" className="font-semibold text-accent hover:underline">
+                {t.footer.communityGuidelines}
+              </Link>{" "}
+              {t.communityFeed.policyCheckboxSuffix}
+            </span>
+          </label>
+
           <div className="mt-3 flex items-center justify-between gap-3">
             <p className="text-xs text-zinc-500">{t.points.communityPostReward}</p>
             <button
               type="submit"
-              disabled={posting || !body.trim()}
+              disabled={posting || (!body.trim() && !imageFile) || !acceptedPolicy}
               className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
             >
               {posting ? t.points.communityPosting : t.points.communityPostSubmit}
@@ -184,10 +352,12 @@ export function CommunityPageContent() {
         <div className="space-y-4">
           {posts.map((post) => {
             const label = post.display_name?.trim() || post.username;
+            const preview = post.body || t.communityFeed.imagePostPreview;
             return (
               <article
                 key={post.id}
-                className="rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-black"
+                id={`post-${post.id}`}
+                className="scroll-mt-24 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-black"
               >
                 <div className="flex items-start gap-3">
                   <Link href={`/channel/${post.username}`} className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
@@ -209,10 +379,42 @@ export function CommunityPageContent() {
                       <span className="text-xs text-zinc-500">
                         {new Date(post.created_at).toLocaleString()}
                       </span>
+                      {user?.id === post.user_id ? (
+                        <button
+                          type="button"
+                          onClick={() => handleDeletePost(post.id)}
+                          className="text-xs font-semibold text-red-500 hover:underline"
+                        >
+                          {t.communityFeed.deletePost}
+                        </button>
+                      ) : null}
                     </div>
-                    <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-zinc-700 dark:text-zinc-200">
-                      {post.body}
-                    </p>
+
+                    {post.body ? (
+                      <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-zinc-700 dark:text-zinc-200">
+                        {post.body}
+                      </p>
+                    ) : null}
+
+                    {post.image_url ? (
+                      <div className="relative mt-3 aspect-video max-h-96 overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-900">
+                        <Image src={post.image_url} alt="" fill className="object-cover" unoptimized />
+                      </div>
+                    ) : null}
+
+                    <div className="mt-4">
+                      <CommunityPostActions
+                        postId={post.id}
+                        postPreview={preview}
+                        initialLikes={post.likes_count}
+                        initialDislikes={post.dislikes_count}
+                        initialComments={post.comments_count}
+                        initialShares={post.shares_count}
+                        onCommentsOpen={() => setActiveCommentsPostId(post.id)}
+                        onReportOpen={() => setActiveReportPost(post)}
+                        onCountsChange={(counts) => updatePostCounts(post.id, counts)}
+                      />
+                    </div>
                   </div>
                 </div>
               </article>
@@ -220,6 +422,26 @@ export function CommunityPageContent() {
           })}
         </div>
       )}
+
+      <CommunityPostCommentsModal
+        open={Boolean(activeCommentsPostId)}
+        onClose={() => setActiveCommentsPostId(null)}
+        postId={activeCommentsPostId ?? ""}
+        onCommentsCountChange={(count) => {
+          if (!activeCommentsPostId) return;
+          updatePostCounts(activeCommentsPostId, {
+            ...posts.find((post) => post.id === activeCommentsPostId)!,
+            comments_count: count,
+          });
+        }}
+      />
+
+      <CommunityReportModal
+        open={Boolean(activeReportPost)}
+        onClose={() => setActiveReportPost(null)}
+        postId={activeReportPost?.id ?? ""}
+        postPreview={activeReportPost?.body || activeReportPost?.image_url || undefined}
+      />
     </div>
   );
 }

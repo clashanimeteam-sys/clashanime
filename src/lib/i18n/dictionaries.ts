@@ -254,6 +254,46 @@ export type Dictionary = {
       trending_bonus: string;
     };
   };
+  communityFeed: {
+    animeOnlyNotice: string;
+    postPlaceholder: string;
+    addImage: string;
+    removeImage: string;
+    invalidImage: string;
+    imageTooLarge: string;
+    uploadFailed: string;
+    policyCheckbox: string;
+    policyCheckboxSuffix: string;
+    policyRequired: string;
+    deletePost: string;
+    confirmDeletePost: string;
+    confirmDeleteComment: string;
+    deleteComment: string;
+    report: string;
+    reportTitle: string;
+    reportIntro: string;
+    reportReasonLabel: string;
+    reportReasonOffTopic: string;
+    reportReasonAdult: string;
+    reportReasonSpam: string;
+    reportReasonHarassment: string;
+    reportReasonOther: string;
+    reportDetailsLabel: string;
+    reportDetailsHint: string;
+    reportSubmit: string;
+    reportSubmitting: string;
+    reportSubmitted: string;
+    loginToReport: string;
+    loginToComment: string;
+    commentsTitle: string;
+    loadingComments: string;
+    noComments: string;
+    commentPlaceholder: string;
+    postComment: string;
+    postingComment: string;
+    actionFailed: string;
+    imagePostPreview: string;
+  };
   upload: {
     create: string;
     title: string;
@@ -348,6 +388,15 @@ export type Dictionary = {
     reportedBy: string;
     anonymous: string;
     unknownVideo: string;
+    unknownCommunityPost: string;
+    communityPostReport: string;
+    videoReport: string;
+    openCommunityModeration: string;
+    communityTitle: string;
+    communitySubtitle: string;
+    noCommunityPosts: string;
+    confirmDeleteCommunityPost: string;
+    imageOnlyPost: string;
     openModeration: string;
     resolve: string;
     dismiss: string;
@@ -384,6 +433,7 @@ export type Dictionary = {
       dashboard: string;
       users: string;
       videos: string;
+      community: string;
       reports: string;
       moderationLog: string;
       settings: string;
@@ -697,6 +747,46 @@ export const dictionaries: Record<Locale, Dictionary> = {
         trending_bonus: "Trending bounty",
       },
     },
+    communityFeed: {
+      animeOnlyNotice: "Community posts must be anime-related only. Off-topic, political, or adult content is prohibited.",
+      postPlaceholder: "Share anime thoughts, fan art, clips, or updates...",
+      addImage: "Add image",
+      removeImage: "Remove",
+      invalidImage: "Please choose a valid image file.",
+      imageTooLarge: "Image must be 5 MB or smaller.",
+      uploadFailed: "Could not upload image. Try again.",
+      policyCheckbox: "I confirm this post is anime-related only and complies with the",
+      policyCheckboxSuffix: "(required).",
+      policyRequired: "You must accept the anime-only community policy before posting.",
+      deletePost: "Delete",
+      confirmDeletePost: "Delete this post permanently?",
+      confirmDeleteComment: "Delete this comment?",
+      deleteComment: "Delete",
+      report: "Report",
+      reportTitle: "Report community post",
+      reportIntro: "Help us keep the community anime-focused and safe.",
+      reportReasonLabel: "Reason",
+      reportReasonOffTopic: "Not anime-related / off-topic",
+      reportReasonAdult: "Adult or sexual content",
+      reportReasonSpam: "Spam or scam",
+      reportReasonHarassment: "Harassment or hate",
+      reportReasonOther: "Other violation",
+      reportDetailsLabel: "Details",
+      reportDetailsHint: "Explain what violates the community guidelines...",
+      reportSubmit: "Submit report",
+      reportSubmitting: "Submitting...",
+      reportSubmitted: "Report submitted. Our team will review it.",
+      loginToReport: "to report posts.",
+      loginToComment: "Sign in to comment on community posts.",
+      commentsTitle: "Comments",
+      loadingComments: "Loading comments...",
+      noComments: "No comments yet. Be the first.",
+      commentPlaceholder: "Write a comment...",
+      postComment: "Post comment",
+      postingComment: "Posting...",
+      actionFailed: "Could not save. Try again.",
+      imagePostPreview: "Community image post",
+    },
     upload: {
       create: "Create",
       title: "Upload duel clip",
@@ -798,6 +888,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reportedBy: "Reported by",
       anonymous: "anonymous",
       unknownVideo: "Unknown video",
+      unknownCommunityPost: "Unknown post",
+      communityPostReport: "Community post report",
+      videoReport: "Video report",
+      openCommunityModeration: "Open community moderation",
+      communityTitle: "Community posts",
+      communitySubtitle: "Review, preview, or remove community feed posts.",
+      noCommunityPosts: "No community posts yet.",
+      confirmDeleteCommunityPost: "Delete this community post?",
+      imageOnlyPost: "Image-only post",
       openModeration: "Open moderation",
       resolve: "Resolve",
       dismiss: "Dismiss",
@@ -834,6 +933,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         dashboard: "Dashboard",
         users: "Subscribers",
         videos: "Videos",
+        community: "Community",
         reports: "Reports",
         moderationLog: "Moderation log",
         settings: "Settings",
@@ -1142,6 +1242,46 @@ export const dictionaries: Record<Locale, Dictionary> = {
         trending_bonus: "トレンド報酬",
       },
     },
+    communityFeed: {
+      animeOnlyNotice: "コミュニティ投稿はアニメ関連のみ。政治・成人・無関係な内容は禁止です。",
+      postPlaceholder: "アニメの感想、ファンアート、クリップ、更新を共有...",
+      addImage: "画像を追加",
+      removeImage: "削除",
+      invalidImage: "有効な画像ファイルを選択してください。",
+      imageTooLarge: "画像は5MB以下にしてください。",
+      uploadFailed: "画像をアップロードできませんでした。",
+      policyCheckbox: "この投稿がアニメ関連のみであり、",
+      policyCheckboxSuffix: "に同意します（必須）。",
+      policyRequired: "投稿前にアニメ専用ポリシーへの同意が必要です。",
+      deletePost: "削除",
+      confirmDeletePost: "この投稿を完全に削除しますか？",
+      confirmDeleteComment: "このコメントを削除しますか？",
+      deleteComment: "削除",
+      report: "報告",
+      reportTitle: "コミュニティ投稿を報告",
+      reportIntro: "アニメ中心で安全なコミュニティのためにご協力ください。",
+      reportReasonLabel: "理由",
+      reportReasonOffTopic: "アニメと無関係 / 話題外",
+      reportReasonAdult: "成人向け・性的コンテンツ",
+      reportReasonSpam: "スパム・詐欺",
+      reportReasonHarassment: "嫌がらせ・ヘイト",
+      reportReasonOther: "その他の違反",
+      reportDetailsLabel: "詳細",
+      reportDetailsHint: "ガイドライン違反の内容を説明...",
+      reportSubmit: "報告を送信",
+      reportSubmitting: "送信中...",
+      reportSubmitted: "報告を受け付けました。",
+      loginToReport: "で投稿を報告。",
+      loginToComment: "コメントするにはサインインしてください。",
+      commentsTitle: "コメント",
+      loadingComments: "コメントを読み込み中...",
+      noComments: "まだコメントはありません。",
+      commentPlaceholder: "コメントを書く...",
+      postComment: "コメント投稿",
+      postingComment: "投稿中...",
+      actionFailed: "保存できませんでした。",
+      imagePostPreview: "コミュニティ画像投稿",
+    },
     upload: {
       create: "作成",
       title: "デュエルクリップをアップロード",
@@ -1243,6 +1383,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reportedBy: "報告者",
       anonymous: "匿名",
       unknownVideo: "不明な動画",
+      unknownCommunityPost: "不明な投稿",
+      communityPostReport: "コミュニティ投稿の報告",
+      videoReport: "動画の報告",
+      openCommunityModeration: "コミュニティ審査を開く",
+      communityTitle: "コミュニティ投稿",
+      communitySubtitle: "フィード投稿の確認、プレビュー、削除。",
+      noCommunityPosts: "コミュニティ投稿はまだありません。",
+      confirmDeleteCommunityPost: "この投稿を削除しますか？",
+      imageOnlyPost: "画像のみの投稿",
       openModeration: "審査を開く",
       resolve: "解決",
       dismiss: "却下",
@@ -1279,6 +1428,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         dashboard: "ダッシュボード",
         users: "登録者",
         videos: "動画",
+        community: "コミュニティ",
         reports: "報告",
         moderationLog: "モデレーションログ",
         settings: "設定",
@@ -1589,6 +1739,46 @@ export const dictionaries: Record<Locale, Dictionary> = {
         trending_bonus: "جائزة الترند",
       },
     },
+    communityFeed: {
+      animeOnlyNotice: "منشورات المجتمع يجب أن تكون مرتبطة بالأنمي فقط. يُمنع المحتوى السياسي أو الإباحي أو خارج الموضوع.",
+      postPlaceholder: "شارك أفكاراً عن الأنمي، فنّاً، مقاطع، أو تحديثات...",
+      addImage: "إضافة صورة",
+      removeImage: "إزالة",
+      invalidImage: "اختر ملف صورة صالحاً.",
+      imageTooLarge: "يجب ألا تتجاوز الصورة 5 ميغابايت.",
+      uploadFailed: "تعذّر رفع الصورة. حاول مرة أخرى.",
+      policyCheckbox: "أؤكد أن هذا المنشور مرتبط بالأنمي فقط ويلتزم",
+      policyCheckboxSuffix: "(إلزامي).",
+      policyRequired: "يجب قبول سياسة الأنمي فقط قبل النشر.",
+      deletePost: "حذف",
+      confirmDeletePost: "حذف هذا المنشور نهائياً؟",
+      confirmDeleteComment: "حذف هذا التعليق؟",
+      deleteComment: "حذف",
+      report: "إبلاغ",
+      reportTitle: "الإبلاغ عن منشور",
+      reportIntro: "ساعدنا في إبقاء المجتمع مركزاً على الأنمي وآمناً.",
+      reportReasonLabel: "السبب",
+      reportReasonOffTopic: "خارج موضوع الأنمي",
+      reportReasonAdult: "محتوى إباحي أو جنسي",
+      reportReasonSpam: "سبام أو احتيال",
+      reportReasonHarassment: "تحرش أو كراهية",
+      reportReasonOther: "مخالفة أخرى",
+      reportDetailsLabel: "التفاصيل",
+      reportDetailsHint: "اشرح ما يخالف إرشادات المجتمع...",
+      reportSubmit: "إرسال البلاغ",
+      reportSubmitting: "جارٍ الإرسال...",
+      reportSubmitted: "تم إرسال البلاغ. سيقوم فريقنا بمراجعته.",
+      loginToReport: "للإبلاغ عن المنشورات.",
+      loginToComment: "سجّل الدخول للتعليق على منشورات المجتمع.",
+      commentsTitle: "التعليقات",
+      loadingComments: "جارٍ تحميل التعليقات...",
+      noComments: "لا توجد تعليقات بعد.",
+      commentPlaceholder: "اكتب تعليقاً...",
+      postComment: "نشر التعليق",
+      postingComment: "جارٍ النشر...",
+      actionFailed: "تعذّر الحفظ. حاول مرة أخرى.",
+      imagePostPreview: "منشور صورة في المجتمع",
+    },
     upload: {
       create: "إنشاء",
       title: "رفع مقطع نزال",
@@ -1690,6 +1880,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reportedBy: "بلّغ بواسطة",
       anonymous: "مجهول",
       unknownVideo: "فيديو غير معروف",
+      unknownCommunityPost: "منشور غير معروف",
+      communityPostReport: "بلاغ منشور مجتمع",
+      videoReport: "بلاغ فيديو",
+      openCommunityModeration: "فتح إدارة المجتمع",
+      communityTitle: "منشورات المجتمع",
+      communitySubtitle: "مراجعة أو معاينة أو حذف منشورات المجتمع.",
+      noCommunityPosts: "لا توجد منشورات بعد.",
+      confirmDeleteCommunityPost: "حذف هذا المنشور؟",
+      imageOnlyPost: "منشور صورة فقط",
       openModeration: "فتح المراجعة",
       resolve: "حل",
       dismiss: "تجاهل",
@@ -1726,6 +1925,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         dashboard: "لوحة المعلومات",
         users: "المشتركون",
         videos: "الفيديوهات",
+        community: "المجتمع",
         reports: "البلاغات",
         moderationLog: "سجل المراجعة",
         settings: "الإعدادات",

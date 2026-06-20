@@ -13,14 +13,16 @@ function extractOriginalSource(details: string | null | undefined): string | nul
 
 type ReportRow = {
   id: string;
-  video_id: string;
+  video_id: string | null;
+  post_id: string | null;
   reporter_id: string | null;
   reason: string;
   details: string | null;
   status: "open" | "resolved" | "dismissed";
   admin_notes: string | null;
   created_at: string;
-  video_title?: string;
+  target_label?: string;
+  target_type?: "video" | "post";
   reporter_username?: string | null;
 };
 
@@ -43,7 +45,7 @@ export function AdminReportsPanel() {
 
     let query = supabase
       .from("content_reports")
-      .select("id, video_id, reporter_id, reason, details, status, admin_notes, created_at")
+      .select("id, video_id, post_id, reporter_id, reason, details, status, admin_notes, created_at")
       .order("created_at", { ascending: false })
       .limit(100);
 
@@ -60,14 +62,18 @@ export function AdminReportsPanel() {
     }
 
     const rows = data ?? [];
-    const videoIds = [...new Set(rows.map((row) => row.video_id))];
+    const videoIds = [...new Set(rows.map((row) => row.video_id).filter(Boolean))] as string[];
+    const postIds = [...new Set(rows.map((row) => row.post_id).filter(Boolean))] as string[];
     const reporterIds = [
       ...new Set(rows.map((row) => row.reporter_id).filter(Boolean)),
     ] as string[];
 
-    const [{ data: videos }, { data: reporters }] = await Promise.all([
+    const [{ data: videos }, { data: posts }, { data: reporters }] = await Promise.all([
       videoIds.length
         ? supabase.from("videos").select("id, title").in("id", videoIds)
+        : Promise.resolve({ data: [] }),
+      postIds.length
+        ? supabase.from("community_posts").select("id, body").in("id", postIds)
         : Promise.resolve({ data: [] }),
       reporterIds.length
         ? supabase.from("profiles").select("id, username").in("id", reporterIds)
@@ -75,17 +81,24 @@ export function AdminReportsPanel() {
     ]);
 
     const videoMap = new Map((videos ?? []).map((video) => [video.id, video.title]));
+    const postMap = new Map((posts ?? []).map((post) => [post.id, post.body]));
     const reporterMap = new Map((reporters ?? []).map((profile) => [profile.id, profile.username]));
 
     setReports(
-      rows.map((row) => ({
-        ...row,
-        video_title: videoMap.get(row.video_id) ?? t.admin.unknownVideo,
-        reporter_username: row.reporter_id ? (reporterMap.get(row.reporter_id) ?? null) : null,
-      })),
+      rows.map((row) => {
+        const isPost = Boolean(row.post_id);
+        return {
+          ...row,
+          target_type: isPost ? "post" : "video",
+          target_label: isPost
+            ? (postMap.get(row.post_id!)?.slice(0, 120) || t.admin.unknownCommunityPost)
+            : (videoMap.get(row.video_id!) ?? t.admin.unknownVideo),
+          reporter_username: row.reporter_id ? (reporterMap.get(row.reporter_id) ?? null) : null,
+        };
+      }),
     );
     setLoading(false);
-  }, [supabase, statusFilter, t.admin.unknownVideo]);
+  }, [supabase, statusFilter, t.admin.unknownVideo, t.admin.unknownCommunityPost]);
 
   useEffect(() => {
     loadReports();
@@ -155,7 +168,8 @@ export function AdminReportsPanel() {
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <h2 className="text-base font-semibold text-white">
-                    {report.video_title}
+                    {report.target_type === "post" ? t.admin.communityPostReport : t.admin.videoReport}:{" "}
+                    {report.target_label}
                   </h2>
                   <p className="mt-1 text-sm text-zinc-400">
                     {t.admin.reportReason}: {report.reason}
@@ -193,18 +207,37 @@ export function AdminReportsPanel() {
               </div>
 
               <div className="mt-4 flex flex-wrap gap-2">
-                <Link
-                  href={`/video/${report.video_id}`}
-                  className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-200 hover:border-zinc-500"
-                >
-                  {t.admin.preview}
-                </Link>
-                <Link
-                  href={`/admin/videos?status=review`}
-                  className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-200 hover:border-zinc-500"
-                >
-                  {t.admin.openModeration}
-                </Link>
+                {report.target_type === "post" && report.post_id ? (
+                  <>
+                    <Link
+                      href={`/community#post-${report.post_id}`}
+                      className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-200 hover:border-zinc-500"
+                    >
+                      {t.admin.preview}
+                    </Link>
+                    <Link
+                      href="/admin/community"
+                      className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-200 hover:border-zinc-500"
+                    >
+                      {t.admin.openCommunityModeration}
+                    </Link>
+                  </>
+                ) : report.video_id ? (
+                  <>
+                    <Link
+                      href={`/video/${report.video_id}`}
+                      className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-200 hover:border-zinc-500"
+                    >
+                      {t.admin.preview}
+                    </Link>
+                    <Link
+                      href={`/admin/videos?status=review`}
+                      className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-200 hover:border-zinc-500"
+                    >
+                      {t.admin.openModeration}
+                    </Link>
+                  </>
+                ) : null}
                 <button
                   type="button"
                   onClick={() => updateReportStatus(report.id, "resolved")}
