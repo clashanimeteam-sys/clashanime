@@ -35,6 +35,7 @@ export type VideoComment = {
   parent_id: string | null;
   likes_count: number;
   liked_by_me: boolean;
+  is_verified?: boolean;
   replies: VideoComment[];
 };
 

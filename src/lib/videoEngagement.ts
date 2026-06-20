@@ -19,7 +19,15 @@ type RawComment = {
 
 function buildCommentTree(
   rows: RawComment[],
-  profiles: Map<string, { username: string; display_name: string | null; avatar_url: string | null }>,
+  profiles: Map<
+    string,
+    {
+      username: string;
+      display_name: string | null;
+      avatar_url: string | null;
+      is_verified?: boolean;
+    }
+  >,
   likedCommentIds: Set<string>,
   pinnedCommentId: string | null,
 ): VideoComment[] {
@@ -35,6 +43,7 @@ function buildCommentTree(
       username: profile?.username ?? "user",
       display_name: profile?.display_name ?? null,
       avatar_url: profile?.avatar_url ?? null,
+      is_verified: profile?.is_verified,
       parent_id: row.parent_id,
       likes_count: row.likes_count,
       liked_by_me: likedCommentIds.has(row.id),
@@ -207,7 +216,7 @@ export async function fetchVideoComments(
   const userIds = [...new Set(comments.map((comment) => comment.user_id))];
 
   const [{ data: profiles }, { data: likedRows }] = await Promise.all([
-    supabase.from("profiles").select("id, username, display_name, avatar_url").in("id", userIds),
+    supabase.from("profiles").select("id, username, display_name, avatar_url, is_verified").in("id", userIds),
     currentUserId
       ? supabase
           .from("video_comment_likes")

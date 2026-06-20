@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CommentThread, updateCommentInTree } from "@/components/CommentThread";
 import { EmojiPicker } from "@/components/EmojiPicker";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { fetchVideoComments, postVideoComment } from "@/lib/videoEngagement";
 import { useAuth } from "@/providers/AuthProvider";
@@ -224,8 +225,9 @@ export function VideoCommentsModal({
                   )}
                 </div>
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-bold text-black dark:text-white">
-                    {channelLabel}
+                  <p className="flex min-w-0 items-center gap-1 text-sm font-bold text-black dark:text-white">
+                    <span className="truncate">{channelLabel}</span>
+                    {channel.is_verified ? <VerifiedBadge className="shrink-0" /> : null}
                   </p>
                   <p className="truncate text-xs font-semibold text-zinc-500">@{channel.username}</p>
                 </div>

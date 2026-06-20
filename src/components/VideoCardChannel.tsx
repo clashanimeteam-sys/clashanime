@@ -44,9 +44,9 @@ export function VideoCardChannel({ channel }: VideoCardChannelProps) {
         )}
       </div>
       <div className="min-w-0">
-        <span className="font-channel flex items-center gap-1 truncate text-xs font-semibold text-zinc-800 transition-colors group-hover/channel:text-accent dark:text-zinc-100">
+        <span className="font-channel flex min-w-0 items-center gap-1 text-xs font-semibold text-zinc-800 transition-colors group-hover/channel:text-accent dark:text-zinc-100">
           <span className="truncate">{label}</span>
-          {channel.is_verified ? <VerifiedBadge /> : null}
+          {channel.is_verified ? <VerifiedBadge className="shrink-0" /> : null}
         </span>
         <span className="block text-[10px] font-semibold text-zinc-600 dark:text-zinc-400">
           {followerCount.toLocaleString()} {t.profile.followers}

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { formatRelativeTime } from "@/lib/format";
 import { pinVideoComment, toggleCommentLike, unpinVideoComment } from "@/lib/videoEngagement";
@@ -134,13 +135,16 @@ export function CommentThread({
                 </p>
               ) : null}
               <p className="text-sm leading-relaxed text-black dark:text-white">
-                <Link
-                  href={`/channel/${comment.username}`}
-                  className="me-2 font-bold hover:underline"
-                  onClick={onClose}
-                >
-                  {name}
-                </Link>
+                <span className="me-2 inline-flex max-w-full items-center gap-1 align-middle">
+                  <Link
+                    href={`/channel/${comment.username}`}
+                    className="truncate font-bold hover:underline"
+                    onClick={onClose}
+                  >
+                    {name}
+                  </Link>
+                  {comment.is_verified ? <VerifiedBadge className="shrink-0" /> : null}
+                </span>
                 {comment.body}
               </p>
               <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-zinc-500">
