@@ -1,6 +1,8 @@
 -- Run in Supabase SQL Editor (production: doqiuduigbdoczdzsima)
 -- https://supabase.com/dashboard/project/doqiuduigbdoczdzsima/sql/new
--- Safe to re-run.
+--
+-- IMPORTANT: Use THIS file in production — NOT supabase/migrations/20260320191100_anime_stickers.sql
+-- Safe to re-run (uses IF NOT EXISTS / DROP POLICY IF EXISTS).
 
 create table if not exists public.anime_sticker_packs (
   id uuid primary key default gen_random_uuid(),
