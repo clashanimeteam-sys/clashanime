@@ -105,7 +105,13 @@ export type Dictionary = {
     reportReasonSpam: string;
     reportReasonOther: string;
     reportDetailsLabel: string;
+    reportDetailsOptionalLabel: string;
     reportDetailsHint: string;
+    reportOriginalLinkLabel: string;
+    reportOriginalLinkHint: string;
+    reportOriginalLinkHelp: string;
+    reportOriginalLinkRequired: string;
+    reportOriginalLinkInvalid: string;
     reportSubmit: string;
     reportSubmitting: string;
     reportSubmitted: string;
@@ -450,7 +456,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reportReasonSpam: "Spam or abuse",
       reportReasonOther: "Other",
       reportDetailsLabel: "Details (optional)",
-      reportDetailsHint: "Link to the original source, timestamps, or extra context.",
+      reportDetailsOptionalLabel: "Extra details (optional)",
+      reportDetailsHint: "Timestamps, channel name, or any extra context.",
+      reportOriginalLinkLabel: "Original source link (required)",
+      reportOriginalLinkHint: "https://youtube.com/watch?v=... or TikTok/Instagram link",
+      reportOriginalLinkHelp:
+        "Required for stolen or copyright reports so moderators can compare the original video.",
+      reportOriginalLinkRequired: "Enter the original source link for stolen or copyright reports.",
+      reportOriginalLinkInvalid: "Enter a valid http or https link to the original video.",
       reportSubmit: "Submit report",
       reportSubmitting: "Submitting...",
       reportSubmitted: "Report submitted. Our team will review it.",
@@ -798,7 +811,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reportReasonSpam: "スパムまたは虐待",
       reportReasonOther: "その他",
       reportDetailsLabel: "詳細（任意）",
-      reportDetailsHint: "元ソースへのリンク、タイムスタンプ、補足情報。",
+      reportDetailsOptionalLabel: "追加詳細（任意）",
+      reportDetailsHint: "タイムスタンプ、チャンネル名、補足情報。",
+      reportOriginalLinkLabel: "元ソースへのリンク（必須）",
+      reportOriginalLinkHint: "https://youtube.com/watch?v=... または TikTok/Instagram のリンク",
+      reportOriginalLinkHelp: "盗用・著作権報告では、元動画との比較のためリンクが必要です。",
+      reportOriginalLinkRequired: "盗用または著作権報告には元ソースのリンクが必要です。",
+      reportOriginalLinkInvalid: "有効な http/https リンクを入力してください。",
       reportSubmit: "報告を送信",
       reportSubmitting: "送信中...",
       reportSubmitted: "報告を送信しました。チームが確認します。",
@@ -1139,20 +1158,27 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "أبلغ عن انتهاك حقوق النشر، أو إعادة رفع مسروق، أو spam، أو مخالفات أخرى. البلاغات تُراجع في لوحة التحكم.",
       reportLoginRequired: "سجّل الدخول لإرسال بلاغ.",
       reportLoginHint: "لإرسال بلاغ عن محتوى.",
-      reportVideoId: "معرّف الفيدio أو الرابط",
-      reportVideoIdHint: "الصق معرّف الفيدio من الرابط (مثال: clashanime.com/video/abc-123)",
+      reportVideoId: "معرّف الفيديو أو الرابط",
+      reportVideoIdHint: "الصق معرّف الفيديو من الرابط (مثال: clashanime.com/video/abc-123)",
       reportReasonLabel: "السبب",
       reportReasonCopyright: "انتهاك حقوق النشر",
       reportReasonReupload: "مسروق / إعادة رفع",
       reportReasonSpam: "spam أو إساءة",
       reportReasonOther: "أخرى",
       reportDetailsLabel: "تفاصيل (اختياري)",
-      reportDetailsHint: "رابط المصدر الأصلي، توقيت، أو أي سياق إضافي.",
+      reportDetailsOptionalLabel: "تفاصيل إضافية (اختياري)",
+      reportDetailsHint: "توقيت، اسم القناة، أو أي سياق إضافي.",
+      reportOriginalLinkLabel: "رابط المصدر الأصلي (مطلوب)",
+      reportOriginalLinkHint: "https://youtube.com/watch?v=... أو رابط TikTok/Instagram",
+      reportOriginalLinkHelp:
+        "مطلوب عند الإبلاغ عن محتوى مسروق أو انتهاك حقوق النشر لمقارنة الفيديو الأصلي.",
+      reportOriginalLinkRequired: "أدخل رابط المصدر الأصلي للبلاغات عن سرقة أو حقوق النشر.",
+      reportOriginalLinkInvalid: "أدخل رابطاً صالحاً يبدأ بـ http أو https.",
       reportSubmit: "إرسال البلاغ",
       reportSubmitting: "جارٍ الإرسال...",
       reportSubmitted: "تم إرسال البلاغ. سيراجعه فريقنا.",
-      reportFailed: "تعذّر إرسال البلاغ. تحقق من معرّف الفيدio وحاول مجدداً.",
-      reportVideoRequired: "أدخل معرّف الفيدio.",
+      reportFailed: "تعذّر إرسال البلاغ. تحقق من معرّف الفيديو وحاول مجدداً.",
+      reportVideoRequired: "أدخل معرّف الفيديو.",
       reportDmcaHint: "لإشعارات DMCA الرسمية، راجع صفحة DMCA.",
     },
     auth: {

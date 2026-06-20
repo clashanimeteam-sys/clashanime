@@ -5,6 +5,12 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useLocale } from "@/providers/LocaleProvider";
 
+function extractOriginalSource(details: string | null | undefined): string | null {
+  if (!details) return null;
+  const match = details.match(/^Original source:\s*(.+)$/m);
+  return match?.[1]?.trim() ?? null;
+}
+
 type ReportRow = {
   id: string;
   video_id: string;
@@ -159,7 +165,26 @@ export function AdminReportsPanel() {
                     {new Date(report.created_at).toLocaleString()}
                   </p>
                   {report.details ? (
-                    <p className="mt-2 text-sm text-zinc-300">{report.details}</p>
+                    <div className="mt-2 space-y-1 text-sm text-zinc-300">
+                      {(() => {
+                        const original = extractOriginalSource(report.details);
+                        if (!original) return null;
+                        return (
+                          <p>
+                            Original:{" "}
+                            <a
+                              href={original}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-accent hover:underline"
+                            >
+                              {original}
+                            </a>
+                          </p>
+                        );
+                      })()}
+                      <p className="whitespace-pre-line">{report.details}</p>
+                    </div>
                   ) : null}
                 </div>
                 <span className="rounded-full bg-zinc-800 px-2 py-1 text-[10px] font-semibold uppercase text-zinc-300">

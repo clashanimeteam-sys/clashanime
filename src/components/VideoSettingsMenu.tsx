@@ -1,8 +1,7 @@
 "use client";
 
-import { RefObject, useEffect, useMemo, useRef, useState } from "react";
-import { submitContentReport } from "@/lib/contentReports";
-import { createBrowserClient } from "@/lib/supabase/client";
+import { RefObject, useEffect, useRef, useState } from "react";
+import { ReportContentModal } from "@/components/ReportContentModal";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -23,9 +22,9 @@ export function VideoSettingsMenu({
 }: VideoSettingsMenuProps) {
   const { t } = useLocale();
   const { user } = useAuth();
-  const supabase = useMemo(() => createBrowserClient(), []);
   const menuRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
   const [speed, setSpeed] = useState(1);
   const [muted, setMuted] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
@@ -105,22 +104,15 @@ export function VideoSettingsMenu({
     }
   }
 
-  async function handleReport() {
-    if (!supabase || !user) {
-      showStatus(t.video.actionFailed);
+  function handleReport() {
+    if (!user) {
+      showStatus(t.legal.reportLoginRequired);
       setOpen(false);
       return;
     }
 
-    const ok = await submitContentReport(supabase, videoId, user.id);
-
-    if (ok) {
-      showStatus(t.video.reportSubmitted);
-    } else {
-      showStatus(t.video.actionFailed);
-    }
-
     setOpen(false);
+    setReportOpen(true);
   }
 
   if (disabled) return null;
@@ -218,6 +210,13 @@ export function VideoSettingsMenu({
           {status}
         </p>
       ) : null}
+
+      <ReportContentModal
+        open={reportOpen}
+        onClose={() => setReportOpen(false)}
+        videoId={videoId}
+        videoTitle={title}
+      />
     </div>
   );
 }

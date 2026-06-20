@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { VideoCommentsModal } from "@/components/VideoCommentsModal";
+import { ReportContentModal } from "@/components/ReportContentModal";
 import { createBrowserClient } from "@/lib/supabase/client";
-import { submitContentReport } from "@/lib/contentReports";
 import {
   checkVideoLiked,
   fetchVideoCounts,
@@ -56,9 +56,9 @@ export function VideoCardActions({
   const [commentsCount, setCommentsCount] = useState(initialComments);
   const [sharesCount, setSharesCount] = useState(initialShares);
   const [commentsOpen, setCommentsOpen] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
   const [loadingLike, setLoadingLike] = useState(false);
   const [shareStatus, setShareStatus] = useState<string | null>(null);
-  const [reported, setReported] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const isOverlay = variant === "overlay";
@@ -148,21 +148,13 @@ export function VideoCardActions({
   }
 
   function handleReport() {
-    if (!supabase || !user) {
-      requireAuth();
+    if (!user) {
+      router.push(`/login?next=${encodeURIComponent(`/report?video=${videoId}`)}`);
       return;
     }
 
     setError(null);
-
-    submitContentReport(supabase, videoId, user.id).then((ok) => {
-      if (ok) {
-        setReported(true);
-        window.setTimeout(() => setReported(false), 2500);
-      } else {
-        setError(t.video.actionFailed);
-      }
-    });
+    setReportOpen(true);
   }
 
   return (
@@ -258,15 +250,22 @@ export function VideoCardActions({
           </button>
         </div>
 
-        {(shareStatus || reported || error) && (
+        {(shareStatus || error) && (
           <p
             className={`text-xs ${isOverlay ? "text-zinc-300" : "text-zinc-500 dark:text-zinc-400"}`}
             role="status"
           >
-            {error ?? shareStatus ?? t.video.reportSubmitted}
+            {error ?? shareStatus}
           </p>
         )}
       </div>
+
+      <ReportContentModal
+        open={reportOpen}
+        onClose={() => setReportOpen(false)}
+        videoId={videoId}
+        videoTitle={title}
+      />
 
       {preview ? (
         <VideoCommentsModal
