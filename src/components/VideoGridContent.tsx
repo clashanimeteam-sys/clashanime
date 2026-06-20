@@ -6,7 +6,7 @@ import type { Video } from "@/lib/types";
 
 type VideoGridContentProps = {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   videos: Video[];
   emptyMessage: string;
   showRank?: boolean;
@@ -25,9 +25,11 @@ export function VideoGridContent({
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
       <section className="mb-8">
         <h1 className="text-3xl font-bold text-black dark:text-white">{title}</h1>
-        <p className="mt-3 max-w-2xl text-sm text-zinc-600 sm:text-base dark:text-zinc-400">
-          {subtitle}
-        </p>
+        {subtitle ? (
+          <p className="mt-3 max-w-2xl text-sm text-zinc-600 sm:text-base dark:text-zinc-400">
+            {subtitle}
+          </p>
+        ) : null}
       </section>
 
       {videos.length === 0 ? (

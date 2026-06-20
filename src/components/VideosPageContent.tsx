@@ -10,7 +10,6 @@ export function VideosPageContent({ videos }: { videos: Video[] }) {
   return (
     <VideoGridContent
       title={t.pages.videosTitle}
-      subtitle={t.pages.videosSubtitle}
       videos={videos}
       emptyMessage={t.pages.emptyVideos}
       showRank
