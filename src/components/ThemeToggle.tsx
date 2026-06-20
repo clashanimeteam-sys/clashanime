@@ -23,10 +23,9 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <button
-        type="button"
-        aria-label={t.theme.toggle}
-        className="h-9 w-9 rounded-lg border border-border bg-white dark:bg-black"
+      <div
+        aria-hidden
+        className="h-7 w-12 rounded-full bg-zinc-200 dark:bg-zinc-700"
       />
     );
   }
@@ -36,36 +35,18 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      role="switch"
+      aria-checked={isDark}
       aria-label={isDark ? t.theme.light : t.theme.dark}
-      className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-white text-black transition-colors hover:border-accent/40 hover:text-accent dark:bg-black dark:text-white"
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      className="relative inline-flex h-7 w-12 shrink-0 items-center rounded-full bg-zinc-200 p-0.5 transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:bg-zinc-700"
     >
-      {isDark ? (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className="h-4 w-4"
-          aria-hidden
-        >
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-        </svg>
-      ) : (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className="h-4 w-4"
-          aria-hidden
-        >
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-        </svg>
-      )}
+      <span
+        aria-hidden
+        className={`pointer-events-none block h-6 w-6 rounded-full bg-white shadow-sm transition-transform duration-300 ease-in-out ${
+          isDark ? "translate-x-5" : "translate-x-0"
+        }`}
+      />
     </button>
   );
 }
