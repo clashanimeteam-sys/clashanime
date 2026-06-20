@@ -7,6 +7,7 @@ import { CommentThread, updateCommentInTree } from "@/components/CommentThread";
 import { EmojiPicker } from "@/components/EmojiPicker";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { createBrowserClient } from "@/lib/supabase/client";
+import { useScrollLock } from "@/lib/useScrollLock";
 import { fetchVideoComments, postVideoComment } from "@/lib/videoEngagement";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -64,6 +65,8 @@ export function VideoCommentsModal({
   const supabase = useMemo(() => createBrowserClient(), []);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  useScrollLock(open);
+
   const [comments, setComments] = useState<VideoComment[]>([]);
   const [ownerId, setOwnerId] = useState<string | null>(videoOwnerId ?? null);
   const [pinnedCommentId, setPinnedCommentId] = useState<string | null>(null);
@@ -89,11 +92,6 @@ export function VideoCommentsModal({
     if (!open) return;
 
     void loadComments();
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = "";
-    };
   }, [open, loadComments]);
 
   useEffect(() => {

@@ -47,6 +47,7 @@
 @layer base {
   html {
     font-weight: 500;
+    scrollbar-gutter: stable;
   }
 
   body {

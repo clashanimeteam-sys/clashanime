@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { ReportContentForm } from "@/components/ReportContentForm";
+import { useScrollLock } from "@/lib/useScrollLock";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type ReportContentModalProps = {
@@ -18,6 +19,8 @@ export function ReportContentModal({
   videoTitle,
 }: ReportContentModalProps) {
   const { t } = useLocale();
+
+  useScrollLock(open);
 
   useEffect(() => {
     if (!open) return;
