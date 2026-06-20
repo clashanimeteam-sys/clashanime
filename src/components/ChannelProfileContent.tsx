@@ -95,7 +95,7 @@ export function ChannelProfileContent({ username }: ChannelProfileContentProps) 
       (videoData ?? []).map((video) => ({
         ...video,
         trending_score: 0,
-        channel: profileToVideoChannel(profileData),
+        channel: profileToVideoChannel(profileData, count ?? 0),
       })),
     );
     setLoading(false);

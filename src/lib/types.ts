@@ -15,6 +15,7 @@ export type VideoChannel = {
   username: string;
   display_name: string | null;
   avatar_url: string | null;
+  follower_count?: number;
 };
 
 export type Video = {

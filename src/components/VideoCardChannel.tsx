@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useLocale } from "@/providers/LocaleProvider";
 import type { VideoChannel } from "@/lib/types";
 
 function getInitials(name: string) {
@@ -17,14 +18,16 @@ type VideoCardChannelProps = {
 };
 
 export function VideoCardChannel({ channel }: VideoCardChannelProps) {
+  const { t } = useLocale();
   const label = channel.display_name?.trim() || channel.username;
+  const followerCount = channel.follower_count ?? 0;
 
   return (
     <Link
       href={`/channel/${channel.username}`}
-      className="group/channel flex items-center gap-2 rounded-lg py-1 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-950"
+      className="group/channel flex items-start gap-2 rounded-lg py-1 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-950"
     >
-      <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
+      <div className="relative mt-0.5 h-8 w-8 shrink-0 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
         {channel.avatar_url ? (
           <Image
             src={channel.avatar_url}
@@ -39,21 +42,30 @@ export function VideoCardChannel({ channel }: VideoCardChannelProps) {
           </div>
         )}
       </div>
-      <span className="font-channel min-w-0 truncate text-xs font-semibold text-zinc-800 transition-colors group-hover/channel:text-accent dark:text-zinc-100">
-        {label}
-      </span>
+      <div className="min-w-0">
+        <span className="font-channel block truncate text-xs font-semibold text-zinc-800 transition-colors group-hover/channel:text-accent dark:text-zinc-100">
+          {label}
+        </span>
+        <span className="block text-[10px] font-semibold text-zinc-600 dark:text-zinc-400">
+          {followerCount.toLocaleString()} {t.profile.followers}
+        </span>
+      </div>
     </Link>
   );
 }
 
-export function profileToVideoChannel(profile: {
-  username: string;
-  display_name: string | null;
-  avatar_url: string | null;
-}): VideoChannel {
+export function profileToVideoChannel(
+  profile: {
+    username: string;
+    display_name: string | null;
+    avatar_url: string | null;
+  },
+  followerCount = 0,
+): VideoChannel {
   return {
     username: profile.username,
     display_name: profile.display_name,
     avatar_url: profile.avatar_url,
+    follower_count: followerCount,
   };
 }

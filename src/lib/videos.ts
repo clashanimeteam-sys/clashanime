@@ -91,10 +91,21 @@ async function attachChannels(
   let profileMap = new Map<string, VideoChannel>();
 
   if (userIds.length > 0) {
-    const { data: profiles } = await supabase
-      .from("profiles")
-      .select("id, username, display_name, avatar_url")
-      .in("id", userIds);
+    const [{ data: profiles }, { data: follows }] = await Promise.all([
+      supabase
+        .from("profiles")
+        .select("id, username, display_name, avatar_url")
+        .in("id", userIds),
+      supabase.from("channel_follows").select("following_id").in("following_id", userIds),
+    ]);
+
+    const followerCounts = new Map<string, number>();
+    for (const follow of follows ?? []) {
+      followerCounts.set(
+        follow.following_id,
+        (followerCounts.get(follow.following_id) ?? 0) + 1,
+      );
+    }
 
     profileMap = new Map(
       (profiles ?? []).map((profile) => [
@@ -103,6 +114,7 @@ async function attachChannels(
           username: profile.username,
           display_name: profile.display_name,
           avatar_url: profile.avatar_url,
+          follower_count: followerCounts.get(profile.id) ?? 0,
         },
       ]),
     );

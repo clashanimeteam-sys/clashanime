@@ -111,7 +111,7 @@ export function ProfileContent() {
       (videoData ?? []).map((video) => ({
         ...video,
         trending_score: 0,
-        channel: profileToVideoChannel(profileData),
+        channel: profileToVideoChannel(profileData, followers ?? 0),
       })),
     );
     setLoading(false);
