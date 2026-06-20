@@ -14,6 +14,7 @@ type VideoCardProps = {
   rank?: number;
   showModerationStatus?: boolean;
   showClashBadge?: boolean;
+  showTrendingDuelBadge?: boolean;
 };
 
 type MedalTier = "gold" | "silver" | "bronze" | null;
@@ -90,6 +91,7 @@ export function VideoCard({
   rank,
   showModerationStatus = false,
   showClashBadge = false,
+  showTrendingDuelBadge = false,
 }: VideoCardProps) {
   const { t } = useLocale();
   const moderationStatus = video.moderation_status;
@@ -137,6 +139,13 @@ export function VideoCard({
           {showClashBadge && isInClashTop(rank) ? (
             <span className="absolute start-3 top-12 rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-white shadow">
               {t.video.inClashTop}
+            </span>
+          ) : null}
+
+          {showTrendingDuelBadge ? (
+            <span className="absolute end-3 top-3 inline-flex max-w-[calc(100%-1.5rem)] items-center gap-1 rounded-full border border-orange-400/40 bg-orange-500/90 px-2 py-1 text-[10px] font-bold text-white shadow-lg backdrop-blur-sm animate-[live-dot_1.4s_ease-in-out_infinite]">
+              <span aria-hidden>🔥</span>
+              <span className="truncate">{t.video.trendingDuel}</span>
             </span>
           ) : null}
 

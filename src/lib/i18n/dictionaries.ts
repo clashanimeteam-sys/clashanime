@@ -40,6 +40,7 @@ export type Dictionary = {
     bronzeMedal: string;
     rank: string;
     inClashTop: string;
+    trendingDuel: string;
     unavailable: string;
     backHome: string;
     notFound: string;
@@ -99,6 +100,24 @@ export type Dictionary = {
     musicBody: string;
     emptyVideos: string;
     emptyExclusives: string;
+  };
+  exclusives: {
+    dailyHallBadge: string;
+    dailyHallTitle: string;
+    dailyHallSubtitle: string;
+    interactionKing: string;
+    pointsToday: string;
+    noDailyLeader: string;
+    randomDuelBadge: string;
+    randomDuelTitle: string;
+    randomDuelDesc: string;
+    startRandomDuel: string;
+    randomDuelPageDesc: string;
+    vs: string;
+    watchAndVote: string;
+    shuffleDuel: string;
+    noDuelVideos: string;
+    backToExclusives: string;
   };
   radio: {
     badge: string;
@@ -536,6 +555,8 @@ export type Dictionary = {
       siteSettingsDesc: string;
       animeRadioSettings: string;
       animeRadioSettingsDesc: string;
+      exclusivesFeatures: string;
+      exclusivesFeaturesDesc: string;
     };
     table: {
       user: string;
@@ -601,6 +622,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bronzeMedal: "Bronze medal",
       rank: "Rank",
       inClashTop: "In Clash",
+      trendingDuel: "Trending Duel",
       unavailable: "This video is not available yet.",
       backHome: "Back to trending",
       notFound: "Video not found.",
@@ -663,6 +685,24 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "Start the player below and keep listening as you explore videos, community posts, and your channel.",
       emptyVideos: "No approved videos yet.",
       emptyExclusives: "No exclusive clips from verified creators yet.",
+    },
+    exclusives: {
+      dailyHallBadge: "Daily Hall of Fame",
+      dailyHallTitle: "Daily Hall of Fame",
+      dailyHallSubtitle: "The hunter who earned the most interaction points today leads the arena.",
+      interactionKing: "Interaction King Today",
+      pointsToday: "pts today",
+      noDailyLeader: "No daily champion yet. Like, comment, post, and invite friends to claim the crown.",
+      randomDuelBadge: "Random Duel",
+      randomDuelTitle: "Random Duel",
+      randomDuelDesc: "Jump into a surprise head-to-head between two clips and vote for your favorite.",
+      startRandomDuel: "Start random duel",
+      randomDuelPageDesc: "Pick the stronger clip. Your vote shifts the global clash instantly.",
+      vs: "VS",
+      watchAndVote: "Watch & vote",
+      shuffleDuel: "Shuffle duel",
+      noDuelVideos: "Not enough approved videos for a duel yet.",
+      backToExclusives: "Back to Exclusives",
     },
     radio: {
       badge: "24/7 stream",
@@ -1112,6 +1152,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         siteSettingsDesc: "Configure uploads, sign-ups, and moderation.",
         animeRadioSettings: "Anime radio",
         animeRadioSettingsDesc: "Control autoplay, volume, and the mini player.",
+        exclusivesFeatures: "Exclusives arena",
+        exclusivesFeaturesDesc: "Daily Hall of Fame, trending duels, and random clash.",
       },
       table: {
         user: "User",
@@ -1175,6 +1217,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bronzeMedal: "銅メダル",
       rank: "順位",
       inClashTop: "クラッシュ入り",
+      trendingDuel: "🔥 熱い対決",
       unavailable: "この動画はまだ視聴できません。",
       backHome: "トレンドに戻る",
       notFound: "動画が見つかりません。",
@@ -1236,6 +1279,24 @@ export const dictionaries: Record<Locale, Dictionary> = {
       musicBody: "下のプレイヤーを開始して、動画やコミュニティを見ながら聴き続けられます。",
       emptyVideos: "承認済みの動画はまだありません。",
       emptyExclusives: "認証済みクリエイターの限定クリップはまだありません。",
+    },
+    exclusives: {
+      dailyHallBadge: "デイリー殿堂",
+      dailyHallTitle: "デイリー殿堂",
+      dailyHallSubtitle: "今日いちばんポイントを獲得したハンターが頂点に立ちます。",
+      interactionKing: "今日の交流王",
+      pointsToday: "pt 今日",
+      noDailyLeader: "まだ今日の王者はいません。いいね、投稿、招待で王座を狙おう。",
+      randomDuelBadge: "ランダム対決",
+      randomDuelTitle: "ランダム対決",
+      randomDuelDesc: "2本のクリップが突然マッチ。好きな方に投票しよう。",
+      startRandomDuel: "ランダム対決を開始",
+      randomDuelPageDesc: "強い方を選べ。投票がクラッシュ順位を動かします。",
+      vs: "VS",
+      watchAndVote: "視聴して投票",
+      shuffleDuel: "別の対決",
+      noDuelVideos: "対決に必要な承認済み動画がまだ足りません。",
+      backToExclusives: "限定へ戻る",
     },
     radio: {
       badge: "24/7 配信",
@@ -1681,6 +1742,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         siteSettingsDesc: "アップロード、登録、審査を設定します。",
         animeRadioSettings: "アニメラジオ",
         animeRadioSettingsDesc: "自動再生、音量、ミニプレイヤーを管理します。",
+        exclusivesFeatures: "限定アリーナ",
+        exclusivesFeaturesDesc: "デイリー殿堂、熱い対決、ランダムクラッシュ。",
       },
       table: {
         user: "ユーザー",
@@ -1744,6 +1807,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bronzeMedal: "ميدالية برونزية",
       rank: "الترتيب",
       inClashTop: "في النزالات",
+      trendingDuel: "نزال مشتعل",
       unavailable: "هذا الفيديو غير متاح بعد.",
       backHome: "العودة إلى الرائج",
       notFound: "الفيديو غير موجود.",
@@ -1805,6 +1869,24 @@ export const dictionaries: Record<Locale, Dictionary> = {
       musicBody: "شغّل المشغّل أدناه واستمر بالاستماع أثناء مشاهدة الفيديوهات والمجتمع وقناتك.",
       emptyVideos: "لا توجد فيدioهات معتمدة بعد.",
       emptyExclusives: "لا توجد مقاطع حصرية من قنوات موثّقة بعد.",
+    },
+    exclusives: {
+      dailyHallBadge: "لوحة الشرف اليومية",
+      dailyHallTitle: "لوحة الشرف اليومية",
+      dailyHallSubtitle: "من يجمع أكثر نقاط تفاعل اليوم يتصدر الساحة.",
+      interactionKing: "ملك التفاعلات اليوم",
+      pointsToday: "نقطة اليوم",
+      noDailyLeader: "لا بطل اليوم بعد. تفاعل، انشر، وادعُ أصدقاءك لتتوج.",
+      randomDuelBadge: "نزال عشوائي",
+      randomDuelTitle: "التحدي العشوائي",
+      randomDuelDesc: "انتقل فوراً لمواجهة بين فيديوين مختارين عشوائياً وصوّت لأقوى مقطع.",
+      startRandomDuel: "ابدأ النزال العشوائي",
+      randomDuelPageDesc: "اختر المقطع الأقوى — صوتك يحرّك النزال العالمي فوراً.",
+      vs: "VS",
+      watchAndVote: "شاهد وصوّت",
+      shuffleDuel: "نزال آخر",
+      noDuelVideos: "لا توجد فيديوهات كافية لبدء نزال بعد.",
+      backToExclusives: "العودة إلى حصري",
     },
     radio: {
       badge: "بث مباشر 24/7",
@@ -2252,6 +2334,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         siteSettingsDesc: "ضبط الرفع والتسجيل والمراجعة.",
         animeRadioSettings: "راديو الأنمي",
         animeRadioSettingsDesc: "التحكم بالتشغيل التلقائي والصوت والشريط السفلي.",
+        exclusivesFeatures: "ساحة حصري",
+        exclusivesFeaturesDesc: "لوحة الشرف اليومية، نزالات مشتعلة، وتحدي عشوائي.",
       },
       table: {
         user: "المستخدم",

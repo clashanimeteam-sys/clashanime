@@ -145,6 +145,11 @@ export function AdminDashboard() {
           description={t.admin.quickActions.animeRadioSettingsDesc}
           href="/admin/settings#anime-radio"
         />
+        <QuickLink
+          title={t.admin.quickActions.exclusivesFeatures}
+          description={t.admin.quickActions.exclusivesFeaturesDesc}
+          href="/exclusives"
+        />
       </div>
     </div>
   );
