@@ -11,6 +11,7 @@ export function AuthProviderButtons({ mode }: AuthProviderButtonsProps) {
     <div className="space-y-3">
       <OAuthAuthButton provider="google" mode={mode} />
       <OAuthAuthButton provider="github" mode={mode} />
+      <OAuthAuthButton provider="facebook" mode={mode} />
     </div>
   );
 }

@@ -60,6 +60,8 @@ export type Dictionary = {
     continueGoogleSignup: string;
     continueGithubLogin: string;
     continueGithubSignup: string;
+    continueFacebookLogin: string;
+    continueFacebookSignup: string;
     noAccount: string;
     hasAccount: string;
     loading: string;
@@ -125,12 +127,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       signOut: "Sign Out",
       loginTitle: "Log in to Clash Anime",
       signupTitle: "Sign up to Clash Anime",
-      loginSubtitle: "Continue with Google or GitHub to join the duel grid.",
-      signupSubtitle: "Create your account with Google or GitHub and start uploading duels.",
+      loginSubtitle: "Continue with Google, GitHub, or Facebook to join the duel grid.",
+      signupSubtitle: "Create your account with Google, GitHub, or Facebook and start uploading duels.",
       continueGoogleLogin: "Continue with Google",
       continueGoogleSignup: "Continue with Google",
       continueGithubLogin: "Continue with GitHub",
       continueGithubSignup: "Continue with GitHub",
+      continueFacebookLogin: "Continue with Facebook",
+      continueFacebookSignup: "Continue with Facebook",
       noAccount: "Don't have an account?",
       hasAccount: "Already have an account?",
       loading: "Connecting...",
@@ -194,12 +198,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       signOut: "ログアウト",
       loginTitle: "Clash Animeにログイン",
       signupTitle: "Clash Animeに登録",
-      loginSubtitle: "GoogleまたはGitHubでデュエルグリッドに参加します。",
-      signupSubtitle: "GoogleまたはGitHubでアカウントを作成してデュエルを始めましょう。",
+      loginSubtitle: "Google、GitHub、またはFacebookでデュエルグリッドに参加します。",
+      signupSubtitle: "Google、GitHub、またはFacebookでアカウントを作成してデュエルを始めましょう。",
       continueGoogleLogin: "Googleで続行",
       continueGoogleSignup: "Googleで続行",
       continueGithubLogin: "GitHubで続行",
       continueGithubSignup: "GitHubで続行",
+      continueFacebookLogin: "Facebookで続行",
+      continueFacebookSignup: "Facebookで続行",
       noAccount: "アカウントをお持ちでないですか？",
       hasAccount: "すでにアカウントをお持ちですか？",
       loading: "接続中...",
@@ -263,12 +269,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       signOut: "تسجيل الخروج",
       loginTitle: "تسجيل الدخول إلى Clash Anime",
       signupTitle: "إنشاء حساب في Clash Anime",
-      loginSubtitle: "تابع بحساب Google أو GitHub للانضمام إلى شبكة النزالات.",
-      signupSubtitle: "أنشئ حسابك عبر Google أو GitHub وابدأ برفع النزالات.",
+      loginSubtitle: "تابع بحساب Google أو GitHub أو Facebook للانضمام إلى شبكة النزالات.",
+      signupSubtitle: "أنشئ حسابك عبر Google أو GitHub أو Facebook وابدأ برفع النزالات.",
       continueGoogleLogin: "المتابعة مع Google",
       continueGoogleSignup: "المتابعة مع Google",
       continueGithubLogin: "المتابعة مع GitHub",
       continueGithubSignup: "المتابعة مع GitHub",
+      continueFacebookLogin: "المتابعة مع Facebook",
+      continueFacebookSignup: "المتابعة مع Facebook",
       noAccount: "ليس لديك حساب؟",
       hasAccount: "لديك حساب بالفعل؟",
       loading: "جارٍ الاتصال...",
