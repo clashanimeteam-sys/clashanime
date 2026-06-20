@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { VideoCardChannel } from "@/components/VideoCardChannel";
+import { createBrowserClient } from "@/lib/supabase/client";
+import { incrementVideoViews } from "@/lib/videoEngagement";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Video } from "@/lib/types";
 
@@ -14,7 +16,9 @@ type VideoPageContentProps = {
 
 export function VideoPageContent({ video }: VideoPageContentProps) {
   const { t } = useLocale();
+  const supabase = useMemo(() => createBrowserClient(), []);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [viewsCount, setViewsCount] = useState(video.views_count ?? 0);
   const hasVideo = Boolean(video.video_url?.trim());
 
   useEffect(() => {
@@ -42,6 +46,16 @@ export function VideoPageContent({ video }: VideoPageContentProps) {
     element.addEventListener("loadeddata", startPlayback, { once: true });
     return () => element.removeEventListener("loadeddata", startPlayback);
   }, [hasVideo, video.video_url]);
+
+  useEffect(() => {
+    if (!supabase) return;
+
+    void incrementVideoViews(supabase, video.id).then((counted) => {
+      if (counted) {
+        setViewsCount((count) => count + 1);
+      }
+    });
+  }, [supabase, video.id]);
 
   return (
     <div className="relative h-[calc(100dvh-3.5rem)] w-full bg-black">
@@ -73,6 +87,22 @@ export function VideoPageContent({ video }: VideoPageContentProps) {
         </>
       )}
 
+      <span className="pointer-events-none absolute end-4 top-4 inline-flex items-center gap-1 rounded-full bg-black/75 px-2.5 py-1 text-xs font-bold text-white backdrop-blur-sm">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          className="h-3.5 w-3.5"
+          aria-hidden
+        >
+          <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
+          <circle cx="12" cy="12" r="3" />
+        </svg>
+        {viewsCount.toLocaleString()} {t.video.views}
+      </span>
+
       <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent px-4 pb-5 pt-16 sm:px-6">
         <div className="pointer-events-auto space-y-3">
           <h1 className="text-lg font-bold leading-snug text-white sm:text-xl">{video.title}</h1>
@@ -87,7 +117,9 @@ export function VideoPageContent({ video }: VideoPageContentProps) {
             videoId={video.id}
             title={video.title}
             initialLikes={video.likes_count}
-            commentsCount={video.comments_count}
+            initialComments={video.comments_count}
+            initialShares={video.shares_count ?? 0}
+            variant="overlay"
           />
 
           {video.hashtags && video.hashtags.length > 0 ? (

@@ -1,51 +1,163 @@
 "use client";
 
-import { useState } from "react";
-import { formatCount } from "@/lib/format";
+import { useRouter } from "next/navigation";
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import { createBrowserClient } from "@/lib/supabase/client";
+import {
+  checkVideoLiked,
+  fetchVideoCounts,
+  incrementVideoShares,
+  postVideoComment,
+  toggleVideoLike,
+} from "@/lib/videoEngagement";
+import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type VideoCardActionsProps = {
   videoId: string;
   title: string;
   initialLikes: number;
-  commentsCount: number;
+  initialComments: number;
+  initialShares?: number;
+  variant?: "default" | "overlay";
 };
+
+function formatRealCount(value: number) {
+  return value.toLocaleString();
+}
 
 export function VideoCardActions({
   videoId,
   title,
   initialLikes,
-  commentsCount,
+  initialComments,
+  initialShares = 0,
+  variant = "default",
 }: VideoCardActionsProps) {
+  const router = useRouter();
+  const { user } = useAuth();
   const { t } = useLocale();
+  const supabase = useMemo(() => createBrowserClient(), []);
+
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(initialLikes);
+  const [commentsCount, setCommentsCount] = useState(initialComments);
+  const [sharesCount, setSharesCount] = useState(initialShares);
+  const [showComments, setShowComments] = useState(false);
+  const [commentBody, setCommentBody] = useState("");
+  const [loadingLike, setLoadingLike] = useState(false);
+  const [loadingComment, setLoadingComment] = useState(false);
   const [shareStatus, setShareStatus] = useState<string | null>(null);
   const [reported, setReported] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function handleLike() {
-    setLiked((prev) => {
-      setLikesCount((count) => (prev ? count - 1 : count + 1));
-      return !prev;
-    });
+  const isOverlay = variant === "overlay";
+  const buttonClass = isOverlay
+    ? "border-white/30 text-white hover:border-white/60 hover:text-white"
+    : "border-zinc-300 text-zinc-700 hover:border-accent/40 hover:text-accent dark:border-zinc-700 dark:text-zinc-200";
+  const likedClass = isOverlay
+    ? "border-accent bg-accent/20 text-accent"
+    : "border-accent bg-accent/10 text-accent";
+
+  useEffect(() => {
+    setLikesCount(initialLikes);
+    setCommentsCount(initialComments);
+    setSharesCount(initialShares);
+  }, [initialComments, initialLikes, initialShares]);
+
+  useEffect(() => {
+    if (!supabase || !user) {
+      setLiked(false);
+      return;
+    }
+
+    checkVideoLiked(supabase, videoId, user.id).then(setLiked);
+  }, [supabase, user, videoId]);
+
+  function requireAuth() {
+    router.push("/login");
+  }
+
+  async function handleLike() {
+    if (!supabase) return;
+
+    if (!user) {
+      requireAuth();
+      return;
+    }
+
+    setLoadingLike(true);
+    setError(null);
+
+    const counts = await toggleVideoLike(supabase, videoId, user.id, liked);
+
+    if (counts) {
+      setLiked(!liked);
+      setLikesCount(counts.likes_count);
+    } else {
+      setError(t.video.actionFailed);
+    }
+
+    setLoadingLike(false);
+  }
+
+  async function handleCommentSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!supabase) return;
+
+    if (!user) {
+      requireAuth();
+      return;
+    }
+
+    setLoadingComment(true);
+    setError(null);
+
+    const counts = await postVideoComment(supabase, videoId, user.id, commentBody);
+
+    if (counts) {
+      setCommentsCount(counts.comments_count);
+      setCommentBody("");
+      setShowComments(false);
+    } else {
+      setError(t.video.actionFailed);
+    }
+
+    setLoadingComment(false);
   }
 
   async function handleShare() {
+    if (!supabase) return;
+
     const url =
       typeof window !== "undefined"
         ? `${window.location.origin}/video/${videoId}`
         : `https://www.clashanime.com/video/${videoId}`;
 
+    let shared = false;
+
     try {
       if (navigator.share) {
         await navigator.share({ title, url });
-        return;
+        shared = true;
+      } else {
+        await navigator.clipboard.writeText(url);
+        setShareStatus(t.video.linkCopied);
+        shared = true;
       }
-
-      await navigator.clipboard.writeText(url);
-      setShareStatus(t.video.linkCopied);
     } catch {
       setShareStatus(t.video.shareCancelled);
+    }
+
+    if (shared) {
+      const nextShares = await incrementVideoShares(supabase, videoId);
+      if (nextShares !== null) {
+        setSharesCount(nextShares);
+      } else {
+        const counts = await fetchVideoCounts(supabase, videoId);
+        if (counts) setSharesCount(counts.shares_count);
+      }
     }
 
     window.setTimeout(() => setShareStatus(null), 2000);
@@ -62,12 +174,11 @@ export function VideoCardActions({
         <button
           type="button"
           onClick={handleLike}
+          disabled={loadingLike}
           aria-pressed={liked}
           aria-label={liked ? t.video.unlike : t.video.like}
-          className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
-            liked
-              ? "border-accent bg-accent/10 text-accent"
-              : "border-zinc-300 text-zinc-700 hover:border-accent/40 hover:text-accent dark:border-zinc-700 dark:text-zinc-200"
+          className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors disabled:opacity-60 ${
+            liked ? likedClass : buttonClass
           }`}
         >
           <svg
@@ -79,13 +190,21 @@ export function VideoCardActions({
           >
             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
           </svg>
-          {formatCount(likesCount)}
+          {formatRealCount(likesCount)}
         </button>
 
         <button
           type="button"
+          onClick={() => {
+            if (!user) {
+              requireAuth();
+              return;
+            }
+            setShowComments((open) => !open);
+          }}
+          aria-expanded={showComments}
           aria-label={t.video.comments}
-          className="inline-flex items-center gap-1.5 rounded-full border border-zinc-300 px-3 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:border-accent/40 hover:text-accent dark:border-zinc-700 dark:text-zinc-200"
+          className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${buttonClass}`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -98,14 +217,14 @@ export function VideoCardActions({
           >
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
           </svg>
-          {formatCount(commentsCount)}
+          {formatRealCount(commentsCount)}
         </button>
 
         <button
           type="button"
           onClick={handleShare}
           aria-label={t.video.share}
-          className="inline-flex items-center gap-1.5 rounded-full border border-zinc-300 px-3 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:border-accent/40 hover:text-accent dark:border-zinc-700 dark:text-zinc-200"
+          className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${buttonClass}`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -120,14 +239,18 @@ export function VideoCardActions({
             <path d="M16 6l-4-4-4 4" />
             <path d="M12 2v14" />
           </svg>
-          {t.video.share}
+          {formatRealCount(sharesCount)}
         </button>
 
         <button
           type="button"
           onClick={handleReport}
           aria-label={t.video.report}
-          className="inline-flex items-center gap-1 rounded-full border border-zinc-300 px-2.5 py-1.5 text-xs font-semibold text-zinc-600 transition-colors hover:border-red-400/50 hover:text-red-500 dark:border-zinc-700 dark:text-zinc-200"
+          className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1.5 text-xs font-semibold transition-colors ${
+            isOverlay
+              ? "border-white/30 text-white/80 hover:border-red-400/50 hover:text-red-300"
+              : "border-zinc-300 text-zinc-600 hover:border-red-400/50 hover:text-red-500 dark:border-zinc-700 dark:text-zinc-200"
+          }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -144,9 +267,36 @@ export function VideoCardActions({
         </button>
       </div>
 
-      {(shareStatus || reported) && (
-        <p className="text-xs text-zinc-500 dark:text-zinc-400" role="status">
-          {shareStatus ?? t.video.reportSubmitted}
+      {showComments && (
+        <form onSubmit={handleCommentSubmit} className="space-y-2">
+          <textarea
+            value={commentBody}
+            onChange={(event) => setCommentBody(event.target.value)}
+            rows={2}
+            maxLength={500}
+            placeholder={t.video.commentPlaceholder}
+            className={`w-full rounded-lg border px-3 py-2 text-sm outline-none ${
+              isOverlay
+                ? "border-white/30 bg-black/50 text-white placeholder:text-zinc-400"
+                : "border-zinc-300 bg-white text-black dark:border-zinc-700 dark:bg-black dark:text-white"
+            }`}
+          />
+          <button
+            type="submit"
+            disabled={loadingComment || !commentBody.trim()}
+            className="rounded-full bg-accent px-4 py-1.5 text-xs font-semibold text-white disabled:opacity-60"
+          >
+            {loadingComment ? t.video.postingComment : t.video.postComment}
+          </button>
+        </form>
+      )}
+
+      {(shareStatus || reported || error) && (
+        <p
+          className={`text-xs ${isOverlay ? "text-zinc-300" : "text-zinc-500 dark:text-zinc-400"}`}
+          role="status"
+        >
+          {error ?? shareStatus ?? t.video.reportSubmitted}
         </p>
       )}
     </div>

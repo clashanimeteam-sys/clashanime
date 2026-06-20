@@ -70,7 +70,7 @@ export function ChannelProfileContent({ username }: ChannelProfileContentProps) 
       supabase
         .from("videos")
         .select(
-          "id, title, thumbnail_url, video_url, likes_count, comments_count, created_at, hashtags, duration_seconds, user_id",
+          "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, hashtags, duration_seconds, user_id",
         )
         .eq("user_id", profileData.id)
         .order("created_at", { ascending: false }),

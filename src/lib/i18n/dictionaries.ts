@@ -36,6 +36,11 @@ export type Dictionary = {
     unavailable: string;
     backHome: string;
     notFound: string;
+    views: string;
+    commentPlaceholder: string;
+    postComment: string;
+    postingComment: string;
+    actionFailed: string;
   };
   theme: {
     light: string;
@@ -163,6 +168,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unavailable: "This video is not available yet.",
       backHome: "Back to trending",
       notFound: "Video not found.",
+      views: "views",
+      commentPlaceholder: "Write a comment...",
+      postComment: "Post comment",
+      postingComment: "Posting...",
+      actionFailed: "Could not save. Try again.",
     },
     theme: {
       light: "Switch to light mode",
@@ -288,6 +298,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unavailable: "この動画はまだ視聴できません。",
       backHome: "トレンドに戻る",
       notFound: "動画が見つかりません。",
+      views: "回視聴",
+      commentPlaceholder: "コメントを書く...",
+      postComment: "コメントする",
+      postingComment: "送信中...",
+      actionFailed: "保存できませんでした。もう一度お試しください。",
     },
     theme: {
       light: "ライトモードに切り替え",
@@ -413,6 +428,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unavailable: "هذا الفيديو غير متاح بعد.",
       backHome: "العودة إلى الرائج",
       notFound: "الفيديو غير موجود.",
+      views: "مشاهدة",
+      commentPlaceholder: "اكتب تعليقاً...",
+      postComment: "نشر التعليق",
+      postingComment: "جارٍ النشر...",
+      actionFailed: "تعذّر الحفظ. حاول مرة أخرى.",
     },
     theme: {
       light: "التبديل إلى الوضع النهاري",

@@ -25,6 +25,8 @@ export type Video = {
   video_url: string;
   likes_count: number;
   comments_count: number;
+  views_count?: number;
+  shares_count?: number;
   created_at: string;
   trending_score: number;
   user_id?: string | null;

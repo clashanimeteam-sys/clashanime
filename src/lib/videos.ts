@@ -137,7 +137,7 @@ export async function getTrendingVideos(): Promise<Video[]> {
   const { data, error } = await supabase
     .from("videos")
     .select(
-      "id, title, thumbnail_url, video_url, likes_count, comments_count, created_at, user_id",
+      "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, user_id",
     )
     .order("likes_count", { ascending: false })
     .limit(24);
@@ -160,7 +160,7 @@ export async function getVideoById(id: string): Promise<Video | null> {
   const { data, error } = await supabase
     .from("videos")
     .select(
-      "id, title, thumbnail_url, video_url, likes_count, comments_count, created_at, user_id, hashtags, duration_seconds, description",
+      "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, user_id, hashtags, duration_seconds, description",
     )
     .eq("id", id)
     .maybeSingle();

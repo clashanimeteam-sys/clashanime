@@ -82,6 +82,8 @@ function RankBadge({ rank }: { rank: number }) {
 }
 
 export function VideoCard({ video, rank }: VideoCardProps) {
+  const { t } = useLocale();
+
   return (
     <article
       className={`group overflow-hidden rounded-2xl border bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/10 dark:border-zinc-800 dark:bg-black ${
@@ -118,6 +120,22 @@ export function VideoCard({ video, rank }: VideoCardProps) {
           </div>
 
           <RankBadge rank={rank} />
+
+          <span className="absolute bottom-3 end-3 inline-flex items-center gap-1 rounded-full bg-black/75 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              className="h-3 w-3"
+              aria-hidden
+            >
+              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            {(video.views_count ?? 0).toLocaleString()} {t.video.views}
+          </span>
         </div>
       </Link>
 
@@ -132,7 +150,8 @@ export function VideoCard({ video, rank }: VideoCardProps) {
           videoId={video.id}
           title={video.title}
           initialLikes={video.likes_count}
-          commentsCount={video.comments_count}
+          initialComments={video.comments_count}
+          initialShares={video.shares_count ?? 0}
         />
 
         {video.channel ? <VideoCardChannel channel={video.channel} /> : null}
