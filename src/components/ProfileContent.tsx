@@ -129,6 +129,20 @@ export function ProfileContent() {
     loadProfile();
   }, [authLoading, user, router, loadProfile]);
 
+  useEffect(() => {
+    if (loading || authLoading) return;
+
+    const scrollToHash = () => {
+      const hash = window.location.hash.replace(/^#/, "");
+      if (!hash) return;
+      document.getElementById(hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    window.requestAnimationFrame(scrollToHash);
+    window.addEventListener("hashchange", scrollToHash);
+    return () => window.removeEventListener("hashchange", scrollToHash);
+  }, [loading, authLoading]);
+
   async function uploadImage(
     bucket: "avatars" | "banners",
     file: File,

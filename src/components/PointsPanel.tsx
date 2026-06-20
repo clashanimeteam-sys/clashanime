@@ -119,6 +119,10 @@ export function PointsPanel({ profile, onProfileRefresh }: PointsPanelProps) {
 
   return (
     <section className="mt-8 overflow-hidden rounded-2xl border border-zinc-200 bg-gradient-to-br from-zinc-50 via-white to-orange-50/40 p-5 dark:border-zinc-800 dark:from-zinc-950 dark:via-black dark:to-orange-950/20">
+      <div
+        id="hunter-system"
+        className="scroll-mt-24"
+      >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-accent">
@@ -157,8 +161,12 @@ export function PointsPanel({ profile, onProfileRefresh }: PointsPanelProps) {
       </div>
 
       <BountyRewardsGrid currentLevel={computedLevel} />
+      </div>
 
-      <div className="mt-5 rounded-xl border border-zinc-200 bg-white/90 p-4 backdrop-blur dark:border-zinc-800 dark:bg-black/80">
+      <div
+        id="bounty-log"
+        className="mt-5 scroll-mt-24 rounded-xl border border-zinc-200 bg-white/90 p-4 backdrop-blur dark:border-zinc-800 dark:bg-black/80"
+      >
         <h3 className="text-sm font-semibold text-black dark:text-white">{t.points.bountyLogTitle}</h3>
         {loadingTransactions ? (
           <p className="mt-3 text-sm text-zinc-500">{t.profile.loading}</p>
@@ -183,7 +191,10 @@ export function PointsPanel({ profile, onProfileRefresh }: PointsPanelProps) {
         )}
       </div>
 
-      <div className="mt-5 rounded-xl border border-zinc-200 bg-white/90 p-4 backdrop-blur dark:border-zinc-800 dark:bg-black/80">
+      <div
+        id="referral"
+        className="mt-5 scroll-mt-24 rounded-xl border border-zinc-200 bg-white/90 p-4 backdrop-blur dark:border-zinc-800 dark:bg-black/80"
+      >
         <h3 className="text-sm font-semibold text-black dark:text-white">{t.points.referralTitle}</h3>
         <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{t.points.referralHint}</p>
         <div className="mt-3 flex flex-col gap-2 sm:flex-row">

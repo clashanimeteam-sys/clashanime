@@ -11,6 +11,9 @@ export type Dictionary = {
     community: string;
     music: string;
     exclusives: string;
+    hunterSystem: string;
+    bountyRewards: string;
+    inviteFriends: string;
     settings: string;
   };
   home: {
@@ -532,6 +535,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       community: "Community",
       music: "Music",
       exclusives: "Exclusives",
+      hunterSystem: "Bounty Hunter System",
+      bountyRewards: "Latest bounty rewards",
+      inviteFriends: "Invite friends",
       settings: "Settings",
     },
     home: {
@@ -1066,6 +1072,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       community: "コミュニティ",
       music: "音楽",
       exclusives: "限定",
+      hunterSystem: "賞金ハンターシステム",
+      bountyRewards: "最新の報酬",
+      inviteFriends: "友達を招待",
       settings: "設定",
     },
     home: {
@@ -1596,6 +1605,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       community: "المجتمع",
       music: "الموسيقى",
       exclusives: "حصري",
+      hunterSystem: "نظام صياد الجوائز",
+      bountyRewards: "آخر مكافآت الجوائز",
+      inviteFriends: "ادعُ أصدقاءك",
       settings: "الإعدادات",
     },
     home: {
