@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BrandLogo } from "@/components/BrandLogo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Locale } from "@/lib/types";
@@ -71,14 +71,7 @@ export function Sidebar() {
     <aside className="sticky top-0 flex min-h-screen w-56 shrink-0 flex-col border-e border-border bg-sidebar lg:w-60">
       <div className="border-b border-border p-4">
         <Link href="/" className="flex justify-center">
-          <Image
-            src="/logo.png"
-            alt="ClashAnime"
-            width={112}
-            height={112}
-            priority
-            className="h-28 w-28 object-contain"
-          />
+          <BrandLogo priority />
         </Link>
 
         <button

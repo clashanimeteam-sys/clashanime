@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import { BrandLogo } from "@/components/BrandLogo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Locale } from "@/lib/types";
@@ -19,14 +19,7 @@ export function MobileHeader() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-md md:hidden">
       <div className="flex h-16 items-center justify-between gap-3 px-4">
         <Link href="/" className="flex items-center">
-          <Image
-            src="/logo.png"
-            alt="ClashAnime"
-            width={72}
-            height={72}
-            priority
-            className="h-[4.5rem] w-[4.5rem] object-contain"
-          />
+          <BrandLogo className="h-[4.5rem] w-[4.5rem]" priority />
         </Link>
 
         <div className="flex items-center gap-2">
