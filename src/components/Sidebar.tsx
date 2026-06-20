@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
 import { LocaleFlags } from "@/components/LocaleFlags";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { isStaff } from "@/lib/admin";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
+import { useProfileSection, type ProfileSection } from "@/providers/ProfileSectionProvider";
 
 const mainNavItems = [
   { key: "clash" as const, href: "/", icon: "flame" },
@@ -18,15 +18,20 @@ const mainNavItems = [
   { key: "exclusives" as const, href: "/exclusives", icon: "star" },
 ];
 
-const profileNavItems = [
-  { key: "channelSettings" as const, hash: "settings", icon: "settings" },
-  { key: "hunterSystem" as const, hash: "hunter-system", icon: "trophy" },
-  { key: "bountyRewards" as const, hash: "bounty-log", icon: "coins" },
-  { key: "inviteFriends" as const, hash: "referral", icon: "invite" },
+const profileNavItems: {
+  key: "channelSettings" | "myVideos" | "hunterSystem" | "bountyRewards" | "inviteFriends";
+  section: ProfileSection;
+  icon: string;
+}[] = [
+  { key: "channelSettings", section: "settings", icon: "settings" },
+  { key: "myVideos", section: "my-videos", icon: "video" },
+  { key: "hunterSystem", section: "hunter-system", icon: "trophy" },
+  { key: "bountyRewards", section: "bounty-log", icon: "coins" },
+  { key: "inviteFriends", section: "referral", icon: "invite" },
 ];
 
-function profileSectionHref(hash: string, loggedIn: boolean) {
-  const target = hash === "settings" ? "/profile" : `/profile#${hash}`;
+function profileSectionHref(section: ProfileSection, loggedIn: boolean) {
+  const target = section === "settings" ? "/profile" : `/profile#${section}`;
   return loggedIn ? target : `/login?next=${encodeURIComponent(target)}`;
 }
 
@@ -121,18 +126,11 @@ function navLinkClass(active: boolean) {
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { user, profile } = useAuth();
   const { t } = useLocale();
+  const { section, setSection, isProfilePage } = useProfileSection();
   const showAdminLink = isStaff(profile);
-  const [hash, setHash] = useState("");
-  const isProfilePage = pathname === "/profile";
-
-  useEffect(() => {
-    const updateHash = () => setHash(window.location.hash.replace(/^#/, ""));
-    updateHash();
-    window.addEventListener("hashchange", updateHash);
-    return () => window.removeEventListener("hashchange", updateHash);
-  }, [pathname]);
 
   return (
     <aside className="sticky top-0 flex min-h-screen w-56 shrink-0 flex-col border-e border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black lg:w-60">
@@ -169,14 +167,23 @@ export function Sidebar() {
             />
 
             {profileNavItems.map((item) => {
-              const href = profileSectionHref(item.hash, Boolean(user));
-              const active =
-                hash === item.hash || (item.hash === "settings" && !hash);
+              const active = section === item.section;
               return (
-                <Link key={item.key} href={href} className={navLinkClass(active)}>
+                <button
+                  key={item.key}
+                  type="button"
+                  onClick={() => {
+                    if (!user) {
+                      router.push(profileSectionHref(item.section, false));
+                      return;
+                    }
+                    setSection(item.section);
+                  }}
+                  className={navLinkClass(active)}
+                >
                   <NavIcon icon={item.icon} />
                   {t.nav[item.key]}
-                </Link>
+                </button>
               );
             })}
           </>

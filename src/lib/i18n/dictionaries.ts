@@ -15,6 +15,7 @@ export type Dictionary = {
     bountyRewards: string;
     inviteFriends: string;
     channelSettings: string;
+    myVideos: string;
     settings: string;
   };
   home: {
@@ -540,6 +541,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bountyRewards: "Latest bounty rewards",
       inviteFriends: "Invite friends",
       channelSettings: "Channel settings",
+      myVideos: "Your videos",
       settings: "Settings",
     },
     home: {
@@ -1078,6 +1080,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bountyRewards: "最新の報酬",
       inviteFriends: "友達を招待",
       channelSettings: "チャンネル設定",
+      myVideos: "あなたの動画",
       settings: "設定",
     },
     home: {
@@ -1612,6 +1615,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bountyRewards: "آخر مكافآت الجوائز",
       inviteFriends: "ادعُ أصدقاءك",
       channelSettings: "إعدادات القناة",
+      myVideos: "فيديوهاتك",
       settings: "الإعدادات",
     },
     home: {

@@ -7,22 +7,16 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { FollowerCount } from "@/components/FollowButton";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { PointsPanel } from "@/components/PointsPanel";
+import { VideoCard } from "@/components/VideoCard";
+import { profileToVideoChannel } from "@/components/VideoCardChannel";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 import { getPublicStorageUrl } from "@/lib/upload";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
-import type { Profile } from "@/lib/types";
-
-type ProfileSection = "settings" | "hunter-system" | "bounty-log" | "referral";
-
-function parseProfileSection(hash: string): ProfileSection {
-  if (hash === "hunter-system" || hash === "bounty-log" || hash === "referral") {
-    return hash;
-  }
-  return "settings";
-}
+import { useProfileSection } from "@/providers/ProfileSectionProvider";
+import type { Profile, Video } from "@/lib/types";
 
 function settingsBoxClassName(extra = "") {
   return `rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950 ${extra}`.trim();
@@ -40,10 +34,12 @@ export function ProfileContent() {
   const router = useRouter();
   const { user, loading: authLoading, refreshProfile, signOut } = useAuth();
   const { t } = useLocale();
+  const { section: activeSection } = useProfileSection();
   const supabase = useMemo(() => createBrowserClient(), []);
   const config = useMemo(() => getSupabaseConfig(), []);
 
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [videos, setVideos] = useState<Video[]>([]);
   const [videoCount, setVideoCount] = useState(0);
   const [displayName, setDisplayName] = useState("");
   const [bio, setBio] = useState("");
@@ -54,7 +50,6 @@ export function ProfileContent() {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [followerCount, setFollowerCount] = useState(0);
-  const [activeSection, setActiveSection] = useState<ProfileSection>("settings");
 
   const hasChanges =
     profile !== null &&
@@ -104,7 +99,7 @@ export function ProfileContent() {
       return;
     }
 
-    const [{ count: followers }, { count: videos }] = await Promise.all([
+    const [{ count: followers }, { count: videosTotal }, { data: videoData }] = await Promise.all([
       supabase
         .from("channel_follows")
         .select("*", { count: "exact", head: true })
@@ -113,13 +108,27 @@ export function ProfileContent() {
         .from("videos")
         .select("*", { count: "exact", head: true })
         .eq("user_id", user.id),
+      supabase
+        .from("videos")
+        .select(
+          "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, hashtags, duration_seconds, user_id, moderation_status, rejection_reason",
+        )
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false }),
     ]);
 
     setFollowerCount(followers ?? 0);
-    setVideoCount(videos ?? 0);
+    setVideoCount(videosTotal ?? 0);
     setProfile(profileData);
     setDisplayName(profileData.display_name ?? profileData.username);
     setBio(profileData.bio ?? "");
+    setVideos(
+      (videoData ?? []).map((video) => ({
+        ...video,
+        trending_score: 0,
+        channel: profileToVideoChannel(profileData, followers ?? 0),
+      })),
+    );
     setLoading(false);
   }, [supabase, user]);
 
@@ -131,18 +140,6 @@ export function ProfileContent() {
     }
     loadProfile();
   }, [authLoading, user, router, loadProfile]);
-
-  useEffect(() => {
-    if (loading || authLoading) return;
-
-    const syncSection = () => {
-      setActiveSection(parseProfileSection(window.location.hash.replace(/^#/, "")));
-    };
-
-    syncSection();
-    window.addEventListener("hashchange", syncSection);
-    return () => window.removeEventListener("hashchange", syncSection);
-  }, [loading, authLoading]);
 
   async function uploadImage(
     bucket: "avatars" | "banners",
@@ -443,6 +440,26 @@ export function ProfileContent() {
 
       {activeSection === "referral" ? (
         <PointsPanel profile={profile} onProfileRefresh={loadProfile} section="referral" />
+      ) : null}
+
+      {activeSection === "my-videos" ? (
+        <section id="my-videos" className={settingsBoxClassName()}>
+          <h2 className="text-lg font-semibold text-black dark:text-white">{t.nav.myVideos}</h2>
+          {videos.length === 0 ? (
+            <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">{t.profile.noVideos}</p>
+          ) : (
+            <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {videos.map((video, index) => (
+                <VideoCard
+                  key={video.id}
+                  video={video}
+                  rank={index + 1}
+                  showModerationStatus
+                />
+              ))}
+            </div>
+          )}
+        </section>
       ) : null}
 
       {message && (
