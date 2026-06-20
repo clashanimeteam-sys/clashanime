@@ -23,9 +23,6 @@ export function HomeContent({ videos }: HomeContentProps) {
         <p className="mt-3 max-w-2xl text-sm text-muted sm:text-base">
           {t.home.subtitle}
         </p>
-        <p className="mt-2 text-xs font-medium text-accent/80">
-          {t.home.liveNote}
-        </p>
       </section>
 
       <section

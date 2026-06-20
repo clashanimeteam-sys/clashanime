@@ -22,10 +22,10 @@ export function MobileHeader() {
           <Image
             src="/logo.png"
             alt="ClashAnime"
-            width={36}
-            height={36}
+            width={52}
+            height={52}
             priority
-            className="h-9 w-9 rounded-md object-contain"
+            className="h-[3.25rem] w-[3.25rem] object-contain"
           />
           <span className="text-sm font-bold text-foreground">
             {t.brand.name}

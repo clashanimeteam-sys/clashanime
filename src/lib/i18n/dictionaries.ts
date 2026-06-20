@@ -17,7 +17,6 @@ export type Dictionary = {
     eyebrow: string;
     title: string;
     subtitle: string;
-    liveNote: string;
     gridLabel: string;
     upload: string;
   };
@@ -67,11 +66,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     home: {
       eyebrow: "Duel System",
-      title: "Trending Anime Duels",
+      title: "Anime Duels",
       subtitle:
         "Videos rise to the top based on real-time likes and comments. The fastest-growing clips win the grid.",
-      liveNote: "ClashAnime is live on www.clashanime.com",
-      gridLabel: "Trending duel grid",
+      gridLabel: "Anime duel grid",
       upload: "Video Upload",
     },
     video: {
@@ -118,11 +116,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     home: {
       eyebrow: "デュエルシステム",
-      title: "トレンドのアニメデュエル",
+      title: "アニメデュエル",
       subtitle:
         "リアルタイムのいいねとコメントで動画が上位に上がります。最も伸びているクリップがグリッドの頂点を占めます。",
-      liveNote: "ClashAnimeは www.clashanime.com で公開中",
-      gridLabel: "トレンドデュエルグリッド",
+      gridLabel: "アニメデュエルグリッド",
       upload: "動画アップロード",
     },
     video: {
@@ -169,11 +166,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     home: {
       eyebrow: "نظام النزالات",
-      title: "نزالات الأنمي الرائجة",
+      title: "نزالات الأنمي",
       subtitle:
         "تصعد الفيديوهات إلى القمة بناءً على الإعجابات والتعليقات الفورية. المقاطع الأسرع نمواً تفوز بالشبكة.",
-      liveNote: "ClashAnime متاح على www.clashanime.com",
-      gridLabel: "شبكة النزالات الرائجة",
+      gridLabel: "شبكة نزالات الأنمي",
       upload: "رفع فيديو",
     },
     video: {

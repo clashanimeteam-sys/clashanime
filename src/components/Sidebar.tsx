@@ -74,10 +74,10 @@ export function Sidebar() {
           <Image
             src="/logo.png"
             alt="ClashAnime"
-            width={44}
-            height={44}
+            width={72}
+            height={72}
             priority
-            className="h-11 w-11 rounded-lg object-contain drop-shadow-sm"
+            className="h-[4.5rem] w-[4.5rem] object-contain"
           />
           <div>
             <p className="text-sm font-bold tracking-wide text-foreground">
