@@ -4,8 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { getModerationStatusLabel } from "@/lib/moderation";
+import { logModerationAction, moderationActionFromStatus } from "@/lib/moderationLog";
 import { createBrowserClient } from "@/lib/supabase/client";
 import type { ModerationStatus, Video } from "@/lib/types";
+import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type AdminVideo = Video & {
@@ -21,6 +23,7 @@ const STATUS_FILTERS: Array<ModerationStatus | "all"> = [
 ];
 
 export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: string }) {
+  const { user } = useAuth();
   const { t } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [videos, setVideos] = useState<AdminVideo[]>([]);
@@ -90,10 +93,12 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
     moderationStatus: ModerationStatus,
     rejectionReason?: string,
   ) {
-    if (!supabase) return;
+    if (!supabase || !user) return;
 
     setMessage(null);
     setError(null);
+
+    const previousStatus = videos.find((video) => video.id === videoId)?.moderation_status ?? null;
 
     const { error: updateError } = await supabase
       .from("videos")
@@ -108,13 +113,27 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
       return;
     }
 
+    await logModerationAction(supabase, {
+      videoId,
+      staffId: user.id,
+      action: moderationActionFromStatus(moderationStatus),
+      previousStatus,
+      newStatus: moderationStatus,
+      notes: rejectionReason ?? null,
+    });
+
     setMessage(t.admin.saved);
     await loadVideos();
   }
 
   async function deleteVideo(videoId: string) {
-    if (!supabase) return;
+    if (!supabase || !user) return;
     if (!window.confirm(t.admin.confirmDeleteVideo)) return;
+
+    setMessage(null);
+    setError(null);
+
+    const video = videos.find((entry) => entry.id === videoId);
 
     const { error: deleteError } = await supabase.from("videos").delete().eq("id", videoId);
 
@@ -122,6 +141,15 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
       setError(deleteError.message);
       return;
     }
+
+    await logModerationAction(supabase, {
+      videoId,
+      staffId: user.id,
+      action: "delete",
+      previousStatus: video?.moderation_status ?? null,
+      newStatus: null,
+      notes: video?.title ?? null,
+    });
 
     setMessage(t.admin.deleted);
     await loadVideos();

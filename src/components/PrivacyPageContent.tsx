@@ -1,12 +1,12 @@
 "use client";
 
 import { LegalDocument } from "@/components/LegalDocument";
-import { getDmcaCopy } from "@/lib/legalCopy";
+import { getPrivacyCopy } from "@/lib/legalCopy";
 import { useLocale } from "@/providers/LocaleProvider";
 
-export function DmcaPageContent() {
+export function PrivacyPageContent() {
   const { locale } = useLocale();
-  const copy = getDmcaCopy(locale);
+  const copy = getPrivacyCopy(locale);
 
   return (
     <LegalDocument

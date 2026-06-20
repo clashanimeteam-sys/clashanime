@@ -71,6 +71,27 @@ export function AuthPage({ mode }: { mode: "login" | "signup" }) {
             </p>
           )}
 
+          {!isLogin && (
+            <p className="mt-6 text-center text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+              {t.auth.signupLegalBefore}{" "}
+              <Link href="/terms" className="font-medium text-black hover:underline dark:text-white">
+                {t.footer.terms}
+              </Link>
+              ,{" "}
+              <Link href="/privacy" className="font-medium text-black hover:underline dark:text-white">
+                {t.footer.privacy}
+              </Link>{" "}
+              {t.auth.signupLegalAnd}{" "}
+              <Link
+                href="/community-guidelines"
+                className="font-medium text-black hover:underline dark:text-white"
+              >
+                {t.footer.communityGuidelines}
+              </Link>
+              .
+            </p>
+          )}
+
           <p className="mt-8 text-center text-sm text-zinc-600 dark:text-zinc-400">
             {isLogin ? t.auth.noAccount : t.auth.hasAccount}{" "}
             <Link href={isLogin ? "/signup" : "/login"} className="font-medium text-black hover:underline dark:text-white">

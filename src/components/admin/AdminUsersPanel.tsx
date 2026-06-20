@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { canManageUsers, type UserRole } from "@/lib/admin";
+import { logModerationAction } from "@/lib/moderationLog";
 import { createBrowserClient } from "@/lib/supabase/client";
 import type { Profile } from "@/lib/types";
 import { useAuth } from "@/providers/AuthProvider";
@@ -13,7 +14,7 @@ type UserRow = Profile & {
 };
 
 export function AdminUsersPanel() {
-  const { profile: currentProfile } = useAuth();
+  const { user, profile: currentProfile } = useAuth();
   const { t } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [users, setUsers] = useState<UserRow[]>([]);
@@ -72,16 +73,36 @@ export function AdminUsersPanel() {
     userId: string,
     patch: Partial<Pick<Profile, "role" | "is_banned" | "is_verified">>,
   ) {
-    if (!supabase || !canManage) return;
+    if (!supabase || !canManage || !user) return;
 
     setMessage(null);
     setError(null);
+
+    const targetUser = users.find((entry) => entry.id === userId);
 
     const { error: updateError } = await supabase.from("profiles").update(patch).eq("id", userId);
 
     if (updateError) {
       setError(updateError.message);
       return;
+    }
+
+    if (patch.is_verified !== undefined) {
+      await logModerationAction(supabase, {
+        targetUserId: userId,
+        staffId: user.id,
+        action: patch.is_verified ? "verify_channel" : "unverify_channel",
+        notes: targetUser ? `@${targetUser.username}` : null,
+      });
+    }
+
+    if (patch.is_banned !== undefined) {
+      await logModerationAction(supabase, {
+        targetUserId: userId,
+        staffId: user.id,
+        action: patch.is_banned ? "ban_user" : "unban_user",
+        notes: targetUser ? `@${targetUser.username}` : null,
+      });
     }
 
     setMessage(t.admin.saved);

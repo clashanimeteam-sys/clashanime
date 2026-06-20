@@ -72,7 +72,9 @@ export type Dictionary = {
   };
   footer: {
     tagline: string;
+    privacy: string;
     terms: string;
+    communityGuidelines: string;
     dmca: string;
     reportContent: string;
   };
@@ -138,6 +140,8 @@ export type Dictionary = {
     callbackError: string;
     configError: string;
     signupsDisabled: string;
+    signupLegalBefore: string;
+    signupLegalAnd: string;
   };
   profile: {
     loading: string;
@@ -271,11 +275,25 @@ export type Dictionary = {
     reviewNewCreatorsDesc: string;
     rejectSuspiciousUploads: string;
     rejectSuspiciousUploadsDesc: string;
+    moderationLogTitle: string;
+    moderationLogSubtitle: string;
+    noModerationLog: string;
+    moderationActions: {
+      approve: string;
+      reject: string;
+      review: string;
+      delete: string;
+      verify_channel: string;
+      unverify_channel: string;
+      ban_user: string;
+      unban_user: string;
+    };
     nav: {
       dashboard: string;
       users: string;
       videos: string;
       reports: string;
+      moderationLog: string;
       settings: string;
     };
     roles: {
@@ -307,6 +325,12 @@ export type Dictionary = {
       status: string;
       actions: string;
       views: string;
+      time: string;
+      action: string;
+      staff: string;
+      video: string;
+      target: string;
+      statusChange: string;
     };
     reportStatus: {
       open: string;
@@ -390,7 +414,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     footer: {
       tagline: "Anime duels ranked by real-time community engagement.",
+      privacy: "Privacy Policy",
       terms: "Terms of Use",
+      communityGuidelines: "Community Guidelines",
       dmca: "DMCA",
       reportContent: "Report Content",
     },
@@ -459,6 +485,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       callbackError: "Authentication failed. Please try again.",
       configError: "Auth is not configured yet.",
       signupsDisabled: "New sign-ups are currently disabled.",
+      signupLegalBefore: "By creating an account, you agree to our",
+      signupLegalAnd: "and",
     },
     profile: {
       loading: "Loading your channel...",
@@ -599,11 +627,25 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reviewNewCreatorsDesc: "Hold first uploads from new accounts for manual review.",
       rejectSuspiciousUploads: "Reject suspicious uploads",
       rejectSuspiciousUploadsDesc: "Block likely re-uploads from YouTube and other platforms.",
+      moderationLogTitle: "Moderation log",
+      moderationLogSubtitle: "Audit trail of staff approve, reject, delete, verify, and ban actions.",
+      noModerationLog: "No moderation actions recorded yet.",
+      moderationActions: {
+        approve: "Approved",
+        reject: "Rejected",
+        review: "Sent to review",
+        delete: "Deleted",
+        verify_channel: "Verified channel",
+        unverify_channel: "Removed verification",
+        ban_user: "Banned user",
+        unban_user: "Unbanned user",
+      },
       nav: {
         dashboard: "Dashboard",
         users: "Subscribers",
         videos: "Videos",
         reports: "Reports",
+        moderationLog: "Moderation log",
         settings: "Settings",
       },
       roles: {
@@ -635,6 +677,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
         status: "Status",
         actions: "Actions",
         views: "Views",
+        time: "Time",
+        action: "Action",
+        staff: "Staff",
+        video: "Video",
+        target: "Target",
+        statusChange: "Status change",
       },
       reportStatus: {
         open: "Open",
@@ -716,7 +764,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     footer: {
       tagline: "リアルタイムのコミュニティ参加でランク付けされるアニメデュエル。",
+      privacy: "プライバシーポリシー",
       terms: "利用規約",
+      communityGuidelines: "コミュニティガイドライン",
       dmca: "DMCA",
       reportContent: "コンテンツを報告",
     },
@@ -783,6 +833,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       callbackError: "認証に失敗しました。もう一度お試しください。",
       configError: "認証がまだ設定されていません。",
       signupsDisabled: "現在、新規登録は停止されています。",
+      signupLegalBefore: "アカウント作成により、次に同意したものとみなされます：",
+      signupLegalAnd: "および",
     },
     profile: {
       loading: "チャンネルを読み込み中...",
@@ -923,11 +975,25 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reviewNewCreatorsDesc: "新規アカウントの最初の投稿を手動審査に回します。",
       rejectSuspiciousUploads: "疑わしいアップロードを拒否",
       rejectSuspiciousUploadsDesc: "YouTubeなどからの再アップロードをブロックします。",
+      moderationLogTitle: "モデレーションログ",
+      moderationLogSubtitle: "承認・拒否・削除・認証・停止の監査記録。",
+      noModerationLog: "まだ記録がありません。",
+      moderationActions: {
+        approve: "承認",
+        reject: "拒否",
+        review: "審査待ちへ",
+        delete: "削除",
+        verify_channel: "チャンネル認証",
+        unverify_channel: "認証解除",
+        ban_user: "ユーザー停止",
+        unban_user: "停止解除",
+      },
       nav: {
         dashboard: "ダッシュボード",
         users: "登録者",
         videos: "動画",
         reports: "報告",
+        moderationLog: "モデレーションログ",
         settings: "設定",
       },
       roles: {
@@ -959,6 +1025,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
         status: "状態",
         actions: "操作",
         views: "視聴",
+        time: "日時",
+        action: "操作内容",
+        staff: "担当",
+        video: "動画",
+        target: "対象",
+        statusChange: "状態変更",
       },
       reportStatus: {
         open: "未処理",
@@ -1040,7 +1112,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     footer: {
       tagline: "نزالات أنمي مُرتَّبة حسب تفاعل المجتمع في الوقت الفعلي.",
+      privacy: "سياسة الخصوصية",
       terms: "شروط الاستخدام",
+      communityGuidelines: "إرشادات المجتمع",
       dmca: "DMCA",
       reportContent: "الإبلاغ عن محتوى",
     },
@@ -1108,6 +1182,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       callbackError: "فشلت المصادقة. حاول مرة أخرى.",
       configError: "المصادقة غير مُعدّة بعد.",
       signupsDisabled: "التسجيلات الجديدة متوقفة حالياً.",
+      signupLegalBefore: "بإنشاء حساب، فإنك توافق على",
+      signupLegalAnd: "و",
     },
     profile: {
       loading: "جارٍ تحميل قناتك...",
@@ -1248,11 +1324,25 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reviewNewCreatorsDesc: "إبقاء أول رفع لكل حساب جديد قيد المراجعة.",
       rejectSuspiciousUploads: "رفض الرفعات المشبوهة",
       rejectSuspiciousUploadsDesc: "حظر إعادة رفع المحتوى من YouTube ومنصات أخرى.",
+      moderationLogTitle: "سجل المراجعة",
+      moderationLogSubtitle: "سجل قرارات الموافقة والرفض والحذف والتوثيق والحظر.",
+      noModerationLog: "لا توجد قرارات مسجّلة بعد.",
+      moderationActions: {
+        approve: "موافقة",
+        reject: "رفض",
+        review: "إرسال للمراجعة",
+        delete: "حذف",
+        verify_channel: "توثيق القناة",
+        unverify_channel: "إلغاء التوثيق",
+        ban_user: "حظر مستخدم",
+        unban_user: "إلغاء الحظر",
+      },
       nav: {
         dashboard: "لوحة المعلومات",
         users: "المشتركون",
         videos: "الفيديوهات",
         reports: "البلاغات",
+        moderationLog: "سجل المراجعة",
         settings: "الإعدادات",
       },
       roles: {
@@ -1284,6 +1374,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
         status: "الحالة",
         actions: "إجراءات",
         views: "المشاهدات",
+        time: "الوقت",
+        action: "الإجراء",
+        staff: "الموظف",
+        video: "الفيديو",
+        target: "الهدف",
+        statusChange: "تغيير الحالة",
       },
       reportStatus: {
         open: "مفتوح",

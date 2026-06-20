@@ -16,9 +16,15 @@ export function Footer() {
           <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">{t.footer.tagline}</p>
         </div>
 
-        <nav className="flex flex-wrap gap-4 text-xs text-zinc-600 dark:text-zinc-400">
+        <nav className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-zinc-600 dark:text-zinc-400">
+          <Link href="/privacy" className="transition-colors hover:text-accent">
+            {t.footer.privacy}
+          </Link>
           <Link href="/terms" className="transition-colors hover:text-accent">
             {t.footer.terms}
+          </Link>
+          <Link href="/community-guidelines" className="transition-colors hover:text-accent">
+            {t.footer.communityGuidelines}
           </Link>
           <Link href="/dmca" className="transition-colors hover:text-accent">
             {t.footer.dmca}

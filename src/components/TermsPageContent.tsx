@@ -9,6 +9,11 @@ export function TermsPageContent() {
   const copy = getTermsCopy(locale);
 
   return (
-    <LegalDocument title={copy.title} updated={copy.updated} sections={copy.sections} />
+    <LegalDocument
+      title={copy.title}
+      updated={copy.updated}
+      intro={copy.intro}
+      sections={copy.sections}
+    />
   );
 }
