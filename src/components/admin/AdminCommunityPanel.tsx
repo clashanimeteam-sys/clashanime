@@ -131,7 +131,7 @@ export function AdminCommunityPanel() {
 
               <div className="flex flex-wrap gap-2 lg:flex-col lg:items-stretch">
                 <Link
-                  href={`/community#post-${post.id}`}
+                  href={`/community/post/${post.id}`}
                   className="rounded-lg border border-zinc-700 px-3 py-2 text-center text-xs font-semibold text-zinc-200 hover:border-zinc-500"
                 >
                   {t.admin.preview}

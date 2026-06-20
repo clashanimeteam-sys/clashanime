@@ -286,6 +286,9 @@ export type Dictionary = {
     loginToReport: string;
     loginToComment: string;
     commentsTitle: string;
+    commentsCountLabel: string;
+    backToCommunity: string;
+    postNotFound: string;
     loadingComments: string;
     noComments: string;
     commentPlaceholder: string;
@@ -779,6 +782,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       loginToReport: "to report posts.",
       loginToComment: "Sign in to comment on community posts.",
       commentsTitle: "Comments",
+      commentsCountLabel: "comments",
+      backToCommunity: "Back to Community",
+      postNotFound: "This post is no longer available.",
       loadingComments: "Loading comments...",
       noComments: "No comments yet. Be the first.",
       commentPlaceholder: "Write a comment...",
@@ -1274,6 +1280,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       loginToReport: "で投稿を報告。",
       loginToComment: "コメントするにはサインインしてください。",
       commentsTitle: "コメント",
+      commentsCountLabel: "件のコメント",
+      backToCommunity: "コミュニティに戻る",
+      postNotFound: "この投稿は利用できません。",
       loadingComments: "コメントを読み込み中...",
       noComments: "まだコメントはありません。",
       commentPlaceholder: "コメントを書く...",
@@ -1771,6 +1780,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       loginToReport: "للإبلاغ عن المنشورات.",
       loginToComment: "سجّل الدخول للتعليق على منشورات المجتمع.",
       commentsTitle: "التعليقات",
+      commentsCountLabel: "تعليق",
+      backToCommunity: "العودة إلى المجتمع",
+      postNotFound: "هذا المنشور لم يعد متاحاً.",
       loadingComments: "جارٍ تحميل التعليقات...",
       noComments: "لا توجد تعليقات بعد.",
       commentPlaceholder: "اكتب تعليقاً...",

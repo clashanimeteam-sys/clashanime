@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { CommunityPostActions } from "@/components/CommunityPostActions";
-import { CommunityPostCommentsModal } from "@/components/CommunityPostCommentsModal";
 import { CommunityReportModal } from "@/components/CommunityReportModal";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
@@ -45,6 +45,7 @@ function getInitials(name: string) {
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 
 export function CommunityPageContent() {
+  const router = useRouter();
   const { user } = useAuth();
   const { t } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
@@ -59,7 +60,6 @@ export function CommunityPageContent() {
   const [posting, setPosting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
-  const [activeCommentsPostId, setActiveCommentsPostId] = useState<string | null>(null);
   const [activeReportPost, setActiveReportPost] = useState<CommunityPost | null>(null);
 
   const loadPosts = useCallback(async () => {
@@ -134,10 +134,8 @@ export function CommunityPageContent() {
     const hash = window.location.hash;
     if (!hash.startsWith("#post-")) return;
     const id = hash.replace("#post-", "");
-    window.setTimeout(() => {
-      document.getElementById(`post-${id}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 300);
-  }, [posts]);
+    router.replace(`/community/post/${id}`);
+  }, [router]);
 
   function handleImageSelect(file: File | null) {
     setImageFile(null);
@@ -410,7 +408,6 @@ export function CommunityPageContent() {
                         initialDislikes={post.dislikes_count}
                         initialComments={post.comments_count}
                         initialShares={post.shares_count}
-                        onCommentsOpen={() => setActiveCommentsPostId(post.id)}
                         onReportOpen={() => setActiveReportPost(post)}
                         onCountsChange={(counts) => updatePostCounts(post.id, counts)}
                       />
@@ -422,19 +419,6 @@ export function CommunityPageContent() {
           })}
         </div>
       )}
-
-      <CommunityPostCommentsModal
-        open={Boolean(activeCommentsPostId)}
-        onClose={() => setActiveCommentsPostId(null)}
-        postId={activeCommentsPostId ?? ""}
-        onCommentsCountChange={(count) => {
-          if (!activeCommentsPostId) return;
-          updatePostCounts(activeCommentsPostId, {
-            ...posts.find((post) => post.id === activeCommentsPostId)!,
-            comments_count: count,
-          });
-        }}
-      />
 
       <CommunityReportModal
         open={Boolean(activeReportPost)}

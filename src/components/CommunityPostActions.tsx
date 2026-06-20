@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import {
   fetchCommunityReaction,
@@ -19,7 +20,7 @@ type CommunityPostActionsProps = {
   initialDislikes: number;
   initialComments: number;
   initialShares: number;
-  onCommentsOpen: () => void;
+  commentsMode?: "navigate" | "page";
   onReportOpen: () => void;
   onCountsChange?: (counts: {
     likes_count: number;
@@ -40,7 +41,7 @@ export function CommunityPostActions({
   initialDislikes,
   initialComments,
   initialShares,
-  onCommentsOpen,
+  commentsMode = "navigate",
   onReportOpen,
   onCountsChange,
 }: CommunityPostActionsProps) {
@@ -58,6 +59,7 @@ export function CommunityPostActions({
   const [shareStatus, setShareStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const commentsHref = `/community/post/${postId}`;
   const buttonClass =
     "inline-flex items-center gap-1.5 rounded-full border border-zinc-300 px-3 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:border-accent/40 hover:text-accent dark:border-zinc-700 dark:text-zinc-200";
 
@@ -114,8 +116,8 @@ export function CommunityPostActions({
 
     const url =
       typeof window !== "undefined"
-        ? `${window.location.origin}/community#post-${postId}`
-        : `https://www.clashanime.com/community#post-${postId}`;
+        ? `${window.location.origin}${commentsHref}`
+        : `https://www.clashanime.com${commentsHref}`;
 
     let shared = false;
 
@@ -148,9 +150,16 @@ export function CommunityPostActions({
     window.setTimeout(() => setShareStatus(null), 2000);
   }
 
-  function handleComments() {
-    if (!requireSubscription()) return;
-    onCommentsOpen();
+  function handleCommentsClick(event: React.MouseEvent) {
+    if (commentsMode === "page") {
+      event.preventDefault();
+      document.getElementById("comments")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    if (!requireSubscription(commentsHref)) {
+      event.preventDefault();
+    }
   }
 
   function handleReport() {
@@ -181,9 +190,15 @@ export function CommunityPostActions({
           👎 {formatCount(dislikesCount)}
         </button>
 
-        <button type="button" onClick={handleComments} className={buttonClass}>
-          💬 {formatCount(commentsCount)}
-        </button>
+        {commentsMode === "page" ? (
+          <a href="#comments" onClick={handleCommentsClick} className={buttonClass}>
+            💬 {formatCount(commentsCount)}
+          </a>
+        ) : (
+          <Link href={commentsHref} onClick={handleCommentsClick} className={buttonClass}>
+            💬 {formatCount(commentsCount)}
+          </Link>
+        )}
 
         <button type="button" onClick={handleShare} className={buttonClass}>
           ↗ {formatCount(sharesCount)}

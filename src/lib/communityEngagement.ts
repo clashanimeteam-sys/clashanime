@@ -20,6 +20,61 @@ export type CommunityComment = {
   is_verified?: boolean;
 };
 
+export type CommunityPostDetail = {
+  id: string;
+  body: string | null;
+  image_url: string | null;
+  created_at: string;
+  user_id: string;
+  likes_count: number;
+  dislikes_count: number;
+  comments_count: number;
+  shares_count: number;
+  username: string;
+  display_name: string | null;
+  avatar_url: string | null;
+  is_verified?: boolean;
+  level?: number;
+  points?: number;
+};
+
+export async function fetchCommunityPost(
+  supabase: SupabaseClient,
+  postId: string,
+): Promise<CommunityPostDetail | null> {
+  const { data, error } = await supabase
+    .from("community_posts")
+    .select(
+      "id, body, image_url, created_at, user_id, likes_count, dislikes_count, comments_count, shares_count",
+    )
+    .eq("id", postId)
+    .maybeSingle();
+
+  if (error || !data) return null;
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("username, display_name, avatar_url, is_verified, level, points")
+    .eq("id", data.user_id)
+    .maybeSingle();
+
+  return {
+    ...data,
+    body: data.body ?? null,
+    image_url: data.image_url ?? null,
+    likes_count: data.likes_count ?? 0,
+    dislikes_count: data.dislikes_count ?? 0,
+    comments_count: data.comments_count ?? 0,
+    shares_count: data.shares_count ?? 0,
+    username: profile?.username ?? "user",
+    display_name: profile?.display_name ?? null,
+    avatar_url: profile?.avatar_url ?? null,
+    is_verified: profile?.is_verified,
+    level: profile?.level,
+    points: profile?.points,
+  };
+}
+
 export async function fetchCommunityPostCounts(
   supabase: SupabaseClient,
   postId: string,
