@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
 import { computeContentFingerprints } from "@/lib/contentFingerprint";
+import { analyzeContentAuthenticity } from "@/lib/contentHeuristics";
 import {
   getScanRejectionMessage,
   type ScanUploadResult,
@@ -84,9 +85,13 @@ export function UploadVideoForm() {
     setSuccessMessage(null);
 
     let fingerprints;
+    let suspicion;
 
     try {
-      fingerprints = await computeContentFingerprints(videoFile, thumbnailFile);
+      [fingerprints, suspicion] = await Promise.all([
+        computeContentFingerprints(videoFile, thumbnailFile),
+        analyzeContentAuthenticity(videoFile),
+      ]);
     } catch {
       setLoading(false);
       setScanning(false);
@@ -99,6 +104,8 @@ export function UploadVideoForm() {
       p_perceptual_hash: fingerprints.perceptualHash,
       p_thumb_hash: fingerprints.thumbHash,
       p_user_id: user.id,
+      p_suspicion_score: suspicion.score,
+      p_suspicion_flags: suspicion.flags,
     });
 
     setScanning(false);
@@ -165,6 +172,8 @@ export function UploadVideoForm() {
       perceptual_hash: fingerprints.perceptualHash,
       thumb_hash: fingerprints.thumbHash,
       scanned_at: new Date().toISOString(),
+      suspicion_score: suspicion.score,
+      suspicion_flags: suspicion.flags,
     });
 
     setLoading(false);

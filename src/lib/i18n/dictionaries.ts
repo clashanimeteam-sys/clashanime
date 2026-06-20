@@ -155,6 +155,8 @@ export type Dictionary = {
     duplicateFile: string;
     duplicateThumbnail: string;
     duplicateVisual: string;
+    likelyReupload: string;
+    suspiciousContent: string;
     missingFingerprint: string;
     authRequired: string;
     rejectedGeneric: string;
@@ -328,6 +330,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "This cover image matches another upload. Use an original thumbnail.",
       duplicateVisual:
         "This clip looks like a duplicate of existing content. Upload your own original edit.",
+      likelyReupload:
+        "This clip looks like downloaded content from YouTube or another platform. Only original edits you created are allowed.",
+      suspiciousContent:
+        "This upload needs manual review before it can appear publicly.",
       missingFingerprint: "Could not fingerprint this file. Try re-exporting the video.",
       authRequired: "Sign in to upload videos.",
       rejectedGeneric: "This upload was blocked by content protection.",
@@ -499,6 +505,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "このカバー画像は別の投稿と一致します。オリジナルのサムネイルを使用してください。",
       duplicateVisual:
         "このクリップは既存コンテンツの重複の可能性があります。自分のオリジナル編集をアップロードしてください。",
+      likelyReupload:
+        "YouTubeなど他プラットフォームからダウンロードした動画の可能性があります。自分で作成したオリジナルのみ投稿できます。",
+      suspiciousContent:
+        "このアップロードは公開前に手動審査が必要です。",
       missingFingerprint: "ファイルの指紋を取得できませんでした。動画を再書き出ししてください。",
       authRequired: "動画をアップロードするにはログインしてください。",
       rejectedGeneric: "コンテンツ保護によりこのアップロードはブロックされました。",
@@ -670,6 +680,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "صورة الغلاف مطابقة لرفع آخر. استخدم صورة غلاف أصلية.",
       duplicateVisual:
         "يبدو هذا المقطع نسخة مكررة من محتوى موجود. ارفع montage أصلياً خاصاً بك.",
+      likelyReupload:
+        "يبدو هذا المقطع محمّلاً من YouTube أو منصة أخرى. يُسمح فقط بالمحتوى الأصلي الذي أنشأته بنفسك.",
+      suspiciousContent:
+        "هذا الرفع يحتاج مراجعة يدوية قبل أن يظهر للعامة.",
       missingFingerprint: "تعذر إنشاء بصمة للملف. أعد تصدير الفيديو.",
       authRequired: "سجّل الدخول لرفع الفيديوهات.",
       rejectedGeneric: "تم حظر هذا الرفع بواسطة حماية المحتوى.",

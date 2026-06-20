@@ -19,6 +19,10 @@ export function getScanRejectionMessage(
       return moderation.duplicateThumbnail;
     case "duplicate_visual":
       return moderation.duplicateVisual;
+    case "likely_reupload":
+      return moderation.likelyReupload;
+    case "suspicious_content":
+      return moderation.suspiciousContent;
     case "missing_fingerprint":
       return moderation.missingFingerprint;
     case "auth_required":
