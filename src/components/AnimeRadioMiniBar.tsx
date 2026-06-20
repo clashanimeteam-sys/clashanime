@@ -41,52 +41,52 @@ export function AnimeRadioMiniBar() {
   const displayArt = nowPlaying?.artworkUrl ?? station.coverImage;
 
   return (
-    <div
-      data-radio-controls
-      onPointerDown={(event) => event.stopPropagation()}
-      className="fixed bottom-0 z-40 start-0 end-0 md:start-56 lg:start-60"
-    >
+    <div className="pointer-events-none fixed inset-x-0 bottom-3 z-40 flex justify-center px-3 sm:bottom-4 md:start-56 md:end-3 lg:start-60 lg:end-4">
       <div
-        className="relative overflow-hidden border-t border-white/10 bg-zinc-950/95 shadow-[0_-6px_24px_rgba(0,0,0,0.35)] backdrop-blur-xl"
+        data-radio-controls
+        onPointerDown={(event) => event.stopPropagation()}
+        className={`pointer-events-auto relative w-full max-w-lg overflow-hidden rounded-full border border-white/15 bg-zinc-950/92 shadow-[0_10px_40px_rgba(0,0,0,0.45),0_0_0_1px_rgba(255,255,255,0.04)_inset] backdrop-blur-xl sm:max-w-2xl ${
+          isPlaying ? "shadow-accent/15 ring-1 ring-accent/25" : ""
+        }`}
         style={{
-          backgroundImage: `linear-gradient(90deg, ${station.accentFrom}18, transparent 40%, ${station.accentTo}12)`,
+          backgroundImage: `linear-gradient(90deg, ${station.accentFrom}20, rgba(9,9,11,0.95) 35%, ${station.accentTo}14)`,
         }}
       >
         {isPlaying ? (
           <div
-            className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent"
+            className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-accent/80 to-transparent"
             aria-hidden
           />
         ) : null}
 
-        <div className="relative mx-auto flex max-w-7xl items-center gap-2 px-2 py-1.5 sm:gap-3 sm:px-4 sm:py-2">
-          <div className="hidden shrink-0 sm:flex">
+        <div className="relative flex items-center gap-2 px-2.5 py-2 sm:gap-3 sm:px-4 sm:py-2.5">
+          <div className="hidden shrink-0 ps-0.5 sm:flex">
             <AnimeRadioVisualizer active={isPlaying} mini />
           </div>
 
-          <div className="relative h-8 w-8 shrink-0 sm:h-9 sm:w-9">
+          <div className="relative h-9 w-9 shrink-0 sm:h-10 sm:w-10">
             <div
-              className={`absolute inset-0 rounded-lg ${isPlaying ? "animate-[radio-glow_2.2s_ease-in-out_infinite]" : "opacity-40"}`}
+              className={`absolute inset-0 rounded-full ${isPlaying ? "animate-[radio-glow_2.2s_ease-in-out_infinite]" : "opacity-40"}`}
               style={{
                 background: `linear-gradient(135deg, ${station.accentFrom}88, ${station.accentTo}66)`,
               }}
             />
-            <div className="absolute inset-0.5 overflow-hidden rounded-md border border-white/20 relative">
+            <div className="absolute inset-0.5 overflow-hidden rounded-full border border-white/25 relative">
               <Image
                 src={displayArt}
                 alt=""
                 fill
                 className="object-cover"
-                sizes="36px"
+                sizes="40px"
                 unoptimized
               />
             </div>
           </div>
 
-          <div className="min-w-0 flex-1">
+          <div className="min-w-0 flex-1 pe-1">
             <div className="flex items-center gap-1.5">
               {isPlaying ? (
-                <span className="h-1 w-1 shrink-0 animate-[live-dot_1.2s_ease-in-out_infinite] rounded-full bg-accent" />
+                <span className="h-1.5 w-1.5 shrink-0 animate-[live-dot_1.2s_ease-in-out_infinite] rounded-full bg-accent shadow-[0_0_6px_rgba(249,115,22,0.8)]" />
               ) : null}
               <p className="truncate text-xs font-semibold text-white sm:text-sm">{title}</p>
             </div>
@@ -98,7 +98,7 @@ export function AnimeRadioMiniBar() {
               type="button"
               onClick={() => void togglePlay()}
               disabled={isLoading}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-accent text-white shadow-md shadow-accent/25 transition-transform hover:scale-105 active:scale-95 disabled:opacity-60 sm:h-9 sm:w-9"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-accent text-white shadow-lg shadow-accent/30 transition-transform hover:scale-105 active:scale-95 disabled:opacity-60"
               aria-label={isPlaying ? t.radio.pause : t.radio.play}
             >
               {isPlaying ? (
@@ -116,7 +116,7 @@ export function AnimeRadioMiniBar() {
             <button
               type="button"
               onClick={toggleMute}
-              className="hidden rounded-full border border-white/15 bg-white/5 px-2 py-1 text-[10px] font-medium text-white backdrop-blur-sm transition-colors hover:border-accent hover:text-accent sm:inline-flex"
+              className="hidden rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-[10px] font-medium text-white backdrop-blur-sm transition-colors hover:border-accent hover:text-accent md:inline-flex"
             >
               {muted ? t.radio.unmute : t.radio.mute}
             </button>
@@ -129,13 +129,13 @@ export function AnimeRadioMiniBar() {
               value={muted ? 0 : volume}
               onChange={(event) => setVolume(Number(event.target.value))}
               onInput={(event) => setVolume(Number(event.currentTarget.value))}
-              className="relative z-10 h-2 w-14 cursor-pointer accent-accent sm:w-20 md:w-24"
+              className="relative z-10 h-1.5 w-12 cursor-pointer accent-accent sm:w-16 md:w-20"
               aria-label={t.radio.volume}
             />
 
             <Link
               href="/music"
-              className="hidden shrink-0 rounded-full border border-accent/30 bg-accent/10 p-1.5 text-accent transition-colors hover:bg-accent/20 md:inline-flex"
+              className="hidden shrink-0 rounded-full border border-accent/30 bg-accent/10 p-2 text-accent transition-colors hover:bg-accent/20 lg:inline-flex"
               aria-label={t.radio.openFullPlayer}
               title={t.radio.openFullPlayer}
             >

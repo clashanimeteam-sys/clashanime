@@ -28,7 +28,7 @@ export function AppShell({ children }: AppShellProps) {
           <AuthTopBar />
           <main
             className={`flex-1 bg-white dark:bg-black ${isVideoPage ? "overflow-hidden" : ""} ${
-              reserveMiniBarSpace ? "pb-14 sm:pb-16" : ""
+              reserveMiniBarSpace ? "pb-20 sm:pb-24" : ""
             }`}
           >
             {children}
