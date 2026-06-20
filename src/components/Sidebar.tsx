@@ -68,7 +68,7 @@ export function Sidebar() {
   const { locale, setLocale, t } = useLocale();
 
   return (
-    <aside className="sticky top-0 flex min-h-screen w-56 shrink-0 flex-col border-e border-border bg-sidebar lg:w-60">
+    <aside className="sticky top-0 flex min-h-screen w-56 shrink-0 flex-col border-e border-border bg-white dark:bg-black lg:w-60">
       <div className="border-b border-border p-4">
         <Link href="/" className="flex justify-center">
           <BrandLogo priority />
@@ -92,7 +92,7 @@ export function Sidebar() {
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 active
                   ? "bg-accent/15 text-accent"
-                  : "text-muted hover:bg-background hover:text-foreground"
+                  : "text-muted hover:bg-white hover:text-foreground dark:hover:bg-black"
               }`}
             >
               <NavIcon icon={item.icon} />
@@ -108,7 +108,7 @@ export function Sidebar() {
           className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
             pathname === "/settings"
               ? "bg-accent/15 text-accent"
-              : "text-muted hover:bg-background hover:text-foreground"
+              : "text-muted hover:bg-white hover:text-foreground dark:hover:bg-black"
           }`}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
@@ -120,7 +120,7 @@ export function Sidebar() {
 
         <div className="flex items-center justify-between gap-2">
           <div
-            className="flex items-center rounded-lg border border-border bg-background p-0.5"
+            className="flex items-center rounded-lg border border-border bg-white p-0.5 dark:bg-black"
             role="group"
             aria-label={t.locale.label}
           >
