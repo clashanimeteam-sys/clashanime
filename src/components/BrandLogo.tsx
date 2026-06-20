@@ -35,7 +35,7 @@ export function BrandLogo({ className = "h-28 w-28", priority = false }: BrandLo
       priority={priority}
       className={`object-contain transition-[filter] duration-300 ${className} ${
         isDark
-          ? "drop-shadow-[0_0_20px_rgba(249,115,22,0.5)]"
+          ? "drop-shadow-[0_0_14px_rgba(179,27,27,0.35)]"
           : "drop-shadow-[0_4px_10px_rgba(0,0,0,0.12)]"
       }`}
     />
