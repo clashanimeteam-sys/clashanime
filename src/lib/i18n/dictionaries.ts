@@ -173,6 +173,8 @@ export type Dictionary = {
   admin: {
     panelTitle: string;
     loading: string;
+    accessDenied: string;
+    loginRequired: string;
     backToSite: string;
     dashboardTitle: string;
     dashboardSubtitle: string;
@@ -457,6 +459,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
     admin: {
       panelTitle: "Admin Panel",
       loading: "Loading admin panel...",
+      accessDenied: "You do not have permission to access the admin panel.",
+      loginRequired: "Sign in with an admin account to continue.",
       backToSite: "Back to site",
       dashboardTitle: "Dashboard",
       dashboardSubtitle: "Overview of users, videos, moderation, and reports.",
@@ -739,6 +743,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
     admin: {
       panelTitle: "管理パネル",
       loading: "管理パネルを読み込み中...",
+      accessDenied: "管理パネルへのアクセス権限がありません。",
+      loginRequired: "管理者アカウントでログインしてください。",
       backToSite: "サイトに戻る",
       dashboardTitle: "ダッシュボード",
       dashboardSubtitle: "ユーザー、動画、審査、報告の概要。",
@@ -1021,6 +1027,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
     admin: {
       panelTitle: "لوحة التحكم",
       loading: "جارٍ تحميل لوحة التحكم...",
+      accessDenied: "ليس لديك صلاحية للوصول إلى لوحة التحكم.",
+      loginRequired: "سجّل الدخول بحساب مدير للمتابعة.",
       backToSite: "العودة للموقع",
       dashboardTitle: "لوحة المعلومات",
       dashboardSubtitle: "نظرة عامة على المشتركين والفيديوهات والمراجعة والبلاغات.",

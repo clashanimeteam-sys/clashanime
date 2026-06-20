@@ -11,6 +11,7 @@ type OAuthAuthButtonProps = {
   provider: OAuthProvider;
   mode: "login" | "signup";
   disabled?: boolean;
+  redirectNext?: string;
   onError: (message: string) => void;
 };
 
@@ -61,7 +62,13 @@ function getProviderIcon(provider: OAuthProvider) {
   return <FacebookIcon />;
 }
 
-export function OAuthAuthButton({ provider, mode, disabled = false, onError }: OAuthAuthButtonProps) {
+export function OAuthAuthButton({
+  provider,
+  mode,
+  disabled = false,
+  redirectNext = "/profile",
+  onError,
+}: OAuthAuthButtonProps) {
   const { t } = useLocale();
   const [loading, setLoading] = useState(false);
 
@@ -75,7 +82,7 @@ export function OAuthAuthButton({ provider, mode, disabled = false, onError }: O
     setLoading(true);
     onError("");
 
-    const redirectTo = `${window.location.origin}/auth/callback?next=/profile`;
+    const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(redirectNext)}`;
 
     const options =
       provider === "google"

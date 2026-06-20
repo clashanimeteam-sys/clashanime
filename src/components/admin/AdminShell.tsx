@@ -27,19 +27,26 @@ type AdminShellProps = {
 export function AdminShell({ children }: AdminShellProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, profile, loading, signOut } = useAuth();
+  const { user, profile, loading, profileLoading, signOut } = useAuth();
   const { t } = useLocale();
 
-  const adminUser = isAdmin(profile);
+  const bootstrapping = loading || (Boolean(user) && profileLoading);
   const allowed = Boolean(user && isStaff(profile));
 
   useEffect(() => {
-    if (!loading && !allowed) {
-      router.replace("/");
-    }
-  }, [allowed, loading, router]);
+    if (bootstrapping) return;
 
-  if (loading) {
+    if (!user) {
+      router.replace(`/login?next=${encodeURIComponent(pathname || "/admin")}`);
+      return;
+    }
+
+    if (!isStaff(profile)) {
+      router.replace("/?admin_denied=1");
+    }
+  }, [bootstrapping, user, profile, router, pathname]);
+
+  if (bootstrapping) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-zinc-950 text-zinc-300">
         {t.admin.loading}
@@ -49,11 +56,19 @@ export function AdminShell({ children }: AdminShellProps) {
 
   if (!allowed) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-950 text-zinc-300">
-        {t.admin.loading}
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-zinc-950 px-4 text-center text-zinc-300">
+        <p className="max-w-md text-sm">{t.admin.accessDenied}</p>
+        <Link
+          href="/"
+          className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white"
+        >
+          {t.admin.backToSite}
+        </Link>
       </div>
     );
   }
+
+  const adminUser = isAdmin(profile);
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
@@ -111,7 +126,7 @@ export function AdminShell({ children }: AdminShellProps) {
         </aside>
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="flex items-center justify-between border-b border-zinc-800 bg-black px-4 py-4 sm:px-6">
+          <header className="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-800 bg-black px-4 py-4 sm:px-6">
             <div>
               <p className="text-xs uppercase tracking-[0.18em] text-zinc-500">{t.admin.panelTitle}</p>
               <p className="text-sm text-zinc-300">
@@ -119,9 +134,24 @@ export function AdminShell({ children }: AdminShellProps) {
                 {profile?.role === "admin" ? t.admin.roles.admin : t.admin.roles.moderator}
               </p>
             </div>
+
+            <nav className="flex flex-wrap gap-2 lg:hidden">
+              {navItems
+                .filter((item) => !item.adminOnly || adminUser)
+                .map((item) => (
+                  <Link
+                    key={item.key}
+                    href={item.href}
+                    className="rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-300"
+                  >
+                    {t.admin.nav[item.key]}
+                  </Link>
+                ))}
+            </nav>
+
             <Link
               href="/"
-              className="rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-300 hover:border-zinc-500 lg:hidden"
+              className="rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-300 hover:border-zinc-500"
             >
               {t.admin.backToSite}
             </Link>

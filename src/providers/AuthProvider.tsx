@@ -18,6 +18,7 @@ type AuthContextValue = {
   session: Session | null;
   profile: Profile | null;
   loading: boolean;
+  profileLoading: boolean;
   refreshProfile: () => Promise<void>;
   signOut: () => Promise<void>;
 };
@@ -33,12 +34,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(Boolean(supabase));
+  const [profileLoading, setProfileLoading] = useState(false);
 
   const refreshProfile = useCallback(async () => {
     if (!supabase || !session?.user) {
       setProfile(null);
+      setProfileLoading(false);
       return;
     }
+
+    setProfileLoading(true);
 
     const { data } = await supabase
       .from("profiles")
@@ -47,6 +52,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       .maybeSingle();
 
     setProfile(data);
+    setProfileLoading(false);
   }, [supabase, session?.user]);
 
   useEffect(() => {
@@ -96,10 +102,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
       session,
       profile,
       loading,
+      profileLoading,
       refreshProfile,
       signOut,
     }),
-    [session, profile, loading, refreshProfile, signOut],
+    [session, profile, loading, profileLoading, refreshProfile, signOut],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
