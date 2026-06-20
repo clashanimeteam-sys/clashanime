@@ -14,7 +14,8 @@ export type Dictionary = {
     settings: string;
   };
   home: {
-    title: string;
+    titlePrimary: string;
+    titleSecondary: string;
     subtitle: string;
     gridLabel: string;
     upload: string;
@@ -64,10 +65,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       settings: "Settings",
     },
     home: {
-      title: "Anime Duels",
+      titlePrimary: "Clash",
+      titleSecondary: " Anime",
       subtitle:
         "Videos rise to the top based on real-time likes and comments. The fastest-growing clips win the grid.",
-      gridLabel: "Anime duel grid",
+      gridLabel: "Clash Anime grid",
       upload: "Video Upload",
     },
     video: {
@@ -113,10 +115,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       settings: "設定",
     },
     home: {
-      title: "アニメデュエル",
+      titlePrimary: "Clash",
+      titleSecondary: " Anime",
       subtitle:
         "リアルタイムのいいねとコメントで動画が上位に上がります。最も伸びているクリップがグリッドの頂点を占めます。",
-      gridLabel: "アニメデュエルグリッド",
+      gridLabel: "Clash Animeグリッド",
       upload: "動画アップロード",
     },
     video: {
@@ -162,10 +165,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       settings: "الإعدادات",
     },
     home: {
-      title: "نزالات الأنمي",
+      titlePrimary: "Clash",
+      titleSecondary: " Anime",
       subtitle:
         "تصعد الفيديوهات إلى القمة بناءً على الإعجابات والتعليقات الفورية. المقاطع الأسرع نمواً تفوز بالشبكة.",
-      gridLabel: "شبكة نزالات الأنمي",
+      gridLabel: "شبكة Clash Anime",
       upload: "رفع فيديو",
     },
     video: {

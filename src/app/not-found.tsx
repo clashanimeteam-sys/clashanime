@@ -16,7 +16,7 @@ export default function NotFound() {
         href="/"
         className="mt-6 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
       >
-        Back to Anime Duels
+        Back to Clash Anime
       </Link>
     </div>
   );
