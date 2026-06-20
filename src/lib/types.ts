@@ -11,6 +11,12 @@ export type Profile = {
   updated_at: string;
 };
 
+export type VideoChannel = {
+  username: string;
+  display_name: string | null;
+  avatar_url: string | null;
+};
+
 export type Video = {
   id: string;
   title: string;
@@ -21,6 +27,7 @@ export type Video = {
   created_at: string;
   trending_score: number;
   user_id?: string | null;
+  channel?: VideoChannel | null;
   hashtags?: string[];
   duration_seconds?: number | null;
   description?: string;

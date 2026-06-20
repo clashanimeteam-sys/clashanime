@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { VideoCardActions } from "@/components/VideoCardActions";
+import { VideoCardChannel } from "@/components/VideoCardChannel";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Video } from "@/lib/types";
 
@@ -132,6 +133,8 @@ export function VideoCard({ video, rank }: VideoCardProps) {
           initialLikes={video.likes_count}
           commentsCount={video.comments_count}
         />
+
+        {video.channel ? <VideoCardChannel channel={video.channel} /> : null}
       </div>
     </article>
   );

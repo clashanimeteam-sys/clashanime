@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { FollowerCount } from "@/components/FollowButton";
 import { VideoCard } from "@/components/VideoCard";
+import { profileToVideoChannel } from "@/components/VideoCardChannel";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 import { getPublicStorageUrl } from "@/lib/upload";
@@ -110,6 +111,7 @@ export function ProfileContent() {
       (videoData ?? []).map((video) => ({
         ...video,
         trending_score: 0,
+        channel: profileToVideoChannel(profileData),
       })),
     );
     setLoading(false);

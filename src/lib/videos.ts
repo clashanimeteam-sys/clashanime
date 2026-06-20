@@ -1,5 +1,5 @@
 import { createServerClient } from "@/lib/supabase/server";
-import type { Video } from "@/lib/types";
+import type { Video, VideoChannel } from "@/lib/types";
 
 const MOCK_VIDEOS: Video[] = [
   {
@@ -80,6 +80,41 @@ function sortByTrending(videos: Video[]): Video[] {
     .sort((a, b) => b.trending_score - a.trending_score);
 }
 
+async function attachChannels(
+  supabase: NonNullable<Awaited<ReturnType<typeof createServerClient>>>,
+  videos: Array<Omit<Video, "trending_score" | "channel"> & { user_id?: string | null }>,
+): Promise<Video[]> {
+  const userIds = [
+    ...new Set(videos.map((video) => video.user_id).filter(Boolean)),
+  ] as string[];
+
+  let profileMap = new Map<string, VideoChannel>();
+
+  if (userIds.length > 0) {
+    const { data: profiles } = await supabase
+      .from("profiles")
+      .select("id, username, display_name, avatar_url")
+      .in("id", userIds);
+
+    profileMap = new Map(
+      (profiles ?? []).map((profile) => [
+        profile.id,
+        {
+          username: profile.username,
+          display_name: profile.display_name,
+          avatar_url: profile.avatar_url,
+        },
+      ]),
+    );
+  }
+
+  return videos.map((video) => ({
+    ...video,
+    trending_score: 0,
+    channel: video.user_id ? (profileMap.get(video.user_id) ?? null) : null,
+  }));
+}
+
 export async function getTrendingVideos(): Promise<Video[]> {
   const supabase = await createServerClient();
 
@@ -90,7 +125,7 @@ export async function getTrendingVideos(): Promise<Video[]> {
   const { data, error } = await supabase
     .from("videos")
     .select(
-      "id, title, thumbnail_url, video_url, likes_count, comments_count, created_at",
+      "id, title, thumbnail_url, video_url, likes_count, comments_count, created_at, user_id",
     )
     .order("likes_count", { ascending: false })
     .limit(24);
@@ -99,10 +134,6 @@ export async function getTrendingVideos(): Promise<Video[]> {
     return sortByTrending(MOCK_VIDEOS);
   }
 
-  return sortByTrending(
-    data.map((video) => ({
-      ...video,
-      trending_score: 0,
-    })),
-  );
+  const withChannels = await attachChannels(supabase, data);
+  return sortByTrending(withChannels);
 }

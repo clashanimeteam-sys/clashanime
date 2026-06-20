@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { FollowButton } from "@/components/FollowButton";
 import { VideoCard } from "@/components/VideoCard";
+import { profileToVideoChannel } from "@/components/VideoCardChannel";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -94,6 +95,7 @@ export function ChannelProfileContent({ username }: ChannelProfileContentProps) 
       (videoData ?? []).map((video) => ({
         ...video,
         trending_score: 0,
+        channel: profileToVideoChannel(profileData),
       })),
     );
     setLoading(false);
