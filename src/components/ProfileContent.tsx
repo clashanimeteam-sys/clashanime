@@ -69,8 +69,10 @@ export function ProfileContent() {
     profile !== null &&
     ((displayNameChanged && canChangeDisplayName) || bioChanged);
 
+  const userId = user?.id;
+
   const loadProfile = useCallback(async (options?: { silent?: boolean }) => {
-    if (!supabase || !user) return;
+    if (!supabase || !userId) return;
 
     if (!options?.silent) {
       setLoading(true);
@@ -80,22 +82,24 @@ export function ProfileContent() {
     let { data: profileData, error: profileError } = await supabase
       .from("profiles")
       .select("*")
-      .eq("id", user.id)
+      .eq("id", userId)
       .maybeSingle();
 
     if (!profileData) {
+      const { data: authData } = await supabase.auth.getUser();
+      const authUser = authData.user;
       const username =
-        user.email?.split("@")[0]?.replace(/[^a-z0-9_]/gi, "").toLowerCase() ||
-        `clash${user.id.slice(0, 4)}`;
+        authUser?.email?.split("@")[0]?.replace(/[^a-z0-9_]/gi, "").toLowerCase() ||
+        `clash${userId.slice(0, 4)}`;
 
       const { data: created, error: createError } = await supabase
         .from("profiles")
         .upsert({
-          id: user.id,
+          id: userId,
           username,
           display_name:
-            user.user_metadata?.full_name ??
-            user.user_metadata?.name ??
+            authUser?.user_metadata?.full_name ??
+            authUser?.user_metadata?.name ??
             username,
         })
         .select("*")
@@ -122,13 +126,13 @@ export function ProfileContent() {
       supabase
         .from("videos")
         .select("*", { count: "exact", head: true })
-        .eq("user_id", user.id),
+        .eq("user_id", userId),
       supabase
         .from("videos")
         .select(
           "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, hashtags, duration_seconds, user_id, moderation_status, rejection_reason",
         )
-        .eq("user_id", user.id)
+        .eq("user_id", userId)
         .order("created_at", { ascending: false }),
     ]);
 
@@ -150,7 +154,7 @@ export function ProfileContent() {
       })),
     );
     setLoading(false);
-  }, [supabase, user]);
+  }, [supabase, userId]);
 
   useEffect(() => {
     if (authLoading) return;
@@ -344,7 +348,7 @@ export function ProfileContent() {
     void signOut();
   }
 
-  if (authLoading || loading) {
+  if ((authLoading || loading) && !profile) {
     return (
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <p className="text-sm text-zinc-600 dark:text-zinc-400">{t.profile.loading}</p>
@@ -552,15 +556,27 @@ export function ProfileContent() {
       ) : null}
 
       {activeSection === "hunter-system" ? (
-        <PointsPanel profile={profile} onProfileRefresh={loadProfile} section="hunter-system" />
+        <PointsPanel
+          profile={profile}
+          onProfileRefresh={() => loadProfile({ silent: true })}
+          section="hunter-system"
+        />
       ) : null}
 
       {activeSection === "bounty-log" ? (
-        <PointsPanel profile={profile} onProfileRefresh={loadProfile} section="bounty-log" />
+        <PointsPanel
+          profile={profile}
+          onProfileRefresh={() => loadProfile({ silent: true })}
+          section="bounty-log"
+        />
       ) : null}
 
       {activeSection === "referral" ? (
-        <PointsPanel profile={profile} onProfileRefresh={loadProfile} section="referral" />
+        <PointsPanel
+          profile={profile}
+          onProfileRefresh={() => loadProfile({ silent: true })}
+          section="referral"
+        />
       ) : null}
 
       {activeSection === "my-videos" ? (

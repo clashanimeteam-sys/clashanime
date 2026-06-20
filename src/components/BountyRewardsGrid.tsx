@@ -23,7 +23,7 @@ export function BountyRewardsGrid({ currentLevel }: BountyRewardsGridProps) {
           return (
             <article
               key={levelDef.level}
-              className={`rounded-xl border p-4 transition-all ${
+              className={`rounded-xl border p-4 ${
                 unlocked
                   ? `border-accent/40 bg-accent/5 ${style.glow}`
                   : "border-zinc-200 bg-zinc-50 opacity-80 dark:border-zinc-800 dark:bg-zinc-950"

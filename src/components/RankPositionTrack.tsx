@@ -5,10 +5,9 @@ import { useLocale } from "@/providers/LocaleProvider";
 
 type RankPositionTrackProps = {
   points: number;
-  storedLevel?: number | null;
 };
 
-export function RankPositionTrack({ points, storedLevel }: RankPositionTrackProps) {
+export function RankPositionTrack({ points }: RankPositionTrackProps) {
   const { t } = useLocale();
   const computedLevel = pointsToLevel(points);
   const position = getLevelProgress(points);
@@ -106,9 +105,6 @@ export function RankPositionTrack({ points, storedLevel }: RankPositionTrackProp
           )}
         </div>
 
-        {storedLevel != null && storedLevel !== computedLevel ? (
-          <p className="mt-3 text-xs text-amber-600 dark:text-amber-400">{t.points.levelSyncNote}</p>
-        ) : null}
       </div>
     </div>
   );

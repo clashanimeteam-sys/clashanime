@@ -73,8 +73,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+    } = supabase.auth.onAuthStateChange((event, nextSession) => {
       if (!active) return;
+      // Supabase already updates the client token; skip React state to avoid profile UI flashes.
+      if (event === "TOKEN_REFRESHED") return;
       setSession(nextSession);
       setLoading(false);
     });

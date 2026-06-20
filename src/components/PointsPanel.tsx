@@ -127,7 +127,7 @@ export function PointsPanel({ profile, onProfileRefresh, section }: PointsPanelP
         <HunterLevelBadge level={computedLevel} points={totalPoints} size="lg" />
       </div>
 
-      <RankPositionTrack points={totalPoints} storedLevel={profile.level} />
+      <RankPositionTrack points={totalPoints} />
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         <div className="rounded-xl border border-zinc-200 bg-white/90 p-4 backdrop-blur dark:border-zinc-800 dark:bg-black/80">
