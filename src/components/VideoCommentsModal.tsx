@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CommentThread, updateCommentInTree } from "@/components/CommentThread";
 import { EmojiPicker } from "@/components/EmojiPicker";
+import { ModalPortal } from "@/components/ModalPortal";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useScrollLock } from "@/lib/useScrollLock";
@@ -164,13 +165,14 @@ export function VideoCommentsModal({
     : null;
 
   return (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-0 sm:p-4"
-      role="dialog"
-      aria-modal="true"
-      aria-label={t.video.comments}
-      onClick={onClose}
-    >
+    <ModalPortal open={open}>
+      <div
+        className="fixed inset-0 z-[200] flex items-center justify-center bg-black/85 p-0 sm:p-4"
+        role="dialog"
+        aria-modal="true"
+        aria-label={t.video.comments}
+        onClick={onClose}
+      >
       <div
         className="flex h-[100dvh] w-full max-w-5xl flex-col overflow-hidden bg-white sm:h-[min(90dvh,760px)] sm:rounded-2xl dark:bg-black md:flex-row"
         onClick={(event) => event.stopPropagation()}
@@ -420,6 +422,7 @@ export function VideoCommentsModal({
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </ModalPortal>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { ModalPortal } from "@/components/ModalPortal";
 import { ReportContentForm } from "@/components/ReportContentForm";
 import { useScrollLock } from "@/lib/useScrollLock";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -36,20 +37,21 @@ export function ReportContentModal({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[80] flex items-end justify-center p-4 sm:items-center">
-      <button
-        type="button"
-        aria-label={t.auth.close}
-        className="absolute inset-0 bg-black/60"
-        onClick={onClose}
-      />
+    <ModalPortal open={open}>
+      <div className="fixed inset-0 z-[200] flex items-end justify-center p-4 sm:items-center">
+        <button
+          type="button"
+          aria-label={t.auth.close}
+          className="absolute inset-0 bg-black/70 backdrop-blur-[2px]"
+          onClick={onClose}
+        />
 
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="report-modal-title"
-        className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-950 sm:p-6"
-      >
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="report-modal-title"
+          className="relative z-10 max-h-[min(90dvh,720px)] w-full max-w-2xl overflow-y-auto rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-950 sm:p-6"
+        >
         <div className="mb-5 flex items-start justify-between gap-4">
           <div className="min-w-0">
             <h2 id="report-modal-title" className="text-xl font-bold text-black dark:text-white">
@@ -92,7 +94,8 @@ export function ReportContentModal({
         />
 
         <p className="mt-6 text-xs text-zinc-500">{t.legal.reportDmcaHint}</p>
+        </div>
       </div>
-    </div>
+    </ModalPortal>
   );
 }
