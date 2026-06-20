@@ -39,13 +39,13 @@ export function ThemeToggle() {
       aria-checked={isDark}
       aria-label={isDark ? t.theme.light : t.theme.dark}
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full p-0.5 shadow-inner transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+      className={`relative h-7 w-12 shrink-0 rounded-full p-0.5 shadow-inner transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
         isDark ? "bg-[#34C759]" : "bg-zinc-200"
       }`}
     >
       <span
         aria-hidden
-        className={`pointer-events-none block h-6 w-6 rounded-full bg-white shadow-md transition-transform duration-300 ease-in-out ${
+        className={`absolute top-0.5 left-0.5 h-6 w-6 rounded-full bg-white shadow-md transition-transform duration-300 ease-in-out ${
           isDark ? "translate-x-5" : "translate-x-0"
         }`}
       />
