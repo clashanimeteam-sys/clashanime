@@ -25,7 +25,7 @@ export function ThemeToggle() {
     return (
       <div
         aria-hidden
-        className="h-7 w-12 rounded-full bg-zinc-200 dark:bg-zinc-700"
+        className="h-7 w-12 rounded-full bg-[#34C759] p-0.5"
       />
     );
   }
@@ -39,11 +39,13 @@ export function ThemeToggle() {
       aria-checked={isDark}
       aria-label={isDark ? t.theme.light : t.theme.dark}
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="relative inline-flex h-7 w-12 shrink-0 items-center rounded-full bg-zinc-200 p-0.5 transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:bg-zinc-700"
+      className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full p-0.5 transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+        isDark ? "bg-zinc-600" : "bg-[#34C759]"
+      }`}
     >
       <span
         aria-hidden
-        className={`pointer-events-none block h-6 w-6 rounded-full bg-white shadow-sm transition-transform duration-300 ease-in-out ${
+        className={`pointer-events-none block h-6 w-6 rounded-full bg-white shadow-[0_1px_4px_rgba(0,0,0,0.28)] transition-transform duration-300 ease-in-out ${
           isDark ? "translate-x-5" : "translate-x-0"
         }`}
       />
