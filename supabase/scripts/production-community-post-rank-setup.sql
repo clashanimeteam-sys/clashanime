@@ -1,7 +1,7 @@
 -- Run in Supabase SQL Editor (production: doqiuduigbdoczdzsima)
 -- https://supabase.com/dashboard/project/doqiuduigbdoczdzsima/sql/new
 --
--- Restrict community posting to Hunter ranks A and S (2001+ points).
+-- Restrict community posting to Hunter ranks A and S (5000+ points).
 -- Safe to re-run.
 
 create or replace function public.can_post_to_community(target_user_id uuid default auth.uid())

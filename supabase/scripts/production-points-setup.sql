@@ -113,11 +113,11 @@ language plpgsql
 immutable
 as $$
 begin
-  if target_points >= 5000 then
+  if target_points >= 9999 then
     return 4;
-  elsif target_points >= 2001 then
+  elsif target_points >= 5000 then
     return 3;
-  elsif target_points >= 501 then
+  elsif target_points >= 1000 then
     return 2;
   end if;
 

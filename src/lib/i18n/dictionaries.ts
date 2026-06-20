@@ -727,7 +727,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       systemTitle: "Bounty Hunter Rewards",
       hunterRank: "Your Hunter Rank",
       bountyRewardsTitle: "Rank bounties",
-      bountyRewardsHint: "Unlock exclusive rewards as you climb the Solo Leveling ranks.",
+      bountyRewardsHint: "Unlock exclusive rewards as you climb the hunter ranks.",
       bountyUnlocked: "Unlocked",
       bountyLocked: "Locked",
       bountyLogTitle: "Recent bounty earnings",
@@ -800,7 +800,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     communityFeed: {
       postPublished: "Post published.",
       postLevelRequired:
-        "Publishing in the community is limited to Hunter ranks A and S (2001+ points). You can still view posts and comment.",
+        "Publishing in the community is limited to Hunter ranks A and S (5000+ points). You can still view posts and comment.",
       animeOnlyNotice: "Community posts must be anime-related only. Off-topic, political, or adult content is prohibited.",
       postPlaceholder:
         "The clash arena is open.. share your favorite moment in the anime world!",
@@ -876,7 +876,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       scanFailed: "Could not verify this file. Try again with a different export.",
       uploadsDisabled: "Video uploads are temporarily disabled.",
       accountBanned: "Your account is suspended and cannot upload videos.",
-      levelRequired: "Reach Challenger rank (501+ points) to upload videos.",
+      levelRequired: "Reach Challenger rank (1000+ points) to upload videos.",
     },
     moderation: {
       duplicateFile:
@@ -1265,7 +1265,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       systemTitle: "バウンティハンター報酬",
       hunterRank: "ハンターランク",
       bountyRewardsTitle: "ランク報酬",
-      bountyRewardsHint: "ソロレベルング風ランクを上げて限定報酬を解放。",
+      bountyRewardsHint: "ハンターランクを上げて限定報酬を解放。",
       bountyUnlocked: "解放済み",
       bountyLocked: "未解放",
       bountyLogTitle: "最近の報酬獲得",
@@ -1338,7 +1338,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     communityFeed: {
       postPublished: "投稿しました。",
       postLevelRequired:
-        "コミュニティへの投稿はハンターランク A と S（2001pt以上）のみ可能です。投稿の閲覧とコメントはできます。",
+        "コミュニティへの投稿はハンターランク A と S（5000pt以上）のみ可能です。投稿の閲覧とコメントはできます。",
       animeOnlyNotice: "コミュニティ投稿はアニメ関連のみ。政治・成人・無関係な内容は禁止です。",
       postPlaceholder: "決闘場は開いています.. アニメ世界の最高の瞬間を共有しよう！",
       addImage: "画像を追加",
@@ -1413,7 +1413,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       scanFailed: "ファイルを検証できませんでした。別の書き出しで再試行してください。",
       uploadsDisabled: "動画アップロードは一時的に停止されています。",
       accountBanned: "アカウントが停止されているため、アップロードできません。",
-      levelRequired: "Challengerランク（501pt以上）でアップロードできます。",
+      levelRequired: "Challengerランク（1000pt以上）でアップロードできます。",
     },
     moderation: {
       duplicateFile:
@@ -1804,7 +1804,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       systemTitle: "نظام صياد الجوائز",
       hunterRank: "رتبة الصياد",
       bountyRewardsTitle: "جوائز الرتب",
-      bountyRewardsHint: "افتح مكافآت حصرية كلما ارتفعت في رتب Solo Leveling.",
+      bountyRewardsHint: "افتح مكافآت حصرية كلما ارتفعت في رتب الصياد.",
       bountyUnlocked: "مفتوحة",
       bountyLocked: "مقفلة",
       bountyLogTitle: "آخر مكافآت الجوائز",
@@ -1952,7 +1952,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       scanFailed: "تعذر التحقق من الملف. جرّب تصديراً مختلفاً للفيديو.",
       uploadsDisabled: "رفع الفيديوهات متوقف مؤقتاً.",
       accountBanned: "حسابك موقوف ولا يمكنك رفع الفيديوهات.",
-      levelRequired: "تحتاج رتبة منافس (501+ نقطة) لرفع الفيديوهات.",
+      levelRequired: "تحتاج رتبة منافس (1000+ نقطة) لرفع الفيديوهات.",
     },
     moderation: {
       duplicateFile:

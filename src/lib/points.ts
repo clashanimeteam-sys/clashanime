@@ -20,10 +20,10 @@ export type LevelDefinition = {
 };
 
 export const LEVELS: LevelDefinition[] = [
-  { level: 1, key: "rookie", rank: "E", minPoints: 0, maxPoints: 500 },
-  { level: 2, key: "challenger", rank: "C", minPoints: 501, maxPoints: 2000 },
-  { level: 3, key: "elite", rank: "A", minPoints: 2001, maxPoints: 5000 },
-  { level: 4, key: "legend", rank: "S", minPoints: 5001, maxPoints: null },
+  { level: 1, key: "rookie", rank: "E", minPoints: 0, maxPoints: 999 },
+  { level: 2, key: "challenger", rank: "C", minPoints: 1000, maxPoints: 4999 },
+  { level: 3, key: "elite", rank: "A", minPoints: 5000, maxPoints: 9999 },
+  { level: 4, key: "legend", rank: "S", minPoints: 9999, maxPoints: null },
 ];
 
 export const BOUNTY_REWARD_KEYS = ["voteComment", "upload", "doubleVote", "legend"] as const;
@@ -54,9 +54,9 @@ export function getBountiesForLevel(level: HunterLevel): BountyRewardKey[] {
 }
 
 export function pointsToLevel(points: number): HunterLevel {
-  if (points >= 5001) return 4;
-  if (points >= 2001) return 3;
-  if (points >= 501) return 2;
+  if (points >= 9999) return 4;
+  if (points >= 5000) return 3;
+  if (points >= 1000) return 2;
   return 1;
 }
 
