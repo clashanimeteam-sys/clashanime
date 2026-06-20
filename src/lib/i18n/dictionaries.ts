@@ -474,6 +474,12 @@ export type Dictionary = {
     allowUploadsDesc: string;
     allowSignups: string;
     allowSignupsDesc: string;
+    animeRadioSettings: string;
+    animeRadioEnabled: string;
+    animeRadioEnabledDesc: string;
+    animeRadioAutoplay: string;
+    animeRadioAutoplayDesc: string;
+    animeRadioDefaultVolume: string;
     autoApproveEnabled: string;
     autoApproveEnabledDesc: string;
     reviewNewCreators: string;
@@ -528,6 +534,8 @@ export type Dictionary = {
       manageUsersDesc: string;
       siteSettings: string;
       siteSettingsDesc: string;
+      animeRadioSettings: string;
+      animeRadioSettingsDesc: string;
     };
     table: {
       user: string;
@@ -561,7 +569,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clash: "Clash",
       videos: "Videos",
       community: "Community",
-      music: "Music",
+      music: "Anime Radio",
       exclusives: "Exclusives",
       hunterSystem: "Bounty Hunter System",
       bountyRewards: "Latest bounty rewards",
@@ -1042,6 +1050,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       allowUploadsDesc: "Disable to block new video uploads site-wide.",
       allowSignups: "Allow sign-ups",
       allowSignupsDesc: "Disable to block new account creation.",
+      animeRadioSettings: "Anime Radio",
+      animeRadioEnabled: "Enable anime radio",
+      animeRadioEnabledDesc: "Shows the mini player and allows streaming across the site.",
+      animeRadioAutoplay: "Autoplay on visit",
+      animeRadioAutoplayDesc: "Starts the radio quietly when someone opens the site.",
+      animeRadioDefaultVolume: "Default radio volume",
       autoApproveEnabled: "Auto-approve clean uploads",
       autoApproveEnabledDesc: "Approve uploads that pass duplicate and suspicion checks.",
       reviewNewCreators: "Review new creators",
@@ -1096,6 +1110,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         manageUsersDesc: "Change roles, ban accounts, and inspect channels.",
         siteSettings: "Site settings",
         siteSettingsDesc: "Configure uploads, sign-ups, and moderation.",
+        animeRadioSettings: "Anime radio",
+        animeRadioSettingsDesc: "Control autoplay, volume, and the mini player.",
       },
       table: {
         user: "User",
@@ -1127,7 +1143,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clash: "クラッシュ",
       videos: "動画",
       community: "コミュニティ",
-      music: "音楽",
+      music: "アニメラジオ",
       exclusives: "限定",
       hunterSystem: "賞金ハンターシステム",
       bountyRewards: "最新の報酬",
@@ -1603,6 +1619,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       allowUploadsDesc: "無効にすると新規動画アップロードを停止します。",
       allowSignups: "新規登録を許可",
       allowSignupsDesc: "無効にすると新規アカウント作成を停止します。",
+      animeRadioSettings: "アニメラジオ",
+      animeRadioEnabled: "アニメラジオを有効化",
+      animeRadioEnabledDesc: "ミニプレイヤーを表示し、サイト全体で再生できます。",
+      animeRadioAutoplay: "訪問時に自動再生",
+      animeRadioAutoplayDesc: "サイトを開いたときに小音量でラジオを開始します。",
+      animeRadioDefaultVolume: "デフォルト音量",
       autoApproveEnabled: "問題ないアップロードを自動承認",
       autoApproveEnabledDesc: "重複と疑わしさチェックを通過した投稿を承認します。",
       reviewNewCreators: "新規クリエイターを審査",
@@ -1657,6 +1679,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         manageUsersDesc: "ロール変更、停止、チャンネル確認。",
         siteSettings: "サイト設定",
         siteSettingsDesc: "アップロード、登録、審査を設定します。",
+        animeRadioSettings: "アニメラジオ",
+        animeRadioSettingsDesc: "自動再生、音量、ミニプレイヤーを管理します。",
       },
       table: {
         user: "ユーザー",
@@ -1688,7 +1712,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clash: "النزالات",
       videos: "الفيديوهات",
       community: "المجتمع",
-      music: "الموسيقى",
+      music: "راديو الأنمي",
       exclusives: "حصري",
       hunterSystem: "نظام صياد الجوائز",
       bountyRewards: "آخر مكافآت الجوائز",
@@ -2166,6 +2190,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       allowUploadsDesc: "عطّل لمنع رفع فيديوهات جديدة.",
       allowSignups: "السماح بالتسجيل",
       allowSignupsDesc: "عطّل لمنع إنشاء حسابات جديدة.",
+      animeRadioSettings: "راديو الأنمي",
+      animeRadioEnabled: "تفعيل راديو الأنمي",
+      animeRadioEnabledDesc: "يعرض الشريط السفلي ويسمح بالبث في جميع صفحات الموقع.",
+      animeRadioAutoplay: "تشغيل تلقائي عند الزيارة",
+      animeRadioAutoplayDesc: "يبدأ الراديو بصوت خفيف عند فتح الموقع.",
+      animeRadioDefaultVolume: "مستوى الصوت الافتراضي",
       autoApproveEnabled: "قبول تلقائي للرفعات النظيفة",
       autoApproveEnabledDesc: "قبول المقاطع التي تجتاز فحص التكرار والاشتباه.",
       reviewNewCreators: "مراجعة المبدعين الجدد",
@@ -2220,6 +2250,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         manageUsersDesc: "تغيير الأدوار وحظر الحسابات.",
         siteSettings: "إعدادات الموقع",
         siteSettingsDesc: "ضبط الرفع والتسجيل والمراجعة.",
+        animeRadioSettings: "راديو الأنمي",
+        animeRadioSettingsDesc: "التحكم بالتشغيل التلقائي والصوت والشريط السفلي.",
       },
       table: {
         user: "المستخدم",

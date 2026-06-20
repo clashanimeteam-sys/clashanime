@@ -21,6 +21,9 @@ export function AdminSettingsPanel() {
   const [maintenanceMode, setMaintenanceMode] = useState(false);
   const [allowUploads, setAllowUploads] = useState(true);
   const [allowSignups, setAllowSignups] = useState(true);
+  const [animeRadioEnabled, setAnimeRadioEnabled] = useState(true);
+  const [animeRadioAutoplay, setAnimeRadioAutoplay] = useState(true);
+  const [animeRadioDefaultVolume, setAnimeRadioDefaultVolume] = useState(0.35);
   const [autoApproveEnabled, setAutoApproveEnabled] = useState(true);
   const [reviewNewCreators, setReviewNewCreators] = useState(true);
   const [rejectSuspiciousUploads, setRejectSuspiciousUploads] = useState(true);
@@ -39,6 +42,9 @@ export function AdminSettingsPanel() {
       setMaintenanceMode(settings.general.maintenance_mode);
       setAllowUploads(settings.general.allow_uploads);
       setAllowSignups(settings.general.allow_signups);
+      setAnimeRadioEnabled(settings.general.anime_radio_enabled);
+      setAnimeRadioAutoplay(settings.general.anime_radio_autoplay);
+      setAnimeRadioDefaultVolume(settings.general.anime_radio_default_volume);
       setAutoApproveEnabled(settings.moderation.auto_approve_enabled);
       setReviewNewCreators(settings.moderation.review_new_creators);
       setRejectSuspiciousUploads(settings.moderation.reject_suspicious_uploads);
@@ -63,6 +69,9 @@ export function AdminSettingsPanel() {
         maintenance_mode: maintenanceMode,
         allow_uploads: allowUploads,
         allow_signups: allowSignups,
+        anime_radio_enabled: animeRadioEnabled,
+        anime_radio_autoplay: animeRadioAutoplay,
+        anime_radio_default_volume: animeRadioDefaultVolume,
       },
       {
         auto_approve_enabled: autoApproveEnabled,
@@ -137,6 +146,46 @@ export function AdminSettingsPanel() {
                 checked={allowSignups}
                 onChange={setAllowSignups}
               />
+            </div>
+          </section>
+
+          <section
+            id="anime-radio"
+            className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5"
+          >
+            <h2 className="text-lg font-semibold text-white">{t.admin.animeRadioSettings}</h2>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <Toggle
+                label={t.admin.animeRadioEnabled}
+                description={t.admin.animeRadioEnabledDesc}
+                checked={animeRadioEnabled}
+                onChange={setAnimeRadioEnabled}
+              />
+              <Toggle
+                label={t.admin.animeRadioAutoplay}
+                description={t.admin.animeRadioAutoplayDesc}
+                checked={animeRadioAutoplay}
+                onChange={setAnimeRadioAutoplay}
+              />
+              <label className="block sm:col-span-2">
+                <span className="mb-1 block text-sm text-zinc-300">
+                  {t.admin.animeRadioDefaultVolume}
+                </span>
+                <div className="flex items-center gap-3 rounded-xl border border-zinc-800 bg-black p-4">
+                  <input
+                    type="range"
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value={animeRadioDefaultVolume}
+                    onChange={(event) => setAnimeRadioDefaultVolume(Number(event.target.value))}
+                    className="w-full accent-accent"
+                  />
+                  <span className="w-12 shrink-0 text-right text-sm font-medium text-white">
+                    {Math.round(animeRadioDefaultVolume * 100)}%
+                  </span>
+                </div>
+              </label>
             </div>
           </section>
 

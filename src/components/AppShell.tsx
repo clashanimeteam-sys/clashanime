@@ -15,7 +15,8 @@ export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
   const isVideoPage = pathname.startsWith("/video/");
   const { hasStarted } = useAnimeRadio();
-  const reserveMiniBarSpace = hasStarted && pathname !== "/music";
+  const reserveMiniBarSpace =
+    hasStarted && pathname !== "/music" && !pathname.startsWith("/video/");
 
   return (
     <ProfileSectionProvider>

@@ -8,6 +8,9 @@ export type SiteGeneralSettings = {
   maintenance_mode: boolean;
   allow_uploads: boolean;
   allow_signups: boolean;
+  anime_radio_enabled: boolean;
+  anime_radio_autoplay: boolean;
+  anime_radio_default_volume: number;
 };
 
 export type SiteModerationSettings = {
@@ -22,6 +25,9 @@ export const DEFAULT_GENERAL_SETTINGS: SiteGeneralSettings = {
   maintenance_mode: false,
   allow_uploads: true,
   allow_signups: true,
+  anime_radio_enabled: true,
+  anime_radio_autoplay: true,
+  anime_radio_default_volume: 0.35,
 };
 
 export const DEFAULT_MODERATION_SETTINGS: SiteModerationSettings = {

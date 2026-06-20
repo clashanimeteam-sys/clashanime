@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import {
+  DEFAULT_RADIO_VOLUME,
   getRadioStation,
   readPersistedRadioState,
   writePersistedRadioState,
@@ -55,7 +56,7 @@ export function AnimeRadioProvider({ children }: AnimeRadioProviderProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
-  const [volume, setVolumeState] = useState(persisted?.volume ?? 0.75);
+  const [volume, setVolumeState] = useState(persisted?.volume ?? DEFAULT_RADIO_VOLUME);
   const [muted, setMuted] = useState(persisted?.muted ?? false);
   const [nowPlaying, setNowPlaying] = useState<RadioNowPlaying | null>(null);
   const [error, setError] = useState<string | null>(null);

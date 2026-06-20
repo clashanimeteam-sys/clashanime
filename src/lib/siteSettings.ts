@@ -22,9 +22,11 @@ export async function fetchSiteSettings(supabase: ReturnType<typeof createBrowse
   const { data } = await supabase.from("site_settings").select("key, value");
 
   const rows = (data ?? []) as SettingsRow[];
-  const general =
-    (rows.find((row) => row.key === "general")?.value as SiteGeneralSettings | undefined) ??
-    DEFAULT_GENERAL_SETTINGS;
+  const generalRow = rows.find((row) => row.key === "general")?.value as Partial<SiteGeneralSettings> | undefined;
+  const general: SiteGeneralSettings = {
+    ...DEFAULT_GENERAL_SETTINGS,
+    ...generalRow,
+  };
   const moderation =
     (rows.find((row) => row.key === "moderation")?.value as SiteModerationSettings | undefined) ??
     DEFAULT_MODERATION_SETTINGS;
@@ -66,5 +68,8 @@ export async function fetchPublicSiteFlags(supabase: ReturnType<typeof createBro
     maintenanceMode: settings.general.maintenance_mode,
     allowUploads: settings.general.allow_uploads,
     allowSignups: settings.general.allow_signups,
+    animeRadioEnabled: settings.general.anime_radio_enabled,
+    animeRadioAutoplay: settings.general.anime_radio_autoplay,
+    animeRadioDefaultVolume: settings.general.anime_radio_default_volume,
   };
 }

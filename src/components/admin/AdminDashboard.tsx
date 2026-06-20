@@ -140,6 +140,11 @@ export function AdminDashboard() {
           description={t.admin.quickActions.siteSettingsDesc}
           href="/admin/settings"
         />
+        <QuickLink
+          title={t.admin.quickActions.animeRadioSettings}
+          description={t.admin.quickActions.animeRadioSettingsDesc}
+          href="/admin/settings#anime-radio"
+        />
       </div>
     </div>
   );

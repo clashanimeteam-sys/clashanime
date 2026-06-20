@@ -44,6 +44,7 @@ export function getRadioStation(id: RadioStationId): RadioStation {
 }
 
 export const RADIO_STORAGE_KEY = "clashanime-radio";
+export const DEFAULT_RADIO_VOLUME = 0.35;
 
 export type PersistedRadioState = {
   stationId: RadioStationId;
@@ -66,7 +67,7 @@ export function readPersistedRadioState(): PersistedRadioState | null {
       volume:
         typeof parsed.volume === "number"
           ? Math.min(1, Math.max(0, parsed.volume))
-          : 0.75,
+          : DEFAULT_RADIO_VOLUME,
       muted: Boolean(parsed.muted),
     };
   } catch {

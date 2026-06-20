@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { AnimeRadioController } from "@/components/radio/AnimeRadioController";
 import { AnimeRadioMiniBar } from "@/components/AnimeRadioMiniBar";
 import { AppShell } from "@/components/AppShell";
 import { MobileHeader } from "@/components/MobileHeader";
@@ -49,6 +50,7 @@ export function Providers({ children }: ProvidersProps) {
               <>
                 <MobileHeader />
                 <AppShell>{children}</AppShell>
+                <AnimeRadioController />
                 <AnimeRadioMiniBar />
               </>
             )}
