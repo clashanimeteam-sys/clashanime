@@ -10,7 +10,7 @@ import { getModerationStatusLabel } from "@/lib/moderation";
 
 type VideoCardProps = {
   video: Video;
-  rank: number;
+  rank?: number;
   showModerationStatus?: boolean;
 };
 
@@ -88,11 +88,12 @@ export function VideoCard({ video, rank, showModerationStatus = false }: VideoCa
   const moderationStatus = video.moderation_status;
   const showBadge =
     showModerationStatus && moderationStatus && moderationStatus !== "approved";
+  const isTopRanked = rank !== undefined && rank <= 3;
 
   return (
     <article
       className={`group overflow-hidden rounded-2xl border bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/10 dark:border-zinc-800 dark:bg-black ${
-        rank <= 3
+        isTopRanked
           ? "border-accent/25 hover:border-accent/40"
           : "border-zinc-200 hover:border-accent/30 dark:border-zinc-800"
       }`}
@@ -124,7 +125,7 @@ export function VideoCard({ video, rank, showModerationStatus = false }: VideoCa
             </span>
           </div>
 
-          <RankBadge rank={rank} />
+          {rank !== undefined ? <RankBadge rank={rank} /> : null}
 
           {showBadge && moderationStatus ? (
             <ModerationBadge status={moderationStatus} />

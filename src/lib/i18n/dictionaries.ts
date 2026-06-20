@@ -76,6 +76,41 @@ export type Dictionary = {
     dmca: string;
     reportContent: string;
   };
+  pages: {
+    videosTitle: string;
+    videosSubtitle: string;
+    exclusivesTitle: string;
+    exclusivesSubtitle: string;
+    communityTitle: string;
+    communitySubtitle: string;
+    communityBody: string;
+    musicTitle: string;
+    musicSubtitle: string;
+    musicBody: string;
+    emptyVideos: string;
+    emptyExclusives: string;
+  };
+  legal: {
+    reportTitle: string;
+    reportIntro: string;
+    reportLoginRequired: string;
+    reportLoginHint: string;
+    reportVideoId: string;
+    reportVideoIdHint: string;
+    reportReasonLabel: string;
+    reportReasonCopyright: string;
+    reportReasonReupload: string;
+    reportReasonSpam: string;
+    reportReasonOther: string;
+    reportDetailsLabel: string;
+    reportDetailsHint: string;
+    reportSubmit: string;
+    reportSubmitting: string;
+    reportSubmitted: string;
+    reportFailed: string;
+    reportVideoRequired: string;
+    reportDmcaHint: string;
+  };
   auth: {
     logIn: string;
     signUp: string;
@@ -358,6 +393,44 @@ export const dictionaries: Record<Locale, Dictionary> = {
       terms: "Terms of Use",
       dmca: "DMCA",
       reportContent: "Report Content",
+    },
+    pages: {
+      videosTitle: "All Videos",
+      videosSubtitle: "Browse the latest approved duel clips from creators on ClashAnime.",
+      exclusivesTitle: "Exclusives",
+      exclusivesSubtitle: "Clips from verified creators on ClashAnime.",
+      communityTitle: "Community",
+      communitySubtitle: "Follow creators, comment on duels, and climb the grid together.",
+      communityBody:
+        "Community features are expanding soon. Explore channels from video cards, follow creators, and join the conversation on each clip.",
+      musicTitle: "Music",
+      musicSubtitle: "Anime soundtracks and audio duels.",
+      musicBody:
+        "Music battles are coming soon. Upload original audio edits and soundtrack clashes in a future update.",
+      emptyVideos: "No approved videos yet.",
+      emptyExclusives: "No exclusive clips from verified creators yet.",
+    },
+    legal: {
+      reportTitle: "Report Content",
+      reportIntro:
+        "Report copyright issues, stolen re-uploads, spam, or other policy violations. Verified reports are reviewed in the admin panel.",
+      reportLoginRequired: "Log in to submit a report.",
+      reportLoginHint: "to submit a content report.",
+      reportVideoId: "Video ID or URL",
+      reportVideoIdHint: "Paste the video ID from the URL (e.g. clashanime.com/video/abc-123)",
+      reportReasonLabel: "Reason",
+      reportReasonCopyright: "Copyright infringement",
+      reportReasonReupload: "Stolen / re-upload",
+      reportReasonSpam: "Spam or abuse",
+      reportReasonOther: "Other",
+      reportDetailsLabel: "Details (optional)",
+      reportDetailsHint: "Link to the original source, timestamps, or extra context.",
+      reportSubmit: "Submit report",
+      reportSubmitting: "Submitting...",
+      reportSubmitted: "Report submitted. Our team will review it.",
+      reportFailed: "Could not submit the report. Check the video ID and try again.",
+      reportVideoRequired: "Enter a video ID.",
+      reportDmcaHint: "For formal DMCA notices, see the DMCA page.",
     },
     auth: {
       logIn: "Log In",
@@ -647,6 +720,42 @@ export const dictionaries: Record<Locale, Dictionary> = {
       dmca: "DMCA",
       reportContent: "コンテンツを報告",
     },
+    pages: {
+      videosTitle: "すべての動画",
+      videosSubtitle: "ClashAnimeで承認された最新のデュエルクリップを閲覧。",
+      exclusivesTitle: "限定",
+      exclusivesSubtitle: "認証済みクリエイターのクリップ。",
+      communityTitle: "コミュニティ",
+      communitySubtitle: "クリエイターをフォローし、コメントしてグリッドを競おう。",
+      communityBody:
+        "コミュニティ機能は近日拡張予定です。動画カードからチャンネルを探索し、各クリップで会話に参加してください。",
+      musicTitle: "ミュージック",
+      musicSubtitle: "アニメサウンドトラックとオーディオデュエル。",
+      musicBody: "ミュージックバトルは近日公開予定です。",
+      emptyVideos: "承認済みの動画はまだありません。",
+      emptyExclusives: "認証済みクリエイターの限定クリップはまだありません。",
+    },
+    legal: {
+      reportTitle: "コンテンツを報告",
+      reportIntro: "著作権、再アップロード、スパムなどの違反を報告してください。",
+      reportLoginRequired: "報告にはログインが必要です。",
+      reportLoginHint: "してコンテンツを報告。",
+      reportVideoId: "動画IDまたはURL",
+      reportVideoIdHint: "URLの動画IDを貼り付け（例: clashanime.com/video/abc-123）",
+      reportReasonLabel: "理由",
+      reportReasonCopyright: "著作権侵害",
+      reportReasonReupload: "盗用 / 再アップロード",
+      reportReasonSpam: "スパムまたは虐待",
+      reportReasonOther: "その他",
+      reportDetailsLabel: "詳細（任意）",
+      reportDetailsHint: "元ソースへのリンク、タイムスタンプ、補足情報。",
+      reportSubmit: "報告を送信",
+      reportSubmitting: "送信中...",
+      reportSubmitted: "報告を送信しました。チームが確認します。",
+      reportFailed: "報告を送信できませんでした。動画IDを確認してください。",
+      reportVideoRequired: "動画IDを入力してください。",
+      reportDmcaHint: "正式なDMCA通知はDMCAページをご覧ください。",
+    },
     auth: {
       logIn: "ログイン",
       signUp: "新規登録",
@@ -934,6 +1043,43 @@ export const dictionaries: Record<Locale, Dictionary> = {
       terms: "شروط الاستخدام",
       dmca: "DMCA",
       reportContent: "الإبلاغ عن محتوى",
+    },
+    pages: {
+      videosTitle: "كل الفيديوهات",
+      videosSubtitle: "تصفّح أحدث المقاطع المعتمدة من المبدعين على ClashAnime.",
+      exclusivesTitle: "حصري",
+      exclusivesSubtitle: "مقاطع من القنوات الموثّقة على ClashAnime.",
+      communityTitle: "المجتمع",
+      communitySubtitle: "تابع المبدعين، علّق على النزالات، وتسلّق الشبكة معاً.",
+      communityBody:
+        "ميزات المجتمع قيد التوسع قريباً. استكشف القنوات من بطاقات الفيدio وشارك في النقاش على كل مقطع.",
+      musicTitle: "الموسيقى",
+      musicSubtitle: "موسيقى أنime ونزالات صوتية.",
+      musicBody: "معارك الموسيقى قادمة قريباً في تحديث لاحق.",
+      emptyVideos: "لا توجد فيدioهات معتمدة بعد.",
+      emptyExclusives: "لا توجد مقاطع حصرية من قنوات موثّقة بعد.",
+    },
+    legal: {
+      reportTitle: "الإبلاغ عن محتوى",
+      reportIntro:
+        "أبلغ عن انتهاك حقوق النشر، أو إعادة رفع مسروق، أو spam، أو مخالفات أخرى. البلاغات تُراجع في لوحة التحكم.",
+      reportLoginRequired: "سجّل الدخول لإرسال بلاغ.",
+      reportLoginHint: "لإرسال بلاغ عن محتوى.",
+      reportVideoId: "معرّف الفيدio أو الرابط",
+      reportVideoIdHint: "الصق معرّف الفيدio من الرابط (مثال: clashanime.com/video/abc-123)",
+      reportReasonLabel: "السبب",
+      reportReasonCopyright: "انتهاك حقوق النشر",
+      reportReasonReupload: "مسروق / إعادة رفع",
+      reportReasonSpam: "spam أو إساءة",
+      reportReasonOther: "أخرى",
+      reportDetailsLabel: "تفاصيل (اختياري)",
+      reportDetailsHint: "رابط المصدر الأصلي، توقيت، أو أي سياق إضافي.",
+      reportSubmit: "إرسال البلاغ",
+      reportSubmitting: "جارٍ الإرسال...",
+      reportSubmitted: "تم إرسال البلاغ. سيراجعه فريقنا.",
+      reportFailed: "تعذّر إرسال البلاغ. تحقق من معرّف الفيدio وحاول مجدداً.",
+      reportVideoRequired: "أدخل معرّف الفيدio.",
+      reportDmcaHint: "لإشعارات DMCA الرسمية، راجع صفحة DMCA.",
     },
     auth: {
       logIn: "تسجيل الدخول",

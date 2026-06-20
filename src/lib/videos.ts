@@ -152,6 +152,63 @@ export async function getTrendingVideos(): Promise<Video[]> {
   return sortByTrending(withChannels);
 }
 
+const APPROVED_VIDEO_SELECT =
+  "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, user_id";
+
+export async function getRecentVideos(limit = 48): Promise<Video[]> {
+  const supabase = await createServerClient();
+
+  if (!supabase) {
+    return sortByTrending(MOCK_VIDEOS).slice(0, limit);
+  }
+
+  const { data, error } = await supabase
+    .from("videos")
+    .select(APPROVED_VIDEO_SELECT)
+    .eq("moderation_status", "approved")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error || !data?.length) {
+    return [];
+  }
+
+  return attachChannels(supabase, data);
+}
+
+export async function getVerifiedCreatorVideos(limit = 24): Promise<Video[]> {
+  const supabase = await createServerClient();
+
+  if (!supabase) {
+    return [];
+  }
+
+  const { data: verifiedProfiles } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("is_verified", true);
+
+  const creatorIds = (verifiedProfiles ?? []).map((profile) => profile.id);
+
+  if (creatorIds.length === 0) {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("videos")
+    .select(APPROVED_VIDEO_SELECT)
+    .eq("moderation_status", "approved")
+    .in("user_id", creatorIds)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error || !data?.length) {
+    return [];
+  }
+
+  return attachChannels(supabase, data);
+}
+
 export async function getVideoById(id: string): Promise<Video | null> {
   const supabase = await createServerClient();
 
