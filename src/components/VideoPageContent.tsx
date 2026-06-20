@@ -119,6 +119,12 @@ export function VideoPageContent({ video }: VideoPageContentProps) {
             initialLikes={video.likes_count}
             initialComments={video.comments_count}
             initialShares={video.shares_count ?? 0}
+            preview={{
+              thumbnailUrl: video.thumbnail_url,
+              videoUrl: video.video_url || undefined,
+              channel: video.channel,
+              hashtags: video.hashtags,
+            }}
             variant="overlay"
           />
 

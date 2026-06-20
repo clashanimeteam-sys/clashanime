@@ -152,6 +152,12 @@ export function VideoCard({ video, rank }: VideoCardProps) {
           initialLikes={video.likes_count}
           initialComments={video.comments_count}
           initialShares={video.shares_count ?? 0}
+          preview={{
+            thumbnailUrl: video.thumbnail_url,
+            videoUrl: video.video_url || undefined,
+            channel: video.channel,
+            hashtags: video.hashtags,
+          }}
         />
 
         {video.channel ? <VideoCardChannel channel={video.channel} /> : null}

@@ -18,6 +18,16 @@ export type VideoChannel = {
   follower_count?: number;
 };
 
+export type VideoComment = {
+  id: string;
+  body: string;
+  created_at: string;
+  user_id: string;
+  username: string;
+  display_name: string | null;
+  avatar_url: string | null;
+};
+
 export type Video = {
   id: string;
   title: string;

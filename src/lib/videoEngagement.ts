@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import type { VideoComment } from "@/lib/types";
 
 export type VideoCounts = {
   likes_count: number;
@@ -117,4 +118,40 @@ export async function checkVideoLiked(
     .maybeSingle();
 
   return Boolean(data);
+}
+
+export async function fetchVideoComments(
+  supabase: SupabaseClient,
+  videoId: string,
+): Promise<VideoComment[]> {
+  const { data: comments, error } = await supabase
+    .from("video_comments")
+    .select("id, body, created_at, user_id")
+    .eq("video_id", videoId)
+    .order("created_at", { ascending: true });
+
+  if (error || !comments?.length) {
+    return [];
+  }
+
+  const userIds = [...new Set(comments.map((comment) => comment.user_id))];
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("id, username, display_name, avatar_url")
+    .in("id", userIds);
+
+  const profileMap = new Map((profiles ?? []).map((profile) => [profile.id, profile]));
+
+  return comments.map((comment) => {
+    const profile = profileMap.get(comment.user_id);
+    return {
+      id: comment.id,
+      body: comment.body,
+      created_at: comment.created_at,
+      user_id: comment.user_id,
+      username: profile?.username ?? "user",
+      display_name: profile?.display_name ?? null,
+      avatar_url: profile?.avatar_url ?? null,
+    };
+  });
 }

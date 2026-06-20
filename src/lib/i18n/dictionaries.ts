@@ -41,6 +41,8 @@ export type Dictionary = {
     postComment: string;
     postingComment: string;
     actionFailed: string;
+    noComments: string;
+    loginToComment: string;
   };
   theme: {
     light: string;
@@ -173,6 +175,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       postComment: "Post comment",
       postingComment: "Posting...",
       actionFailed: "Could not save. Try again.",
+      noComments: "No comments yet. Be the first to comment.",
+      loginToComment: "to post a comment.",
     },
     theme: {
       light: "Switch to light mode",
@@ -303,6 +307,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       postComment: "コメントする",
       postingComment: "送信中...",
       actionFailed: "保存できませんでした。もう一度お試しください。",
+      noComments: "まだコメントがありません。最初のコメントをどうぞ。",
+      loginToComment: "してコメントを投稿。",
     },
     theme: {
       light: "ライトモードに切り替え",
@@ -433,6 +439,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       postComment: "نشر التعليق",
       postingComment: "جارٍ النشر...",
       actionFailed: "تعذّر الحفظ. حاول مرة أخرى.",
+      noComments: "لا توجد تعليقات بعد. كن أول من يعلّق.",
+      loginToComment: "لنشر تعليق.",
     },
     theme: {
       light: "التبديل إلى الوضع النهاري",
