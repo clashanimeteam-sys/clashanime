@@ -31,6 +31,7 @@ export function VideoPageContent({ video, feed }: VideoPageContentProps) {
 
   const videos = useMemo(() => mergeFeed(video, feed), [video, feed]);
   const [activeId, setActiveId] = useState(video.id);
+  const [showSwipeHint, setShowSwipeHint] = useState(false);
 
   const activeIndex = videos.findIndex((item) => item.id === activeId);
 
@@ -53,6 +54,14 @@ export function VideoPageContent({ video, feed }: VideoPageContentProps) {
     },
     [scrollToIndex, videos],
   );
+
+  useEffect(() => {
+    if (videos.length <= 1) return;
+
+    setShowSwipeHint(true);
+    const timer = window.setTimeout(() => setShowSwipeHint(false), 1000);
+    return () => window.clearTimeout(timer);
+  }, [videos.length]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -137,10 +146,32 @@ export function VideoPageContent({ video, feed }: VideoPageContentProps) {
         </svg>
       </button>
 
-      {videos.length > 1 ? (
-        <p className="pointer-events-none absolute start-1/2 top-4 z-20 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-[10px] font-semibold text-white/80 backdrop-blur-sm">
-          {t.video.swipeVideos}
-        </p>
+      {showSwipeHint && videos.length > 1 ? (
+        <div
+          className="pointer-events-none absolute start-1/2 top-16 z-20 flex -translate-x-1/2 flex-col items-center gap-0.5 text-white/90 transition-opacity duration-300"
+          aria-hidden
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className="h-4 w-4"
+          >
+            <path d="M12 5l-7 7h14l-7-7z" />
+          </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className="h-4 w-4"
+          >
+            <path d="M12 19l7-7H5l7 7z" />
+          </svg>
+        </div>
       ) : null}
 
       <div
