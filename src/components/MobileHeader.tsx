@@ -17,19 +17,16 @@ export function MobileHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-md md:hidden">
-      <div className="flex h-14 items-center justify-between gap-3 px-4">
-        <Link href="/" className="flex items-center gap-2">
+      <div className="flex h-16 items-center justify-between gap-3 px-4">
+        <Link href="/" className="flex items-center">
           <Image
             src="/logo.png"
             alt="ClashAnime"
-            width={52}
-            height={52}
+            width={72}
+            height={72}
             priority
-            className="h-[3.25rem] w-[3.25rem] object-contain"
+            className="h-[4.5rem] w-[4.5rem] object-contain"
           />
-          <span className="text-sm font-bold text-foreground">
-            {t.brand.name}
-          </span>
         </Link>
 
         <div className="flex items-center gap-2">

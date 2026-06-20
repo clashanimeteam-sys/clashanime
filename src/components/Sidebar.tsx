@@ -70,21 +70,15 @@ export function Sidebar() {
   return (
     <aside className="sticky top-0 flex min-h-screen w-56 shrink-0 flex-col border-e border-border bg-sidebar lg:w-60">
       <div className="border-b border-border p-4">
-        <Link href="/" className="flex items-center gap-3">
+        <Link href="/" className="flex justify-center">
           <Image
             src="/logo.png"
             alt="ClashAnime"
-            width={72}
-            height={72}
+            width={112}
+            height={112}
             priority
-            className="h-[4.5rem] w-[4.5rem] object-contain"
+            className="h-28 w-28 object-contain"
           />
-          <div>
-            <p className="text-sm font-bold tracking-wide text-foreground">
-              {t.brand.name}
-            </p>
-            <p className="text-[11px] text-muted">.com</p>
-          </div>
         </Link>
 
         <button

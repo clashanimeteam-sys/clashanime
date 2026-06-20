@@ -14,7 +14,6 @@ export type Dictionary = {
     settings: string;
   };
   home: {
-    eyebrow: string;
     title: string;
     subtitle: string;
     gridLabel: string;
@@ -65,7 +64,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
       settings: "Settings",
     },
     home: {
-      eyebrow: "Duel System",
       title: "Anime Duels",
       subtitle:
         "Videos rise to the top based on real-time likes and comments. The fastest-growing clips win the grid.",
@@ -115,7 +113,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
       settings: "設定",
     },
     home: {
-      eyebrow: "デュエルシステム",
       title: "アニメデュエル",
       subtitle:
         "リアルタイムのいいねとコメントで動画が上位に上がります。最も伸びているクリップがグリッドの頂点を占めます。",
@@ -165,7 +162,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
       settings: "الإعدادات",
     },
     home: {
-      eyebrow: "نظام النزالات",
       title: "نزالات الأنمي",
       subtitle:
         "تصعد الفيديوهات إلى القمة بناءً على الإعجابات والتعليقات الفورية. المقاطع الأسرع نمواً تفوز بالشبكة.",
