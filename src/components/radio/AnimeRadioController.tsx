@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { DEFAULT_RADIO_VOLUME } from "@/lib/animeRadio";
+import { DEFAULT_RADIO_VOLUME, readPersistedRadioState } from "@/lib/animeRadio";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { fetchPublicSiteFlags } from "@/lib/siteSettings";
 import { useAnimeRadio } from "@/providers/AnimeRadioProvider";
@@ -23,6 +23,7 @@ export function AnimeRadioController() {
   const pausedByUserRef = useRef(pausedByUser);
   const resumeAfterVideoRef = useRef(false);
   const autoplayAttemptedRef = useRef(false);
+  const flagsLoadedRef = useRef(false);
   const [flagsReady, setFlagsReady] = useState(false);
   const [radioEnabled, setRadioEnabled] = useState(true);
   const [autoplayEnabled, setAutoplayEnabled] = useState(true);
@@ -31,7 +32,12 @@ export function AnimeRadioController() {
   pausedByUserRef.current = pausedByUser;
 
   useEffect(() => {
+    if (flagsLoadedRef.current) return;
+    flagsLoadedRef.current = true;
+
     const supabase = createBrowserClient();
+    const persisted = readPersistedRadioState();
+
     if (!supabase) {
       setFlagsReady(true);
       return;
@@ -40,7 +46,11 @@ export function AnimeRadioController() {
     void fetchPublicSiteFlags(supabase).then((flags) => {
       setRadioEnabled(flags.animeRadioEnabled);
       setAutoplayEnabled(flags.animeRadioAutoplay);
-      setVolume(flags.animeRadioDefaultVolume ?? DEFAULT_RADIO_VOLUME);
+
+      if (!persisted) {
+        setVolume(flags.animeRadioDefaultVolume ?? DEFAULT_RADIO_VOLUME);
+      }
+
       setFlagsReady(true);
     });
   }, [setVolume]);

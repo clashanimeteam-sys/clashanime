@@ -72,9 +72,9 @@ export function AnimeRadioPlayer() {
             accentTo={station.accentTo}
           />
 
-          <div className="absolute inset-0 bg-black/45 backdrop-blur-[2px]" />
+          <div className="pointer-events-none absolute inset-0 bg-black/45 backdrop-blur-[2px]" />
 
-          <div className="relative p-5 sm:p-8">
+          <div className="relative z-10 p-5 sm:p-8">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
               <span className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/15 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-accent backdrop-blur-sm">
                 <span
@@ -128,7 +128,7 @@ export function AnimeRadioPlayer() {
                 <label
                   data-radio-controls
                   onPointerDown={(event) => event.stopPropagation()}
-                  className="mt-5 block"
+                  className="relative z-10 mt-5 block"
                 >
                   <span className="mb-2 block text-xs font-medium text-zinc-400">{t.radio.volume}</span>
                   <input
@@ -138,7 +138,8 @@ export function AnimeRadioPlayer() {
                     step={0.01}
                     value={muted ? 0 : volume}
                     onChange={(event) => setVolume(Number(event.target.value))}
-                    className="w-full accent-accent"
+                    onInput={(event) => setVolume(Number(event.currentTarget.value))}
+                    className="relative z-10 h-2 w-full cursor-pointer accent-accent"
                   />
                 </label>
 

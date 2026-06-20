@@ -173,12 +173,13 @@ export function AnimeRadioProvider({ children }: AnimeRadioProviderProps) {
     (nextVolume: number) => {
       const clamped = Math.min(1, Math.max(0, nextVolume));
       setVolumeState(clamped);
-      if (clamped > 0) {
-        setMuted(false);
-      }
-      persist({ volume: clamped, muted: clamped > 0 ? false : muted });
+      setMuted((currentMuted) => {
+        const nextMuted = clamped > 0 ? false : currentMuted;
+        persist({ volume: clamped, muted: nextMuted });
+        return nextMuted;
+      });
     },
-    [muted, persist],
+    [persist],
   );
 
   const toggleMute = useCallback(() => {

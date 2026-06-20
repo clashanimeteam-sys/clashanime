@@ -128,7 +128,8 @@ export function AnimeRadioMiniBar() {
               step={0.01}
               value={muted ? 0 : volume}
               onChange={(event) => setVolume(Number(event.target.value))}
-              className="w-14 accent-accent sm:w-20 md:w-24"
+              onInput={(event) => setVolume(Number(event.currentTarget.value))}
+              className="relative z-10 h-2 w-14 cursor-pointer accent-accent sm:w-20 md:w-24"
               aria-label={t.radio.volume}
             />
 
