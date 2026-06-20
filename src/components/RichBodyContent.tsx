@@ -35,10 +35,10 @@ export function RichBodyContent({ body, className }: RichBodyContentProps) {
             key={`sticker-${segment.value}-${index}`}
             src={sticker.image_url}
             alt={sticker.label || sticker.slug}
-            width={80}
-            height={80}
+            width={240}
+            height={240}
             unoptimized
-            className="mx-0.5 inline-block h-20 w-20 align-middle object-contain"
+            className="my-2 block h-52 w-52 max-w-full object-contain sm:h-60 sm:w-60"
           />
         );
       })}

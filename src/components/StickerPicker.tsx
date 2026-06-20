@@ -73,7 +73,7 @@ export function StickerPicker({ onPick }: StickerPickerProps) {
   const visibleStickers = normalizedQuery ? searchResults : (activePack?.stickers ?? []);
 
   return (
-    <div className="absolute bottom-full end-0 z-20 mb-2 w-80 rounded-xl border border-zinc-200 bg-white p-2 shadow-lg dark:border-zinc-700 dark:bg-zinc-900">
+    <div className="absolute bottom-full end-0 z-20 mb-2 w-[min(100vw-2rem,24rem)] rounded-xl border border-zinc-200 bg-white p-3 shadow-lg dark:border-zinc-700 dark:bg-zinc-900 sm:w-96">
       {loading ? (
         <p className="px-2 py-3 text-xs text-zinc-500">{t.stickers.loading}</p>
       ) : catalog.length === 0 ? (
@@ -112,22 +112,22 @@ export function StickerPicker({ onPick }: StickerPickerProps) {
             </p>
           )}
 
-          <div className="grid max-h-56 grid-cols-4 gap-1 overflow-y-auto">
+          <div className="grid max-h-80 grid-cols-3 gap-2 overflow-y-auto sm:grid-cols-3">
             {visibleStickers.map((sticker) => (
               <button
                 key={sticker.id}
                 type="button"
                 onClick={() => onPick(sticker.id)}
                 title={sticker.label || sticker.slug}
-                className="rounded-lg p-1 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                className="rounded-xl border border-transparent p-1.5 transition-colors hover:border-accent/30 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               >
                 <Image
                   src={sticker.image_url}
                   alt={sticker.label || sticker.slug}
-                  width={56}
-                  height={56}
+                  width={120}
+                  height={120}
                   unoptimized
-                  className="mx-auto h-14 w-14 object-contain"
+                  className="mx-auto h-28 w-28 object-contain sm:h-32 sm:w-32"
                 />
               </button>
             ))}
