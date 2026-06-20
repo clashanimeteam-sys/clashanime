@@ -17,6 +17,9 @@ export default async function Home() {
           Videos rise to the top based on real-time likes and comments. The
           fastest-growing clips win the grid.
         </p>
+        <p className="mt-2 text-xs font-medium text-brand/80">
+          ClashAnime is live on www.clashanime.com
+        </p>
       </section>
 
       <section
