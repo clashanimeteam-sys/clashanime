@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChallengeClipButton } from "@/components/duel/ChallengeClipButton";
+import { ClashThumbnailFire } from "@/components/clash/ClashFireFrame";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { VideoCardChannel } from "@/components/VideoCardChannel";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -17,6 +18,7 @@ type VideoCardProps = {
   showClashBadge?: boolean;
   showTrendingDuelBadge?: boolean;
   compact?: boolean;
+  clashMode?: boolean;
 };
 
 type MedalTier = "gold" | "silver" | "bronze" | null;
@@ -97,19 +99,27 @@ export function VideoCard({
   showClashBadge = false,
   showTrendingDuelBadge = false,
   compact = false,
+  clashMode = false,
 }: VideoCardProps) {
   const { t } = useLocale();
   const moderationStatus = video.moderation_status;
   const showBadge =
     showModerationStatus && moderationStatus && moderationStatus !== "approved";
   const isTopRanked = rank !== undefined && rank <= 3;
+  const isClashChampion = clashMode && rank === 1;
 
   return (
     <article
-      className={`group overflow-hidden border bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/10 dark:border-zinc-800 dark:bg-black ${compact ? "rounded-xl" : "rounded-2xl"} ${
+      className={`group overflow-hidden border bg-white shadow-sm transition-all hover:-translate-y-0.5 dark:border-zinc-800 dark:bg-black ${compact ? "rounded-xl" : "rounded-2xl"} ${
+        isClashChampion
+          ? "hover:shadow-[0_20px_50px_rgba(249,115,22,0.25)]"
+          : "hover:shadow-lg hover:shadow-accent/10"
+      } ${
         isTopRanked
           ? "border-accent/25 hover:border-accent/40"
-          : "border-zinc-200 hover:border-accent/30 dark:border-zinc-800"
+          : clashMode
+            ? "border-orange-500/20 hover:border-orange-500/40"
+            : "border-zinc-200 hover:border-accent/30 dark:border-zinc-800"
       }`}
     >
       <Link href={`/video/${video.id}`} className="block">
@@ -147,11 +157,13 @@ export function VideoCard({
 
           {rank !== undefined ? <RankBadge rank={rank} compact={compact} /> : null}
 
+          {clashMode && rank !== undefined ? <ClashThumbnailFire rank={rank} /> : null}
+
           {showClashBadge && isInClashTop(rank) ? (
             <span
-              className={`absolute rounded-full bg-accent font-bold text-white shadow ${compact ? "start-2 top-7 px-1.5 py-0.5 text-[8px]" : "start-3 top-12 px-2 py-0.5 text-[10px]"}`}
+              className={`absolute rounded-full bg-gradient-to-r from-orange-600 to-red-600 font-bold text-white shadow-lg ${compact ? "start-2 top-7 px-1.5 py-0.5 text-[8px]" : clashMode ? "start-3 top-12 animate-[clash-glow-pulse_2s_ease-in-out_infinite] px-2.5 py-1 text-[10px] shadow-[0_0_12px_rgba(249,115,22,0.6)]" : "start-3 top-12 px-2 py-0.5 text-[10px]"}`}
             >
-              {t.video.inClashTop}
+              {clashMode ? `🔥 ${t.video.inClashTop}` : t.video.inClashTop}
             </span>
           ) : null}
 

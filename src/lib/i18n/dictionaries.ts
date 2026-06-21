@@ -23,6 +23,9 @@ export type Dictionary = {
     titleSecondary: string;
     subtitle: string;
     gridLabel: string;
+    clashLive: string;
+    podiumLabel: string;
+    challengersLabel: string;
     upload: string;
     maintenanceMode: string;
   };
@@ -674,6 +677,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       subtitle:
         "The top 10 videos worldwide by real-time engagement. Reach global rank #10 to enter Clash.",
       gridLabel: "Clash Anime grid",
+      clashLive: "Live Clash",
+      podiumLabel: "Podium",
+      challengersLabel: "Clash challengers",
       upload: "Video Upload",
       maintenanceMode: "ClashAnime is in maintenance mode. Some features are temporarily unavailable.",
     },
@@ -1345,6 +1351,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       subtitle:
         "リアルタイムのエンゲージメントで世界トップ10の動画のみ表示。世界10位に到達するとクラッシュに入ります。",
       gridLabel: "Clash Animeグリッド",
+      clashLive: "ライブ・クラッシュ",
+      podiumLabel: "表彰台",
+      challengersLabel: "挑戦者",
       upload: "動画アップロード",
       maintenanceMode: "ClashAnimeはメンテナンス中です。一部機能が一時的に利用できません。",
     },
@@ -2010,6 +2019,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       subtitle:
         "أقوى ١٠ فيديوهات عالمياً حسب التفاعل الفوري. عند الوصول للمركز ١٠ يرتفع المقطع إلى النزالات.",
       gridLabel: "شبكة Clash Anime",
+      clashLive: "نزال مباشر",
+      podiumLabel: "منصة الصدارة",
+      challengersLabel: "منافسو النزال",
       upload: "رفع فيديو",
       maintenanceMode: "ClashAnime في وضع الصيانة. بعض الميزات غير متاحة مؤقتاً.",
     },

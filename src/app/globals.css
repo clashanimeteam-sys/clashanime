@@ -214,3 +214,73 @@
     transform: translateY(-16px) scale(1.03);
   }
 }
+
+@keyframes clash-glow-pulse {
+  0%,
+  100% {
+    filter: brightness(1);
+    opacity: 0.85;
+  }
+
+  50% {
+    filter: brightness(1.15);
+    opacity: 1;
+  }
+}
+
+@keyframes clash-fire-flicker {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scaleY(1);
+  }
+
+  40% {
+    opacity: 0.9;
+    transform: scaleY(1.08);
+  }
+
+  70% {
+    opacity: 0.65;
+    transform: scaleY(0.96);
+  }
+}
+
+@keyframes clash-ember-rise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translateY(-80px) scale(0.4);
+    opacity: 0;
+  }
+}
+
+@keyframes clash-aurora {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.35;
+  }
+
+  50% {
+    transform: translate(6%, -4%) scale(1.06);
+    opacity: 0.65;
+  }
+}
+
+@keyframes clash-border-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
