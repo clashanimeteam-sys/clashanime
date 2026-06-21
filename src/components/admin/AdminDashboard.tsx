@@ -41,7 +41,7 @@ export function AdminDashboard() {
         { count: pendingVerifications },
         { count: communityPosts },
         { count: bountyEvents },
-        { count: clipChallenges },
+        clipChallengesResult,
       ] = await Promise.all([
         client.from("profiles").select("*", { count: "exact", head: true }),
         client.from("videos").select("*", { count: "exact", head: true }),
@@ -61,8 +61,16 @@ export function AdminDashboard() {
           .eq("status", "pending"),
         client.from("community_posts").select("*", { count: "exact", head: true }),
         client.from("point_transactions").select("*", { count: "exact", head: true }),
-        client.from("video_duels").select("*", { count: "exact", head: true }),
+        client.from("video_duels").select("*", { count: "exact", head: true }).then((result) => {
+          if (result.error) {
+            return { count: null as number | null, error: true as const };
+          }
+          return { count: result.count, error: false as const };
+        }),
       ]);
+
+      const clipChallengesCount =
+        clipChallengesResult.error ? 0 : (clipChallengesResult.count ?? 0);
 
       setStats({
         users: users ?? 0,
@@ -74,7 +82,7 @@ export function AdminDashboard() {
         pendingVerifications: pendingVerifications ?? 0,
         communityPosts: communityPosts ?? 0,
         bountyEvents: bountyEvents ?? 0,
-        clipChallenges: clipChallenges ?? 0,
+        clipChallenges: clipChallengesCount,
       });
       setLoading(false);
     }
