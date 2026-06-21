@@ -24,18 +24,20 @@ export async function uploadMediaFile({
 }: UploadMediaFileParams): Promise<UploadResponse> {
   const contentType = resolveContentType(folder, filename, file);
 
-  if (file.size <= SERVER_UPLOAD_MAX_BYTES) {
+  // Browser → R2 avoids Vercel server TLS issues with *.r2.cloudflarestorage.com.
+  try {
+    return await uploadViaPresignedUrl({ folder, filename, file, contentType });
+  } catch (presignError) {
+    if (file.size > SERVER_UPLOAD_MAX_BYTES) {
+      throw presignError;
+    }
+
     try {
       return await uploadViaServer({ folder, filename, file });
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "";
-      if (!message.includes("server upload")) {
-        throw error;
-      }
+    } catch {
+      throw presignError;
     }
   }
-
-  return uploadViaPresignedUrl({ folder, filename, file, contentType });
 }
 
 async function uploadViaServer({
