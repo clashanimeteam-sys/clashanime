@@ -30,6 +30,7 @@ type VideoCardActionsProps = {
   initialShares?: number;
   preview?: VideoPreview;
   variant?: "default" | "overlay";
+  compact?: boolean;
 };
 
 function formatRealCount(value: number) {
@@ -44,6 +45,7 @@ export function VideoCardActions({
   initialShares = 0,
   preview,
   variant = "default",
+  compact = false,
 }: VideoCardActionsProps) {
   const { user } = useAuth();
   const { requireSubscription } = useRequireSubscription();
@@ -60,6 +62,10 @@ export function VideoCardActions({
   const [error, setError] = useState<string | null>(null);
 
   const isOverlay = variant === "overlay";
+  const actionButtonClass = compact
+    ? "inline-flex items-center gap-0.5 rounded-full border px-1.5 py-0.5 text-[9px] font-semibold transition-colors disabled:opacity-60"
+    : "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors disabled:opacity-60";
+  const iconClass = compact ? "h-2.5 w-2.5" : "h-3.5 w-3.5";
   const buttonClass = isOverlay
     ? "border-white/30 text-white hover:border-white/60 hover:text-white"
     : "border-zinc-300 text-zinc-700 hover:border-accent/40 hover:text-accent dark:border-zinc-700 dark:text-zinc-200";
@@ -184,22 +190,20 @@ export function VideoCardActions({
 
   return (
     <div className="space-y-2">
-      <div className="flex flex-wrap items-center gap-2">
+      <div className={`flex flex-wrap items-center ${compact ? "gap-1" : "gap-2"}`}>
         <button
           type="button"
           onClick={handleLike}
           disabled={loadingLike}
           aria-pressed={liked}
           aria-label={liked ? t.video.unlike : t.video.like}
-          className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors disabled:opacity-60 ${
-            liked ? likedClass : buttonClass
-          }`}
+          className={`${actionButtonClass} ${liked ? likedClass : buttonClass}`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            className="h-3.5 w-3.5"
+            className={iconClass}
             aria-hidden
           >
             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
@@ -211,7 +215,7 @@ export function VideoCardActions({
           type="button"
           onClick={handleCommentsOpen}
           aria-label={t.video.comments}
-          className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${buttonClass}`}
+          className={`${actionButtonClass} ${buttonClass}`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -219,7 +223,7 @@ export function VideoCardActions({
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
-            className="h-3.5 w-3.5"
+            className={iconClass}
             aria-hidden
           >
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -231,7 +235,7 @@ export function VideoCardActions({
           type="button"
           onClick={handleShare}
           aria-label={t.video.share}
-          className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${buttonClass}`}
+          className={`${actionButtonClass} ${buttonClass}`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -239,7 +243,7 @@ export function VideoCardActions({
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
-            className="h-3.5 w-3.5"
+            className={iconClass}
             aria-hidden
           >
             <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" />
@@ -253,7 +257,7 @@ export function VideoCardActions({
           type="button"
           onClick={handleReport}
           aria-label={t.video.report}
-          className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1.5 text-xs font-semibold transition-colors ${
+          className={`${actionButtonClass} ${
             isOverlay
               ? "border-white/30 text-white/80 hover:border-red-400/50 hover:text-red-300"
               : "border-zinc-300 text-zinc-600 hover:border-red-400/50 hover:text-red-500 dark:border-zinc-700 dark:text-zinc-200"
@@ -265,7 +269,7 @@ export function VideoCardActions({
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
-            className="h-3.5 w-3.5"
+            className={iconClass}
             aria-hidden
           >
             <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />

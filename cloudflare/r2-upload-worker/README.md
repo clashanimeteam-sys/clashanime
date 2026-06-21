@@ -30,12 +30,14 @@ cd cloudflare/r2-upload-worker
 wrangler deploy
 ```
 
-5. Copy the worker URL (example: `https://clashanime-r2-upload.<account>.workers.dev`).
+5. Copy the worker URL: `https://upload.clashanime.com` (custom domain; no workers.dev needed).
+
+If workers.dev onboarding returns 404, this custom domain route is used instead.
 
 6. In Vercel → Environment Variables add:
 
 - `R2_UPLOAD_SECRET` = same secret from step 2
-- `NEXT_PUBLIC_R2_UPLOAD_URL` = worker URL from step 5
+- `NEXT_PUBLIC_R2_UPLOAD_URL` = `https://upload.clashanime.com`
 
 7. Redeploy Vercel.
 

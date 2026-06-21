@@ -32,7 +32,13 @@ export async function uploadMediaFile({
   const contentType = resolveContentType(folder, filename, file);
 
   if (WORKER_UPLOAD_URL) {
-    return uploadViaWorker({ folder, filename, file, contentType });
+    try {
+      return await uploadViaWorker({ folder, filename, file, contentType });
+    } catch (workerError) {
+      if (file.size > SERVER_UPLOAD_MAX_BYTES) {
+        throw workerError;
+      }
+    }
   }
 
   try {
@@ -94,7 +100,7 @@ async function uploadViaWorker({
       body: file,
     });
   } catch {
-    throw new Error("r2 worker upload blocked");
+    throw new Error("r2 worker upload blocked (check upload.clashanime.com DNS and worker domain)");
   }
 
   const payload = (await uploadResponse.json()) as UploadResponse & { error?: string };

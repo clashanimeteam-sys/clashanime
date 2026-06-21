@@ -22,7 +22,7 @@ export function VideoGridContent({
   const { t } = useLocale();
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-[1920px] px-4 py-8 sm:px-6">
       <section className="mb-8">
         <h1 className="text-3xl font-bold text-black dark:text-white">{title}</h1>
         {subtitle ? (
@@ -37,7 +37,7 @@ export function VideoGridContent({
       ) : (
         <section
           aria-label={t.home.gridLabel}
-          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8"
         >
           {videos.map((video) => (
             <VideoCard
@@ -45,6 +45,7 @@ export function VideoGridContent({
               video={video}
               rank={showRank ? video.global_rank : undefined}
               showClashBadge={showRank}
+              compact
             />
           ))}
         </section>

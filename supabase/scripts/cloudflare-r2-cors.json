@@ -5,8 +5,8 @@
       "https://clashanime.com",
       "http://localhost:3000"
     ],
-    "AllowedMethods": ["GET", "PUT", "HEAD", "POST", "DELETE", "OPTIONS"],
-    "AllowedHeaders": ["*"],
+    "AllowedMethods": ["GET", "PUT", "HEAD"],
+    "AllowedHeaders": ["Content-Type"],
     "ExposeHeaders": ["ETag"],
     "MaxAgeSeconds": 3600
   }
