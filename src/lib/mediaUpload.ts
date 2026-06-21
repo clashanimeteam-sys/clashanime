@@ -11,7 +11,14 @@ type UploadMediaFileParams = {
   file: File;
 };
 
+type UploadSessionResponse = UploadResponse & {
+  uploadUrl?: string;
+  token?: string;
+  error?: string;
+};
+
 const SERVER_UPLOAD_MAX_BYTES = 45 * 1024 * 1024;
+const WORKER_UPLOAD_URL = process.env.NEXT_PUBLIC_R2_UPLOAD_URL?.trim().replace(/\/$/, "");
 
 function resolveContentType(folder: MediaFolder, filename: string, file: File): string {
   return file.type || guessContentType(folder, filename);
@@ -24,7 +31,10 @@ export async function uploadMediaFile({
 }: UploadMediaFileParams): Promise<UploadResponse> {
   const contentType = resolveContentType(folder, filename, file);
 
-  // Browser → R2 avoids Vercel server TLS issues with *.r2.cloudflarestorage.com.
+  if (WORKER_UPLOAD_URL) {
+    return uploadViaWorker({ folder, filename, file, contentType });
+  }
+
   try {
     return await uploadViaPresignedUrl({ folder, filename, file, contentType });
   } catch (presignError) {
@@ -38,6 +48,64 @@ export async function uploadMediaFile({
       throw presignError;
     }
   }
+}
+
+async function uploadViaWorker({
+  folder,
+  filename,
+  file,
+  contentType,
+}: UploadMediaFileParams & { contentType: string }): Promise<UploadResponse> {
+  const workerUploadUrl = WORKER_UPLOAD_URL;
+  if (!workerUploadUrl) {
+    throw new Error("upload worker not configured");
+  }
+
+  let sessionResponse: Response;
+  try {
+    sessionResponse = await fetch("/api/media/upload-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        folder,
+        filename,
+        contentType,
+        contentLength: file.size,
+      }),
+    });
+  } catch {
+    throw new Error("upload session network error");
+  }
+
+  const session = (await sessionResponse.json()) as UploadSessionResponse;
+  if (!sessionResponse.ok || !session.token) {
+    throw new Error(session.error ?? "upload session failed");
+  }
+
+  let uploadResponse: Response;
+  try {
+    uploadResponse = await fetch(session.uploadUrl ?? workerUploadUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": contentType,
+        "X-Upload-Token": session.token,
+      },
+      body: file,
+    });
+  } catch {
+    throw new Error("r2 worker upload blocked");
+  }
+
+  const payload = (await uploadResponse.json()) as UploadResponse & { error?: string };
+  if (!uploadResponse.ok) {
+    throw new Error(payload.error ?? `upload failed (${uploadResponse.status})`);
+  }
+
+  return {
+    publicUrl: payload.publicUrl,
+    key: payload.key,
+  };
 }
 
 async function uploadViaServer({
@@ -103,9 +171,6 @@ async function uploadViaPresignedUrl({
     uploadResponse = await fetch(presignPayload.uploadUrl, {
       method: "PUT",
       body: file,
-      headers: {
-        "Content-Type": contentType,
-      },
     });
   } catch {
     await deleteMediaObjects([presignPayload.key]).catch(() => undefined);

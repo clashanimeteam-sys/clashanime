@@ -252,7 +252,7 @@ export function UploadVideoForm() {
     messages: { uploadFailed: string; r2UploadBlocked: string },
   ) {
     if (!(error instanceof Error)) return messages.uploadFailed;
-    if (error.message.includes("r2 direct upload blocked")) {
+    if (error.message.includes("r2 direct upload blocked") || error.message.includes("r2 worker upload blocked")) {
       return messages.r2UploadBlocked;
     }
     if (error.message.includes("r2 upload forbidden") || error.message.includes("check CORS")) {

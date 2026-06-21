@@ -1,0 +1,17 @@
+{
+  "rules": [
+    {
+      "allowed": {
+        "origins": [
+          "https://www.clashanime.com",
+          "https://clashanime.com",
+          "http://localhost:3000"
+        ],
+        "methods": ["GET", "PUT", "HEAD", "POST", "DELETE"],
+        "headers": ["*"]
+      },
+      "exposeHeaders": ["ETag"],
+      "maxAgeSeconds": 3600
+    }
+  ]
+}

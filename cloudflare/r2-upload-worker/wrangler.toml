@@ -1,0 +1,10 @@
+name = "clashanime-r2-upload"
+main = "src/index.ts"
+compatibility_date = "2024-08-01"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "clashanime-media"
+
+[vars]
+PUBLIC_URL = "https://media.clashanime.com"

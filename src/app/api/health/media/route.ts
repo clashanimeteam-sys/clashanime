@@ -5,8 +5,12 @@ import { getR2S3Client, getR2S3Endpoint } from "@/lib/r2/s3Client";
 
 export const dynamic = "force-dynamic";
 
+import { getUploadTokenSecret } from "@/lib/r2/uploadToken";
+
 export async function GET() {
   const configured = isR2Configured();
+  const workerUploadUrl = process.env.NEXT_PUBLIC_R2_UPLOAD_URL?.trim() || null;
+  const workerUploadSecret = Boolean(getUploadTokenSecret());
   let r2Connection: { ok: boolean; error?: string } | null = null;
 
   if (configured) {
@@ -33,6 +37,10 @@ export async function GET() {
   return NextResponse.json({
     ok: configured,
     r2Configured: configured,
+    r2WorkerUpload: {
+      configured: Boolean(workerUploadUrl && workerUploadSecret),
+      uploadUrl: workerUploadUrl,
+    },
     r2Connection,
     r2Endpoint: configured ? getR2S3Endpoint() : null,
     storageBackend: configured ? "cloudflare-r2" : "supabase-storage-fallback",
