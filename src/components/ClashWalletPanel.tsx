@@ -3,14 +3,13 @@
 import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import {
-  clashCoinsToUsd,
-  formatClashCoins,
   formatUsd,
-  MIN_WITHDRAWAL_COINS,
-  PAYMENT_METHODS,
-  POINTS_PER_CLASH_COIN,
-  pointsToClashCoins,
-  type PaymentMethod,
+  formatUsdFromCents,
+  MIN_WITHDRAWAL_CENTS,
+  MIN_WITHDRAWAL_USD,
+  parseUsdInput,
+  POINTS_PER_DOLLAR,
+  pointsToUsd,
   type WithdrawalRequest,
 } from "@/lib/clashCoins";
 import { createBrowserClient } from "@/lib/supabase/client";
@@ -33,15 +32,17 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
   const supabase = useMemo(() => createBrowserClient(), []);
 
   const totalPoints = profile.points ?? 0;
-  const clashCoins = profile.clash_coins ?? 0;
-  const maxConvertPoints = pointsToClashCoins(totalPoints) * POINTS_PER_CLASH_COIN;
+  const balanceCents = profile.clash_coins ?? 0;
+  const maxConvertPoints =
+    Math.floor(totalPoints / POINTS_PER_DOLLAR) * POINTS_PER_DOLLAR;
 
   const [convertPoints, setConvertPoints] = useState(
-    maxConvertPoints >= POINTS_PER_CLASH_COIN ? String(POINTS_PER_CLASH_COIN) : "",
+    maxConvertPoints >= POINTS_PER_DOLLAR ? String(POINTS_PER_DOLLAR) : "",
   );
-  const [withdrawCoins, setWithdrawCoins] = useState(String(MIN_WITHDRAWAL_COINS));
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("paypal");
-  const [paymentDestination, setPaymentDestination] = useState("");
+  const [withdrawUsd, setWithdrawUsd] = useState(String(MIN_WITHDRAWAL_USD));
+  const [iban, setIban] = useState("");
+  const [accountHolderName, setAccountHolderName] = useState("");
+  const [recipientEmail, setRecipientEmail] = useState("");
   const [kycAcknowledged, setKycAcknowledged] = useState(false);
   const [converting, setConverting] = useState(false);
   const [withdrawing, setWithdrawing] = useState(false);
@@ -56,7 +57,7 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
     const { data } = await supabase
       .from("withdrawals")
       .select(
-        "id, coin_amount, usd_amount, payment_method, payment_destination, status, kyc_acknowledged, fraud_flags, admin_notes, created_at, updated_at",
+        "id, coin_amount, usd_amount, payment_method, payment_destination, payment_details, status, kyc_acknowledged, fraud_flags, admin_notes, created_at, updated_at",
       )
       .eq("user_id", profile.id)
       .order("created_at", { ascending: false })
@@ -81,7 +82,7 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
     setMessage(null);
 
     const points = Number(convertPoints);
-    if (!Number.isInteger(points) || points < POINTS_PER_CLASH_COIN) {
+    if (!Number.isInteger(points) || points < POINTS_PER_DOLLAR) {
       setError(t.wallet.convertMinError);
       setConverting(false);
       return;
@@ -115,8 +116,8 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
     setError(null);
     setMessage(null);
 
-    const coinAmount = Number(withdrawCoins);
-    if (!Number.isInteger(coinAmount) || coinAmount < MIN_WITHDRAWAL_COINS) {
+    const amountCents = parseUsdInput(withdrawUsd);
+    if (amountCents === null || amountCents < MIN_WITHDRAWAL_CENTS) {
       setError(t.wallet.withdrawMinError);
       setWithdrawing(false);
       return;
@@ -133,9 +134,10 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          coinAmount,
-          paymentMethod,
-          paymentDestination: paymentDestination.trim(),
+          amountCents,
+          iban: iban.trim(),
+          accountHolderName: accountHolderName.trim(),
+          recipientEmail: recipientEmail.trim(),
           kycAcknowledged,
         }),
       });
@@ -154,7 +156,9 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
         setError(t.wallet.fraudBlocked);
       } else {
         setMessage(t.wallet.withdrawPendingNotice);
-        setPaymentDestination("");
+        setIban("");
+        setAccountHolderName("");
+        setRecipientEmail("");
         setKycAcknowledged(false);
       }
 
@@ -166,13 +170,11 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
     setWithdrawing(false);
   }
 
-  function paymentMethodLabel(method: PaymentMethod) {
-    return t.wallet.paymentMethods[method];
-  }
-
   function withdrawalStatusLabel(status: WithdrawalRequest["status"]) {
     return t.wallet.withdrawalStatuses[status];
   }
+
+  const previewUsd = formatUsd(pointsToUsd(Number(convertPoints) || 0));
 
   return (
     <section id="clash-wallet" className="space-y-5">
@@ -196,12 +198,9 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
               {t.wallet.balanceLabel}
             </p>
             <p className="mt-2 font-display text-4xl font-black">
-              {formatClashCoins(clashCoins)}
-              <span className="ms-2 text-lg font-bold text-amber-100">CC</span>
+              {formatUsdFromCents(balanceCents)}
             </p>
-            <p className="mt-1 text-sm text-amber-50/90">
-              ≈ {formatUsd(clashCoinsToUsd(clashCoins))}
-            </p>
+            <p className="mt-1 text-sm text-amber-50/90">ClashCoins</p>
           </div>
         </div>
 
@@ -215,7 +214,7 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
           <div className="rounded-xl border border-zinc-200 bg-white/70 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900/50">
             <p className="text-xs text-zinc-500">{t.wallet.minPayoutTitle}</p>
             <p className="mt-1 text-sm font-semibold text-black dark:text-white">
-              {formatUsd(MIN_WITHDRAWAL_COINS)} ({formatClashCoins(MIN_WITHDRAWAL_COINS)} CC)
+              {formatUsd(MIN_WITHDRAWAL_USD)}
             </p>
           </div>
           <div className="rounded-xl border border-zinc-200 bg-white/70 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900/50">
@@ -236,8 +235,8 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
             {t.wallet.convertAmountLabel}
             <input
               type="number"
-              min={POINTS_PER_CLASH_COIN}
-              step={POINTS_PER_CLASH_COIN}
+              min={POINTS_PER_DOLLAR}
+              step={POINTS_PER_DOLLAR}
               max={maxConvertPoints || undefined}
               value={convertPoints}
               onChange={(event) => setConvertPoints(event.target.value)}
@@ -246,15 +245,12 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
           </label>
 
           <p className="mt-2 text-xs text-zinc-500">
-            {t.wallet.convertPreview.replace(
-              "{coins}",
-              formatClashCoins(pointsToClashCoins(Number(convertPoints) || 0)),
-            )}
+            {t.wallet.convertPreview.replace("{amount}", previewUsd)}
           </p>
 
           <button
             type="submit"
-            disabled={converting || maxConvertPoints < POINTS_PER_CLASH_COIN}
+            disabled={converting || maxConvertPoints < POINTS_PER_DOLLAR}
             className="mt-4 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
           >
             {converting ? t.wallet.processing : t.wallet.convertButton}
@@ -267,42 +263,59 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
 
           <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             {t.wallet.withdrawAmountLabel}
-            <input
-              type="number"
-              min={MIN_WITHDRAWAL_COINS}
-              step={1}
-              max={clashCoins || undefined}
-              value={withdrawCoins}
-              onChange={(event) => setWithdrawCoins(event.target.value)}
-              className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-800 dark:bg-zinc-950"
-            />
+            <div className="relative mt-2">
+              <span className="pointer-events-none absolute start-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-zinc-500">
+                $
+              </span>
+              <input
+                type="number"
+                min={MIN_WITHDRAWAL_USD}
+                step={0.01}
+                max={balanceCents / 100 || undefined}
+                value={withdrawUsd}
+                onChange={(event) => setWithdrawUsd(event.target.value)}
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 ps-8 pe-4 text-sm dark:border-zinc-800 dark:bg-zinc-950"
+              />
+            </div>
           </label>
 
-          <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-            {t.wallet.paymentMethodLabel}
-            <select
-              value={paymentMethod}
-              onChange={(event) => setPaymentMethod(event.target.value as PaymentMethod)}
-              className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
-            >
-              {PAYMENT_METHODS.map((method) => (
-                <option key={method} value={method}>
-                  {paymentMethodLabel(method)}
-                </option>
-              ))}
-            </select>
-          </label>
+          <div className="mt-4 rounded-xl border border-zinc-200 bg-white/70 p-4 dark:border-zinc-800 dark:bg-zinc-900/50">
+            <p className="text-sm font-semibold text-black dark:text-white">{t.wallet.bankTransferTitle}</p>
+            <p className="mt-1 text-xs text-zinc-500">{t.wallet.bankTransferDesc}</p>
 
-          <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-            {t.wallet.paymentDestinationLabel}
-            <input
-              type="text"
-              value={paymentDestination}
-              onChange={(event) => setPaymentDestination(event.target.value)}
-              placeholder={t.wallet.paymentDestinationPlaceholder}
-              className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
-            />
-          </label>
+            <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              {t.wallet.ibanLabel}
+              <input
+                type="text"
+                value={iban}
+                onChange={(event) => setIban(event.target.value)}
+                placeholder={t.wallet.ibanPlaceholder}
+                className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+              />
+            </label>
+
+            <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              {t.wallet.accountHolderLabel}
+              <input
+                type="text"
+                value={accountHolderName}
+                onChange={(event) => setAccountHolderName(event.target.value)}
+                placeholder={t.wallet.accountHolderPlaceholder}
+                className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+              />
+            </label>
+
+            <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              {t.wallet.recipientEmailLabel}
+              <input
+                type="email"
+                value={recipientEmail}
+                onChange={(event) => setRecipientEmail(event.target.value)}
+                placeholder={t.wallet.recipientEmailPlaceholder}
+                className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+              />
+            </label>
+          </div>
 
           <label className="mt-4 flex items-start gap-3 text-sm text-zinc-600 dark:text-zinc-400">
             <input
@@ -316,7 +329,7 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
 
           <button
             type="submit"
-            disabled={withdrawing || clashCoins < MIN_WITHDRAWAL_COINS}
+            disabled={withdrawing || balanceCents < MIN_WITHDRAWAL_CENTS}
             className="mt-4 rounded-full bg-gradient-to-r from-amber-500 to-red-600 px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
           >
             {withdrawing ? t.wallet.processing : t.wallet.withdrawButton}
@@ -326,18 +339,9 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
 
       <div className={panelBoxClassName()}>
         <h3 className="text-lg font-semibold text-black dark:text-white">{t.wallet.paymentOptionsTitle}</h3>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-          {PAYMENT_METHODS.map((method) => (
-            <div
-              key={method}
-              className="rounded-xl border border-zinc-200 bg-white/70 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900/50"
-            >
-              <p className="text-sm font-semibold text-black dark:text-white">
-                {paymentMethodLabel(method)}
-              </p>
-              <p className="mt-1 text-xs text-zinc-500">{t.wallet.paymentMethodDesc[method]}</p>
-            </div>
-          ))}
+        <div className="mt-4 rounded-xl border border-zinc-200 bg-white/70 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900/50">
+          <p className="text-sm font-semibold text-black dark:text-white">{t.wallet.bankTransferTitle}</p>
+          <p className="mt-1 text-xs text-zinc-500">{t.wallet.bankTransferDesc}</p>
         </div>
       </div>
 
@@ -356,14 +360,14 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-sm font-semibold text-black dark:text-white">
-                    {formatClashCoins(withdrawal.coin_amount)} CC · {formatUsd(Number(withdrawal.usd_amount))}
+                    {formatUsdFromCents(withdrawal.coin_amount)}
                   </p>
                   <span className="rounded-full bg-zinc-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                     {withdrawalStatusLabel(withdrawal.status)}
                   </span>
                 </div>
                 <p className="mt-1 text-xs text-zinc-500">
-                  {paymentMethodLabel(withdrawal.payment_method)} · {new Date(withdrawal.created_at).toLocaleString()}
+                  {t.wallet.bankTransferTitle} · {new Date(withdrawal.created_at).toLocaleString()}
                 </p>
               </div>
             ))}

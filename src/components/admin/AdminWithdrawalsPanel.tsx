@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { formatClashCoins, formatUsd, type WithdrawalStatus } from "@/lib/clashCoins";
+import { formatUsdFromCents, type WithdrawalStatus } from "@/lib/clashCoins";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -12,6 +12,11 @@ type AdminWithdrawal = {
   usd_amount: number;
   payment_method: string;
   payment_destination: string;
+  payment_details?: {
+    iban?: string;
+    account_holder_name?: string;
+    recipient_email?: string;
+  } | null;
   status: WithdrawalStatus;
   fraud_flags: unknown[];
   admin_notes: string | null;
@@ -46,7 +51,7 @@ export function AdminWithdrawalsPanel() {
     let query = supabase
       .from("withdrawals")
       .select(
-        "id, user_id, coin_amount, usd_amount, payment_method, payment_destination, status, fraud_flags, admin_notes, created_at",
+        "id, user_id, coin_amount, usd_amount, payment_method, payment_destination, payment_details, status, fraud_flags, admin_notes, created_at",
       )
       .order("created_at", { ascending: false })
       .limit(100);
@@ -153,14 +158,28 @@ export function AdminWithdrawalsPanel() {
                     @{withdrawal.username ?? withdrawal.user_id.slice(0, 8)}
                   </p>
                   <p className="mt-1 text-lg font-bold text-amber-300">
-                    {formatClashCoins(withdrawal.coin_amount)} CC · {formatUsd(Number(withdrawal.usd_amount))}
+                    {formatUsdFromCents(withdrawal.coin_amount)}
                   </p>
                   <p className="mt-2 text-xs text-zinc-400">
-                    {t.wallet.paymentMethods[withdrawal.payment_method as keyof typeof t.wallet.paymentMethods] ??
-                      withdrawal.payment_method}
-                    {" · "}
-                    {withdrawal.payment_destination}
+                    {t.wallet.bankTransferTitle}
                   </p>
+                  {withdrawal.payment_details?.iban ? (
+                    <p className="mt-1 text-xs text-zinc-300">
+                      {t.wallet.ibanLabel}: {withdrawal.payment_details.iban}
+                    </p>
+                  ) : null}
+                  {withdrawal.payment_details?.account_holder_name ? (
+                    <p className="mt-1 text-xs text-zinc-300">
+                      {t.wallet.accountHolderLabel}: {withdrawal.payment_details.account_holder_name}
+                    </p>
+                  ) : null}
+                  {withdrawal.payment_details?.recipient_email ? (
+                    <p className="mt-1 text-xs text-zinc-300">
+                      {t.wallet.recipientEmailLabel}: {withdrawal.payment_details.recipient_email}
+                    </p>
+                  ) : (
+                    <p className="mt-1 text-xs text-zinc-500">{withdrawal.payment_destination}</p>
+                  )}
                   <p className="mt-1 text-xs text-zinc-500">
                     {new Date(withdrawal.created_at).toLocaleString()}
                   </p>

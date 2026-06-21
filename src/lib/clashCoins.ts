@@ -1,19 +1,19 @@
-export const POINTS_PER_CLASH_COIN = 1000;
-export const CLASH_COINS_PER_USD = 1;
-export const MIN_WITHDRAWAL_COINS = 50;
-export const MIN_WITHDRAWAL_USD = MIN_WITHDRAWAL_COINS * CLASH_COINS_PER_USD;
+export const POINTS_PER_DOLLAR = 1000;
+export const CENTS_PER_DOLLAR = 100;
+export const MIN_WITHDRAWAL_CENTS = 5000;
+export const MIN_WITHDRAWAL_USD = MIN_WITHDRAWAL_CENTS / CENTS_PER_DOLLAR;
 export const FRAUD_DAILY_POINTS_THRESHOLD = 10000;
 export const WITHDRAWAL_REVIEW_HOURS = 48;
 
-export const PAYMENT_METHODS = [
-  "paypal",
-  "wise",
-  "revolut",
-  "crypto_usdt",
-  "crypto_btc",
-] as const;
+export const PAYMENT_METHOD = "bank_transfer" as const;
 
-export type PaymentMethod = (typeof PAYMENT_METHODS)[number];
+export type PaymentMethod = typeof PAYMENT_METHOD;
+
+export type BankTransferDetails = {
+  iban: string;
+  accountHolderName: string;
+  recipientEmail: string;
+};
 
 export type WithdrawalStatus =
   | "pending"
@@ -36,6 +36,7 @@ export type WithdrawalRequest = {
   usd_amount: number;
   payment_method: PaymentMethod;
   payment_destination: string;
+  payment_details?: BankTransferDetails | Record<string, unknown>;
   status: WithdrawalStatus;
   kyc_acknowledged: boolean;
   fraud_flags: unknown[];
@@ -44,26 +45,49 @@ export type WithdrawalRequest = {
   updated_at: string;
 };
 
-export function pointsToClashCoins(points: number): number {
-  return Math.floor(points / POINTS_PER_CLASH_COIN);
+export function pointsToCents(points: number): number {
+  return Math.floor((points * CENTS_PER_DOLLAR) / POINTS_PER_DOLLAR);
 }
 
-export function clashCoinsToUsd(coins: number): number {
-  return coins * CLASH_COINS_PER_USD;
+export function pointsToUsd(points: number): number {
+  return pointsToCents(points) / CENTS_PER_DOLLAR;
 }
 
-export function formatClashCoins(coins: number): string {
-  return coins.toLocaleString(undefined, { maximumFractionDigits: 0 });
+export function centsToUsd(cents: number): number {
+  return cents / CENTS_PER_DOLLAR;
 }
 
-export function formatUsd(amount: number): string {
+export function usdToCents(usd: number): number {
+  return Math.round(usd * CENTS_PER_DOLLAR);
+}
+
+export function formatUsdFromCents(cents: number): string {
   return new Intl.NumberFormat(undefined, {
     style: "currency",
     currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(amount);
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(cents / CENTS_PER_DOLLAR);
+}
+
+export function formatUsd(usd: number): string {
+  return new Intl.NumberFormat(undefined, {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(usd);
 }
 
 export function isValidConversionAmount(points: number): boolean {
-  return points >= POINTS_PER_CLASH_COIN && points % POINTS_PER_CLASH_COIN === 0;
+  return points >= POINTS_PER_DOLLAR && points % POINTS_PER_DOLLAR === 0;
+}
+
+export function parseUsdInput(value: string): number | null {
+  const normalized = value.replace(/[^0-9.,]/g, "").replace(",", ".");
+  const parsed = Number(normalized);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return null;
+  }
+  return Math.round(parsed * CENTS_PER_DOLLAR);
 }

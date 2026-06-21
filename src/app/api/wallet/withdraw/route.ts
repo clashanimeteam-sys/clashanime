@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { PAYMENT_METHODS } from "@/lib/clashCoins";
 import { createServerClient } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
@@ -18,9 +17,10 @@ export async function POST(request: Request) {
   }
 
   let body: {
-    coinAmount?: number;
-    paymentMethod?: string;
-    paymentDestination?: string;
+    amountCents?: number;
+    iban?: string;
+    accountHolderName?: string;
+    recipientEmail?: string;
     kycAcknowledged?: boolean;
   };
 
@@ -30,27 +30,33 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
 
-  const coinAmount = body.coinAmount;
-  const paymentMethod = body.paymentMethod?.trim();
-  const paymentDestination = body.paymentDestination?.trim();
+  const amountCents = body.amountCents;
+  const iban = body.iban?.trim();
+  const accountHolderName = body.accountHolderName?.trim();
+  const recipientEmail = body.recipientEmail?.trim().toLowerCase();
   const kycAcknowledged = body.kycAcknowledged === true;
 
-  if (typeof coinAmount !== "number" || !Number.isInteger(coinAmount) || coinAmount <= 0) {
-    return NextResponse.json({ error: "Invalid coin amount" }, { status: 400 });
+  if (typeof amountCents !== "number" || !Number.isInteger(amountCents) || amountCents <= 0) {
+    return NextResponse.json({ error: "Invalid withdrawal amount" }, { status: 400 });
   }
 
-  if (!paymentMethod || !PAYMENT_METHODS.includes(paymentMethod as (typeof PAYMENT_METHODS)[number])) {
-    return NextResponse.json({ error: "Invalid payment method" }, { status: 400 });
+  if (!iban || iban.replace(/\s+/g, "").length < 15) {
+    return NextResponse.json({ error: "Valid IBAN required" }, { status: 400 });
   }
 
-  if (!paymentDestination || paymentDestination.length < 3) {
-    return NextResponse.json({ error: "Payment destination required" }, { status: 400 });
+  if (!accountHolderName || accountHolderName.length < 2) {
+    return NextResponse.json({ error: "Account holder name required" }, { status: 400 });
+  }
+
+  if (!recipientEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipientEmail)) {
+    return NextResponse.json({ error: "Valid recipient email required" }, { status: 400 });
   }
 
   const { data: withdrawalId, error } = await supabase.rpc("request_clash_coin_withdrawal", {
-    p_coin_amount: coinAmount,
-    p_payment_method: paymentMethod,
-    p_payment_destination: paymentDestination,
+    p_amount_cents: amountCents,
+    p_iban: iban,
+    p_account_holder_name: accountHolderName,
+    p_recipient_email: recipientEmail,
     p_kyc_acknowledged: kycAcknowledged,
   });
 

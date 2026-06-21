@@ -402,9 +402,14 @@ export type Dictionary = {
     withdrawTitle: string;
     withdrawDesc: string;
     withdrawAmountLabel: string;
-    paymentMethodLabel: string;
-    paymentDestinationLabel: string;
-    paymentDestinationPlaceholder: string;
+    bankTransferTitle: string;
+    bankTransferDesc: string;
+    ibanLabel: string;
+    ibanPlaceholder: string;
+    accountHolderLabel: string;
+    accountHolderPlaceholder: string;
+    recipientEmailLabel: string;
+    recipientEmailPlaceholder: string;
     kycAcknowledgement: string;
     kycRequired: string;
     withdrawButton: string;
@@ -418,20 +423,6 @@ export type Dictionary = {
     loadingHistory: string;
     noHistory: string;
     legalNote: string;
-    paymentMethods: {
-      paypal: string;
-      wise: string;
-      revolut: string;
-      crypto_usdt: string;
-      crypto_btc: string;
-    };
-    paymentMethodDesc: {
-      paypal: string;
-      wise: string;
-      revolut: string;
-      crypto_usdt: string;
-      crypto_btc: string;
-    };
     withdrawalStatuses: {
       pending: string;
       reviewing: string;
@@ -774,8 +765,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       cashPrizeRank3: "#3 Bronze",
       clashCoinsTitle: "ClashCoins — your digital wallet",
       clashCoinsSubtitle: "Turn hunter points into redeemable ClashCoins and cash out like a digital asset.",
-      clashCoinsExchange: "10,000 points = 10 ClashCoins ($10)",
-      clashCoinsMinPayout: "Minimum payout: $50 (50 CC)",
+      clashCoinsExchange: "10,000 points = $10",
+      clashCoinsMinPayout: "Minimum payout: $50.00",
       clashCoinsOpenWallet: "Open wallet",
       upload: "Video Upload",
       maintenanceMode: "ClashAnime is in maintenance mode. Some features are temporarily unavailable.",
@@ -1137,56 +1128,47 @@ export const dictionaries: Record<Locale, Dictionary> = {
       title: "ClashCoins",
       subtitle: "Digital wallet",
       description:
-        "ClashCoins are your redeemable balance. Convert hunter points, hold them like digital assets, and request real payouts when you are ready.",
+        "Your redeemable dollar balance. Convert hunter points to $, keep the total in your wallet, and withdraw by bank transfer.",
       balanceLabel: "Wallet balance",
       exchangeRateTitle: "Exchange rate",
-      exchangeRateValue: "10,000 points = 10 CC ($10)",
+      exchangeRateValue: "10,000 points = $10.00",
       minPayoutTitle: "Minimum payout",
       hunterPointsLabel: "Hunter points available",
-      convertTitle: "Convert points to ClashCoins",
-      convertDesc: "Exchange hunter points at a fixed rate. Converted coins stay in your wallet until you withdraw.",
+      convertTitle: "Convert points to $ balance",
+      convertDesc: "Exchange hunter points at a fixed rate. Your wallet balance is stored in USD with cents.",
       convertAmountLabel: "Points to convert",
-      convertPreview: "You will receive {coins} ClashCoins",
+      convertPreview: "You will receive {amount}",
       convertButton: "Convert now",
-      convertSuccess: "Points converted to ClashCoins successfully.",
+      convertSuccess: "Points converted to your $ balance successfully.",
       convertFailed: "Could not convert points. Check your balance and try again.",
-      convertMinError: "Minimum conversion is 1,000 points.",
+      convertMinError: "Minimum conversion is 1,000 points ($1.00).",
       withdrawTitle: "Request payout",
-      withdrawDesc: "Choose a payment method and submit your request. Payouts are reviewed manually for safety.",
-      withdrawAmountLabel: "ClashCoins to withdraw",
-      paymentMethodLabel: "Payment method",
-      paymentDestinationLabel: "PayPal email / wallet address",
-      paymentDestinationPlaceholder: "name@email.com or wallet address",
+      withdrawDesc: "Withdraw your $ balance by bank transfer. Payouts are reviewed manually for safety.",
+      withdrawAmountLabel: "Amount to withdraw ($)",
+      bankTransferTitle: "Bank transfer",
+      bankTransferDesc: "Enter your IBAN, the name on your bank card, and the recipient email.",
+      ibanLabel: "IBAN",
+      ibanPlaceholder: "DE89 3704 0044 0532 0130 00",
+      accountHolderLabel: "Name on bank card",
+      accountHolderPlaceholder: "Full name as shown on your bank account",
+      recipientEmailLabel: "Recipient email",
+      recipientEmailPlaceholder: "name@email.com",
       kycAcknowledgement:
         "I understand identity verification (KYC) may be required before payout is sent.",
       kycRequired: "Please confirm the KYC notice before submitting.",
       withdrawButton: "Request payout",
       withdrawFailed: "Could not submit withdrawal request.",
-      withdrawMinError: "Minimum withdrawal is 50 ClashCoins ($50).",
+      withdrawMinError: "Minimum withdrawal is $50.00.",
       withdrawPendingNotice:
         "Your request is under review. Champion payouts usually arrive within 48 hours!",
       fraudBlocked:
         "This request was flagged for review due to unusual point activity. Our team will investigate.",
       processing: "Processing...",
-      paymentOptionsTitle: "Supported payout methods",
+      paymentOptionsTitle: "Payout method",
       historyTitle: "Withdrawal history",
       loadingHistory: "Loading history...",
       noHistory: "No withdrawal requests yet.",
       legalNote: "Payouts are subject to anti-fraud checks and tax reporting requirements.",
-      paymentMethods: {
-        paypal: "PayPal",
-        wise: "Wise",
-        revolut: "Revolut",
-        crypto_usdt: "USDT (Crypto)",
-        crypto_btc: "BTC (Crypto)",
-      },
-      paymentMethodDesc: {
-        paypal: "Fast and popular for small international payouts.",
-        wise: "Low-fee bank transfers for global hunters.",
-        revolut: "Great for EU and international creators.",
-        crypto_usdt: "Stablecoin payouts for tech-savvy hunters.",
-        crypto_btc: "Bitcoin payouts without complex bank details.",
-      },
       withdrawalStatuses: {
         pending: "Pending review",
         reviewing: "Under review",
@@ -1537,8 +1519,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       cashPrizeRank3: "3位 ブロンズ",
       clashCoinsTitle: "ClashCoins — デジタルウォレット",
       clashCoinsSubtitle: "ハンターポイントを換金可能なClashCoinsに変換。",
-      clashCoinsExchange: "10,000ポイント = 10 ClashCoins（$10）",
-      clashCoinsMinPayout: "最低出金: $50（50 CC）",
+      clashCoinsExchange: "10,000ポイント = $10",
+      clashCoinsMinPayout: "最低出金: $50.00",
       clashCoinsOpenWallet: "ウォレットを開く",
       upload: "動画アップロード",
       maintenanceMode: "ClashAnimeはメンテナンス中です。一部機能が一時的に利用できません。",
@@ -1895,53 +1877,44 @@ export const dictionaries: Record<Locale, Dictionary> = {
       title: "ClashCoins",
       subtitle: "デジタルウォレット",
       description:
-        "ClashCoinsは換金可能な残高です。ポイントを変換し、デジタル資産のように保有し、準備ができたら出金できます。",
+        "換金可能なドル残高です。ハンターポイントを$に変換し、銀行振込で出金できます。",
       balanceLabel: "ウォレット残高",
       exchangeRateTitle: "為替レート",
-      exchangeRateValue: "10,000ポイント = 10 CC（$10）",
+      exchangeRateValue: "10,000ポイント = $10.00",
       minPayoutTitle: "最低出金",
       hunterPointsLabel: "利用可能なハンターポイント",
-      convertTitle: "ポイントをClashCoinsに変換",
-      convertDesc: "固定レートでハンターポイントを交換します。",
+      convertTitle: "ポイントを$残高に変換",
+      convertDesc: "固定レートでポイントを交換します。残高はセント単位で保存されます。",
       convertAmountLabel: "変換するポイント",
-      convertPreview: "{coins} ClashCoinsを受け取ります",
+      convertPreview: "受け取る金額: {amount}",
       convertButton: "今すぐ変換",
-      convertSuccess: "ポイントをClashCoinsに変換しました。",
+      convertSuccess: "ポイントを$残高に変換しました。",
       convertFailed: "変換できませんでした。残高を確認してください。",
-      convertMinError: "最低変換は1,000ポイントです。",
+      convertMinError: "最低変換は1,000ポイント（$1.00）です。",
       withdrawTitle: "出金リクエスト",
-      withdrawDesc: "支払い方法を選び、リクエストを送信してください。",
-      withdrawAmountLabel: "出金するClashCoins",
-      paymentMethodLabel: "支払い方法",
-      paymentDestinationLabel: "PayPalメール / ウォレットアドレス",
-      paymentDestinationPlaceholder: "name@email.com またはウォレットアドレス",
+      withdrawDesc: "銀行振込で$残高を出金します。",
+      withdrawAmountLabel: "出金額 ($)",
+      bankTransferTitle: "銀行振込",
+      bankTransferDesc: "IBAN、口座名義、受取人メールを入力してください。",
+      ibanLabel: "IBAN",
+      ibanPlaceholder: "DE89 3704 0044 0532 0130 00",
+      accountHolderLabel: "口座名義",
+      accountHolderPlaceholder: "銀行口座の名義人",
+      recipientEmailLabel: "受取人メール",
+      recipientEmailPlaceholder: "name@email.com",
       kycAcknowledgement: "出金前に本人確認（KYC）が必要になる場合があることを理解しています。",
       kycRequired: "KYC通知に同意してください。",
       withdrawButton: "出金をリクエスト",
       withdrawFailed: "出金リクエストを送信できませんでした。",
-      withdrawMinError: "最低出金は50 ClashCoins（$50）です。",
+      withdrawMinError: "最低出金は$50.00です。",
       withdrawPendingNotice: "リクエストは審査中です。チャンピオンの報酬は通常48時間以内に届きます！",
       fraudBlocked: "異常なポイント活動のため審査対象になりました。",
       processing: "処理中...",
-      paymentOptionsTitle: "対応している出金方法",
+      paymentOptionsTitle: "出金方法",
       historyTitle: "出金履歴",
       loadingHistory: "履歴を読み込み中...",
       noHistory: "出金リクエストはまだありません。",
       legalNote: "出金は不正防止チェックと税務記録の対象です。",
-      paymentMethods: {
-        paypal: "PayPal",
-        wise: "Wise",
-        revolut: "Revolut",
-        crypto_usdt: "USDT（暗号資産）",
-        crypto_btc: "BTC（暗号資産）",
-      },
-      paymentMethodDesc: {
-        paypal: "小額の国際送金に最も人気。",
-        wise: "低手数料の国際送金。",
-        revolut: "EUおよび国際クリエイター向け。",
-        crypto_usdt: "テック系ハンター向けステーブルコイン。",
-        crypto_btc: "銀行口座不要のBitcoin出金。",
-      },
       withdrawalStatuses: {
         pending: "審査待ち",
         reviewing: "審査中",
@@ -2291,8 +2264,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       cashPrizeRank3: "المركز 3 برونز",
       clashCoinsTitle: "ClashCoins — محفظتك الرقمية",
       clashCoinsSubtitle: "حوّل نقاط الصياد إلى ClashCoins قابلة للسحب كأصول رقمية.",
-      clashCoinsExchange: "١٠,٠٠٠ نقطة = ١٠ ClashCoins (١٠$)",
-      clashCoinsMinPayout: "الحد الأدنى للسحب: ٥٠$ (٥٠ CC)",
+      clashCoinsExchange: "١٠,٠٠٠ نقطة = ١٠$",
+      clashCoinsMinPayout: "الحد الأدنى للسحب: ٥٠$",
       clashCoinsOpenWallet: "افتح المحفظة",
       upload: "رفع فيديو",
       maintenanceMode: "ClashAnime في وضع الصيانة. بعض الميزات غير متاحة مؤقتاً.",
@@ -2651,53 +2624,44 @@ export const dictionaries: Record<Locale, Dictionary> = {
       title: "ClashCoins",
       subtitle: "المحفظة الرقمية",
       description:
-        "ClashCoins هي رصيدك القابل للسحب. حوّل نقاط الصياد، احتفظ بها كأصول رقمية، واطلب سحباً حقيقياً عندما تكون جاهزاً.",
+        "رصيدك القابل للسحب بالدولار $. حوّل نقاط الصياد إلى $ واحتفظ بالإجمالي في محفظتك، ثم اسحب عبر تحويل بنكي.",
       balanceLabel: "رصيد المحفظة",
       exchangeRateTitle: "سعر الصرف",
-      exchangeRateValue: "١٠,٠٠٠ نقطة = ١٠ CC (١٠$)",
+      exchangeRateValue: "١٠,٠٠٠ نقطة = ١٠$",
       minPayoutTitle: "الحد الأدنى للسحب",
       hunterPointsLabel: "نقاط الصياد المتاحة",
-      convertTitle: "تحويل النقاط إلى ClashCoins",
-      convertDesc: "استبدل نقاط الصياد بسعر ثابت. تبقى العملات في محفظتك حتى تطلب السحب.",
+      convertTitle: "تحويل النقاط إلى رصيد $",
+      convertDesc: "استبدل نقاط الصياد بسعر ثابت. يُحفظ الرصيد بالدولار مع السنتات.",
       convertAmountLabel: "النقاط للتحويل",
-      convertPreview: "ستحصل على {coins} ClashCoins",
+      convertPreview: "ستحصل على {amount}",
       convertButton: "حوّل الآن",
-      convertSuccess: "تم تحويل النقاط إلى ClashCoins بنجاح.",
+      convertSuccess: "تم تحويل النقاط إلى رصيد $ بنجاح.",
       convertFailed: "تعذر التحويل. تحقق من رصيدك وحاول مجدداً.",
-      convertMinError: "الحد الأدنى للتحويل ١,٠٠٠ نقطة.",
+      convertMinError: "الحد الأدنى للتحويل ١,٠٠٠ نقطة (١$).",
       withdrawTitle: "طلب سحب",
-      withdrawDesc: "اختر طريقة الدفع وأرسل طلبك. تتم مراجعة السحوبات يدوياً للأمان.",
-      withdrawAmountLabel: "ClashCoins للسحب",
-      paymentMethodLabel: "طريقة الدفع",
-      paymentDestinationLabel: "بريد PayPal / عنوان المحفظة",
-      paymentDestinationPlaceholder: "name@email.com أو عنوان محفظة",
+      withdrawDesc: "اسحب رصيد $ عبر تحويل بنكي. تتم مراجعة الطلبات يدوياً للأمان.",
+      withdrawAmountLabel: "المبلغ للسحب ($)",
+      bankTransferTitle: "تحويل بنكي",
+      bankTransferDesc: "أدخل IBAN واسم صاحب البطاقة البنكية وبريد المستلم.",
+      ibanLabel: "IBAN",
+      ibanPlaceholder: "DE89 3704 0044 0532 0130 00",
+      accountHolderLabel: "اسم صاحب البطاقة البنكية",
+      accountHolderPlaceholder: "الاسم كما يظهر في حسابك البنكي",
+      recipientEmailLabel: "إيميل المستلم",
+      recipientEmailPlaceholder: "name@email.com",
       kycAcknowledgement: "أفهم أنه قد يُطلب إثبات الهوية (KYC) قبل إرسال المبلغ.",
       kycRequired: "يرجى تأكيد إشعار KYC قبل الإرسال.",
       withdrawButton: "اطلب السحب",
       withdrawFailed: "تعذر إرسال طلب السحب.",
-      withdrawMinError: "الحد الأدنى للسحب ٥٠ ClashCoins (٥٠$).",
+      withdrawMinError: "الحد الأدنى للسحب ٥٠$.",
       withdrawPendingNotice: "طلبك قيد المراجعة، سيصلك راتب الأبطال خلال ٤٨ ساعة!",
       fraudBlocked: "تم تعليق الطلب للمراجعة بسبب نشاط نقاط غير اعتيادي.",
       processing: "جارٍ المعالجة...",
-      paymentOptionsTitle: "طرق الدفع المدعومة",
+      paymentOptionsTitle: "طريقة الدفع",
       historyTitle: "سجل السحوبات",
       loadingHistory: "جارٍ تحميل السجل...",
       noHistory: "لا توجد طلبات سحب بعد.",
       legalNote: "السحوبات تخضع لفحوصات مكافحة الغش ومتطلبات الضرائب.",
-      paymentMethods: {
-        paypal: "PayPal",
-        wise: "Wise",
-        revolut: "Revolut",
-        crypto_usdt: "USDT (عملة رقمية)",
-        crypto_btc: "BTC (عملة رقمية)",
-      },
-      paymentMethodDesc: {
-        paypal: "الأسهل والأكثر شيوعاً للتحويلات الصغيرة.",
-        wise: "تحويلات بنكية منخفضة الرسوم للصيادين الدوليين.",
-        revolut: "ممتاز للمستخدمين في أوروبا وخارجها.",
-        crypto_usdt: "مدفوعات USDT لمجتمع التقنية والأنمي.",
-        crypto_btc: "Bitcoin بدون بيانات بنكية معقدة.",
-      },
       withdrawalStatuses: {
         pending: "قيد المراجعة",
         reviewing: "تحت المراجعة",
