@@ -38,6 +38,12 @@ export type Dictionary = {
     clashCoinsExchange: string;
     clashCoinsMinPayout: string;
     clashCoinsOpenWallet: string;
+    seasonCountdownLabel: string;
+    seasonDays: string;
+    seasonHours: string;
+    seasonMinutes: string;
+    seasonSeconds: string;
+    seasonEnded: string;
     upload: string;
     maintenanceMode: string;
   };
@@ -726,6 +732,42 @@ export type Dictionary = {
       settings: string;
       withdrawals: string;
       kyc: string;
+      seasons: string;
+    };
+    seasons: {
+      title: string;
+      subtitle: string;
+      activeNow: string;
+      noActive: string;
+      createTitle: string;
+      quickStartTitle: string;
+      quickStartDesc: string;
+      listTitle: string;
+      nameLabel: string;
+      startsAtLabel: string;
+      endsAtLabel: string;
+      durationDaysLabel: string;
+      activateOnCreate: string;
+      createButton: string;
+      startNewButton: string;
+      editButton: string;
+      activateButton: string;
+      endButton: string;
+      autoNamePlaceholder: string;
+      editNamePrompt: string;
+      editStartPrompt: string;
+      editEndPrompt: string;
+      empty: string;
+      created: string;
+      updated: string;
+      activated: string;
+      ended: string;
+      startedNew: string;
+      statusLabels: {
+        scheduled: string;
+        active: string;
+        ended: string;
+      };
     };
     roles: {
       user: string;
@@ -832,6 +874,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashCoinsExchange: "10,000 points = $10",
       clashCoinsMinPayout: "Minimum payout: $50.00",
       clashCoinsOpenWallet: "Open wallet",
+      seasonCountdownLabel: "Season ends in",
+      seasonDays: "Days",
+      seasonHours: "Hours",
+      seasonMinutes: "Min",
+      seasonSeconds: "Sec",
+      seasonEnded: "Season ended",
       upload: "Video Upload",
       maintenanceMode: "ClashAnime is in maintenance mode. Some features are temporarily unavailable.",
     },
@@ -1548,6 +1596,42 @@ export const dictionaries: Record<Locale, Dictionary> = {
         settings: "Settings",
         withdrawals: "Withdrawals",
         kyc: "Payout KYC",
+        seasons: "Clash seasons",
+      },
+      seasons: {
+        title: "Clash seasons",
+        subtitle: "Control season start, end, and the countdown on the battles page.",
+        activeNow: "Active season",
+        noActive: "No active season. Start one to show the countdown on the battles page.",
+        createTitle: "Create season",
+        quickStartTitle: "Start new season",
+        quickStartDesc: "Ends the current season and starts a new 30-day active season immediately.",
+        listTitle: "All seasons",
+        nameLabel: "Season name",
+        startsAtLabel: "Start date",
+        endsAtLabel: "End date",
+        durationDaysLabel: "Duration (days)",
+        activateOnCreate: "Activate immediately",
+        createButton: "Create season",
+        startNewButton: "Start new season now",
+        editButton: "Edit dates",
+        activateButton: "Activate",
+        endButton: "End season",
+        autoNamePlaceholder: "Auto name if empty",
+        editNamePrompt: "Season name",
+        editStartPrompt: "Start (YYYY-MM-DDTHH:mm)",
+        editEndPrompt: "End (YYYY-MM-DDTHH:mm)",
+        empty: "No seasons yet.",
+        created: "Season created.",
+        updated: "Season updated.",
+        activated: "Season activated.",
+        ended: "Season ended.",
+        startedNew: "New season started.",
+        statusLabels: {
+          scheduled: "Scheduled",
+          active: "Active",
+          ended: "Ended",
+        },
       },
       roles: {
         user: "User",
@@ -1652,6 +1736,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashCoinsExchange: "10,000ポイント = $10",
       clashCoinsMinPayout: "最低出金: $50.00",
       clashCoinsOpenWallet: "ウォレットを開く",
+      seasonCountdownLabel: "シーズン終了まで",
+      seasonDays: "日",
+      seasonHours: "時間",
+      seasonMinutes: "分",
+      seasonSeconds: "秒",
+      seasonEnded: "シーズン終了",
       upload: "動画アップロード",
       maintenanceMode: "ClashAnimeはメンテナンス中です。一部機能が一時的に利用できません。",
     },
@@ -2360,6 +2450,42 @@ export const dictionaries: Record<Locale, Dictionary> = {
         settings: "設定",
         withdrawals: "出金",
         kyc: "出金KYC",
+        seasons: "クラッシュシーズン",
+      },
+      seasons: {
+        title: "クラッシュシーズン",
+        subtitle: "シーズンの開始・終了と、バトルページのカウントダウンを管理します。",
+        activeNow: "現在のシーズン",
+        noActive: "アクティブなシーズンがありません。カウントダウンを表示するには開始してください。",
+        createTitle: "シーズン作成",
+        quickStartTitle: "新シーズン開始",
+        quickStartDesc: "現在のシーズンを終了し、新しい30日シーズンをすぐに開始します。",
+        listTitle: "すべてのシーズン",
+        nameLabel: "シーズン名",
+        startsAtLabel: "開始日",
+        endsAtLabel: "終了日",
+        durationDaysLabel: "期間（日）",
+        activateOnCreate: "すぐに有効化",
+        createButton: "シーズン作成",
+        startNewButton: "新シーズンを今すぐ開始",
+        editButton: "日付を編集",
+        activateButton: "有効化",
+        endButton: "シーズン終了",
+        autoNamePlaceholder: "空欄なら自動命名",
+        editNamePrompt: "シーズン名",
+        editStartPrompt: "開始 (YYYY-MM-DDTHH:mm)",
+        editEndPrompt: "終了 (YYYY-MM-DDTHH:mm)",
+        empty: "シーズンがありません。",
+        created: "シーズンを作成しました。",
+        updated: "シーズンを更新しました。",
+        activated: "シーズンを有効化しました。",
+        ended: "シーズンを終了しました。",
+        startedNew: "新シーズンを開始しました。",
+        statusLabels: {
+          scheduled: "予定",
+          active: "有効",
+          ended: "終了",
+        },
       },
       roles: {
         user: "ユーザー",
@@ -2464,6 +2590,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashCoinsExchange: "١٠,٠٠٠ نقطة = ١٠$",
       clashCoinsMinPayout: "الحد الأدنى للسحب: ٥٠$",
       clashCoinsOpenWallet: "افتح المحفظة",
+      seasonCountdownLabel: "ينتهي الموسم خلال",
+      seasonDays: "يوم",
+      seasonHours: "ساعة",
+      seasonMinutes: "دقيقة",
+      seasonSeconds: "ثانية",
+      seasonEnded: "انتهى الموسم",
       upload: "رفع فيديو",
       maintenanceMode: "ClashAnime في وضع الصيانة. بعض الميزات غير متاحة مؤقتاً.",
     },
@@ -3175,6 +3307,42 @@ export const dictionaries: Record<Locale, Dictionary> = {
         settings: "الإعدادات",
         withdrawals: "السحوبات",
         kyc: "KYC السحب",
+        seasons: "مواسم النزال",
+      },
+      seasons: {
+        title: "مواسم النزال",
+        subtitle: "تحكم في بداية ونهاية الموسم والعداد التنازلي في صفحة النزالات.",
+        activeNow: "الموسم النشط",
+        noActive: "لا يوجد موسم نشط. ابدأ موسماً جديداً لإظهار العداد في صفحة النزالات.",
+        createTitle: "إنشاء موسم",
+        quickStartTitle: "بدء موسم جديد",
+        quickStartDesc: "ينهي الموسم الحالي ويبدأ موسماً جديداً لمدة 30 يوماً فوراً.",
+        listTitle: "كل المواسم",
+        nameLabel: "اسم الموسم",
+        startsAtLabel: "تاريخ البداية",
+        endsAtLabel: "تاريخ النهاية",
+        durationDaysLabel: "المدة (أيام)",
+        activateOnCreate: "تفعيل فوراً",
+        createButton: "إنشاء الموسم",
+        startNewButton: "ابدأ موسماً جديداً الآن",
+        editButton: "تعديل التواريخ",
+        activateButton: "تفعيل",
+        endButton: "إنهاء الموسم",
+        autoNamePlaceholder: "اسم تلقائي إذا تُرك فارغاً",
+        editNamePrompt: "اسم الموسم",
+        editStartPrompt: "البداية (YYYY-MM-DDTHH:mm)",
+        editEndPrompt: "النهاية (YYYY-MM-DDTHH:mm)",
+        empty: "لا توجد مواسم بعد.",
+        created: "تم إنشاء الموسم.",
+        updated: "تم تحديث الموسم.",
+        activated: "تم تفعيل الموسم.",
+        ended: "تم إنهاء الموسم.",
+        startedNew: "تم بدء موسم جديد.",
+        statusLabels: {
+          scheduled: "مجدول",
+          active: "نشط",
+          ended: "منتهٍ",
+        },
       },
       roles: {
         user: "مستخدم",

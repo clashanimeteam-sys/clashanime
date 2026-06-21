@@ -2,18 +2,21 @@
 
 import { ClashPrizeBanner } from "@/components/clash/ClashPrizeBanner";
 import { ClashVideosBackdrop } from "@/components/clash/ClashVideosBackdrop";
+import { SeasonCountdown } from "@/components/clash/SeasonCountdown";
 import { SiteTitle } from "@/components/SiteTitle";
 import { VideoCard } from "@/components/VideoCard";
+import type { ClashSeason } from "@/lib/clashSeasons";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Video } from "@/lib/types";
 
 type HomeContentProps = {
   videos: Video[];
+  activeSeason: ClashSeason | null;
 };
 
 const PODIUM_ORDER = [1, 2, 3] as const;
 
-export function HomeContent({ videos }: HomeContentProps) {
+export function HomeContent({ videos, activeSeason }: HomeContentProps) {
   const { t } = useLocale();
 
   const podiumVideos = PODIUM_ORDER.map((rank) =>
@@ -37,7 +40,11 @@ export function HomeContent({ videos }: HomeContentProps) {
 
   return (
     <div className="relative overflow-hidden">
-      <div className="relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6">
+      <div
+        className={`relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 ${activeSeason ? "pt-36 sm:pt-8" : ""}`}
+      >
+        {activeSeason ? <SeasonCountdown season={activeSeason} /> : null}
+
         <section className="mb-8">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-orange-700 backdrop-blur-sm dark:text-orange-300">
             <span className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.9)]" />
