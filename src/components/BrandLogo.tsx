@@ -27,17 +27,23 @@ export function BrandLogo({ className = "h-28 w-28", priority = false }: BrandLo
   const isDark = mounted && resolvedTheme === "dark";
 
   return (
-    <Image
-      src={isDark ? "/logo-dark.png" : "/logo.png"}
-      alt="ClashAnime"
-      width={112}
-      height={112}
-      priority={priority}
-      className={`object-contain transition-[filter] duration-300 ${className} ${
-        isDark
-          ? "drop-shadow-[0_0_14px_rgba(179,27,27,0.35)]"
-          : "drop-shadow-[0_4px_10px_rgba(0,0,0,0.12)]"
-      }`}
-    />
+    <span className={`relative inline-flex ${className}`}>
+      <Image
+        src={isDark ? "/logo-dark.png" : "/logo.png"}
+        alt="ClashAnime"
+        width={112}
+        height={112}
+        priority={priority}
+        className={`h-full w-full object-contain transition-[filter] duration-300 ${
+          isDark
+            ? "drop-shadow-[0_0_14px_rgba(179,27,27,0.35)]"
+            : "drop-shadow-[0_4px_10px_rgba(0,0,0,0.12)]"
+        }`}
+      />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute left-[74%] top-[74%] h-[14%] w-[14%] rounded-sm bg-white dark:bg-black"
+      />
+    </span>
   );
 }
