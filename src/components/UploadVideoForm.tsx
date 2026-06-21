@@ -9,12 +9,14 @@ import {
   getScanRejectionMessage,
   type ScanUploadResult,
 } from "@/lib/moderation";
+import { deleteMediaObjects } from "@/lib/mediaUpload";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 import {
   getPublicStorageUrl,
   getVideoDuration,
   parseHashtags,
+  uploadToStorageWithFallback,
 } from "@/lib/upload";
 import { canUploadVideos } from "@/lib/points";
 import { fetchPublicSiteFlags } from "@/lib/siteSettings";
@@ -150,36 +152,50 @@ export function UploadVideoForm() {
     const clipId = crypto.randomUUID();
     const videoPath = `${user.id}/${clipId}.mp4`;
     const thumbPath = `${user.id}/${clipId}.jpg`;
+    let videoObjectKey: string | null = null;
+    let thumbObjectKey: string | null = null;
 
-    const { error: videoUploadError } = await supabase.storage
-      .from("clips")
-      .upload(videoPath, videoFile, {
-        upsert: false,
-        contentType: videoFile.type || "video/mp4",
+    let videoUrl: string;
+    try {
+      const videoUpload = await uploadToStorageWithFallback({
+        supabase,
+        config,
+        folder: "clips",
+        bucket: "clips",
+        storagePath: videoPath,
+        filename: `${clipId}.mp4`,
+        file: videoFile,
       });
-
-    if (videoUploadError) {
-      setError(videoUploadError.message);
+      videoUrl = videoUpload.publicUrl;
+      videoObjectKey = videoUpload.objectKey;
+    } catch (uploadError) {
+      setError(uploadError instanceof Error ? uploadError.message : t.upload.uploadFailed);
       setLoading(false);
       return;
     }
 
-    const { error: thumbUploadError } = await supabase.storage
-      .from("thumbnails")
-      .upload(thumbPath, thumbnailFile, {
-        upsert: false,
-        contentType: thumbnailFile.type || "image/jpeg",
+    let thumbnailUrl: string;
+    try {
+      const thumbUpload = await uploadToStorageWithFallback({
+        supabase,
+        config,
+        folder: "thumbnails",
+        bucket: "thumbnails",
+        storagePath: thumbPath,
+        filename: `${clipId}.jpg`,
+        file: thumbnailFile,
       });
-
-    if (thumbUploadError) {
-      await supabase.storage.from("clips").remove([videoPath]);
-      setError(thumbUploadError.message);
+      thumbnailUrl = thumbUpload.publicUrl;
+      thumbObjectKey = thumbUpload.objectKey;
+    } catch (uploadError) {
+      if (videoObjectKey) {
+        await removeUploadedMedia(supabase, "clips", videoPath, videoObjectKey);
+      }
+      setError(uploadError instanceof Error ? uploadError.message : t.upload.uploadFailed);
       setLoading(false);
       return;
     }
 
-    const videoUrl = getPublicStorageUrl(config.url, "clips", videoPath);
-    const thumbnailUrl = getPublicStorageUrl(config.url, "thumbnails", thumbPath);
     const tags = parseHashtags(hashtags);
 
     const { error: insertError } = await supabase.from("videos").insert({
@@ -202,8 +218,8 @@ export function UploadVideoForm() {
     setLoading(false);
 
     if (insertError) {
-      await supabase.storage.from("clips").remove([videoPath]);
-      await supabase.storage.from("thumbnails").remove([thumbPath]);
+      await removeUploadedMedia(supabase, "clips", videoPath, videoObjectKey);
+      await removeUploadedMedia(supabase, "thumbnails", thumbPath, thumbObjectKey);
       setError(insertError.message);
       return;
     }
@@ -215,6 +231,20 @@ export function UploadVideoForm() {
     }
 
     router.push("/profile");
+  }
+
+  async function removeUploadedMedia(
+    client: NonNullable<ReturnType<typeof createBrowserClient>>,
+    bucket: "clips" | "thumbnails",
+    storagePath: string,
+    objectKey: string | null,
+  ) {
+    if (objectKey) {
+      await deleteMediaObjects([objectKey]).catch(() => undefined);
+      return;
+    }
+
+    await client.storage.from(bucket).remove([storagePath]);
   }
 
   const busy = loading || scanning;

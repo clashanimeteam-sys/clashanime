@@ -12,7 +12,8 @@ import { profileToVideoChannel } from "@/components/VideoCardChannel";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getSupabaseConfig } from "@/lib/supabase/config";
-import { getPublicStorageUrl } from "@/lib/upload";
+import { deleteMediaObjects } from "@/lib/mediaUpload";
+import { uploadToStorageWithFallback } from "@/lib/upload";
 import {
   canChangeProfileDisplayNameForProfile,
   getProfileDisplayNameCooldownRemainingDays,
@@ -187,18 +188,29 @@ export function ProfileContent() {
 
     const extension = file.name.split(".").pop()?.toLowerCase() || "jpg";
     const path = `${user.id}/${Date.now()}.${extension}`;
+    const filename = `${Date.now()}.${extension}`;
 
-    const { error: uploadError } = await supabase.storage
-      .from(bucket)
-      .upload(path, file, { upsert: true, contentType: file.type });
+    let publicUrl: string;
+    let objectKey: string | null = null;
 
-    if (uploadError) {
-      setError(uploadError.message);
+    try {
+      const uploaded = await uploadToStorageWithFallback({
+        supabase,
+        config,
+        folder: bucket,
+        bucket,
+        storagePath: path,
+        filename,
+        file,
+        upsert: true,
+      });
+      publicUrl = uploaded.publicUrl;
+      objectKey = uploaded.objectKey;
+    } catch (uploadError) {
+      setError(uploadError instanceof Error ? uploadError.message : t.upload.uploadFailed);
       setUploading(false);
       return;
     }
-
-    const publicUrl = getPublicStorageUrl(config.url, bucket, path);
 
     const { error: updateError } = await supabase
       .from("profiles")
@@ -206,6 +218,11 @@ export function ProfileContent() {
       .eq("id", user.id);
 
     if (updateError) {
+      if (objectKey) {
+        await deleteMediaObjects([objectKey]).catch(() => undefined);
+      } else {
+        await supabase.storage.from(bucket).remove([path]);
+      }
       setError(updateError.message);
       setUploading(false);
       return;

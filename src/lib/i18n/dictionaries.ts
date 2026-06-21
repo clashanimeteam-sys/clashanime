@@ -439,6 +439,7 @@ export type Dictionary = {
     publish: string;
     reviewPending: string;
     scanFailed: string;
+    uploadFailed: string;
     uploadsDisabled: string;
     accountBanned: string;
     levelRequired: string;
@@ -1104,6 +1105,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reviewPending:
         "Your clip was uploaded and is under review. It will appear publicly once approved.",
       scanFailed: "Could not verify this file. Try again with a different export.",
+      uploadFailed: "Could not upload files. Try again in a moment.",
       uploadsDisabled: "Video uploads are temporarily disabled.",
       accountBanned: "Your account is suspended and cannot upload videos.",
       levelRequired: "Reach Challenger rank (1000+ points) to upload videos.",
@@ -1766,6 +1768,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reviewPending:
         "クリップはアップロードされ、審査中です。承認後に公開されます。",
       scanFailed: "ファイルを検証できませんでした。別の書き出しで再試行してください。",
+      uploadFailed: "ファイルをアップロードできませんでした。しばらくして再試行してください。",
       uploadsDisabled: "動画アップロードは一時的に停止されています。",
       accountBanned: "アカウントが停止されているため、アップロードできません。",
       levelRequired: "Challengerランク（1000pt以上）でアップロードできます。",
@@ -2430,6 +2433,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reviewPending:
         "تم رفع المقطع وهو قيد المراجعة. سيظهر للعامة بعد الموافقة.",
       scanFailed: "تعذر التحقق من الملف. جرّب تصديراً مختلفاً للفيديو.",
+      uploadFailed: "تعذر رفع الملفات. حاول مرة أخرى بعد قليل.",
       uploadsDisabled: "رفع الفيديوهات متوقف مؤقتاً.",
       accountBanned: "حسابك موقوف ولا يمكنك رفع الفيديوهات.",
       levelRequired: "تحتاج رتبة منافس (1000+ نقطة) لرفع الفيديوهات.",

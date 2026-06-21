@@ -40,3 +40,71 @@ export function getPublicStorageUrl(
   const base = supabaseUrl.replace(/\/$/, "");
   return `${base}/storage/v1/object/public/${bucket}/${path}`;
 }
+
+type StorageUploadParams = {
+  supabase: {
+    storage: {
+      from: (bucket: string) => {
+        upload: (
+          path: string,
+          file: File,
+          options: { upsert?: boolean; contentType?: string },
+        ) => Promise<{ error: { message: string } | null }>;
+      };
+    };
+  };
+  config: { url: string };
+  folder: "clips" | "thumbnails" | "avatars" | "banners";
+  bucket: string;
+  storagePath: string;
+  filename: string;
+  file: File;
+  upsert?: boolean;
+};
+
+export type StorageUploadResult = {
+  publicUrl: string;
+  objectKey: string | null;
+  backend: "r2" | "supabase";
+};
+
+export async function uploadToStorageWithFallback({
+  supabase,
+  config,
+  folder,
+  bucket,
+  storagePath,
+  filename,
+  file,
+  upsert = false,
+}: StorageUploadParams): Promise<StorageUploadResult> {
+  const health = await fetch("/api/health/media").catch(() => null);
+  const healthPayload = health?.ok
+    ? ((await health.json()) as { r2Configured?: boolean })
+    : null;
+
+  if (healthPayload?.r2Configured) {
+    const { uploadMediaFile } = await import("@/lib/mediaUpload");
+    const uploaded = await uploadMediaFile({ folder, filename, file });
+    return {
+      publicUrl: uploaded.publicUrl,
+      objectKey: uploaded.key,
+      backend: "r2",
+    };
+  }
+
+  const { error: uploadError } = await supabase.storage.from(bucket).upload(storagePath, file, {
+    upsert,
+    contentType: file.type || undefined,
+  });
+
+  if (uploadError) {
+    throw new Error(uploadError.message);
+  }
+
+  return {
+    publicUrl: getPublicStorageUrl(config.url, bucket, storagePath),
+    objectKey: null,
+    backend: "supabase",
+  };
+}
