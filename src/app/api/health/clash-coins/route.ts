@@ -60,9 +60,12 @@ export async function GET() {
   if (withdrawalsTable) {
     const { error } = await supabase.rpc("request_clash_coin_withdrawal", {
       p_amount_cents: 5000,
-      p_iban: "DE89370400440532013000",
-      p_account_holder_name: "Health Check",
-      p_recipient_email: "health-check@example.com",
+      p_payment_method: "bank_transfer",
+      p_payment_details: {
+        iban: "DE89370400440532013000",
+        account_holder_name: "Health Check",
+        recipient_email: "health-check@example.com",
+      },
       p_kyc_acknowledged: true,
     });
     requestWithdrawalRpc = rpcExists(error);
@@ -93,6 +96,7 @@ export async function GET() {
       "supabase/scripts/production-clash-coins-wallet.sql",
       "supabase/scripts/production-clash-coins-usd-cents-bank-transfer.sql",
       "supabase/scripts/production-convert-minimum-100-points.sql",
+      "supabase/scripts/production-withdrawal-paypal-usdt.sql",
     ],
     sqlEditor:
       "https://supabase.com/dashboard/project/doqiuduigbdoczdzsima/sql/new",

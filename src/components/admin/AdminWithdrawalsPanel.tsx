@@ -1,7 +1,16 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { formatUsdFromCents, type WithdrawalStatus } from "@/lib/clashCoins";
+import {
+  formatUsdFromCents,
+  type PaymentMethod,
+  type WithdrawalStatus,
+} from "@/lib/clashCoins";
+import {
+  BankTransferIcon,
+  PayPalIcon,
+  UsdtIcon,
+} from "@/components/wallet/PaymentMethodIcons";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -10,12 +19,15 @@ type AdminWithdrawal = {
   user_id: string;
   coin_amount: number;
   usd_amount: number;
-  payment_method: string;
+  payment_method: PaymentMethod;
   payment_destination: string;
   payment_details?: {
     iban?: string;
     account_holder_name?: string;
     recipient_email?: string;
+    paypal_email?: string;
+    wallet_address?: string;
+    network?: string;
   } | null;
   status: WithdrawalStatus;
   fraud_flags: unknown[];
@@ -32,6 +44,24 @@ const STATUS_FILTERS: Array<WithdrawalStatus | "all"> = [
   "completed",
   "rejected",
 ];
+
+function PaymentMethodBadge({
+  method,
+  label,
+}: {
+  method: PaymentMethod;
+  label: string;
+}) {
+  const Icon =
+    method === "paypal" ? PayPalIcon : method === "crypto_usdt" ? UsdtIcon : BankTransferIcon;
+
+  return (
+    <div className="mt-2 inline-flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-800/80 px-3 py-1">
+      <Icon className="h-4 w-4" />
+      <span className="text-xs font-semibold text-zinc-100">{label}</span>
+    </div>
+  );
+}
 
 export function AdminWithdrawalsPanel() {
   const { t } = useLocale();
@@ -117,6 +147,59 @@ export function AdminWithdrawalsPanel() {
     await loadWithdrawals();
   }
 
+  function paymentMethodLabel(method: PaymentMethod) {
+    return t.wallet.paymentMethodLabels[method] ?? method;
+  }
+
+  function renderPaymentDetails(withdrawal: AdminWithdrawal) {
+    const details = withdrawal.payment_details;
+
+    if (withdrawal.payment_method === "bank_transfer") {
+      return (
+        <>
+          {details?.iban ? (
+            <p className="mt-1 text-xs text-zinc-300">
+              {t.wallet.ibanLabel}: {details.iban}
+            </p>
+          ) : null}
+          {details?.account_holder_name ? (
+            <p className="mt-1 text-xs text-zinc-300">
+              {t.wallet.accountHolderLabel}: {details.account_holder_name}
+            </p>
+          ) : null}
+          {details?.recipient_email ? (
+            <p className="mt-1 text-xs text-zinc-300">
+              {t.wallet.recipientEmailLabel}: {details.recipient_email}
+            </p>
+          ) : (
+            <p className="mt-1 text-xs text-zinc-500">{withdrawal.payment_destination}</p>
+          )}
+        </>
+      );
+    }
+
+    if (withdrawal.payment_method === "paypal") {
+      return (
+        <p className="mt-1 text-xs text-zinc-300">
+          {t.wallet.paypalEmailLabel}: {details?.paypal_email ?? withdrawal.payment_destination}
+        </p>
+      );
+    }
+
+    return (
+      <>
+        {details?.network ? (
+          <p className="mt-1 text-xs text-zinc-300">
+            {t.wallet.usdtNetworkLabel}: {details.network}
+          </p>
+        ) : null}
+        <p className="mt-1 text-xs text-zinc-300">
+          {t.wallet.usdtWalletLabel}: {details?.wallet_address ?? withdrawal.payment_destination}
+        </p>
+      </>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -160,26 +243,11 @@ export function AdminWithdrawalsPanel() {
                   <p className="mt-1 text-lg font-bold text-amber-300">
                     {formatUsdFromCents(withdrawal.coin_amount)}
                   </p>
-                  <p className="mt-2 text-xs text-zinc-400">
-                    {t.wallet.bankTransferTitle}
-                  </p>
-                  {withdrawal.payment_details?.iban ? (
-                    <p className="mt-1 text-xs text-zinc-300">
-                      {t.wallet.ibanLabel}: {withdrawal.payment_details.iban}
-                    </p>
-                  ) : null}
-                  {withdrawal.payment_details?.account_holder_name ? (
-                    <p className="mt-1 text-xs text-zinc-300">
-                      {t.wallet.accountHolderLabel}: {withdrawal.payment_details.account_holder_name}
-                    </p>
-                  ) : null}
-                  {withdrawal.payment_details?.recipient_email ? (
-                    <p className="mt-1 text-xs text-zinc-300">
-                      {t.wallet.recipientEmailLabel}: {withdrawal.payment_details.recipient_email}
-                    </p>
-                  ) : (
-                    <p className="mt-1 text-xs text-zinc-500">{withdrawal.payment_destination}</p>
-                  )}
+                  <PaymentMethodBadge
+                    method={withdrawal.payment_method}
+                    label={paymentMethodLabel(withdrawal.payment_method)}
+                  />
+                  {renderPaymentDetails(withdrawal)}
                   <p className="mt-1 text-xs text-zinc-500">
                     {new Date(withdrawal.created_at).toLocaleString()}
                   </p>

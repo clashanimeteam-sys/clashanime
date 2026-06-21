@@ -402,8 +402,18 @@ export type Dictionary = {
     withdrawTitle: string;
     withdrawDesc: string;
     withdrawAmountLabel: string;
+    selectPaymentMethod: string;
     bankTransferTitle: string;
     bankTransferDesc: string;
+    paypalTitle: string;
+    paypalDesc: string;
+    paypalEmailLabel: string;
+    paypalEmailPlaceholder: string;
+    usdtTitle: string;
+    usdtDesc: string;
+    usdtWalletLabel: string;
+    usdtWalletPlaceholder: string;
+    usdtNetworkLabel: string;
     ibanLabel: string;
     ibanPlaceholder: string;
     accountHolderLabel: string;
@@ -419,6 +429,11 @@ export type Dictionary = {
     fraudBlocked: string;
     processing: string;
     paymentOptionsTitle: string;
+    paymentMethodLabels: {
+      bank_transfer: string;
+      paypal: string;
+      crypto_usdt: string;
+    };
     historyTitle: string;
     loadingHistory: string;
     noHistory: string;
@@ -1128,7 +1143,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       title: "ClashCoins",
       subtitle: "Digital wallet",
       description:
-        "Your redeemable dollar balance. Convert hunter points to $, keep the total in your wallet, and withdraw by bank transfer.",
+        "Your redeemable dollar balance. Convert hunter points to $, keep the total in your wallet, and withdraw via bank transfer, PayPal, or USDT.",
       balanceLabel: "Wallet balance",
       exchangeRateTitle: "Exchange rate",
       exchangeRateValue: "10,000 points = $10.00",
@@ -1143,10 +1158,20 @@ export const dictionaries: Record<Locale, Dictionary> = {
       convertFailed: "Could not convert points. Check your balance and try again.",
       convertMinError: "Minimum conversion is 100 points ($0.10).",
       withdrawTitle: "Request payout",
-      withdrawDesc: "Withdraw your $ balance by bank transfer. Payouts are reviewed manually for safety.",
+      withdrawDesc: "Withdraw your $ balance. Choose bank transfer, PayPal, or USDT. Payouts are reviewed manually for safety.",
       withdrawAmountLabel: "Amount to withdraw ($)",
+      selectPaymentMethod: "Payout method",
       bankTransferTitle: "Bank transfer",
       bankTransferDesc: "Enter your IBAN, the name on your bank card, and the recipient email.",
+      paypalTitle: "PayPal",
+      paypalDesc: "Receive the payout to your PayPal account email.",
+      paypalEmailLabel: "PayPal email",
+      paypalEmailPlaceholder: "your@paypal.com",
+      usdtTitle: "Crypto USDT",
+      usdtDesc: "Receive USDT to your wallet. Double-check the network before submitting.",
+      usdtWalletLabel: "USDT wallet address",
+      usdtWalletPlaceholder: "Wallet address",
+      usdtNetworkLabel: "Network",
       ibanLabel: "IBAN",
       ibanPlaceholder: "DE89 3704 0044 0532 0130 00",
       accountHolderLabel: "Name on bank card",
@@ -1164,7 +1189,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       fraudBlocked:
         "This request was flagged for review due to unusual point activity. Our team will investigate.",
       processing: "Processing...",
-      paymentOptionsTitle: "Payout method",
+      paymentOptionsTitle: "Payout methods",
+      paymentMethodLabels: {
+        bank_transfer: "Bank transfer",
+        paypal: "PayPal",
+        crypto_usdt: "Crypto USDT",
+      },
       historyTitle: "Withdrawal history",
       loadingHistory: "Loading history...",
       noHistory: "No withdrawal requests yet.",
@@ -1877,7 +1907,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       title: "ClashCoins",
       subtitle: "デジタルウォレット",
       description:
-        "換金可能なドル残高です。ハンターポイントを$に変換し、銀行振込で出金できます。",
+        "換金可能なドル残高です。ハンターポイントを$に変換し、銀行振込・PayPal・USDTで出金できます。",
       balanceLabel: "ウォレット残高",
       exchangeRateTitle: "為替レート",
       exchangeRateValue: "10,000ポイント = $10.00",
@@ -1892,10 +1922,20 @@ export const dictionaries: Record<Locale, Dictionary> = {
       convertFailed: "変換できませんでした。残高を確認してください。",
       convertMinError: "最低変換は100ポイント（$0.10）です。",
       withdrawTitle: "出金リクエスト",
-      withdrawDesc: "銀行振込で$残高を出金します。",
+      withdrawDesc: "銀行振込、PayPal、USDTから出金方法を選べます。",
       withdrawAmountLabel: "出金額 ($)",
+      selectPaymentMethod: "出金方法",
       bankTransferTitle: "銀行振込",
       bankTransferDesc: "IBAN、口座名義、受取人メールを入力してください。",
+      paypalTitle: "PayPal",
+      paypalDesc: "PayPalアカウントのメールアドレスに送金します。",
+      paypalEmailLabel: "PayPalメール",
+      paypalEmailPlaceholder: "your@paypal.com",
+      usdtTitle: "Crypto USDT",
+      usdtDesc: "USDTウォレットに送金します。ネットワークを必ず確認してください。",
+      usdtWalletLabel: "USDTウォレットアドレス",
+      usdtWalletPlaceholder: "ウォレットアドレス",
+      usdtNetworkLabel: "ネットワーク",
       ibanLabel: "IBAN",
       ibanPlaceholder: "DE89 3704 0044 0532 0130 00",
       accountHolderLabel: "口座名義",
@@ -1911,6 +1951,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       fraudBlocked: "異常なポイント活動のため審査対象になりました。",
       processing: "処理中...",
       paymentOptionsTitle: "出金方法",
+      paymentMethodLabels: {
+        bank_transfer: "銀行振込",
+        paypal: "PayPal",
+        crypto_usdt: "Crypto USDT",
+      },
       historyTitle: "出金履歴",
       loadingHistory: "履歴を読み込み中...",
       noHistory: "出金リクエストはまだありません。",
@@ -2624,7 +2669,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       title: "ClashCoins",
       subtitle: "المحفظة الرقمية",
       description:
-        "رصيدك القابل للسحب بالدولار $. حوّل نقاط الصياد إلى $ واحتفظ بالإجمالي في محفظتك، ثم اسحب عبر تحويل بنكي.",
+        "رصيدك القابل للسحب بالدولار $. حوّل نقاط الصياد إلى $ واحتفظ بالإجمالي في محفظتك، ثم اسحب عبر تحويل بنكي أو PayPal أو USDT.",
       balanceLabel: "رصيد المحفظة",
       exchangeRateTitle: "سعر الصرف",
       exchangeRateValue: "١٠,٠٠٠ نقطة = ١٠$",
@@ -2639,10 +2684,20 @@ export const dictionaries: Record<Locale, Dictionary> = {
       convertFailed: "تعذر التحويل. تحقق من رصيدك وحاول مجدداً.",
       convertMinError: "الحد الأدنى للتحويل ١٠٠ نقطة (0.10 US$).",
       withdrawTitle: "طلب سحب",
-      withdrawDesc: "اسحب رصيد $ عبر تحويل بنكي. تتم مراجعة الطلبات يدوياً للأمان.",
+      withdrawDesc: "اسحب رصيد $ عبر تحويل بنكي أو PayPal أو USDT. تتم مراجعة الطلبات يدوياً للأمان.",
       withdrawAmountLabel: "المبلغ للسحب ($)",
+      selectPaymentMethod: "طريقة السحب",
       bankTransferTitle: "تحويل بنكي",
       bankTransferDesc: "أدخل IBAN واسم صاحب البطاقة البنكية وبريد المستلم.",
+      paypalTitle: "PayPal",
+      paypalDesc: "استلم المبلغ على بريد حساب PayPal الخاص بك.",
+      paypalEmailLabel: "بريد PayPal",
+      paypalEmailPlaceholder: "your@paypal.com",
+      usdtTitle: "Crypto USDT",
+      usdtDesc: "استلم USDT على محفظتك. تأكد من الشبكة قبل الإرسال.",
+      usdtWalletLabel: "عنوان محفظة USDT",
+      usdtWalletPlaceholder: "عنوان المحفظة",
+      usdtNetworkLabel: "الشبكة",
       ibanLabel: "IBAN",
       ibanPlaceholder: "DE89 3704 0044 0532 0130 00",
       accountHolderLabel: "اسم صاحب البطاقة البنكية",
@@ -2657,7 +2712,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       withdrawPendingNotice: "طلبك قيد المراجعة، سيصلك راتب الأبطال خلال ٤٨ ساعة!",
       fraudBlocked: "تم تعليق الطلب للمراجعة بسبب نشاط نقاط غير اعتيادي.",
       processing: "جارٍ المعالجة...",
-      paymentOptionsTitle: "طريقة الدفع",
+      paymentOptionsTitle: "طرق السحب",
+      paymentMethodLabels: {
+        bank_transfer: "تحويل بنكي",
+        paypal: "PayPal",
+        crypto_usdt: "Crypto USDT",
+      },
       historyTitle: "سجل السحوبات",
       loadingHistory: "جارٍ تحميل السجل...",
       noHistory: "لا توجد طلبات سحب بعد.",

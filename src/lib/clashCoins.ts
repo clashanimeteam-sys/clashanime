@@ -7,15 +7,32 @@ export const MIN_WITHDRAWAL_USD = MIN_WITHDRAWAL_CENTS / CENTS_PER_DOLLAR;
 export const FRAUD_DAILY_POINTS_THRESHOLD = 10000;
 export const WITHDRAWAL_REVIEW_HOURS = 48;
 
-export const PAYMENT_METHOD = "bank_transfer" as const;
+export const PAYMENT_METHODS = ["bank_transfer", "paypal", "crypto_usdt"] as const;
+export const USDT_NETWORKS = ["TRC20", "ERC20", "BEP20"] as const;
 
-export type PaymentMethod = typeof PAYMENT_METHOD;
+export type PaymentMethod = (typeof PAYMENT_METHODS)[number];
+export type UsdtNetwork = (typeof USDT_NETWORKS)[number];
 
 export type BankTransferDetails = {
   iban: string;
   accountHolderName: string;
   recipientEmail: string;
 };
+
+export type PayPalDetails = {
+  paypalEmail: string;
+};
+
+export type UsdtDetails = {
+  walletAddress: string;
+  network: UsdtNetwork;
+};
+
+export type PaymentDetails = BankTransferDetails | PayPalDetails | UsdtDetails;
+
+export function isPaymentMethod(value: string): value is PaymentMethod {
+  return (PAYMENT_METHODS as readonly string[]).includes(value);
+}
 
 export type WithdrawalStatus =
   | "pending"

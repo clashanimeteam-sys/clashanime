@@ -14,8 +14,15 @@ import {
   parseUsdInput,
   POINTS_PER_DOLLAR,
   pointsToUsd,
+  USDT_NETWORKS,
+  type PaymentMethod,
   type WithdrawalRequest,
 } from "@/lib/clashCoins";
+import {
+  BankTransferIcon,
+  PayPalIcon,
+  UsdtIcon,
+} from "@/components/wallet/PaymentMethodIcons";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -29,6 +36,15 @@ type ClashWalletPanelProps = {
 function panelBoxClassName(extra = "") {
   return `overflow-hidden rounded-2xl border border-zinc-200 bg-gradient-to-br from-zinc-50 via-white to-amber-50/50 p-5 dark:border-zinc-800 dark:from-zinc-950 dark:via-black dark:to-amber-950/20 ${extra}`.trim();
 }
+
+const PAYMENT_METHOD_OPTIONS: Array<{
+  id: PaymentMethod;
+  Icon: typeof BankTransferIcon;
+}> = [
+  { id: "bank_transfer", Icon: BankTransferIcon },
+  { id: "paypal", Icon: PayPalIcon },
+  { id: "crypto_usdt", Icon: UsdtIcon },
+];
 
 export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanelProps) {
   const { t, locale } = useLocale();
@@ -44,9 +60,13 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
     maxConvertPoints >= MIN_CONVERSION_POINTS ? String(MIN_CONVERSION_POINTS) : "",
   );
   const [withdrawUsd, setWithdrawUsd] = useState(String(MIN_WITHDRAWAL_USD));
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("bank_transfer");
   const [iban, setIban] = useState("");
   const [accountHolderName, setAccountHolderName] = useState("");
   const [recipientEmail, setRecipientEmail] = useState("");
+  const [paypalEmail, setPaypalEmail] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
+  const [usdtNetwork, setUsdtNetwork] = useState<(typeof USDT_NETWORKS)[number]>("TRC20");
   const [kycAcknowledged, setKycAcknowledged] = useState(false);
   const [converting, setConverting] = useState(false);
   const [withdrawing, setWithdrawing] = useState(false);
@@ -139,9 +159,13 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           amountCents,
+          paymentMethod,
           iban: iban.trim(),
           accountHolderName: accountHolderName.trim(),
           recipientEmail: recipientEmail.trim(),
+          paypalEmail: paypalEmail.trim(),
+          walletAddress: walletAddress.trim(),
+          network: usdtNetwork,
           kycAcknowledged,
         }),
       });
@@ -163,6 +187,9 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
         setIban("");
         setAccountHolderName("");
         setRecipientEmail("");
+        setPaypalEmail("");
+        setWalletAddress("");
+        setUsdtNetwork("TRC20");
         setKycAcknowledged(false);
       }
 
@@ -176,6 +203,16 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
 
   function withdrawalStatusLabel(status: WithdrawalRequest["status"]) {
     return t.wallet.withdrawalStatuses[status];
+  }
+
+  function paymentMethodLabel(method: PaymentMethod) {
+    return t.wallet.paymentMethodLabels[method];
+  }
+
+  function paymentMethodIcon(method: PaymentMethod, className = "h-5 w-5") {
+    if (method === "paypal") return <PayPalIcon className={className} />;
+    if (method === "crypto_usdt") return <UsdtIcon className={className} />;
+    return <BankTransferIcon className={className} />;
   }
 
   const previewUsd = formatConversionPreviewAmount(
@@ -286,42 +323,132 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
             </div>
           </label>
 
+          <div className="mt-4">
+            <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{t.wallet.selectPaymentMethod}</p>
+            <div className="mt-3 grid gap-2 sm:grid-cols-3">
+              {PAYMENT_METHOD_OPTIONS.map(({ id, Icon }) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => setPaymentMethod(id)}
+                  className={`flex items-center gap-3 rounded-xl border px-3 py-3 text-start transition ${
+                    paymentMethod === id
+                      ? "border-amber-500 bg-amber-50 shadow-sm dark:border-amber-400 dark:bg-amber-950/30"
+                      : "border-zinc-200 bg-white hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-700"
+                  }`}
+                >
+                  <Icon className="h-7 w-7 shrink-0" />
+                  <span className="text-sm font-semibold text-black dark:text-white">
+                    {paymentMethodLabel(id)}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="mt-4 rounded-xl border border-zinc-200 bg-white/70 p-4 dark:border-zinc-800 dark:bg-zinc-900/50">
-            <p className="text-sm font-semibold text-black dark:text-white">{t.wallet.bankTransferTitle}</p>
-            <p className="mt-1 text-xs text-zinc-500">{t.wallet.bankTransferDesc}</p>
+            {paymentMethod === "bank_transfer" ? (
+              <>
+                <p className="text-sm font-semibold text-black dark:text-white">{t.wallet.bankTransferTitle}</p>
+                <p className="mt-1 text-xs text-zinc-500">{t.wallet.bankTransferDesc}</p>
 
-            <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-              {t.wallet.ibanLabel}
-              <input
-                type="text"
-                value={iban}
-                onChange={(event) => setIban(event.target.value)}
-                placeholder={t.wallet.ibanPlaceholder}
-                className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
-              />
-            </label>
+                <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                  {t.wallet.ibanLabel}
+                  <input
+                    type="text"
+                    value={iban}
+                    onChange={(event) => setIban(event.target.value)}
+                    placeholder={t.wallet.ibanPlaceholder}
+                    className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+                  />
+                </label>
 
-            <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-              {t.wallet.accountHolderLabel}
-              <input
-                type="text"
-                value={accountHolderName}
-                onChange={(event) => setAccountHolderName(event.target.value)}
-                placeholder={t.wallet.accountHolderPlaceholder}
-                className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
-              />
-            </label>
+                <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                  {t.wallet.accountHolderLabel}
+                  <input
+                    type="text"
+                    value={accountHolderName}
+                    onChange={(event) => setAccountHolderName(event.target.value)}
+                    placeholder={t.wallet.accountHolderPlaceholder}
+                    className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+                  />
+                </label>
 
-            <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-              {t.wallet.recipientEmailLabel}
-              <input
-                type="email"
-                value={recipientEmail}
-                onChange={(event) => setRecipientEmail(event.target.value)}
-                placeholder={t.wallet.recipientEmailPlaceholder}
-                className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
-              />
-            </label>
+                <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                  {t.wallet.recipientEmailLabel}
+                  <input
+                    type="email"
+                    value={recipientEmail}
+                    onChange={(event) => setRecipientEmail(event.target.value)}
+                    placeholder={t.wallet.recipientEmailPlaceholder}
+                    className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+                  />
+                </label>
+              </>
+            ) : null}
+
+            {paymentMethod === "paypal" ? (
+              <>
+                <div className="flex items-center gap-3">
+                  <PayPalIcon className="h-8 w-8" />
+                  <div>
+                    <p className="text-sm font-semibold text-black dark:text-white">{t.wallet.paypalTitle}</p>
+                    <p className="mt-1 text-xs text-zinc-500">{t.wallet.paypalDesc}</p>
+                  </div>
+                </div>
+
+                <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                  {t.wallet.paypalEmailLabel}
+                  <input
+                    type="email"
+                    value={paypalEmail}
+                    onChange={(event) => setPaypalEmail(event.target.value)}
+                    placeholder={t.wallet.paypalEmailPlaceholder}
+                    className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+                  />
+                </label>
+              </>
+            ) : null}
+
+            {paymentMethod === "crypto_usdt" ? (
+              <>
+                <div className="flex items-center gap-3">
+                  <UsdtIcon className="h-8 w-8" />
+                  <div>
+                    <p className="text-sm font-semibold text-black dark:text-white">{t.wallet.usdtTitle}</p>
+                    <p className="mt-1 text-xs text-zinc-500">{t.wallet.usdtDesc}</p>
+                  </div>
+                </div>
+
+                <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                  {t.wallet.usdtNetworkLabel}
+                  <select
+                    value={usdtNetwork}
+                    onChange={(event) =>
+                      setUsdtNetwork(event.target.value as (typeof USDT_NETWORKS)[number])
+                    }
+                    className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+                  >
+                    {USDT_NETWORKS.map((network) => (
+                      <option key={network} value={network}>
+                        {network}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                  {t.wallet.usdtWalletLabel}
+                  <input
+                    type="text"
+                    value={walletAddress}
+                    onChange={(event) => setWalletAddress(event.target.value)}
+                    placeholder={t.wallet.usdtWalletPlaceholder}
+                    className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+                  />
+                </label>
+              </>
+            ) : null}
           </div>
 
           <label className="mt-4 flex items-start gap-3 text-sm text-zinc-600 dark:text-zinc-400">
@@ -346,9 +473,29 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
 
       <div className={panelBoxClassName()}>
         <h3 className="text-lg font-semibold text-black dark:text-white">{t.wallet.paymentOptionsTitle}</h3>
-        <div className="mt-4 rounded-xl border border-zinc-200 bg-white/70 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900/50">
-          <p className="text-sm font-semibold text-black dark:text-white">{t.wallet.bankTransferTitle}</p>
-          <p className="mt-1 text-xs text-zinc-500">{t.wallet.bankTransferDesc}</p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+          {PAYMENT_METHOD_OPTIONS.map(({ id, Icon }) => (
+            <div
+              key={id}
+              className="rounded-xl border border-zinc-200 bg-white/70 px-4 py-4 dark:border-zinc-800 dark:bg-zinc-900/50"
+            >
+              <div className="flex items-center gap-3">
+                <Icon className="h-8 w-8 shrink-0" />
+                <div>
+                  <p className="text-sm font-semibold text-black dark:text-white">
+                    {paymentMethodLabel(id)}
+                  </p>
+                  <p className="mt-1 text-xs text-zinc-500">
+                    {id === "bank_transfer"
+                      ? t.wallet.bankTransferDesc
+                      : id === "paypal"
+                        ? t.wallet.paypalDesc
+                        : t.wallet.usdtDesc}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -373,8 +520,10 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
                     {withdrawalStatusLabel(withdrawal.status)}
                   </span>
                 </div>
-                <p className="mt-1 text-xs text-zinc-500">
-                  {t.wallet.bankTransferTitle} · {new Date(withdrawal.created_at).toLocaleString()}
+                <p className="mt-1 flex items-center gap-2 text-xs text-zinc-500">
+                  {paymentMethodIcon(withdrawal.payment_method, "h-4 w-4")}
+                  {paymentMethodLabel(withdrawal.payment_method)} ·{" "}
+                  {new Date(withdrawal.created_at).toLocaleString()}
                 </p>
               </div>
             ))}
