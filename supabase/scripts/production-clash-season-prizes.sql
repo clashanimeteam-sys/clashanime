@@ -18,6 +18,8 @@ alter table public.clash_seasons
   add constraint clash_seasons_prize_rank_2_check check (prize_rank_2_cents >= 0),
   add constraint clash_seasons_prize_rank_3_check check (prize_rank_3_cents >= 0);
 
+drop function if exists public.get_active_clash_season();
+
 create or replace function public.get_active_clash_season()
 returns table (
   id uuid,
