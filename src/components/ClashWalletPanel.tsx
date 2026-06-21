@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import {
+  formatConversionPreviewAmount,
   formatUsd,
   formatUsdFromCents,
   MIN_WITHDRAWAL_CENTS,
@@ -27,7 +28,7 @@ function panelBoxClassName(extra = "") {
 }
 
 export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanelProps) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const { refreshProfile } = useAuth();
   const supabase = useMemo(() => createBrowserClient(), []);
 
@@ -174,7 +175,10 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
     return t.wallet.withdrawalStatuses[status];
   }
 
-  const previewUsd = formatUsd(pointsToUsd(Number(convertPoints) || 0));
+  const previewUsd = formatConversionPreviewAmount(
+    pointsToUsd(Number(convertPoints) || 0),
+    locale,
+  );
 
   return (
     <section id="clash-wallet" className="space-y-5">

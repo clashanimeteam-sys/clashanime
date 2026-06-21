@@ -79,6 +79,13 @@ export function formatUsd(usd: number): string {
   }).format(usd);
 }
 
+export function formatConversionPreviewAmount(usd: number, locale?: string): string {
+  if (locale === "ar") {
+    return `${usd.toFixed(2)} US$`;
+  }
+  return formatUsd(usd);
+}
+
 export function isValidConversionAmount(points: number): boolean {
   return points >= POINTS_PER_DOLLAR && points % POINTS_PER_DOLLAR === 0;
 }
