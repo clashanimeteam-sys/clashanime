@@ -15,6 +15,7 @@ type DashboardStats = {
   pendingVerifications: number;
   communityPosts: number;
   bountyEvents: number;
+  clipChallenges: number;
 };
 
 export function AdminDashboard() {
@@ -40,6 +41,7 @@ export function AdminDashboard() {
         { count: pendingVerifications },
         { count: communityPosts },
         { count: bountyEvents },
+        { count: clipChallenges },
       ] = await Promise.all([
         client.from("profiles").select("*", { count: "exact", head: true }),
         client.from("videos").select("*", { count: "exact", head: true }),
@@ -59,6 +61,7 @@ export function AdminDashboard() {
           .eq("status", "pending"),
         client.from("community_posts").select("*", { count: "exact", head: true }),
         client.from("point_transactions").select("*", { count: "exact", head: true }),
+        client.from("video_duels").select("*", { count: "exact", head: true }),
       ]);
 
       setStats({
@@ -71,6 +74,7 @@ export function AdminDashboard() {
         pendingVerifications: pendingVerifications ?? 0,
         communityPosts: communityPosts ?? 0,
         bountyEvents: bountyEvents ?? 0,
+        clipChallenges: clipChallenges ?? 0,
       });
       setLoading(false);
     }
@@ -82,6 +86,7 @@ export function AdminDashboard() {
     { label: t.admin.stats.users, value: stats?.users ?? 0, href: "/admin/users" },
     { label: t.admin.stats.activeHunters, value: stats?.activeHunters ?? 0, href: "/admin/users" },
     { label: t.admin.stats.bountyEvents, value: stats?.bountyEvents ?? 0, href: "/admin/users" },
+    { label: t.admin.stats.clipChallenges, value: stats?.clipChallenges ?? 0, href: "/exclusives" },
     { label: t.admin.stats.pendingVerifications, value: stats?.pendingVerifications ?? 0, href: "/admin/users" },
     { label: t.admin.stats.communityPosts, value: stats?.communityPosts ?? 0, href: "/community" },
     { label: t.admin.stats.videos, value: stats?.videos ?? 0, href: "/admin/videos" },
@@ -149,6 +154,11 @@ export function AdminDashboard() {
           title={t.admin.quickActions.exclusivesFeatures}
           description={t.admin.quickActions.exclusivesFeaturesDesc}
           href="/exclusives"
+        />
+        <QuickLink
+          title={t.admin.quickActions.clipChallenges}
+          description={t.admin.quickActions.clipChallengesDesc}
+          href="/videos"
         />
       </div>
     </div>

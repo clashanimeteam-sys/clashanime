@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { ChallengeClipButton } from "@/components/duel/ChallengeClipButton";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { VideoCardChannel } from "@/components/VideoCardChannel";
 import { VideoSettingsMenu } from "@/components/VideoSettingsMenu";
@@ -148,6 +149,15 @@ export function VideoSlide({ video, isActive }: VideoSlideProps) {
             }}
             variant="overlay"
           />
+
+          {(!video.moderation_status || video.moderation_status === "approved") ? (
+            <ChallengeClipButton
+              challengedVideoId={video.id}
+              challengedVideoTitle={video.title}
+              challengedVideoOwnerId={video.user_id}
+              variant="overlay"
+            />
+          ) : null}
 
           {video.hashtags && video.hashtags.length > 0 ? (
             <p className="text-sm font-semibold text-zinc-300">

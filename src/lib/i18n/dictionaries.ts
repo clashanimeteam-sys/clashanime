@@ -118,6 +118,19 @@ export type Dictionary = {
     shuffleDuel: string;
     noDuelVideos: string;
     backToExclusives: string;
+    challengeClipButton: string;
+    challengeClipModalTitle: string;
+    challengeClipModalDesc: string;
+    pickYourClip: string;
+    startChallengeDuel: string;
+    creatingChallengeDuel: string;
+    loadingClips: string;
+    noClipsToChallenge: string;
+    loginToChallenge: string;
+    challengeFailed: string;
+    challengeDuelBadge: string;
+    challengeDuelTitle: string;
+    challengeDuelPageDesc: string;
   };
   radio: {
     badge: string;
@@ -304,6 +317,7 @@ export type Dictionary = {
       video_upload: string;
       community_post: string;
       trending_bonus: string;
+      video_duel_challenge: string;
     };
   };
   communityFeed: {
@@ -543,6 +557,7 @@ export type Dictionary = {
       pendingVerifications: string;
       communityPosts: string;
       bountyEvents: string;
+      clipChallenges: string;
     };
     quickActions: {
       reviewVideos: string;
@@ -557,6 +572,8 @@ export type Dictionary = {
       animeRadioSettingsDesc: string;
       exclusivesFeatures: string;
       exclusivesFeaturesDesc: string;
+      clipChallenges: string;
+      clipChallengesDesc: string;
     };
     table: {
       user: string;
@@ -703,6 +720,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
       shuffleDuel: "Shuffle duel",
       noDuelVideos: "Not enough approved videos for a duel yet.",
       backToExclusives: "Back to Exclusives",
+      challengeClipButton: "Challenge this clip",
+      challengeClipModalTitle: "Quick clip challenge",
+      challengeClipModalDesc: "Pick one of your approved clips to duel this video head-to-head.",
+      pickYourClip: "Pick your clip",
+      startChallengeDuel: "Start duel",
+      creatingChallengeDuel: "Creating duel...",
+      loadingClips: "Loading your clips...",
+      noClipsToChallenge: "Upload an approved clip first to challenge others.",
+      loginToChallenge: "Sign up to challenge clips and earn duel points.",
+      challengeFailed: "Could not start the duel. Try another clip.",
+      challengeDuelBadge: "Quick Challenge",
+      challengeDuelTitle: "Clip Challenge",
+      challengeDuelPageDesc: "Two creators, one arena. Vote with likes and comments to crown the stronger clip.",
     },
     radio: {
       badge: "24/7 stream",
@@ -892,6 +922,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         video_upload: "Approved upload",
         community_post: "Community post",
         trending_bonus: "Trending bounty",
+        video_duel_challenge: "Clip challenge duel",
       },
     },
     communityFeed: {
@@ -1140,6 +1171,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pendingVerifications: "Verification requests",
         communityPosts: "Community posts",
         bountyEvents: "Bounty events",
+        clipChallenges: "Clip challenge duels",
       },
       quickActions: {
         reviewVideos: "Review videos",
@@ -1153,7 +1185,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         animeRadioSettings: "Anime radio",
         animeRadioSettingsDesc: "Control autoplay, volume, and the mini player.",
         exclusivesFeatures: "Exclusives arena",
-        exclusivesFeaturesDesc: "Daily Hall of Fame, trending duels, and random clash.",
+        exclusivesFeaturesDesc: "Daily Hall of Fame, clip challenges, trending duels, and random clash.",
+        clipChallenges: "Clip challenges",
+        clipChallengesDesc: "Users duel clips head-to-head. Challenge button appears under every approved video.",
       },
       table: {
         user: "User",
@@ -1297,6 +1331,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
       shuffleDuel: "別の対決",
       noDuelVideos: "対決に必要な承認済み動画がまだ足りません。",
       backToExclusives: "限定へ戻る",
+      challengeClipButton: "この動画に挑戦",
+      challengeClipModalTitle: "クイック挑戦",
+      challengeClipModalDesc: "承認済みの自分の動画を選んで、この動画と対決しましょう。",
+      pickYourClip: "自分の動画を選ぶ",
+      startChallengeDuel: "対決を開始",
+      creatingChallengeDuel: "対決を作成中...",
+      loadingClips: "動画を読み込み中...",
+      noClipsToChallenge: "挑戦するには、まず承認済みの動画をアップロードしてください。",
+      loginToChallenge: "登録して動画に挑戦し、デュエルポイントを獲得しましょう。",
+      challengeFailed: "対決を開始できませんでした。別の動画を選んでください。",
+      challengeDuelBadge: "クイック挑戦",
+      challengeDuelTitle: "クリップ対決",
+      challengeDuelPageDesc: "2人のクリエイター、1つの舞台。いいねとコメントでより強い動画を決めよう。",
     },
     radio: {
       badge: "24/7 配信",
@@ -1483,6 +1530,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         video_upload: "承認済みアップロード",
         community_post: "コミュニティ投稿",
         trending_bonus: "トレンド報酬",
+        video_duel_challenge: "クリップ挑戦デュエル",
       },
     },
     communityFeed: {
@@ -1730,6 +1778,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pendingVerifications: "認証リクエスト",
         communityPosts: "コミュニティ投稿",
         bountyEvents: "報酬イベント",
+        clipChallenges: "クリップ挑戦デュエル",
       },
       quickActions: {
         reviewVideos: "動画を審査",
@@ -1743,7 +1792,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         animeRadioSettings: "アニメラジオ",
         animeRadioSettingsDesc: "自動再生、音量、ミニプレイヤーを管理します。",
         exclusivesFeatures: "限定アリーナ",
-        exclusivesFeaturesDesc: "デイリー殿堂、熱い対決、ランダムクラッシュ。",
+        exclusivesFeaturesDesc: "デイリー殿堂、クリップ挑戦、熱い対決、ランダムクラッシュ。",
+        clipChallenges: "クリップ挑戦",
+        clipChallengesDesc: "承認済み動画の下に挑戦ボタンが表示され、ユーザー同士が対決できます。",
       },
       table: {
         user: "ユーザー",
@@ -1887,6 +1938,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
       shuffleDuel: "نزال آخر",
       noDuelVideos: "لا توجد فيديوهات كافية لبدء نزال بعد.",
       backToExclusives: "العودة إلى حصري",
+      challengeClipButton: "تحدي هذا المقطع",
+      challengeClipModalTitle: "التحدي السريع",
+      challengeClipModalDesc: "اختر أحد مقاطعك المعتمدة لينافس هذا المقطع وجهاً لوجه.",
+      pickYourClip: "اختر مقطعك",
+      startChallengeDuel: "ابدأ النزال",
+      creatingChallengeDuel: "جارٍ إنشاء النزال...",
+      loadingClips: "جارٍ تحميل مقاطعك...",
+      noClipsToChallenge: "ارفع مقطعاً معتمداً أولاً لتتمكن من تحدي الآخرين.",
+      loginToChallenge: "سجّل للانضمام وتحدي المقاطع واكسب نقاط النزال.",
+      challengeFailed: "تعذّر بدء النزال. جرّب مقطعاً آخر.",
+      challengeDuelBadge: "التحدي السريع",
+      challengeDuelTitle: "نزال المقطع",
+      challengeDuelPageDesc: "منشئان و ساحة واحدة. صوّت بالإعجاب والتعليقات لتتوّج بالمقطع الأقوى.",
     },
     radio: {
       badge: "بث مباشر 24/7",
@@ -2075,6 +2139,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         video_upload: "رفع معتمد",
         community_post: "منشور مجتمع",
         trending_bonus: "جائزة الترند",
+        video_duel_challenge: "نزال تحدي مقطع",
       },
     },
     communityFeed: {
@@ -2322,6 +2387,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pendingVerifications: "طلبات التوثيق",
         communityPosts: "منشورات المجتمع",
         bountyEvents: "أحداث الجوائز",
+        clipChallenges: "نزالات تحدي المقاطع",
       },
       quickActions: {
         reviewVideos: "مراجعة الفيديوهات",
@@ -2335,7 +2401,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         animeRadioSettings: "راديو الأنمي",
         animeRadioSettingsDesc: "التحكم بالتشغيل التلقائي والصوت والشريط السفلي.",
         exclusivesFeatures: "ساحة حصري",
-        exclusivesFeaturesDesc: "لوحة الشرف اليومية، نزالات مشتعلة، وتحدي عشوائي.",
+        exclusivesFeaturesDesc: "لوحة الشرف اليومية، تحدي المقاطع، نزالات مشتعلة، وتحدي عشوائي.",
+        clipChallenges: "تحدي المقاطع",
+        clipChallengesDesc: "زر «تحدي هذا المقطع» يظهر تحت كل فيديو معتمد ويُنشئ نزالات تلقائياً بين المستخدمين.",
       },
       table: {
         user: "المستخدم",

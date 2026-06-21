@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { ChallengeClipButton } from "@/components/duel/ChallengeClipButton";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { VideoCardChannel } from "@/components/VideoCardChannel";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -192,6 +193,14 @@ export function VideoCard({
             hashtags: video.hashtags,
           }}
         />
+
+        {(!video.moderation_status || video.moderation_status === "approved") ? (
+          <ChallengeClipButton
+            challengedVideoId={video.id}
+            challengedVideoTitle={video.title}
+            challengedVideoOwnerId={video.user_id}
+          />
+        ) : null}
 
         {video.channel ? <VideoCardChannel channel={video.channel} /> : null}
       </div>
