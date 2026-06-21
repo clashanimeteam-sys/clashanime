@@ -1,38 +1,130 @@
 "use client";
 
 import Link from "next/link";
+import { BrandLogo } from "@/components/BrandLogo";
 import { useLocale } from "@/providers/LocaleProvider";
+
+const discoverLinks = [
+  { key: "clash" as const, href: "/" },
+  { key: "videos" as const, href: "/videos" },
+  { key: "community" as const, href: "/community" },
+  { key: "music" as const, href: "/music" },
+  { key: "exclusives" as const, href: "/exclusives" },
+] as const;
+
+const informationLinks = [
+  { key: "privacy" as const, href: "/privacy" },
+  { key: "terms" as const, href: "/terms" },
+  { key: "communityGuidelines" as const, href: "/community-guidelines" },
+  { key: "dmca" as const, href: "/dmca" },
+  { key: "reportContent" as const, href: "/report" },
+] as const;
+
+function FooterColumnHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-500">
+      {children}
+    </p>
+  );
+}
+
+function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <Link
+      href={href}
+      className="block text-sm text-zinc-400 transition-colors hover:text-white"
+    >
+      {children}
+    </Link>
+  );
+}
+
+function SocialIcon({ type }: { type: "mail" | "report" }) {
+  if (type === "mail") {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4 shrink-0" aria-hidden>
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+        <path d="m2 7 10 7 10-7" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4 shrink-0" aria-hidden>
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    </svg>
+  );
+}
 
 export function Footer() {
   const { t } = useLocale();
 
   return (
-    <footer className="mt-auto border-t border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black">
-      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-        <div>
-          <p className="text-sm font-semibold text-black dark:text-white">
-            {t.brand.name}.com
-          </p>
-          <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">{t.footer.tagline}</p>
-        </div>
+    <footer className="mt-auto border-t border-zinc-800 bg-zinc-950 text-zinc-400">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:py-14">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+          <div className="sm:col-span-2 lg:col-span-1">
+            <Link href="/" className="inline-flex flex-col gap-3">
+              <BrandLogo className="h-14 w-14" />
+              <p className="font-display text-lg font-black uppercase italic leading-none tracking-[0.14em]">
+                <span className="bg-gradient-to-br from-brand via-red-600 to-orange-500 bg-clip-text text-transparent">
+                  {t.home.titlePrimary}
+                </span>
+                <span className="text-white">{t.home.titleSecondary}</span>
+              </p>
+            </Link>
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-zinc-500">{t.footer.tagline}</p>
+          </div>
 
-        <nav className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-zinc-600 dark:text-zinc-400">
-          <Link href="/privacy" className="transition-colors hover:text-accent">
-            {t.footer.privacy}
-          </Link>
-          <Link href="/terms" className="transition-colors hover:text-accent">
-            {t.footer.terms}
-          </Link>
-          <Link href="/community-guidelines" className="transition-colors hover:text-accent">
-            {t.footer.communityGuidelines}
-          </Link>
-          <Link href="/dmca" className="transition-colors hover:text-accent">
-            {t.footer.dmca}
-          </Link>
-          <Link href="/report" className="transition-colors hover:text-accent">
-            {t.footer.reportContent}
-          </Link>
-        </nav>
+          <div>
+            <FooterColumnHeading>{t.footer.discoverHeading}</FooterColumnHeading>
+            <nav className="flex flex-col gap-2.5" aria-label={t.footer.discoverHeading}>
+              {discoverLinks.map((item) => (
+                <FooterLink key={item.key} href={item.href}>
+                  {t.nav[item.key]}
+                </FooterLink>
+              ))}
+            </nav>
+          </div>
+
+          <div>
+            <FooterColumnHeading>{t.footer.informationHeading}</FooterColumnHeading>
+            <nav className="flex flex-col gap-2.5" aria-label={t.footer.informationHeading}>
+              {informationLinks.map((item) => (
+                <FooterLink key={item.key} href={item.href}>
+                  {t.footer[item.key]}
+                </FooterLink>
+              ))}
+            </nav>
+          </div>
+
+          <div>
+            <FooterColumnHeading>{t.footer.socialHeading}</FooterColumnHeading>
+            <nav className="flex flex-col gap-2.5" aria-label={t.footer.socialHeading}>
+              <a
+                href="mailto:support@clashanime.com"
+                className="flex items-center gap-2.5 text-sm text-zinc-400 transition-colors hover:text-white"
+              >
+                <SocialIcon type="mail" />
+                {t.footer.contact}
+              </a>
+              <Link
+                href="/report"
+                className="flex items-center gap-2.5 text-sm text-zinc-400 transition-colors hover:text-white"
+              >
+                <SocialIcon type="report" />
+                {t.footer.reportContent}
+              </Link>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t border-zinc-800/80">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-5 text-xs text-zinc-600 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <p>{t.brand.name.toLowerCase()}.com</p>
+          <p>{t.footer.copyright}</p>
+        </div>
       </div>
     </footer>
   );

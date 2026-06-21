@@ -108,6 +108,11 @@ export type Dictionary = {
   };
   footer: {
     tagline: string;
+    discoverHeading: string;
+    informationHeading: string;
+    socialHeading: string;
+    contact: string;
+    copyright: string;
     privacy: string;
     terms: string;
     communityGuidelines: string;
@@ -956,6 +961,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     footer: {
       tagline: "Anime duels ranked by real-time community engagement.",
+      discoverHeading: "Discover",
+      informationHeading: "Information",
+      socialHeading: "Social Media",
+      contact: "Contact",
+      copyright: "© 2026 Clash Anime. All rights reserved.",
       privacy: "Privacy Policy",
       terms: "Terms of Use",
       communityGuidelines: "Community Guidelines",
@@ -1830,6 +1840,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     footer: {
       tagline: "リアルタイムのコミュニティ参加でランク付けされるアニメデュエル。",
+      discoverHeading: "探索",
+      informationHeading: "情報",
+      socialHeading: "SNS",
+      contact: "お問い合わせ",
+      copyright: "© 2026 Clash Anime. All rights reserved.",
       privacy: "プライバシーポリシー",
       terms: "利用規約",
       communityGuidelines: "コミュニティガイドライン",
@@ -2696,6 +2711,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     footer: {
       tagline: "نزالات أنمي مُرتَّبة حسب تفاعل المجتمع في الوقت الفعلي.",
+      discoverHeading: "استكشف",
+      informationHeading: "معلومات",
+      socialHeading: "التواصل",
+      contact: "اتصل بنا",
+      copyright: "© 2026 Clash Anime. جميع الحقوق محفوظة.",
       privacy: "سياسة الخصوصية",
       terms: "شروط الاستخدام",
       communityGuidelines: "إرشادات المجتمع",
