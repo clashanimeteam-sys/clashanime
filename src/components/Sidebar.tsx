@@ -151,10 +151,18 @@ export function Sidebar() {
         </Link>
 
         <Link
-          href="/upload"
-          className="mt-4 block w-full rounded-lg bg-accent px-3 py-2 text-center text-xs font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
+          href="/"
+          className="group mt-4 block text-center"
+          aria-label={`${t.home.titlePrimary}${t.home.titleSecondary}`}
         >
-          {t.home.upload}
+          <p className="font-display text-xl font-black uppercase leading-none tracking-[0.16em] sm:text-[1.35rem]">
+            <span className="animate-[prize-shimmer_4s_linear_infinite] bg-gradient-to-br from-brand via-red-600 to-orange-500 bg-[length:200%_100%] bg-clip-text text-transparent drop-shadow-[0_2px_10px_rgba(179,27,27,0.4)] transition-transform group-hover:scale-[1.03]">
+              {t.home.titlePrimary}
+            </span>
+            <span className="text-black transition-colors group-hover:text-zinc-700 dark:text-white dark:group-hover:text-zinc-200">
+              {t.home.titleSecondary}
+            </span>
+          </p>
         </Link>
       </div>
 

@@ -29,7 +29,6 @@ export function ClashPrizeBanner({ activeSeason }: ClashPrizeBannerProps) {
               <p className="animate-[prize-shimmer_4s_linear_infinite] bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-200 bg-[length:200%_100%] bg-clip-text font-display text-lg font-black uppercase tracking-[0.12em] text-transparent sm:text-xl">
                 {t.home.cashPrizeTitle}
               </p>
-              <p className="mt-1 text-sm text-amber-100/85">{t.home.cashPrizeSubtitle}</p>
             </div>
           </div>
           <CashPrizeRankButtons season={activeSeason} />
