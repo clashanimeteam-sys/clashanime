@@ -16,20 +16,17 @@ function getClashTier(rank: number): "champion" | "podium" | "arena" | null {
 
 const tierStyles = {
   champion: {
-    wrapper:
-      "shadow-[0_0_40px_rgba(251,191,36,0.45),0_0_80px_rgba(249,115,22,0.25)] animate-[clash-glow-pulse_2.4s_ease-in-out_infinite]",
-    ring: "from-amber-400 via-orange-500 to-red-600 animate-[clash-border-spin_6s_linear_infinite]",
+    wrapper: "shadow-[0_0_40px_rgba(251,191,36,0.45),0_0_80px_rgba(249,115,22,0.25)]",
+    ring: "from-amber-400 via-orange-500 to-red-600",
     fire: "from-amber-500/80 via-orange-600/60 to-transparent opacity-90",
   },
   podium: {
-    wrapper:
-      "shadow-[0_0_28px_rgba(249,115,22,0.35)] animate-[clash-glow-pulse_3s_ease-in-out_infinite]",
-    ring: "from-orange-400 via-red-500 to-amber-500 animate-[clash-border-spin_8s_linear_infinite]",
+    wrapper: "shadow-[0_0_28px_rgba(249,115,22,0.35)]",
+    ring: "from-orange-400 via-red-500 to-amber-500",
     fire: "from-orange-500/70 via-red-600/45 to-transparent opacity-75",
   },
   arena: {
-    wrapper:
-      "shadow-[0_0_18px_rgba(179,27,27,0.28)] animate-[clash-glow-pulse_3.6s_ease-in-out_infinite]",
+    wrapper: "shadow-[0_0_18px_rgba(179,27,27,0.28)]",
     ring: "from-red-500 via-orange-600 to-red-700",
     fire: "from-red-600/55 via-orange-600/35 to-transparent opacity-60",
   },
@@ -62,17 +59,10 @@ export function ClashThumbnailFire({ rank }: { rank: number }) {
     <>
       <div
         aria-hidden
-        className={`pointer-events-none absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t ${styles.fire} animate-[clash-fire-flicker_2.2s_ease-in-out_infinite]`}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent)] animate-[speed-lines_3.5s_linear_infinite] opacity-40"
+        className={`pointer-events-none absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t ${styles.fire}`}
       />
       {tier === "champion" ? (
-        <span
-          aria-hidden
-          className="pointer-events-none absolute end-3 top-3 text-lg animate-[clash-fire-flicker_1.8s_ease-in-out_infinite]"
-        >
+        <span aria-hidden className="pointer-events-none absolute end-3 top-3 text-lg">
           🔥
         </span>
       ) : null}

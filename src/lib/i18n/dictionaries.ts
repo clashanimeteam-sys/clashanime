@@ -26,8 +26,6 @@ export type Dictionary = {
     clashLive: string;
     podiumLabel: string;
     challengersLabel: string;
-    clashVs: string;
-    clashBattle: string;
     upload: string;
     maintenanceMode: string;
   };

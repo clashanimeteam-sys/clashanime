@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChallengeClipButton } from "@/components/duel/ChallengeClipButton";
 import { ClashThumbnailFire } from "@/components/clash/ClashFireFrame";
-import { ClashRivalCornerFlame } from "@/components/clash/ClashVsFlame";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { VideoCardChannel } from "@/components/VideoCardChannel";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -20,7 +19,6 @@ type VideoCardProps = {
   showTrendingDuelBadge?: boolean;
   compact?: boolean;
   clashMode?: boolean;
-  clashRivalFlameSide?: "start" | "end";
 };
 
 type MedalTier = "gold" | "silver" | "bronze" | null;
@@ -102,7 +100,6 @@ export function VideoCard({
   showTrendingDuelBadge = false,
   compact = false,
   clashMode = false,
-  clashRivalFlameSide,
 }: VideoCardProps) {
   const { t } = useLocale();
   const moderationStatus = video.moderation_status;
@@ -162,11 +159,9 @@ export function VideoCard({
 
           {clashMode && rank !== undefined ? <ClashThumbnailFire rank={rank} /> : null}
 
-          {clashRivalFlameSide ? <ClashRivalCornerFlame side={clashRivalFlameSide} /> : null}
-
           {showClashBadge && isInClashTop(rank) ? (
             <span
-              className={`absolute rounded-full bg-gradient-to-r from-orange-600 to-red-600 font-bold text-white shadow-lg ${compact ? "start-2 top-7 px-1.5 py-0.5 text-[8px]" : clashMode ? "start-3 top-12 animate-[clash-glow-pulse_2s_ease-in-out_infinite] px-2.5 py-1 text-[10px] shadow-[0_0_12px_rgba(249,115,22,0.6)]" : "start-3 top-12 px-2 py-0.5 text-[10px]"}`}
+              className={`absolute rounded-full bg-gradient-to-r from-orange-600 to-red-600 font-bold text-white shadow-lg ${compact ? "start-2 top-7 px-1.5 py-0.5 text-[8px]" : clashMode ? "start-3 top-12 px-2.5 py-1 text-[10px] shadow-[0_0_12px_rgba(249,115,22,0.6)]" : "start-3 top-12 px-2 py-0.5 text-[10px]"}`}
             >
               {clashMode ? `🔥 ${t.video.inClashTop}` : t.video.inClashTop}
             </span>

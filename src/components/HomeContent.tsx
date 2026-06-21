@@ -2,7 +2,6 @@
 
 import { ClashArenaBackdrop } from "@/components/clash/ClashArenaBackdrop";
 import { ClashFireFrame } from "@/components/clash/ClashFireFrame";
-import { ClashVsFlame } from "@/components/clash/ClashVsFlame";
 import { SiteTitle } from "@/components/SiteTitle";
 import { VideoCard } from "@/components/VideoCard";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -32,9 +31,6 @@ export function HomeContent({ videos }: HomeContentProps) {
         rank={video.global_rank}
         clashMode
         showClashBadge
-        clashRivalFlameSide={
-          video.global_rank === 1 ? "start" : video.global_rank === 2 ? "end" : undefined
-        }
       />
     );
 
@@ -56,7 +52,7 @@ export function HomeContent({ videos }: HomeContentProps) {
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6">
         <section className="mb-10">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-orange-700 backdrop-blur-sm dark:text-orange-300">
-            <span className="h-2 w-2 animate-[live-dot_1.2s_ease-in-out_infinite] rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.9)]" />
+            <span className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.9)]" />
             {t.home.clashLive}
           </div>
 
@@ -74,16 +70,10 @@ export function HomeContent({ videos }: HomeContentProps) {
             <h2 className="mb-4 font-display text-sm font-bold uppercase tracking-[0.24em] text-orange-600 dark:text-orange-400">
               {t.home.podiumLabel}
             </h2>
-            <div className="relative">
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 sm:items-end">
-                {podiumVideos.map((video) =>
-                  renderClashCard(video, video.global_rank === 1),
-                )}
-              </div>
-              {podiumVideos.some((video) => video.global_rank === 1) &&
-              podiumVideos.some((video) => video.global_rank === 2) ? (
-                <ClashVsFlame className="absolute left-1/3 top-0 z-20 hidden -translate-x-1/2 -translate-y-1/2 sm:flex" />
-              ) : null}
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 sm:items-end">
+              {podiumVideos.map((video) =>
+                renderClashCard(video, video.global_rank === 1),
+              )}
             </div>
           </section>
         ) : null}
