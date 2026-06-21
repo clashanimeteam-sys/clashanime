@@ -468,6 +468,9 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
           >
             {withdrawing ? t.wallet.processing : t.wallet.withdrawButton}
           </button>
+          <p className="mt-3 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+            {t.wallet.withdrawProcessingTime}
+          </p>
         </form>
       </div>
 

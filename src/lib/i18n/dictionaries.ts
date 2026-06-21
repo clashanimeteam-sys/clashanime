@@ -423,6 +423,7 @@ export type Dictionary = {
     kycAcknowledgement: string;
     kycRequired: string;
     withdrawButton: string;
+    withdrawProcessingTime: string;
     withdrawFailed: string;
     withdrawMinError: string;
     withdrawPendingNotice: string;
@@ -1182,10 +1183,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "I understand identity verification (KYC) may be required before payout is sent.",
       kycRequired: "Please confirm the KYC notice before submitting.",
       withdrawButton: "Request payout",
+      withdrawProcessingTime:
+        "Payouts are reviewed manually. After approval, funds typically arrive within 24–72 hours.",
       withdrawFailed: "Could not submit withdrawal request.",
       withdrawMinError: "Minimum withdrawal is $50.00.",
       withdrawPendingNotice:
-        "Your request is under review. Champion payouts usually arrive within 48 hours!",
+        "Your request is under review. After approval, payout usually arrives within 24–72 hours.",
       fraudBlocked:
         "This request was flagged for review due to unusual point activity. Our team will investigate.",
       processing: "Processing...",
@@ -1945,9 +1948,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       kycAcknowledgement: "出金前に本人確認（KYC）が必要になる場合があることを理解しています。",
       kycRequired: "KYC通知に同意してください。",
       withdrawButton: "出金をリクエスト",
+      withdrawProcessingTime:
+        "出金は手動で審査されます。承認後、通常24〜72時間以内にお支払いされます。",
       withdrawFailed: "出金リクエストを送信できませんでした。",
       withdrawMinError: "最低出金は$50.00です。",
-      withdrawPendingNotice: "リクエストは審査中です。チャンピオンの報酬は通常48時間以内に届きます！",
+      withdrawPendingNotice:
+        "リクエストは審査中です。承認後、通常24〜72時間以内にお支払いされます。",
       fraudBlocked: "異常なポイント活動のため審査対象になりました。",
       processing: "処理中...",
       paymentOptionsTitle: "出金方法",
@@ -2707,9 +2713,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       kycAcknowledgement: "أفهم أنه قد يُطلب إثبات الهوية (KYC) قبل إرسال المبلغ.",
       kycRequired: "يرجى تأكيد إشعار KYC قبل الإرسال.",
       withdrawButton: "اطلب السحب",
+      withdrawProcessingTime:
+        "تُراجع جميع الطلبات يدوياً. بعد الموافقة، يصل المبلغ عادةً خلال ٢٤ إلى ٧٢ ساعة.",
       withdrawFailed: "تعذر إرسال طلب السحب.",
       withdrawMinError: "الحد الأدنى للسحب ٥٠$.",
-      withdrawPendingNotice: "طلبك قيد المراجعة، سيصلك راتب الأبطال خلال ٤٨ ساعة!",
+      withdrawPendingNotice:
+        "طلبك قيد المراجعة. بعد الموافقة، يصل المبلغ عادةً خلال ٢٤ إلى ٧٢ ساعة.",
       fraudBlocked: "تم تعليق الطلب للمراجعة بسبب نشاط نقاط غير اعتيادي.",
       processing: "جارٍ المعالجة...",
       paymentOptionsTitle: "طرق السحب",
