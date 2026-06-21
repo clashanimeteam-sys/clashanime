@@ -84,10 +84,12 @@ export async function POST(request: Request) {
 
     return NextResponse.json(uploaded);
   } catch (error) {
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : "upload failed" },
-      { status: 500 },
-    );
+    const message = error instanceof Error ? error.message : "upload failed";
+    const friendly =
+      message.includes("EPROTO") || message.includes("SSL") || message.includes("handshake")
+        ? "R2 SSL connection failed. Verify R2_ACCOUNT_ID and API token on Vercel."
+        : message;
+    return NextResponse.json({ error: friendly }, { status: 500 });
   }
 }
 

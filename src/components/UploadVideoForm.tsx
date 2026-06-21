@@ -258,6 +258,9 @@ export function UploadVideoForm() {
     if (error.message === "Failed to fetch") {
       return messages.uploadFailed;
     }
+    if (error.message.includes("EPROTO") || error.message.includes("SSL") || error.message.includes("handshake")) {
+      return messages.r2UploadBlocked;
+    }
     return error.message || messages.uploadFailed;
   }
 

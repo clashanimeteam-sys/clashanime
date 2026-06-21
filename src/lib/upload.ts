@@ -84,13 +84,17 @@ export async function uploadToStorageWithFallback({
     : null;
 
   if (healthPayload?.r2Configured) {
-    const { uploadMediaFile } = await import("@/lib/mediaUpload");
-    const uploaded = await uploadMediaFile({ folder, filename, file });
-    return {
-      publicUrl: uploaded.publicUrl,
-      objectKey: uploaded.key,
-      backend: "r2",
-    };
+    try {
+      const { uploadMediaFile } = await import("@/lib/mediaUpload");
+      const uploaded = await uploadMediaFile({ folder, filename, file });
+      return {
+        publicUrl: uploaded.publicUrl,
+        objectKey: uploaded.key,
+        backend: "r2",
+      };
+    } catch {
+      // Fall back to Supabase Storage if R2 upload fails (SSL/CORS/network).
+    }
   }
 
   const { error: uploadError } = await supabase.storage.from(bucket).upload(storagePath, file, {
