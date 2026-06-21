@@ -426,8 +426,13 @@ export type Dictionary = {
     kycWithdrawLocked: string;
     kycTitle: string;
     kycDesc: string;
+    kycFirstNameLabel: string;
+    kycFirstNamePlaceholder: string;
+    kycLastNameLabel: string;
+    kycLastNamePlaceholder: string;
+    kycCountryLabel: string;
     kycPhoneLabel: string;
-    kycPhonePlaceholder: string;
+    kycPhoneLocalPlaceholder: string;
     kycAddressLabel: string;
     kycAddressPlaceholder: string;
     kycIdLabel: string;
@@ -1225,8 +1230,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       kycTitle: "Identity verification (KYC)",
       kycDesc:
         "Required once per account and channel before any ClashCoins payout. Submit your phone, address, and a photo of your government ID.",
+      kycFirstNameLabel: "First name",
+      kycFirstNamePlaceholder: "First name on ID",
+      kycLastNameLabel: "Last name",
+      kycLastNamePlaceholder: "Last name on ID",
+      kycCountryLabel: "Country",
       kycPhoneLabel: "Phone number",
-      kycPhonePlaceholder: "+1 555 123 4567",
+      kycPhoneLocalPlaceholder: "501234567",
       kycAddressLabel: "Full address",
       kycAddressPlaceholder: "Street, city, country, postal code",
       kycIdLabel: "Government ID photo",
@@ -2029,8 +2039,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       kycWithdrawLocked: "出金前にアカウントごとに1回KYCを完了し、承認を受けてください。",
       kycTitle: "本人確認（KYC）",
       kycDesc: "ClashCoins出金前にアカウントごとに1回必要です。電話番号、住所、公的身分証の写真を提出してください。",
+      kycFirstNameLabel: "名",
+      kycFirstNamePlaceholder: "身分証の名",
+      kycLastNameLabel: "姓",
+      kycLastNamePlaceholder: "身分証の姓",
+      kycCountryLabel: "国",
       kycPhoneLabel: "電話番号",
-      kycPhonePlaceholder: "+81 90 1234 5678",
+      kycPhoneLocalPlaceholder: "9012345678",
       kycAddressLabel: "住所",
       kycAddressPlaceholder: "番地、市区町村、国、郵便番号",
       kycIdLabel: "公的身分証の写真",
@@ -2834,8 +2849,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       kycTitle: "إثبات الهوية (KYC)",
       kycDesc:
         "مطلوب مرة واحدة لكل حساب وقناة قبل أي سحب ClashCoins. أرسل رقم الهاتف والعنوان وصورة هوية رسمية.",
+      kycFirstNameLabel: "الاسم الأول",
+      kycFirstNamePlaceholder: "الاسم كما في الهوية",
+      kycLastNameLabel: "اسم العائلة",
+      kycLastNamePlaceholder: "اسم العائلة كما في الهوية",
+      kycCountryLabel: "الدولة",
       kycPhoneLabel: "رقم الهاتف",
-      kycPhonePlaceholder: "+966 5X XXX XXXX",
+      kycPhoneLocalPlaceholder: "5XXXXXXXX",
       kycAddressLabel: "العنوان الكامل",
       kycAddressPlaceholder: "الشارع، المدينة، الدولة، الرمز البريدي",
       kycIdLabel: "صورة الهوية الرسمية",

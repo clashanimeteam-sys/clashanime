@@ -1,6 +1,13 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { CountryPhoneField } from "@/components/wallet/CountryPhoneField";
+import {
+  buildFullPhoneNumber,
+  DEFAULT_KYC_COUNTRY,
+  getKycCountryByCode,
+  getKycCountryLabel,
+} from "@/lib/kycCountries";
 import { uploadMediaFile } from "@/lib/mediaUpload";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -9,6 +16,10 @@ export type PayoutKycStatus = "none" | "pending" | "approved" | "rejected";
 
 export type PayoutKycSubmission = {
   id: string;
+  first_name: string | null;
+  last_name: string | null;
+  country_code: string | null;
+  country_name: string | null;
   phone: string;
   address: string;
   id_document_url: string;
@@ -20,17 +31,25 @@ export type PayoutKycSubmission = {
 
 type ClashWalletKycSectionProps = {
   userId: string;
+  embedded?: boolean;
   onStatusChange?: (status: PayoutKycStatus) => void;
 };
 
 const MAX_ID_IMAGE_BYTES = 10 * 1024 * 1024;
 
-export function ClashWalletKycSection({ userId, onStatusChange }: ClashWalletKycSectionProps) {
-  const { t } = useLocale();
+export function ClashWalletKycSection({
+  userId,
+  embedded = false,
+  onStatusChange,
+}: ClashWalletKycSectionProps) {
+  const { t, locale } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [submission, setSubmission] = useState<PayoutKycSubmission | null>(null);
   const [loading, setLoading] = useState(true);
-  const [phone, setPhone] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [countryCode, setCountryCode] = useState(DEFAULT_KYC_COUNTRY.code);
+  const [localPhone, setLocalPhone] = useState("");
   const [address, setAddress] = useState("");
   const [idFile, setIdFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -45,13 +64,19 @@ export function ClashWalletKycSection({ userId, onStatusChange }: ClashWalletKyc
         : "pending"
     : "none";
 
+  const containerClassName = embedded
+    ? "rounded-2xl border border-amber-200/80 bg-gradient-to-br from-amber-50/80 via-white to-orange-50/40 p-5 dark:border-amber-900/40 dark:from-amber-950/20 dark:via-zinc-950 dark:to-orange-950/10"
+    : "rounded-2xl border border-zinc-200 bg-white/70 p-5 dark:border-zinc-800 dark:bg-zinc-900/50";
+
   const loadSubmission = useCallback(async () => {
     if (!supabase) return;
 
     setLoading(true);
     const { data } = await supabase
       .from("payout_kyc_submissions")
-      .select("id, phone, address, id_document_url, status, admin_notes, created_at, updated_at")
+      .select(
+        "id, first_name, last_name, country_code, country_name, phone, address, id_document_url, status, admin_notes, created_at, updated_at",
+      )
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
       .limit(1)
@@ -74,6 +99,9 @@ export function ClashWalletKycSection({ userId, onStatusChange }: ClashWalletKyc
     setSubmitting(true);
     setError(null);
     setMessage(null);
+
+    const country = getKycCountryByCode(countryCode) ?? DEFAULT_KYC_COUNTRY;
+    const fullPhone = buildFullPhoneNumber(country, localPhone);
 
     if (!idFile) {
       setError(t.wallet.kycIdRequired);
@@ -102,7 +130,11 @@ export function ClashWalletKycSection({ userId, onStatusChange }: ClashWalletKyc
       });
 
       const { error: rpcError } = await supabase!.rpc("submit_payout_kyc", {
-        p_phone: phone.trim(),
+        p_first_name: firstName.trim(),
+        p_last_name: lastName.trim(),
+        p_country_code: country.code,
+        p_country_name: getKycCountryLabel(country, locale),
+        p_phone: fullPhone,
         p_address: address.trim(),
         p_id_document_url: uploaded.publicUrl,
       });
@@ -114,7 +146,10 @@ export function ClashWalletKycSection({ userId, onStatusChange }: ClashWalletKyc
       }
 
       setMessage(t.wallet.kycSubmitSuccess);
-      setPhone("");
+      setFirstName("");
+      setLastName("");
+      setCountryCode(DEFAULT_KYC_COUNTRY.code);
+      setLocalPhone("");
       setAddress("");
       setIdFile(null);
       await loadSubmission();
@@ -127,7 +162,7 @@ export function ClashWalletKycSection({ userId, onStatusChange }: ClashWalletKyc
 
   if (loading) {
     return (
-      <div className="rounded-2xl border border-zinc-200 bg-white/70 p-5 dark:border-zinc-800 dark:bg-zinc-900/50">
+      <div className={containerClassName}>
         <p className="text-sm text-zinc-500">{t.wallet.kycLoading}</p>
       </div>
     );
@@ -152,31 +187,60 @@ export function ClashWalletKycSection({ userId, onStatusChange }: ClashWalletKyc
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="rounded-2xl border border-zinc-200 bg-white/70 p-5 dark:border-zinc-800 dark:bg-zinc-900/50"
-    >
-      <p className="text-lg font-semibold text-black dark:text-white">{t.wallet.kycTitle}</p>
-      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{t.wallet.kycDesc}</p>
+    <form onSubmit={handleSubmit} className={containerClassName}>
+      <div className="flex items-start gap-3">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-500/15 text-lg">
+          🪪
+        </div>
+        <div>
+          <p className="text-lg font-semibold text-black dark:text-white">{t.wallet.kycTitle}</p>
+          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{t.wallet.kycDesc}</p>
+        </div>
+      </div>
 
       {status === "rejected" ? (
-        <p className="mt-3 rounded-xl border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300">
+        <p className="mt-4 rounded-xl border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300">
           {submission?.admin_notes
             ? `${t.wallet.kycRejectedTitle}: ${submission.admin_notes}`
             : t.wallet.kycRejectedDesc}
         </p>
       ) : null}
 
-      <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-        {t.wallet.kycPhoneLabel}
-        <input
-          type="tel"
-          value={phone}
-          onChange={(event) => setPhone(event.target.value)}
-          placeholder={t.wallet.kycPhonePlaceholder}
-          className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+      <div className="mt-5 grid gap-4 sm:grid-cols-2">
+        <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+          {t.wallet.kycFirstNameLabel}
+          <input
+            type="text"
+            value={firstName}
+            onChange={(event) => setFirstName(event.target.value)}
+            placeholder={t.wallet.kycFirstNamePlaceholder}
+            className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+          />
+        </label>
+
+        <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+          {t.wallet.kycLastNameLabel}
+          <input
+            type="text"
+            value={lastName}
+            onChange={(event) => setLastName(event.target.value)}
+            placeholder={t.wallet.kycLastNamePlaceholder}
+            className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+          />
+        </label>
+      </div>
+
+      <div className="mt-4">
+        <CountryPhoneField
+          countryCode={countryCode}
+          localPhone={localPhone}
+          onCountryChange={setCountryCode}
+          onLocalPhoneChange={setLocalPhone}
+          countryLabel={t.wallet.kycCountryLabel}
+          phoneLabel={t.wallet.kycPhoneLabel}
+          phonePlaceholder={t.wallet.kycPhoneLocalPlaceholder}
         />
-      </label>
+      </div>
 
       <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
         {t.wallet.kycAddressLabel}
@@ -203,7 +267,7 @@ export function ClashWalletKycSection({ userId, onStatusChange }: ClashWalletKyc
       <button
         type="submit"
         disabled={submitting}
-        className="mt-4 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
+        className="mt-5 w-full rounded-full bg-gradient-to-r from-amber-500 to-red-600 px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-50 sm:w-auto"
       >
         {submitting ? t.wallet.processing : t.wallet.kycSubmitButton}
       </button>

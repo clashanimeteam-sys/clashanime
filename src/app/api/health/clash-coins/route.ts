@@ -67,7 +67,11 @@ export async function GET() {
 
   if (payoutKycTable) {
     const { error: submitError } = await supabase.rpc("submit_payout_kyc", {
-      p_phone: "+10000000000",
+      p_first_name: "Health",
+      p_last_name: "Check",
+      p_country_code: "SA",
+      p_country_name: "Saudi Arabia",
+      p_phone: "+966500000000",
       p_address: "Health Check Address 12345",
       p_id_document_url: "https://example.com/kyc-health-check.jpg",
     });
@@ -127,6 +131,7 @@ export async function GET() {
       "supabase/scripts/production-convert-minimum-100-points.sql",
       "supabase/scripts/production-withdrawal-paypal-usdt.sql",
       "supabase/scripts/production-payout-kyc.sql",
+      "supabase/scripts/production-payout-kyc-name-country.sql",
     ],
     sqlEditor:
       "https://supabase.com/dashboard/project/doqiuduigbdoczdzsima/sql/new",

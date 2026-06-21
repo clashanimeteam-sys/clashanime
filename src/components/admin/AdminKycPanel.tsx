@@ -7,6 +7,10 @@ import { useLocale } from "@/providers/LocaleProvider";
 type KycSubmission = {
   id: string;
   user_id: string;
+  first_name: string | null;
+  last_name: string | null;
+  country_code: string | null;
+  country_name: string | null;
   phone: string;
   address: string;
   id_document_url: string;
@@ -35,7 +39,9 @@ export function AdminKycPanel() {
 
     let query = supabase
       .from("payout_kyc_submissions")
-      .select("id, user_id, phone, address, id_document_url, status, admin_notes, created_at")
+      .select(
+        "id, user_id, first_name, last_name, country_code, country_name, phone, address, id_document_url, status, admin_notes, created_at",
+      )
       .order("created_at", { ascending: false })
       .limit(100);
 
@@ -137,10 +143,21 @@ export function AdminKycPanel() {
                   <p className="text-sm font-semibold text-white">
                     @{submission.username ?? submission.user_id.slice(0, 8)}
                   </p>
+                  {(submission.first_name || submission.last_name) && (
+                    <p className="mt-1 text-sm text-zinc-200">
+                      {[submission.first_name, submission.last_name].filter(Boolean).join(" ")}
+                    </p>
+                  )}
                   <span className="mt-2 inline-flex rounded-full bg-zinc-800 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-zinc-200">
                     {t.admin.kycStatuses[submission.status]}
                   </span>
-                  <p className="mt-3 text-xs text-zinc-300">
+                  {submission.country_name ? (
+                    <p className="mt-3 text-xs text-zinc-300">
+                      {t.wallet.kycCountryLabel}: {submission.country_name}
+                      {submission.country_code ? ` (${submission.country_code})` : ""}
+                    </p>
+                  ) : null}
+                  <p className="mt-1 text-xs text-zinc-300">
                     {t.wallet.kycPhoneLabel}: {submission.phone}
                   </p>
                   <p className="mt-1 text-xs text-zinc-300">

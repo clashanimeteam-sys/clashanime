@@ -281,10 +281,9 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
         </div>
       </div>
 
-      <ClashWalletKycSection userId={profile.id} onStatusChange={setKycStatus} />
-
       <div className="grid gap-5 lg:grid-cols-2">
-        <form onSubmit={handleConvert} className={panelBoxClassName()}>
+        <div className={panelBoxClassName()}>
+          <form onSubmit={handleConvert}>
           <h3 className="text-lg font-semibold text-black dark:text-white">{t.wallet.convertTitle}</h3>
           <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{t.wallet.convertDesc}</p>
 
@@ -312,7 +311,12 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
           >
             {converting ? t.wallet.processing : t.wallet.convertButton}
           </button>
-        </form>
+          </form>
+
+          <div className="mt-6 border-t border-zinc-200/80 pt-6 dark:border-zinc-800">
+            <ClashWalletKycSection userId={profile.id} embedded onStatusChange={setKycStatus} />
+          </div>
+        </div>
 
         <form
           onSubmit={handleWithdraw}
