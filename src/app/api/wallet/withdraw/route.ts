@@ -119,7 +119,7 @@ export async function POST(request: Request) {
   }
 
   if (!kycAcknowledged) {
-    return NextResponse.json({ error: "KYC acknowledgement required" }, { status: 400 });
+    return NextResponse.json({ error: "KYC policy acknowledgement required" }, { status: 400 });
   }
 
   const paymentDetailsResult = buildPaymentDetails(paymentMethod, body);
@@ -135,7 +135,11 @@ export async function POST(request: Request) {
   });
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
+    const message =
+      error.message?.includes("payout kyc approval required")
+        ? "Payout KYC approval required"
+        : error.message;
+    return NextResponse.json({ error: message }, { status: 400 });
   }
 
   const { data: withdrawal } = await supabase

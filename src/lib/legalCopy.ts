@@ -9,9 +9,9 @@ export type LegalPageCopy = {
   sections: LegalSection[];
 };
 
-const UPDATED_EN = "Last updated: June 20, 2026";
-const UPDATED_AR = "آخر تحديث: 20 يونيو 2026";
-const UPDATED_JA = "最終更新: 2026年6月20日";
+const UPDATED_EN = "Last updated: June 21, 2026";
+const UPDATED_AR = "آخر تحديث: 21 يونيو 2026";
+const UPDATED_JA = "最終更新: 2026年6月21日";
 
 const CONTACT_BLOCK_EN =
   "ClashAnime.com\nDesignated DMCA Agent: ClashAnime Legal\nDMCA: dmca@clashanime.com\nPrivacy: privacy@clashanime.com\nSupport: support@clashanime.com";
@@ -63,7 +63,7 @@ const en: LegalBundle = {
       },
       {
         heading: "8. Prohibited conduct",
-        body: "You may not:\n• Upload infringing, illegal, or harmful content\n• Harass, threaten, or dox other users\n• Use bots, fake accounts, or engagement manipulation\n• Attempt to bypass moderation, fingerprints, or security controls\n• Scrape, reverse engineer, or overload our systems\n• Impersonate others or misrepresent your affiliation\n• Use ClashAnime for spam, malware, or fraud",
+        body: "You may not:\n• Upload infringing, illegal, or harmful content\n• Harass, threaten, or dox other users\n• Use bots, fake accounts, or engagement manipulation\n• Attempt to bypass moderation, fingerprints, or security controls\n• Scrape, reverse engineer, or overload our systems\n• Impersonate others or misrepresent your affiliation\n• Use ClashAnime for spam, malware, or fraud\n• Submit false identity or payout information (KYC fraud)",
       },
       {
         heading: "9. Moderation and review",
@@ -102,7 +102,11 @@ const en: LegalBundle = {
         body: "These Terms are governed by applicable law in the jurisdiction where ClashAnime operates, without regard to conflict-of-law principles. Disputes should first be reported to support@clashanime.com.",
       },
       {
-        heading: "18. Contact",
+        heading: "18. ClashCoins payouts, KYC, and anti-fraud",
+        body: "ClashCoins wallet balances may be converted from hunter points and withdrawn subject to manual review.\n\nIdentity verification (KYC):\n• One-time KYC is required per account before any payout is sent\n• You must submit a clear government ID photo, phone number, and full address\n• False, misleading, stolen, or third-party identity data is fraud and may result in balance forfeiture, payout rejection, and permanent account termination\n• We may request additional verification at any time\n\nAnti-fraud controls:\n• Unusual point gains, duplicate accounts, or mismatched payout details may trigger review or blocks\n• Payouts via bank transfer, PayPal, or USDT are processed manually, typically within 24–72 hours after approval\n• ClashAnime may refuse, delay, reverse, or report suspicious payouts to comply with law and protect users",
+      },
+      {
+        heading: "19. Contact",
         body: `Legal and terms questions:\n${CONTACT_BLOCK_EN}`,
       },
     ],
@@ -166,7 +170,11 @@ const en: LegalBundle = {
         body: "We may update this Privacy Policy. The \"Last updated\" date at the top reflects the latest version. Continued use after changes means you accept the updated policy.",
       },
       {
-        heading: "14. Contact",
+        heading: "14. Payout identity verification (KYC)",
+        body: "When you request ClashCoins withdrawals we may collect and store:\n• Images of government-issued identity documents\n• Phone number and mailing address\n• Payout destination details linked to your request\n\nWe use this information solely to prevent fraud, comply with legal obligations, and process payouts. Access is restricted to authorized staff. KYC records may be retained longer than general account data where required for anti-fraud, tax, or legal compliance.",
+      },
+      {
+        heading: "15. Contact",
         body: `Privacy inquiries:\n${CONTACT_BLOCK_EN}`,
       },
     ],
@@ -302,7 +310,7 @@ const ar: LegalBundle = {
       },
       {
         heading: "8. سلوك محظور",
-        body: "يُمنع:\n• رفع محتوى مخالف، غير قانوني، أو ضار\n• التحرش، التهديد، أو doxing\n• استخدام بوتات أو حسابات وهمية أو تلاعب بالتفاعل\n• تجاوز المراجعة أو البصمات أو أنظمة الأمان\n• scraping أو reverse engineering أو إرهاق الخوادم\n• انتحال شخصية الآخرين\n• spam أو malware أو احتيال",
+        body: "يُمنع:\n• رفع محتوى مخالف، غير قانوني، أو ضار\n• التحرش، التهديد، أو doxing\n• استخدام بوتات أو حسابات وهمية أو تلاعب بالتفاعل\n• تجاوز المراجعة أو البصمات أو أنظمة الأمان\n• scraping أو reverse engineering أو إرهاق الخوادم\n• انتحال شخصية الآخرين\n• spam أو malware أو احتيال\n• تقديم معلومات هوية أو سحب مزيفة (احتيال KYC)",
       },
       {
         heading: "9. المراجعة والاعتماد",
@@ -341,7 +349,11 @@ const ar: LegalBundle = {
         body: "تخضع هذه الشروط للقوانين المعمول بها في الاختصاص الذي تعمل فيه ClashAnime. يُفضَّل إبلاغنا أولاً عبر support@clashanime.com قبل أي إجراء قانوني.",
       },
       {
-        heading: "18. التواصل",
+        heading: "18. سحوبات ClashCoins وKYC ومكافحة الاحتيال",
+        body: "رصيد ClashCoins قابل للتحويل من نقاط الصياد والسحب بعد مراجعة يدوية.\n\nإثبات الهوية (KYC):\n• KYC لمرة واحدة لكل حساب مطلوب قبل أي سحب\n• يجب إرسال صورة هوية رسمية واضحة ورقم هاتف وعنوان كامل\n• البيانات المزيفة أو المضللة أو المسروقة أو لطرف ثالث احتيال وقد تؤدي لمصادرة الرصيد ورفض السحب وإغلاق الحساب\n• قد نطلب تحققاً إضافياً في أي وقت\n\nمكافحة الاحتيال:\n• المكاسب غير الاعتيادية للنقاط أو الحسابات المكررة أو بيانات سحب متضاربة قد تُعلّق للمراجعة\n• السحب عبر تحويل بنكي أو PayPal أو USDT يدوياً، عادة خلال ٢٤–٧٢ ساعة بعد الموافقة\n• قد نرفض أو نؤجل أو نعكس السحوبات المشبوهة للامتثال للقانون وحماية المستخدمين",
+      },
+      {
+        heading: "19. التواصل",
         body: `أسئلة قانونية وشروط:\n${CONTACT_BLOCK_AR}`,
       },
     ],
@@ -405,7 +417,11 @@ const ar: LegalBundle = {
         body: "قد نحدّث هذه السياسة. تاريخ \"آخر تحديث\" أعلى الصفحة يعكس النسخة الحالية. استمرارك بعد التغيير يعني قبولك.",
       },
       {
-        heading: "14. التواصل",
+        heading: "14. إثبات الهوية للسحب (KYC)",
+        body: "عند طلب سحب ClashCoins قد نجمع ونحفظ:\n• صور مستندات هوية رسمية\n• رقم الهاتف والعنوان\n• تفاصيل وجهة السحب المرتبطة بالطلب\n\nنستخدم هذه البيانات فقط لمنع الاحتيال والامتثال القانوني ومعالجة السحوبات. الوصول محصور بالموظفين المخوّلين. قد نحتفظ بسجلات KYC مدة أطول للامتثال لمكافحة الاحتيال والضرائب والقانون.",
+      },
+      {
+        heading: "15. التواصل",
         body: `استفسارات الخصوصية:\n${CONTACT_BLOCK_AR}`,
       },
     ],
@@ -528,7 +544,8 @@ const ja: LegalBundle = {
         "15. 終了",
         "16. 規約の変更",
         "17. 準拠法",
-        "18. お問い合わせ",
+        "18. ClashCoins出金・KYC・不正防止",
+        "19. お問い合わせ",
       ];
       const jaBodies = [
         "ClashAnime.comの利用、アカウント作成、OAuthログイン、コンテンツのアップロードにより、本規約、プライバシーポリシー、コミュニティガイドライン、DMCAポリシーに同意したものとみなします。",
@@ -538,7 +555,7 @@ const ja: LegalBundle = {
         "アップロード、サムネイル、タイトル、コメント、プロフィール内容について、ユーザー自身が法的責任を負います。権利確認、法令遵守、他者への損害防止はユーザーの義務です。自動審査はリスク低減のみで、責任は免れません。",
         "コンテンツの所有権はユーザーに帰属します。運営に必要な範囲で非独占的な利用許諾を付与します。",
         "ログイン情報の管理、不正利用の防止、疑わしいアクセスの報告はユーザーの責任です。",
-        "侵害コンテンツ、嫌がらせ、ボット、審査回避、スクレイピング、なりすまし、スパム等は禁止です。",
+        "侵害コンテンツ、嫌がらせ、ボット、審査回避、スクレイピング、なりすまし、スパム、虚偽KYC等は禁止です。",
         "指紋化・重複検知・手動審査を行います。未認証チャンネルは公開前審査が必要です。スタッフの判断は監査ログに記録されます。",
         "規約・ガイドライン・DMCA・リスクに基づき、いつでもコンテンツやアカウントを削除・制限できます。",
         "本サービスは「現状のまま」提供されます。完全な侵害検知や無停止を保証しません。",
@@ -548,6 +565,7 @@ const ja: LegalBundle = {
         "違反・反復侵害・法的リスクによりアカウント停止の可能性があります。",
         "規約は更新される場合があります。更新後の利用は同意とみなされます。",
         "準拠法に従い、まずsupport@clashanime.comへご連絡ください。",
+        "ClashCoins残高の出金にはアカウントごとに1回のKYC（身分証写真・電話・住所）が必要です。虚偽情報は不正とみなし、残高没収や永久停止の対象となります。出金は承認後24〜72時間以内に手動処理されます。",
         "dmca@clashanime.com / privacy@clashanime.com / support@clashanime.com",
       ];
       return { heading: jaHeadings[index] ?? section.heading, body: jaBodies[index] ?? section.body };
@@ -577,7 +595,11 @@ const ja: LegalBundle = {
       { heading: "11. 国際移転", body: "提供者所在国で処理される場合があります。" },
       { heading: "12. 児童", body: "13歳未満を対象としていません。" },
       { heading: "13. 変更", body: "本ページの更新日が最新版を示します。" },
-      { heading: "14. 連絡先", body: "privacy@clashanime.com" },
+      {
+        heading: "14. 出金KYC（本人確認）",
+        body: "ClashCoins出金時に、身分証画像、電話番号、住所、送金先情報を収集・保存する場合があります。不正防止、法令遵守、出金処理のみに使用し、権限のあるスタッフのみがアクセスできます。",
+      },
+      { heading: "15. 連絡先", body: "privacy@clashanime.com" },
     ],
   },
   community: {

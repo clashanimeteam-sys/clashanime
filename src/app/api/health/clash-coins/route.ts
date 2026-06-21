@@ -13,6 +13,9 @@ function rpcExists(error: { message?: string; code?: string } | null) {
     error.message?.includes("insufficient") ||
     error.message?.includes("invalid") ||
     error.message?.includes("required") ||
+    error.message?.includes("approval required") ||
+    error.message?.includes("already approved") ||
+    error.message?.includes("submission pending") ||
     error.message?.includes("staff only") ||
     error.message?.includes("not found") ||
     error.code === "P0001"
@@ -36,25 +39,45 @@ export async function GET() {
     { error: profilesError },
     { error: coinTransactionsError },
     { error: withdrawalsError },
+    { error: payoutKycError },
   ] = await Promise.all([
     supabase.from("profiles").select("clash_coins").limit(1),
     supabase.from("coin_transactions").select("id", { head: true, count: "exact" }),
     supabase.from("withdrawals").select("id", { head: true, count: "exact" }),
+    supabase.from("payout_kyc_submissions").select("id", { head: true, count: "exact" }),
   ]);
 
   const clashCoinsColumn = !profilesError;
   const coinTransactionsTable = !coinTransactionsError;
   const withdrawalsTable = !withdrawalsError;
+  const payoutKycTable = !payoutKycError;
 
   let convertRpc = false;
   let requestWithdrawalRpc = false;
   let resolveWithdrawalRpc = false;
+  let submitKycRpc = false;
+  let resolveKycRpc = false;
 
   if (clashCoinsColumn) {
     const { error } = await supabase.rpc("convert_points_to_clash_coins", {
       point_amount: 100,
     });
     convertRpc = rpcExists(error);
+  }
+
+  if (payoutKycTable) {
+    const { error: submitError } = await supabase.rpc("submit_payout_kyc", {
+      p_phone: "+10000000000",
+      p_address: "Health Check Address 12345",
+      p_id_document_url: "https://example.com/kyc-health-check.jpg",
+    });
+    submitKycRpc = rpcExists(submitError);
+
+    const { error: resolveKycError } = await supabase.rpc("resolve_payout_kyc", {
+      p_submission_id: "00000000-0000-0000-0000-000000000000",
+      p_status: "approved",
+    });
+    resolveKycRpc = rpcExists(resolveKycError);
   }
 
   if (withdrawalsTable) {
@@ -82,13 +105,19 @@ export async function GET() {
       clashCoinsColumn &&
       coinTransactionsTable &&
       withdrawalsTable &&
+      payoutKycTable &&
       convertRpc &&
+      submitKycRpc &&
+      resolveKycRpc &&
       requestWithdrawalRpc &&
       resolveWithdrawalRpc,
     clashCoinsColumn,
     coinTransactionsTable,
     withdrawalsTable,
+    payoutKycTable,
     convertRpc,
+    submitKycRpc,
+    resolveKycRpc,
     requestWithdrawalRpc,
     resolveWithdrawalRpc,
     profilesError: profilesError?.message ?? null,
@@ -97,6 +126,7 @@ export async function GET() {
       "supabase/scripts/production-clash-coins-usd-cents-bank-transfer.sql",
       "supabase/scripts/production-convert-minimum-100-points.sql",
       "supabase/scripts/production-withdrawal-paypal-usdt.sql",
+      "supabase/scripts/production-payout-kyc.sql",
     ],
     sqlEditor:
       "https://supabase.com/dashboard/project/doqiuduigbdoczdzsima/sql/new",

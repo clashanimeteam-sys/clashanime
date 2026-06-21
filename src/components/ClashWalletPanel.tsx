@@ -23,6 +23,10 @@ import {
   PayPalIcon,
   UsdtIcon,
 } from "@/components/wallet/PaymentMethodIcons";
+import {
+  ClashWalletKycSection,
+  type PayoutKycStatus,
+} from "@/components/wallet/ClashWalletKycSection";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -68,6 +72,7 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
   const [walletAddress, setWalletAddress] = useState("");
   const [usdtNetwork, setUsdtNetwork] = useState<(typeof USDT_NETWORKS)[number]>("TRC20");
   const [kycAcknowledged, setKycAcknowledged] = useState(false);
+  const [kycStatus, setKycStatus] = useState<PayoutKycStatus>("none");
   const [converting, setConverting] = useState(false);
   const [withdrawing, setWithdrawing] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -143,6 +148,12 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
     const amountCents = parseUsdInput(withdrawUsd);
     if (amountCents === null || amountCents < MIN_WITHDRAWAL_CENTS) {
       setError(t.wallet.withdrawMinError);
+      setWithdrawing(false);
+      return;
+    }
+
+    if (kycStatus !== "approved") {
+      setError(t.wallet.kycApprovalRequired);
       setWithdrawing(false);
       return;
     }
@@ -270,6 +281,8 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
         </div>
       </div>
 
+      <ClashWalletKycSection userId={profile.id} onStatusChange={setKycStatus} />
+
       <div className="grid gap-5 lg:grid-cols-2">
         <form onSubmit={handleConvert} className={panelBoxClassName()}>
           <h3 className="text-lg font-semibold text-black dark:text-white">{t.wallet.convertTitle}</h3>
@@ -301,7 +314,10 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
           </button>
         </form>
 
-        <form onSubmit={handleWithdraw} className={panelBoxClassName()}>
+        <form
+          onSubmit={handleWithdraw}
+          className={`${panelBoxClassName()} ${kycStatus !== "approved" ? "opacity-60" : ""}`}
+        >
           <h3 className="text-lg font-semibold text-black dark:text-white">{t.wallet.withdrawTitle}</h3>
           <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{t.wallet.withdrawDesc}</p>
 
@@ -451,6 +467,12 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
             ) : null}
           </div>
 
+          {kycStatus !== "approved" ? (
+            <p className="mt-3 rounded-xl border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-300">
+              {t.wallet.kycWithdrawLocked}
+            </p>
+          ) : null}
+
           <label className="mt-4 flex items-start gap-3 text-sm text-zinc-600 dark:text-zinc-400">
             <input
               type="checkbox"
@@ -463,7 +485,7 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
 
           <button
             type="submit"
-            disabled={withdrawing || balanceCents < MIN_WITHDRAWAL_CENTS}
+            disabled={withdrawing || balanceCents < MIN_WITHDRAWAL_CENTS || kycStatus !== "approved"}
             className="mt-4 rounded-full bg-gradient-to-r from-amber-500 to-red-600 px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
           >
             {withdrawing ? t.wallet.processing : t.wallet.withdrawButton}

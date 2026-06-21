@@ -422,6 +422,29 @@ export type Dictionary = {
     recipientEmailPlaceholder: string;
     kycAcknowledgement: string;
     kycRequired: string;
+    kycApprovalRequired: string;
+    kycWithdrawLocked: string;
+    kycTitle: string;
+    kycDesc: string;
+    kycPhoneLabel: string;
+    kycPhonePlaceholder: string;
+    kycAddressLabel: string;
+    kycAddressPlaceholder: string;
+    kycIdLabel: string;
+    kycIdHint: string;
+    kycIdRequired: string;
+    kycInvalidImage: string;
+    kycImageTooLarge: string;
+    kycSubmitButton: string;
+    kycSubmitSuccess: string;
+    kycSubmitFailed: string;
+    kycLoading: string;
+    kycPendingTitle: string;
+    kycPendingDesc: string;
+    kycApprovedTitle: string;
+    kycApprovedDesc: string;
+    kycRejectedTitle: string;
+    kycRejectedDesc: string;
     withdrawButton: string;
     withdrawProcessingTime: string;
     withdrawFailed: string;
@@ -626,6 +649,17 @@ export type Dictionary = {
     withdrawalsTitle: string;
     withdrawalsSubtitle: string;
     noWithdrawals: string;
+    kycTitle: string;
+    kycSubtitle: string;
+    noKycSubmissions: string;
+    approveKyc: string;
+    rejectKyc: string;
+    kycRejectNotesPrompt: string;
+    kycStatuses: {
+      pending: string;
+      approved: string;
+      rejected: string;
+    };
     approveWithdrawal: string;
     rejectWithdrawal: string;
     markReviewing: string;
@@ -681,6 +715,7 @@ export type Dictionary = {
       moderationLog: string;
       settings: string;
       withdrawals: string;
+      kyc: string;
     };
     roles: {
       user: string;
@@ -700,8 +735,9 @@ export type Dictionary = {
       clipChallenges: string;
       pointsWagerDuels: string;
       pendingWagerInvites: string;
-      pendingWithdrawals: string;
-    };
+    pendingWithdrawals: string;
+    pendingKyc: string;
+  };
     quickActions: {
       reviewVideos: string;
       reviewVideosDesc: string;
@@ -721,6 +757,8 @@ export type Dictionary = {
       pointsWagerDuelsDesc: string;
       reviewWithdrawals: string;
       reviewWithdrawalsDesc: string;
+      reviewKyc: string;
+      reviewKycDesc: string;
     };
     table: {
       user: string;
@@ -1180,8 +1218,32 @@ export const dictionaries: Record<Locale, Dictionary> = {
       recipientEmailLabel: "Recipient email",
       recipientEmailPlaceholder: "name@email.com",
       kycAcknowledgement:
-        "I understand identity verification (KYC) may be required before payout is sent.",
-      kycRequired: "Please confirm the KYC notice before submitting.",
+        "I confirm the identity information I submitted is accurate and I accept the payout KYC policy in the Terms of Use.",
+      kycRequired: "Please confirm the KYC policy notice before submitting.",
+      kycApprovalRequired: "Identity verification (KYC) must be approved before you can request a payout.",
+      kycWithdrawLocked: "Complete and get KYC approved once per account before requesting any payout.",
+      kycTitle: "Identity verification (KYC)",
+      kycDesc:
+        "Required once per account and channel before any ClashCoins payout. Submit your phone, address, and a photo of your government ID.",
+      kycPhoneLabel: "Phone number",
+      kycPhonePlaceholder: "+1 555 123 4567",
+      kycAddressLabel: "Full address",
+      kycAddressPlaceholder: "Street, city, country, postal code",
+      kycIdLabel: "Government ID photo",
+      kycIdHint: "Upload a clear photo of your passport, national ID, or driver's license (JPEG/PNG/WebP, max 10 MB).",
+      kycIdRequired: "Please upload your ID photo.",
+      kycInvalidImage: "Please choose a valid image file.",
+      kycImageTooLarge: "ID image must be 10 MB or smaller.",
+      kycSubmitButton: "Submit KYC for review",
+      kycSubmitSuccess: "KYC submitted. Our team will review it before payouts are enabled.",
+      kycSubmitFailed: "Could not submit KYC. Try again.",
+      kycLoading: "Loading KYC status...",
+      kycPendingTitle: "KYC under review",
+      kycPendingDesc: "Your identity documents are being reviewed. Payout requests unlock after approval.",
+      kycApprovedTitle: "KYC approved",
+      kycApprovedDesc: "Your identity is verified for this account. You can now request payouts.",
+      kycRejectedTitle: "KYC rejected",
+      kycRejectedDesc: "Your KYC was rejected. Update your details and submit again.",
       withdrawButton: "Request payout",
       withdrawProcessingTime:
         "Payouts are reviewed manually. After approval, funds typically arrive within 24–72 hours.",
@@ -1399,6 +1461,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
       withdrawalsTitle: "ClashCoin withdrawals",
       withdrawalsSubtitle: "Review payout requests, fraud flags, and payment details.",
       noWithdrawals: "No withdrawal requests match this filter.",
+      kycTitle: "Payout KYC verification",
+      kycSubtitle: "Review identity documents, phone numbers, and addresses before enabling payouts.",
+      noKycSubmissions: "No matching KYC submissions.",
+      approveKyc: "Approve KYC",
+      rejectKyc: "Reject KYC",
+      kycRejectNotesPrompt: "Reason for rejection (shown to user if provided):",
+      kycStatuses: {
+        pending: "Pending review",
+        approved: "Approved",
+        rejected: "Rejected",
+      },
       approveWithdrawal: "Mark paid",
       rejectWithdrawal: "Reject & refund",
       markReviewing: "Mark reviewing",
@@ -1454,6 +1527,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         moderationLog: "Moderation log",
         settings: "Settings",
         withdrawals: "Withdrawals",
+        kyc: "Payout KYC",
       },
       roles: {
         user: "User",
@@ -1474,6 +1548,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pointsWagerDuels: "Points wager duels",
         pendingWagerInvites: "Pending wager invites",
         pendingWithdrawals: "Pending withdrawals",
+        pendingKyc: "Pending payout KYC",
       },
       quickActions: {
         reviewVideos: "Review videos",
@@ -1494,6 +1569,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pointsWagerDuelsDesc: "Hunters stake points, invite rivals, and the winner takes the pot on /exclusives.",
         reviewWithdrawals: "Review withdrawals",
         reviewWithdrawalsDesc: "Approve or reject ClashCoin payout requests.",
+        reviewKyc: "Review payout KYC",
+        reviewKycDesc: "Verify identity documents before enabling user payouts.",
       },
       table: {
         user: "User",
@@ -1945,8 +2022,32 @@ export const dictionaries: Record<Locale, Dictionary> = {
       accountHolderPlaceholder: "銀行口座の名義人",
       recipientEmailLabel: "受取人メール",
       recipientEmailPlaceholder: "name@email.com",
-      kycAcknowledgement: "出金前に本人確認（KYC）が必要になる場合があることを理解しています。",
-      kycRequired: "KYC通知に同意してください。",
+      kycAcknowledgement:
+        "提出した本人情報が正確であり、利用規約のKYCポリシーに同意します。",
+      kycRequired: "KYCポリシーへの同意が必要です。",
+      kycApprovalRequired: "出金前に本人確認（KYC）の承認が必要です。",
+      kycWithdrawLocked: "出金前にアカウントごとに1回KYCを完了し、承認を受けてください。",
+      kycTitle: "本人確認（KYC）",
+      kycDesc: "ClashCoins出金前にアカウントごとに1回必要です。電話番号、住所、公的身分証の写真を提出してください。",
+      kycPhoneLabel: "電話番号",
+      kycPhonePlaceholder: "+81 90 1234 5678",
+      kycAddressLabel: "住所",
+      kycAddressPlaceholder: "番地、市区町村、国、郵便番号",
+      kycIdLabel: "公的身分証の写真",
+      kycIdHint: "パスポート、マイナンバーカード、運転免許証などの鮮明な写真（最大10MB）。",
+      kycIdRequired: "身分証の写真をアップロードしてください。",
+      kycInvalidImage: "有効な画像ファイルを選択してください。",
+      kycImageTooLarge: "身分証画像は10MB以下にしてください。",
+      kycSubmitButton: "KYCを審査に提出",
+      kycSubmitSuccess: "KYCを提出しました。承認後に出金が可能になります。",
+      kycSubmitFailed: "KYCを提出できませんでした。",
+      kycLoading: "KYCステータスを読み込み中...",
+      kycPendingTitle: "KYC審査中",
+      kycPendingDesc: "本人書類を確認中です。承認後に出金リクエストが可能になります。",
+      kycApprovedTitle: "KYC承認済み",
+      kycApprovedDesc: "本人確認が完了しました。出金リクエストが可能です。",
+      kycRejectedTitle: "KYC却下",
+      kycRejectedDesc: "KYCが却下されました。情報を更新して再提出してください。",
       withdrawButton: "出金をリクエスト",
       withdrawProcessingTime:
         "出金は手動で審査されます。承認後、通常24〜72時間以内にお支払いされます。",
@@ -2162,6 +2263,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
       withdrawalsTitle: "ClashCoin出金",
       withdrawalsSubtitle: "出金リクエスト、不正フラグ、支払い情報を確認します。",
       noWithdrawals: "該当する出金リクエストがありません。",
+      kycTitle: "出金KYC本人確認",
+      kycSubtitle: "出金を有効にする前に本人書類、電話、住所を確認します。",
+      noKycSubmissions: "該当するKYC提出がありません。",
+      approveKyc: "KYCを承認",
+      rejectKyc: "KYCを却下",
+      kycRejectNotesPrompt: "却下理由（任意・ユーザーに表示）:",
+      kycStatuses: {
+        pending: "審査待ち",
+        approved: "承認済み",
+        rejected: "却下",
+      },
       approveWithdrawal: "支払い済みにする",
       rejectWithdrawal: "拒否して返金",
       markReviewing: "審査中にする",
@@ -2217,6 +2329,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         moderationLog: "モデレーションログ",
         settings: "設定",
         withdrawals: "出金",
+        kyc: "出金KYC",
       },
       roles: {
         user: "ユーザー",
@@ -2237,6 +2350,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pointsWagerDuels: "ポイント賭け対決",
         pendingWagerInvites: "保留中の賭け招待",
         pendingWithdrawals: "保留中の出金",
+        pendingKyc: "保留中の出金KYC",
       },
       quickActions: {
         reviewVideos: "動画を審査",
@@ -2257,6 +2371,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pointsWagerDuelsDesc: "ハンターがポイントを賭け、招待し、勝者がポットを獲得します。",
         reviewWithdrawals: "出金を審査",
         reviewWithdrawalsDesc: "ClashCoin出金リクエストを承認または拒否します。",
+        reviewKyc: "出金KYCを審査",
+        reviewKycDesc: "出金を有効にする前に本人確認書類を確認します。",
       },
       table: {
         user: "ユーザー",
@@ -2710,8 +2826,33 @@ export const dictionaries: Record<Locale, Dictionary> = {
       accountHolderPlaceholder: "الاسم كما يظهر في حسابك البنكي",
       recipientEmailLabel: "إيميل المستلم",
       recipientEmailPlaceholder: "name@email.com",
-      kycAcknowledgement: "أفهم أنه قد يُطلب إثبات الهوية (KYC) قبل إرسال المبلغ.",
-      kycRequired: "يرجى تأكيد إشعار KYC قبل الإرسال.",
+      kycAcknowledgement:
+        "أؤكد أن معلومات الهوية التي أرسلتها صحيحة وأوافق على سياسة KYC في شروط الاستخدام.",
+      kycRequired: "يرجى تأكيد سياسة KYC قبل الإرسال.",
+      kycApprovalRequired: "يجب الموافقة على إثبات الهوية (KYC) قبل طلب السحب.",
+      kycWithdrawLocked: "أكمل KYC مرة واحدة لكل حساب وقناة واحصل على الموافقة قبل أي سحب.",
+      kycTitle: "إثبات الهوية (KYC)",
+      kycDesc:
+        "مطلوب مرة واحدة لكل حساب وقناة قبل أي سحب ClashCoins. أرسل رقم الهاتف والعنوان وصورة هوية رسمية.",
+      kycPhoneLabel: "رقم الهاتف",
+      kycPhonePlaceholder: "+966 5X XXX XXXX",
+      kycAddressLabel: "العنوان الكامل",
+      kycAddressPlaceholder: "الشارع، المدينة، الدولة، الرمز البريدي",
+      kycIdLabel: "صورة الهوية الرسمية",
+      kycIdHint: "ارفع صورة واضحة لجواز السفر أو الهوية أو رخصة القيادة (JPEG/PNG/WebP، حتى 10 ميغابايت).",
+      kycIdRequired: "يرجى رفع صورة الهوية.",
+      kycInvalidImage: "اختر ملف صورة صالحاً.",
+      kycImageTooLarge: "يجب ألا تتجاوز صورة الهوية 10 ميغابايت.",
+      kycSubmitButton: "إرسال KYC للمراجعة",
+      kycSubmitSuccess: "تم إرسال KYC. سيراجعه فريقنا قبل تفعيل السحب.",
+      kycSubmitFailed: "تعذر إرسال KYC. حاول مجدداً.",
+      kycLoading: "جارٍ تحميل حالة KYC...",
+      kycPendingTitle: "KYC قيد المراجعة",
+      kycPendingDesc: "يتم مراجعة مستندات الهوية. يُفعَّل السحب بعد الموافقة.",
+      kycApprovedTitle: "تمت الموافقة على KYC",
+      kycApprovedDesc: "تم التحقق من هويتك لهذا الحساب. يمكنك الآن طلب السحب.",
+      kycRejectedTitle: "تم رفض KYC",
+      kycRejectedDesc: "تم رفض KYC. حدّث بياناتك وأعد الإرسال.",
       withdrawButton: "اطلب السحب",
       withdrawProcessingTime:
         "تُراجع جميع الطلبات يدوياً. بعد الموافقة، يصل المبلغ عادةً خلال ٢٤ إلى ٧٢ ساعة.",
@@ -2927,6 +3068,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
       withdrawalsTitle: "سحوبات ClashCoins",
       withdrawalsSubtitle: "مراجعة طلبات السحب وعلامات الاحتيال وتفاصيل الدفع.",
       noWithdrawals: "لا توجد طلبات سحب مطابقة.",
+      kycTitle: "تحقق KYC للسحب",
+      kycSubtitle: "راجع مستندات الهوية ورقم الهاتف والعنوان قبل تفعيل السحب.",
+      noKycSubmissions: "لا توجد طلبات KYC مطابقة.",
+      approveKyc: "الموافقة على KYC",
+      rejectKyc: "رفض KYC",
+      kycRejectNotesPrompt: "سبب الرفض (يظهر للمستخدم إن وُجد):",
+      kycStatuses: {
+        pending: "قيد المراجعة",
+        approved: "موافق عليه",
+        rejected: "مرفوض",
+      },
       approveWithdrawal: "تعيين كمدفوع",
       rejectWithdrawal: "رفض واسترداد",
       markReviewing: "وضع قيد المراجعة",
@@ -2982,6 +3134,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         moderationLog: "سجل المراجعة",
         settings: "الإعدادات",
         withdrawals: "السحوبات",
+        kyc: "KYC السحب",
       },
       roles: {
         user: "مستخدم",
@@ -3002,6 +3155,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pointsWagerDuels: "نزالات رهان النقاط",
         pendingWagerInvites: "دعوات رهان بانتظار القبول",
         pendingWithdrawals: "سحوبات قيد المراجعة",
+        pendingKyc: "KYC سحب قيد المراجعة",
       },
       quickActions: {
         reviewVideos: "مراجعة الفيديوهات",
@@ -3022,6 +3176,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pointsWagerDuelsDesc: "الصيادون يراهنون بنقاطهم ويدعون منافسين — الفائز يأخذ الجائزة في صفحة حصري.",
         reviewWithdrawals: "مراجعة السحوبات",
         reviewWithdrawalsDesc: "قبول أو رفض طلبات سحب ClashCoins.",
+        reviewKyc: "مراجعة KYC للسحب",
+        reviewKycDesc: "تحقق من مستندات الهوية قبل تفعيل السحب للمستخدم.",
       },
       table: {
         user: "المستخدم",

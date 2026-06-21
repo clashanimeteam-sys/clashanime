@@ -1,4 +1,4 @@
-export type MediaFolder = "clips" | "thumbnails" | "avatars" | "banners";
+export type MediaFolder = "clips" | "thumbnails" | "avatars" | "banners" | "kyc";
 
 export type R2Config = {
   accountId: string;
@@ -43,6 +43,7 @@ const FOLDER_MAX_BYTES: Record<MediaFolder, number> = {
   thumbnails: 8 * 1024 * 1024,
   avatars: 8 * 1024 * 1024,
   banners: 12 * 1024 * 1024,
+  kyc: 10 * 1024 * 1024,
 };
 
 const FOLDER_CONTENT_TYPES: Record<MediaFolder, readonly string[]> = {
@@ -50,10 +51,17 @@ const FOLDER_CONTENT_TYPES: Record<MediaFolder, readonly string[]> = {
   thumbnails: ["image/jpeg", "image/png", "image/webp"],
   avatars: ["image/jpeg", "image/png", "image/webp", "image/gif"],
   banners: ["image/jpeg", "image/png", "image/webp", "image/gif"],
+  kyc: ["image/jpeg", "image/png", "image/webp"],
 };
 
 export function isMediaFolder(value: string): value is MediaFolder {
-  return value === "clips" || value === "thumbnails" || value === "avatars" || value === "banners";
+  return (
+    value === "clips" ||
+    value === "thumbnails" ||
+    value === "avatars" ||
+    value === "banners" ||
+    value === "kyc"
+  );
 }
 
 export function validateMediaUploadInput(
