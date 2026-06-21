@@ -18,6 +18,7 @@ export type Dictionary = {
     myVideos: string;
     settings: string;
     clashWallet: string;
+    clashCoins: string;
   };
   home: {
     titlePrimary: string;
@@ -755,6 +756,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       myVideos: "Your videos",
       settings: "Settings",
       clashWallet: "ClashCoins wallet",
+      clashCoins: "ClashCoins",
     },
     home: {
       titlePrimary: "Clash",
@@ -1517,6 +1519,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       myVideos: "あなたの動画",
       settings: "設定",
       clashWallet: "ClashCoinsウォレット",
+      clashCoins: "ClashCoins",
     },
     home: {
       titlePrimary: "Clash",
@@ -2270,6 +2273,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       myVideos: "فيديوهاتك",
       settings: "الإعدادات",
       clashWallet: "محفظة ClashCoins",
+      clashCoins: "ClashCoins",
     },
     home: {
       titlePrimary: "Clash",

@@ -19,10 +19,12 @@ create index if not exists coin_transactions_user_idx
 
 alter table public.coin_transactions enable row level security;
 
+drop policy if exists "Users can read own coin transactions" on public.coin_transactions;
 create policy "Users can read own coin transactions"
   on public.coin_transactions for select
   using (auth.uid() = user_id);
 
+drop policy if exists "Staff can read all coin transactions" on public.coin_transactions;
 create policy "Staff can read all coin transactions"
   on public.coin_transactions for select
   using (public.is_staff());
@@ -51,14 +53,17 @@ create index if not exists withdrawals_status_idx on public.withdrawals (status,
 
 alter table public.withdrawals enable row level security;
 
+drop policy if exists "Users can read own withdrawals" on public.withdrawals;
 create policy "Users can read own withdrawals"
   on public.withdrawals for select
   using (auth.uid() = user_id);
 
+drop policy if exists "Staff can read all withdrawals" on public.withdrawals;
 create policy "Staff can read all withdrawals"
   on public.withdrawals for select
   using (public.is_staff());
 
+drop policy if exists "Staff can update withdrawals" on public.withdrawals;
 create policy "Staff can update withdrawals"
   on public.withdrawals for update
   using (public.is_staff());
@@ -376,3 +381,5 @@ grant execute on function public.award_clash_coins(uuid, integer, text, jsonb) t
 grant execute on function public.convert_points_to_clash_coins(integer) to authenticated;
 grant execute on function public.request_clash_coin_withdrawal(integer, text, text, boolean) to authenticated;
 grant execute on function public.resolve_clash_coin_withdrawal(uuid, text, text) to authenticated;
+
+notify pgrst, 'reload schema';

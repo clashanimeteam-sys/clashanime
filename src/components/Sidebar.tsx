@@ -16,6 +16,7 @@ const mainNavItems = [
   { key: "community" as const, href: "/community", icon: "users" },
   { key: "music" as const, href: "/music", icon: "music" },
   { key: "exclusives" as const, href: "/exclusives", icon: "star" },
+  { key: "clashCoins" as const, href: "/profile#wallet", icon: "wallet", wallet: true as const },
 ];
 
 const profileNavItems: {
@@ -159,9 +160,13 @@ export function Sidebar() {
 
       <nav className="flex flex-1 flex-col gap-1 p-3" aria-label="Main navigation">
         {mainNavItems.map((item) => {
-          const active = pathname === item.href;
+          const href = item.wallet ? profileSectionHref("wallet", Boolean(user)) : item.href;
+          const active = item.wallet
+            ? isProfilePage && section === "wallet"
+            : pathname === item.href;
+
           return (
-            <Link key={item.key} href={item.href} className={navLinkClass(active)}>
+            <Link key={item.key} href={href} className={navLinkClass(active)}>
               <NavIcon icon={item.icon} />
               {t.nav[item.key]}
             </Link>
