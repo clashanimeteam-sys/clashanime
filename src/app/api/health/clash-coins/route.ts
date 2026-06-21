@@ -35,7 +35,7 @@ export async function GET() {
     { error: coinTransactionsError },
     { error: withdrawalsError },
   ] = await Promise.all([
-    supabase.from("profiles").select("clash_coins", { head: true, count: "exact" }),
+    supabase.from("profiles").select("clash_coins").limit(1),
     supabase.from("coin_transactions").select("id", { head: true, count: "exact" }),
     supabase.from("withdrawals").select("id", { head: true, count: "exact" }),
   ]);
@@ -85,6 +85,7 @@ export async function GET() {
     convertRpc,
     requestWithdrawalRpc,
     resolveWithdrawalRpc,
+    profilesError: profilesError?.message ?? null,
     sqlScript: "supabase/scripts/production-clash-coins-wallet.sql",
     sqlEditor:
       "https://supabase.com/dashboard/project/doqiuduigbdoczdzsima/sql/new",
