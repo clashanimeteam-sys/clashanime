@@ -30,10 +30,10 @@ export function BrandLogo({ className = "h-28 w-28", priority = false }: BrandLo
   if (isDark) {
     return (
       <div
-        className={`relative overflow-hidden ${className} drop-shadow-[0_0_20px_rgba(220,38,38,0.42)]`}
+        className={`relative ${className} drop-shadow-[0_0_20px_rgba(220,38,38,0.42)]`}
       >
         <Image
-          src="/logo.jpg"
+          src="/logo-dark.png"
           alt="Clash Anime"
           fill
           priority={priority}
