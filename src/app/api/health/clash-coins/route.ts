@@ -134,6 +134,7 @@ export async function GET() {
       "supabase/scripts/production-payout-kyc.sql",
       "supabase/scripts/production-payout-kyc-name-country.sql",
       "supabase/scripts/production-payout-kyc-whatsapp.sql",
+      "supabase/scripts/production-payout-kyc-no-id-document.sql",
     ],
     sqlEditor:
       "https://supabase.com/dashboard/project/doqiuduigbdoczdzsima/sql/new",
