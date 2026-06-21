@@ -29,22 +29,27 @@ export function ChallengeClipButton({
     return user.id === challengedVideoOwnerId;
   }, [user, challengedVideoOwnerId]);
 
-  if (isOwnVideo) return null;
-
   const buttonClassName =
     variant === "overlay"
-      ? "inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-bold text-white backdrop-blur-sm transition-colors hover:border-accent hover:bg-accent/20 hover:text-accent"
-      : "inline-flex w-full items-center justify-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-2.5 text-sm font-bold text-accent transition-colors hover:border-accent hover:bg-accent/15 dark:border-accent/40 dark:bg-accent/15 dark:text-accent";
+      ? "inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-bold text-white backdrop-blur-sm transition-colors hover:border-accent hover:bg-accent/20 hover:text-accent disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:border-white/20 disabled:hover:bg-white/10 disabled:hover:text-white"
+      : "inline-flex w-full items-center justify-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-2.5 text-sm font-bold text-accent transition-colors hover:border-accent hover:bg-accent/15 disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:border-accent/30 disabled:hover:bg-accent/10 dark:border-accent/40 dark:bg-accent/15 dark:text-accent dark:disabled:hover:border-accent/40 dark:disabled:hover:bg-accent/15";
 
   function handleClick() {
-    if (loading || !user) return;
+    if (loading || !user || isOwnVideo) return;
     setOpen(true);
   }
 
   return (
     <>
       {user && !loading ? (
-        <button type="button" onClick={handleClick} className={buttonClassName}>
+        <button
+          type="button"
+          onClick={handleClick}
+          disabled={isOwnVideo}
+          aria-disabled={isOwnVideo}
+          title={isOwnVideo ? t.exclusives.cannotChallengeOwnClip : undefined}
+          className={buttonClassName}
+        >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
             <path d="M14.5 17.5L3 6V3h3l11.5 11.5" />
             <path d="M13 6l6.5 6.5-4 4L6 10l4-4z" />

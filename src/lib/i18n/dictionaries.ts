@@ -126,6 +126,7 @@ export type Dictionary = {
     creatingChallengeDuel: string;
     loadingClips: string;
     noClipsToChallenge: string;
+    cannotChallengeOwnClip: string;
     loginToChallenge: string;
     challengeFailed: string;
     challengeDuelBadge: string;
@@ -777,13 +778,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       creatingChallengeDuel: "Creating duel...",
       loadingClips: "Loading your clips...",
       noClipsToChallenge: "Upload an approved clip first to challenge others.",
+      cannotChallengeOwnClip: "You cannot challenge your own clip.",
       loginToChallenge: "Sign up to challenge clips and earn duel points.",
       challengeFailed: "Could not start the duel. Try another clip.",
       challengeDuelBadge: "Quick Challenge",
       challengeDuelTitle: "Clip Challenge",
       challengeDuelPageDesc: "Two creators, one arena. Vote with likes and comments to crown the stronger clip.",
       clipChallengeExclusivesDesc:
-        "Under every approved clip you'll find Challenge this clip. Pick your video and spawn a head-to-head duel instantly.",
+        "Open the Videos page and tap Challenge this clip under any approved clip that is not yours.",
       browseVideosToChallenge: "Browse clips to challenge",
       clipChallengeSectionTitle: "Clips ready to challenge",
       clipChallengeSectionDesc:
@@ -1443,13 +1445,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       creatingChallengeDuel: "対決を作成中...",
       loadingClips: "動画を読み込み中...",
       noClipsToChallenge: "挑戦するには、まず承認済みの動画をアップロードしてください。",
+      cannotChallengeOwnClip: "自分の動画には挑戦できません。",
       loginToChallenge: "登録して動画に挑戦し、デュエルポイントを獲得しましょう。",
       challengeFailed: "対決を開始できませんでした。別の動画を選んでください。",
       challengeDuelBadge: "クイック挑戦",
       challengeDuelTitle: "クリップ対決",
       challengeDuelPageDesc: "2人のクリエイター、1つの舞台。いいねとコメントでより強い動画を決めよう。",
       clipChallengeExclusivesDesc:
-        "承認済み動画の下に「この動画に挑戦」ボタンがあります。自分の動画を選んで即座に対決を開始できます。",
+        "動画ページを開き、自分以外の承認済み動画の下にある「この動画に挑戦」を押してください。",
       browseVideosToChallenge: "挑戦できる動画を見る",
       clipChallengeSectionTitle: "挑戦できるクリップ",
       clipChallengeSectionDesc:
@@ -2104,13 +2107,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       creatingChallengeDuel: "جارٍ إنشاء النزال...",
       loadingClips: "جارٍ تحميل مقاطعك...",
       noClipsToChallenge: "ارفع مقطعاً معتمداً أولاً لتتمكن من تحدي الآخرين.",
+      cannotChallengeOwnClip: "لا يمكنك تحدي مقطعك الخاص.",
       loginToChallenge: "سجّل للانضمام وتحدي المقاطع واكسب نقاط النزال.",
       challengeFailed: "تعذّر بدء النزال. جرّب مقطعاً آخر.",
       challengeDuelBadge: "التحدي السريع",
       challengeDuelTitle: "نزال المقطع",
       challengeDuelPageDesc: "منشئان و ساحة واحدة. صوّت بالإعجاب والتعليقات لتتوّج بالمقطع الأقوى.",
       clipChallengeExclusivesDesc:
-        "ستجد زر «تحدي هذا المقطع» تحت أي فيديو معتمد. اختر مقطعك وابدأ نزالاً فورياً وجهاً لوجه.",
+        "افتح صفحة الفيديوهات واضغط «تحدي هذا المقطع» تحت أي مقطع معتمد ليس ملكك.",
       browseVideosToChallenge: "تصفّح المقاطع للتحدي",
       clipChallengeSectionTitle: "مقاطع جاهزة للتحدي",
       clipChallengeSectionDesc:

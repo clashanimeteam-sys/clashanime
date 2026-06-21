@@ -113,6 +113,7 @@ async function attachChannels(
 
   return videos.map((video) => ({
     ...video,
+    moderation_status: "approved" as const,
     trending_score: 0,
     channel: video.user_id ? (profileMap.get(video.user_id) ?? null) : null,
   }));
