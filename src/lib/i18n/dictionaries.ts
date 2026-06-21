@@ -440,6 +440,7 @@ export type Dictionary = {
     reviewPending: string;
     scanFailed: string;
     uploadFailed: string;
+    r2UploadBlocked: string;
     uploadsDisabled: string;
     accountBanned: string;
     levelRequired: string;
@@ -1106,6 +1107,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "Your clip was uploaded and is under review. It will appear publicly once approved.",
       scanFailed: "Could not verify this file. Try again with a different export.",
       uploadFailed: "Could not upload files. Try again in a moment.",
+      r2UploadBlocked:
+        "Upload to Cloudflare R2 was blocked. Check bucket CORS for clashanime.com and www.clashanime.com, then try again.",
       uploadsDisabled: "Video uploads are temporarily disabled.",
       accountBanned: "Your account is suspended and cannot upload videos.",
       levelRequired: "Reach Challenger rank (1000+ points) to upload videos.",
@@ -1769,6 +1772,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "クリップはアップロードされ、審査中です。承認後に公開されます。",
       scanFailed: "ファイルを検証できませんでした。別の書き出しで再試行してください。",
       uploadFailed: "ファイルをアップロードできませんでした。しばらくして再試行してください。",
+      r2UploadBlocked:
+        "Cloudflare R2 へのアップロードがブロックされました。バケットの CORS 設定を確認してください。",
       uploadsDisabled: "動画アップロードは一時的に停止されています。",
       accountBanned: "アカウントが停止されているため、アップロードできません。",
       levelRequired: "Challengerランク（1000pt以上）でアップロードできます。",
@@ -2434,6 +2439,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "تم رفع المقطع وهو قيد المراجعة. سيظهر للعامة بعد الموافقة.",
       scanFailed: "تعذر التحقق من الملف. جرّب تصديراً مختلفاً للفيديو.",
       uploadFailed: "تعذر رفع الملفات. حاول مرة أخرى بعد قليل.",
+      r2UploadBlocked:
+        "تعذّر الرفع إلى Cloudflare R2. تحقق من إعدادات CORS في الـ bucket لـ clashanime.com و www.clashanime.com ثم حاول مجدداً.",
       uploadsDisabled: "رفع الفيديوهات متوقف مؤقتاً.",
       accountBanned: "حسابك موقوف ولا يمكنك رفع الفيديوهات.",
       levelRequired: "تحتاج رتبة منافس (1000+ نقطة) لرفع الفيديوهات.",

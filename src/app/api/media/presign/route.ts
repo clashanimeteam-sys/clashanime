@@ -71,7 +71,6 @@ export async function POST(request: Request) {
       userId: user.id,
       filename,
       contentType,
-      contentLength,
     });
 
     if (!signed) {

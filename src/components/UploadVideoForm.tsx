@@ -169,7 +169,7 @@ export function UploadVideoForm() {
       videoUrl = videoUpload.publicUrl;
       videoObjectKey = videoUpload.objectKey;
     } catch (uploadError) {
-      setError(uploadError instanceof Error ? uploadError.message : t.upload.uploadFailed);
+      setError(resolveUploadError(uploadError, t.upload));
       setLoading(false);
       return;
     }
@@ -191,7 +191,7 @@ export function UploadVideoForm() {
       if (videoObjectKey) {
         await removeUploadedMedia(supabase, "clips", videoPath, videoObjectKey);
       }
-      setError(uploadError instanceof Error ? uploadError.message : t.upload.uploadFailed);
+      setError(resolveUploadError(uploadError, t.upload));
       setLoading(false);
       return;
     }
@@ -245,6 +245,20 @@ export function UploadVideoForm() {
     }
 
     await client.storage.from(bucket).remove([storagePath]);
+  }
+
+  function resolveUploadError(
+    error: unknown,
+    messages: { uploadFailed: string; r2UploadBlocked: string },
+  ) {
+    if (!(error instanceof Error)) return messages.uploadFailed;
+    if (error.message.includes("r2 direct upload blocked")) {
+      return messages.r2UploadBlocked;
+    }
+    if (error.message === "Failed to fetch") {
+      return messages.uploadFailed;
+    }
+    return error.message || messages.uploadFailed;
   }
 
   const busy = loading || scanning;

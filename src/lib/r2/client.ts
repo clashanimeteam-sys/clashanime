@@ -1,4 +1,4 @@
-import { DeleteObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import {
   buildMediaObjectKey,
@@ -21,10 +21,41 @@ function getR2Client(): S3Client | null {
         accessKeyId: config.accessKeyId,
         secretAccessKey: config.secretAccessKey,
       },
+      forcePathStyle: true,
+      requestChecksumCalculation: "WHEN_REQUIRED",
+      responseChecksumValidation: "WHEN_REQUIRED",
     });
   }
 
   return cachedClient;
+}
+
+export async function uploadMediaObject(params: {
+  folder: MediaFolder;
+  userId: string;
+  filename: string;
+  contentType: string;
+  body: Buffer | Uint8Array;
+}): Promise<{ publicUrl: string; key: string } | null> {
+  const config = getR2Config();
+  const client = getR2Client();
+  if (!config || !client) return null;
+
+  const key = buildMediaObjectKey(params.folder, params.userId, params.filename);
+
+  await client.send(
+    new PutObjectCommand({
+      Bucket: config.bucketName,
+      Key: key,
+      Body: params.body,
+      ContentType: params.contentType,
+    }),
+  );
+
+  const publicUrl = getR2PublicUrl(key);
+  if (!publicUrl) return null;
+
+  return { publicUrl, key };
 }
 
 export async function createPresignedMediaUploadUrl(params: {
@@ -32,7 +63,6 @@ export async function createPresignedMediaUploadUrl(params: {
   userId: string;
   filename: string;
   contentType: string;
-  contentLength: number;
 }): Promise<{ uploadUrl: string; publicUrl: string; key: string } | null> {
   const config = getR2Config();
   const client = getR2Client();
@@ -43,29 +73,16 @@ export async function createPresignedMediaUploadUrl(params: {
     Bucket: config.bucketName,
     Key: key,
     ContentType: params.contentType,
-    ContentLength: params.contentLength,
   });
 
-  const uploadUrl = await getSignedUrl(client, command, { expiresIn: 60 * 10 });
+  const uploadUrl = await getSignedUrl(client, command, {
+    expiresIn: 60 * 10,
+    signableHeaders: new Set(["content-type"]),
+  });
   const publicUrl = getR2PublicUrl(key);
   if (!publicUrl) return null;
 
   return { uploadUrl, publicUrl, key };
 }
 
-export async function deleteR2Objects(keys: string[]): Promise<void> {
-  const config = getR2Config();
-  const client = getR2Client();
-  if (!config || !client || keys.length === 0) return;
-
-  await Promise.all(
-    keys.map((key) =>
-      client.send(
-        new DeleteObjectCommand({
-          Bucket: config.bucketName,
-          Key: key.replace(/^\//, ""),
-        }),
-      ),
-    ),
-  );
-}
+export { deleteR2Objects } from "@/lib/r2/delete";
