@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChallengeClipButton } from "@/components/duel/ChallengeClipButton";
-import { ClashThumbnailFire } from "@/components/clash/ClashFireFrame";
+import { getClashVideoBackdropClass } from "@/components/clash/ClashFireFrame";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { VideoCardChannel } from "@/components/VideoCardChannel";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -123,23 +123,34 @@ export function VideoCard({
       }`}
     >
       <Link href={`/video/${video.id}`} className="block">
-        <div className="relative aspect-[9/16] overflow-hidden bg-muted/20">
-          <Image
-            src={video.thumbnail_url}
-            alt={video.title}
-            fill
-            sizes={
-              compact
-                ? "(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 12vw"
-                : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            }
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-            unoptimized
-          />
+        <div
+          className={`relative aspect-[9/16] ${
+            clashMode && rank !== undefined
+              ? `${getClashVideoBackdropClass(rank)} p-2 sm:p-2.5`
+              : "overflow-hidden bg-muted/20"
+          }`}
+        >
+          <div
+            className={`relative h-full w-full overflow-hidden ${
+              clashMode ? "rounded-lg shadow-inner" : ""
+            }`}
+          >
+            <Image
+              src={video.thumbnail_url}
+              alt={video.title}
+              fill
+              sizes={
+                compact
+                  ? "(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 12vw"
+                  : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              }
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              unoptimized
+            />
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <span
               className={`flex items-center justify-center rounded-full bg-white/90 text-accent shadow-lg backdrop-blur-sm ${compact ? "h-8 w-8" : "h-12 w-12"}`}
             >
@@ -156,8 +167,6 @@ export function VideoCard({
           </div>
 
           {rank !== undefined ? <RankBadge rank={rank} compact={compact} /> : null}
-
-          {clashMode && rank !== undefined ? <ClashThumbnailFire rank={rank} /> : null}
 
           {showClashBadge && isInClashTop(rank) ? (
             <span
@@ -195,6 +204,7 @@ export function VideoCard({
             </svg>
             {(video.views_count ?? 0).toLocaleString()} {compact ? "" : t.video.views}
           </span>
+          </div>
         </div>
       </Link>
 

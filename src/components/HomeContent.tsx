@@ -1,6 +1,5 @@
 "use client";
 
-import { ClashFireFrame } from "@/components/clash/ClashFireFrame";
 import { ClashPrizeBanner } from "@/components/clash/ClashPrizeBanner";
 import { ClashVideosBackdrop } from "@/components/clash/ClashVideosBackdrop";
 import { SiteTitle } from "@/components/SiteTitle";
@@ -25,24 +24,14 @@ export function HomeContent({ videos }: HomeContentProps) {
     (video) => video.global_rank !== undefined && video.global_rank > 3,
   );
 
-  function renderClashCard(video: Video, elevated = false) {
-    const card = (
+  function renderClashCard(video: Video) {
+    return (
       <VideoCard
         video={video}
         rank={video.global_rank}
         clashMode
         showClashBadge
       />
-    );
-
-    if (video.global_rank === undefined) return card;
-
-    return (
-      <ClashFireFrame rank={video.global_rank}>
-        <div className={elevated ? "lg:-translate-y-2 lg:scale-[1.03]" : undefined}>
-          {card}
-        </div>
-      </ClashFireFrame>
     );
   }
 
@@ -76,9 +65,7 @@ export function HomeContent({ videos }: HomeContentProps) {
                   {t.home.podiumLabel}
                 </h2>
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 sm:items-start">
-                  {podiumVideos.map((video) =>
-                    renderClashCard(video, video.global_rank === 1),
-                  )}
+                  {podiumVideos.map((video) => renderClashCard(video))}
                 </div>
               </section>
             ) : null}
