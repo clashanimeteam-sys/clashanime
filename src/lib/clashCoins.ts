@@ -1,4 +1,6 @@
 export const POINTS_PER_DOLLAR = 1000;
+export const MIN_CONVERSION_POINTS = 100;
+export const CONVERSION_POINTS_STEP = 100;
 export const CENTS_PER_DOLLAR = 100;
 export const MIN_WITHDRAWAL_CENTS = 5000;
 export const MIN_WITHDRAWAL_USD = MIN_WITHDRAWAL_CENTS / CENTS_PER_DOLLAR;
@@ -87,7 +89,10 @@ export function formatConversionPreviewAmount(usd: number, locale?: string): str
 }
 
 export function isValidConversionAmount(points: number): boolean {
-  return points >= POINTS_PER_DOLLAR && points % POINTS_PER_DOLLAR === 0;
+  return (
+    points >= MIN_CONVERSION_POINTS &&
+    points % CONVERSION_POINTS_STEP === 0
+  );
 }
 
 export function parseUsdInput(value: string): number | null {

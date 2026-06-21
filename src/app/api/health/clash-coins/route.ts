@@ -8,6 +8,8 @@ function rpcExists(error: { message?: string; code?: string } | null) {
   return (
     error.message?.includes("not authenticated") ||
     error.message?.includes("minimum") ||
+    error.message?.includes("$0.10") ||
+    error.message?.includes("multiple of") ||
     error.message?.includes("insufficient") ||
     error.message?.includes("invalid") ||
     error.message?.includes("required") ||
@@ -50,7 +52,7 @@ export async function GET() {
 
   if (clashCoinsColumn) {
     const { error } = await supabase.rpc("convert_points_to_clash_coins", {
-      point_amount: 1000,
+      point_amount: 100,
     });
     convertRpc = rpcExists(error);
   }
@@ -90,6 +92,7 @@ export async function GET() {
     sqlScripts: [
       "supabase/scripts/production-clash-coins-wallet.sql",
       "supabase/scripts/production-clash-coins-usd-cents-bank-transfer.sql",
+      "supabase/scripts/production-convert-minimum-100-points.sql",
     ],
     sqlEditor:
       "https://supabase.com/dashboard/project/doqiuduigbdoczdzsima/sql/new",

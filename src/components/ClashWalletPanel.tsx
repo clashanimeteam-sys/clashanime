@@ -3,9 +3,12 @@
 import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import {
+  CONVERSION_POINTS_STEP,
   formatConversionPreviewAmount,
   formatUsd,
   formatUsdFromCents,
+  isValidConversionAmount,
+  MIN_CONVERSION_POINTS,
   MIN_WITHDRAWAL_CENTS,
   MIN_WITHDRAWAL_USD,
   parseUsdInput,
@@ -35,10 +38,10 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
   const totalPoints = profile.points ?? 0;
   const balanceCents = profile.clash_coins ?? 0;
   const maxConvertPoints =
-    Math.floor(totalPoints / POINTS_PER_DOLLAR) * POINTS_PER_DOLLAR;
+    Math.floor(totalPoints / CONVERSION_POINTS_STEP) * CONVERSION_POINTS_STEP;
 
   const [convertPoints, setConvertPoints] = useState(
-    maxConvertPoints >= POINTS_PER_DOLLAR ? String(POINTS_PER_DOLLAR) : "",
+    maxConvertPoints >= MIN_CONVERSION_POINTS ? String(MIN_CONVERSION_POINTS) : "",
   );
   const [withdrawUsd, setWithdrawUsd] = useState(String(MIN_WITHDRAWAL_USD));
   const [iban, setIban] = useState("");
@@ -83,7 +86,7 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
     setMessage(null);
 
     const points = Number(convertPoints);
-    if (!Number.isInteger(points) || points < POINTS_PER_DOLLAR) {
+    if (!Number.isInteger(points) || !isValidConversionAmount(points)) {
       setError(t.wallet.convertMinError);
       setConverting(false);
       return;
@@ -239,8 +242,8 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
             {t.wallet.convertAmountLabel}
             <input
               type="number"
-              min={POINTS_PER_DOLLAR}
-              step={POINTS_PER_DOLLAR}
+              min={MIN_CONVERSION_POINTS}
+              step={CONVERSION_POINTS_STEP}
               max={maxConvertPoints || undefined}
               value={convertPoints}
               onChange={(event) => setConvertPoints(event.target.value)}
@@ -254,7 +257,7 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
 
           <button
             type="submit"
-            disabled={converting || maxConvertPoints < POINTS_PER_DOLLAR}
+            disabled={converting || maxConvertPoints < MIN_CONVERSION_POINTS}
             className="mt-4 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
           >
             {converting ? t.wallet.processing : t.wallet.convertButton}
