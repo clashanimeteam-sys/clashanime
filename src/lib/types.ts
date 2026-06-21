@@ -13,6 +13,7 @@ export type Profile = {
   is_banned?: boolean;
   is_verified?: boolean;
   points?: number;
+  clash_coins?: number;
   level?: number;
   referred_by?: string | null;
   display_name_changed_at?: string | null;

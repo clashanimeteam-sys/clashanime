@@ -17,6 +17,7 @@ export type Dictionary = {
     channelSettings: string;
     myVideos: string;
     settings: string;
+    clashWallet: string;
   };
   home: {
     titlePrimary: string;
@@ -31,6 +32,11 @@ export type Dictionary = {
     cashPrizeRank1: string;
     cashPrizeRank2: string;
     cashPrizeRank3: string;
+    clashCoinsTitle: string;
+    clashCoinsSubtitle: string;
+    clashCoinsExchange: string;
+    clashCoinsMinPayout: string;
+    clashCoinsOpenWallet: string;
     upload: string;
     maintenanceMode: string;
   };
@@ -372,6 +378,65 @@ export type Dictionary = {
       points_duel_stake: string;
       points_duel_win: string;
       points_duel_refund: string;
+      clash_coin_conversion: string;
+    };
+  };
+  wallet: {
+    title: string;
+    subtitle: string;
+    description: string;
+    balanceLabel: string;
+    exchangeRateTitle: string;
+    exchangeRateValue: string;
+    minPayoutTitle: string;
+    hunterPointsLabel: string;
+    convertTitle: string;
+    convertDesc: string;
+    convertAmountLabel: string;
+    convertPreview: string;
+    convertButton: string;
+    convertSuccess: string;
+    convertFailed: string;
+    convertMinError: string;
+    withdrawTitle: string;
+    withdrawDesc: string;
+    withdrawAmountLabel: string;
+    paymentMethodLabel: string;
+    paymentDestinationLabel: string;
+    paymentDestinationPlaceholder: string;
+    kycAcknowledgement: string;
+    kycRequired: string;
+    withdrawButton: string;
+    withdrawFailed: string;
+    withdrawMinError: string;
+    withdrawPendingNotice: string;
+    fraudBlocked: string;
+    processing: string;
+    paymentOptionsTitle: string;
+    historyTitle: string;
+    loadingHistory: string;
+    noHistory: string;
+    legalNote: string;
+    paymentMethods: {
+      paypal: string;
+      wise: string;
+      revolut: string;
+      crypto_usdt: string;
+      crypto_btc: string;
+    };
+    paymentMethodDesc: {
+      paypal: string;
+      wise: string;
+      revolut: string;
+      crypto_usdt: string;
+      crypto_btc: string;
+    };
+    withdrawalStatuses: {
+      pending: string;
+      reviewing: string;
+      completed: string;
+      rejected: string;
+      fraud_blocked: string;
     };
   };
   communityFeed: {
@@ -550,6 +615,16 @@ export type Dictionary = {
     stickerCreated: string;
     confirmDeleteSticker: string;
     stickerTooLarge: string;
+    withdrawalsTitle: string;
+    withdrawalsSubtitle: string;
+    noWithdrawals: string;
+    approveWithdrawal: string;
+    rejectWithdrawal: string;
+    markReviewing: string;
+    clashCoins: string;
+    paymentMethod: string;
+    paymentDestination: string;
+    fraudFlags: string;
     openModeration: string;
     resolve: string;
     dismiss: string;
@@ -597,6 +672,7 @@ export type Dictionary = {
       reports: string;
       moderationLog: string;
       settings: string;
+      withdrawals: string;
     };
     roles: {
       user: string;
@@ -616,6 +692,7 @@ export type Dictionary = {
       clipChallenges: string;
       pointsWagerDuels: string;
       pendingWagerInvites: string;
+      pendingWithdrawals: string;
     };
     quickActions: {
       reviewVideos: string;
@@ -634,6 +711,8 @@ export type Dictionary = {
       clipChallengesDesc: string;
       pointsWagerDuels: string;
       pointsWagerDuelsDesc: string;
+      reviewWithdrawals: string;
+      reviewWithdrawalsDesc: string;
     };
     table: {
       user: string;
@@ -675,6 +754,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelSettings: "Channel settings",
       myVideos: "Your videos",
       settings: "Settings",
+      clashWallet: "ClashCoins wallet",
     },
     home: {
       titlePrimary: "Clash",
@@ -690,6 +770,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       cashPrizeRank1: "#1 Gold",
       cashPrizeRank2: "#2 Silver",
       cashPrizeRank3: "#3 Bronze",
+      clashCoinsTitle: "ClashCoins — your digital wallet",
+      clashCoinsSubtitle: "Turn hunter points into redeemable ClashCoins and cash out like a digital asset.",
+      clashCoinsExchange: "10,000 points = 10 ClashCoins ($10)",
+      clashCoinsMinPayout: "Minimum payout: $50 (50 CC)",
+      clashCoinsOpenWallet: "Open wallet",
       upload: "Video Upload",
       maintenanceMode: "ClashAnime is in maintenance mode. Some features are temporarily unavailable.",
     },
@@ -1043,6 +1128,69 @@ export const dictionaries: Record<Locale, Dictionary> = {
         points_duel_stake: "Points duel stake",
         points_duel_win: "Points duel win",
         points_duel_refund: "Points duel refund",
+        clash_coin_conversion: "Converted to ClashCoins",
+      },
+    },
+    wallet: {
+      title: "ClashCoins",
+      subtitle: "Digital wallet",
+      description:
+        "ClashCoins are your redeemable balance. Convert hunter points, hold them like digital assets, and request real payouts when you are ready.",
+      balanceLabel: "Wallet balance",
+      exchangeRateTitle: "Exchange rate",
+      exchangeRateValue: "10,000 points = 10 CC ($10)",
+      minPayoutTitle: "Minimum payout",
+      hunterPointsLabel: "Hunter points available",
+      convertTitle: "Convert points to ClashCoins",
+      convertDesc: "Exchange hunter points at a fixed rate. Converted coins stay in your wallet until you withdraw.",
+      convertAmountLabel: "Points to convert",
+      convertPreview: "You will receive {coins} ClashCoins",
+      convertButton: "Convert now",
+      convertSuccess: "Points converted to ClashCoins successfully.",
+      convertFailed: "Could not convert points. Check your balance and try again.",
+      convertMinError: "Minimum conversion is 1,000 points.",
+      withdrawTitle: "Request payout",
+      withdrawDesc: "Choose a payment method and submit your request. Payouts are reviewed manually for safety.",
+      withdrawAmountLabel: "ClashCoins to withdraw",
+      paymentMethodLabel: "Payment method",
+      paymentDestinationLabel: "PayPal email / wallet address",
+      paymentDestinationPlaceholder: "name@email.com or wallet address",
+      kycAcknowledgement:
+        "I understand identity verification (KYC) may be required before payout is sent.",
+      kycRequired: "Please confirm the KYC notice before submitting.",
+      withdrawButton: "Request payout",
+      withdrawFailed: "Could not submit withdrawal request.",
+      withdrawMinError: "Minimum withdrawal is 50 ClashCoins ($50).",
+      withdrawPendingNotice:
+        "Your request is under review. Champion payouts usually arrive within 48 hours!",
+      fraudBlocked:
+        "This request was flagged for review due to unusual point activity. Our team will investigate.",
+      processing: "Processing...",
+      paymentOptionsTitle: "Supported payout methods",
+      historyTitle: "Withdrawal history",
+      loadingHistory: "Loading history...",
+      noHistory: "No withdrawal requests yet.",
+      legalNote: "Payouts are subject to anti-fraud checks and tax reporting requirements.",
+      paymentMethods: {
+        paypal: "PayPal",
+        wise: "Wise",
+        revolut: "Revolut",
+        crypto_usdt: "USDT (Crypto)",
+        crypto_btc: "BTC (Crypto)",
+      },
+      paymentMethodDesc: {
+        paypal: "Fast and popular for small international payouts.",
+        wise: "Low-fee bank transfers for global hunters.",
+        revolut: "Great for EU and international creators.",
+        crypto_usdt: "Stablecoin payouts for tech-savvy hunters.",
+        crypto_btc: "Bitcoin payouts without complex bank details.",
+      },
+      withdrawalStatuses: {
+        pending: "Pending review",
+        reviewing: "Under review",
+        completed: "Paid out",
+        rejected: "Rejected",
+        fraud_blocked: "Fraud review",
       },
     },
     communityFeed: {
@@ -1231,6 +1379,16 @@ export const dictionaries: Record<Locale, Dictionary> = {
       stickerCreated: "Sticker uploaded.",
       confirmDeleteSticker: "Delete this sticker permanently?",
       stickerTooLarge: "Sticker must be 2 MB or smaller.",
+      withdrawalsTitle: "ClashCoin withdrawals",
+      withdrawalsSubtitle: "Review payout requests, fraud flags, and payment details.",
+      noWithdrawals: "No withdrawal requests match this filter.",
+      approveWithdrawal: "Mark paid",
+      rejectWithdrawal: "Reject & refund",
+      markReviewing: "Mark reviewing",
+      clashCoins: "ClashCoins",
+      paymentMethod: "Payment method",
+      paymentDestination: "Destination",
+      fraudFlags: "Fraud flags",
       openModeration: "Open moderation",
       resolve: "Resolve",
       dismiss: "Dismiss",
@@ -1278,6 +1436,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         reports: "Reports",
         moderationLog: "Moderation log",
         settings: "Settings",
+        withdrawals: "Withdrawals",
       },
       roles: {
         user: "User",
@@ -1297,6 +1456,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         clipChallenges: "Clip challenge duels",
         pointsWagerDuels: "Points wager duels",
         pendingWagerInvites: "Pending wager invites",
+        pendingWithdrawals: "Pending withdrawals",
       },
       quickActions: {
         reviewVideos: "Review videos",
@@ -1315,6 +1475,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         clipChallengesDesc: "Users duel clips head-to-head. Challenge button appears under every approved video.",
         pointsWagerDuels: "Points wager arena",
         pointsWagerDuelsDesc: "Hunters stake points, invite rivals, and the winner takes the pot on /exclusives.",
+        reviewWithdrawals: "Review withdrawals",
+        reviewWithdrawalsDesc: "Approve or reject ClashCoin payout requests.",
       },
       table: {
         user: "User",
@@ -1354,6 +1516,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelSettings: "チャンネル設定",
       myVideos: "あなたの動画",
       settings: "設定",
+      clashWallet: "ClashCoinsウォレット",
     },
     home: {
       titlePrimary: "Clash",
@@ -1369,6 +1532,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       cashPrizeRank1: "1位 ゴールド",
       cashPrizeRank2: "2位 シルバー",
       cashPrizeRank3: "3位 ブロンズ",
+      clashCoinsTitle: "ClashCoins — デジタルウォレット",
+      clashCoinsSubtitle: "ハンターポイントを換金可能なClashCoinsに変換。",
+      clashCoinsExchange: "10,000ポイント = 10 ClashCoins（$10）",
+      clashCoinsMinPayout: "最低出金: $50（50 CC）",
+      clashCoinsOpenWallet: "ウォレットを開く",
       upload: "動画アップロード",
       maintenanceMode: "ClashAnimeはメンテナンス中です。一部機能が一時的に利用できません。",
     },
@@ -1717,6 +1885,66 @@ export const dictionaries: Record<Locale, Dictionary> = {
         points_duel_stake: "ポイント対決の賭け",
         points_duel_win: "ポイント対決の勝利",
         points_duel_refund: "ポイント対決の返金",
+        clash_coin_conversion: "ClashCoinsへ変換",
+      },
+    },
+    wallet: {
+      title: "ClashCoins",
+      subtitle: "デジタルウォレット",
+      description:
+        "ClashCoinsは換金可能な残高です。ポイントを変換し、デジタル資産のように保有し、準備ができたら出金できます。",
+      balanceLabel: "ウォレット残高",
+      exchangeRateTitle: "為替レート",
+      exchangeRateValue: "10,000ポイント = 10 CC（$10）",
+      minPayoutTitle: "最低出金",
+      hunterPointsLabel: "利用可能なハンターポイント",
+      convertTitle: "ポイントをClashCoinsに変換",
+      convertDesc: "固定レートでハンターポイントを交換します。",
+      convertAmountLabel: "変換するポイント",
+      convertPreview: "{coins} ClashCoinsを受け取ります",
+      convertButton: "今すぐ変換",
+      convertSuccess: "ポイントをClashCoinsに変換しました。",
+      convertFailed: "変換できませんでした。残高を確認してください。",
+      convertMinError: "最低変換は1,000ポイントです。",
+      withdrawTitle: "出金リクエスト",
+      withdrawDesc: "支払い方法を選び、リクエストを送信してください。",
+      withdrawAmountLabel: "出金するClashCoins",
+      paymentMethodLabel: "支払い方法",
+      paymentDestinationLabel: "PayPalメール / ウォレットアドレス",
+      paymentDestinationPlaceholder: "name@email.com またはウォレットアドレス",
+      kycAcknowledgement: "出金前に本人確認（KYC）が必要になる場合があることを理解しています。",
+      kycRequired: "KYC通知に同意してください。",
+      withdrawButton: "出金をリクエスト",
+      withdrawFailed: "出金リクエストを送信できませんでした。",
+      withdrawMinError: "最低出金は50 ClashCoins（$50）です。",
+      withdrawPendingNotice: "リクエストは審査中です。チャンピオンの報酬は通常48時間以内に届きます！",
+      fraudBlocked: "異常なポイント活動のため審査対象になりました。",
+      processing: "処理中...",
+      paymentOptionsTitle: "対応している出金方法",
+      historyTitle: "出金履歴",
+      loadingHistory: "履歴を読み込み中...",
+      noHistory: "出金リクエストはまだありません。",
+      legalNote: "出金は不正防止チェックと税務記録の対象です。",
+      paymentMethods: {
+        paypal: "PayPal",
+        wise: "Wise",
+        revolut: "Revolut",
+        crypto_usdt: "USDT（暗号資産）",
+        crypto_btc: "BTC（暗号資産）",
+      },
+      paymentMethodDesc: {
+        paypal: "小額の国際送金に最も人気。",
+        wise: "低手数料の国際送金。",
+        revolut: "EUおよび国際クリエイター向け。",
+        crypto_usdt: "テック系ハンター向けステーブルコイン。",
+        crypto_btc: "銀行口座不要のBitcoin出金。",
+      },
+      withdrawalStatuses: {
+        pending: "審査待ち",
+        reviewing: "審査中",
+        completed: "支払い済み",
+        rejected: "拒否",
+        fraud_blocked: "不正審査",
       },
     },
     communityFeed: {
@@ -1904,6 +2132,16 @@ export const dictionaries: Record<Locale, Dictionary> = {
       stickerCreated: "ステッカーをアップロードしました。",
       confirmDeleteSticker: "このステッカーを完全に削除しますか？",
       stickerTooLarge: "ステッカーは2MB以下にしてください。",
+      withdrawalsTitle: "ClashCoin出金",
+      withdrawalsSubtitle: "出金リクエスト、不正フラグ、支払い情報を確認します。",
+      noWithdrawals: "該当する出金リクエストがありません。",
+      approveWithdrawal: "支払い済みにする",
+      rejectWithdrawal: "拒否して返金",
+      markReviewing: "審査中にする",
+      clashCoins: "ClashCoins",
+      paymentMethod: "支払い方法",
+      paymentDestination: "送金先",
+      fraudFlags: "不正フラグ",
       openModeration: "審査を開く",
       resolve: "解決",
       dismiss: "却下",
@@ -1951,6 +2189,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         reports: "報告",
         moderationLog: "モデレーションログ",
         settings: "設定",
+        withdrawals: "出金",
       },
       roles: {
         user: "ユーザー",
@@ -1970,6 +2209,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         clipChallenges: "クリップ挑戦デュエル",
         pointsWagerDuels: "ポイント賭け対決",
         pendingWagerInvites: "保留中の賭け招待",
+        pendingWithdrawals: "保留中の出金",
       },
       quickActions: {
         reviewVideos: "動画を審査",
@@ -1988,6 +2228,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         clipChallengesDesc: "承認済み動画の下に挑戦ボタンが表示され、ユーザー同士が対決できます。",
         pointsWagerDuels: "ポイント賭けアリーナ",
         pointsWagerDuelsDesc: "ハンターがポイントを賭け、招待し、勝者がポットを獲得します。",
+        reviewWithdrawals: "出金を審査",
+        reviewWithdrawalsDesc: "ClashCoin出金リクエストを承認または拒否します。",
       },
       table: {
         user: "ユーザー",
@@ -2027,6 +2269,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelSettings: "إعدادات القناة",
       myVideos: "فيديوهاتك",
       settings: "الإعدادات",
+      clashWallet: "محفظة ClashCoins",
     },
     home: {
       titlePrimary: "Clash",
@@ -2042,6 +2285,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       cashPrizeRank1: "المركز 1 ذهب",
       cashPrizeRank2: "المركز 2 فضة",
       cashPrizeRank3: "المركز 3 برونز",
+      clashCoinsTitle: "ClashCoins — محفظتك الرقمية",
+      clashCoinsSubtitle: "حوّل نقاط الصياد إلى ClashCoins قابلة للسحب كأصول رقمية.",
+      clashCoinsExchange: "١٠,٠٠٠ نقطة = ١٠ ClashCoins (١٠$)",
+      clashCoinsMinPayout: "الحد الأدنى للسحب: ٥٠$ (٥٠ CC)",
+      clashCoinsOpenWallet: "افتح المحفظة",
       upload: "رفع فيديو",
       maintenanceMode: "ClashAnime في وضع الصيانة. بعض الميزات غير متاحة مؤقتاً.",
     },
@@ -2392,6 +2640,66 @@ export const dictionaries: Record<Locale, Dictionary> = {
         points_duel_stake: "رهان نزال نقاط",
         points_duel_win: "فوز نزال نقاط",
         points_duel_refund: "استرداد نزال نقاط",
+        clash_coin_conversion: "تحويل إلى ClashCoins",
+      },
+    },
+    wallet: {
+      title: "ClashCoins",
+      subtitle: "المحفظة الرقمية",
+      description:
+        "ClashCoins هي رصيدك القابل للسحب. حوّل نقاط الصياد، احتفظ بها كأصول رقمية، واطلب سحباً حقيقياً عندما تكون جاهزاً.",
+      balanceLabel: "رصيد المحفظة",
+      exchangeRateTitle: "سعر الصرف",
+      exchangeRateValue: "١٠,٠٠٠ نقطة = ١٠ CC (١٠$)",
+      minPayoutTitle: "الحد الأدنى للسحب",
+      hunterPointsLabel: "نقاط الصياد المتاحة",
+      convertTitle: "تحويل النقاط إلى ClashCoins",
+      convertDesc: "استبدل نقاط الصياد بسعر ثابت. تبقى العملات في محفظتك حتى تطلب السحب.",
+      convertAmountLabel: "النقاط للتحويل",
+      convertPreview: "ستحصل على {coins} ClashCoins",
+      convertButton: "حوّل الآن",
+      convertSuccess: "تم تحويل النقاط إلى ClashCoins بنجاح.",
+      convertFailed: "تعذر التحويل. تحقق من رصيدك وحاول مجدداً.",
+      convertMinError: "الحد الأدنى للتحويل ١,٠٠٠ نقطة.",
+      withdrawTitle: "طلب سحب",
+      withdrawDesc: "اختر طريقة الدفع وأرسل طلبك. تتم مراجعة السحوبات يدوياً للأمان.",
+      withdrawAmountLabel: "ClashCoins للسحب",
+      paymentMethodLabel: "طريقة الدفع",
+      paymentDestinationLabel: "بريد PayPal / عنوان المحفظة",
+      paymentDestinationPlaceholder: "name@email.com أو عنوان محفظة",
+      kycAcknowledgement: "أفهم أنه قد يُطلب إثبات الهوية (KYC) قبل إرسال المبلغ.",
+      kycRequired: "يرجى تأكيد إشعار KYC قبل الإرسال.",
+      withdrawButton: "اطلب السحب",
+      withdrawFailed: "تعذر إرسال طلب السحب.",
+      withdrawMinError: "الحد الأدنى للسحب ٥٠ ClashCoins (٥٠$).",
+      withdrawPendingNotice: "طلبك قيد المراجعة، سيصلك راتب الأبطال خلال ٤٨ ساعة!",
+      fraudBlocked: "تم تعليق الطلب للمراجعة بسبب نشاط نقاط غير اعتيادي.",
+      processing: "جارٍ المعالجة...",
+      paymentOptionsTitle: "طرق الدفع المدعومة",
+      historyTitle: "سجل السحوبات",
+      loadingHistory: "جارٍ تحميل السجل...",
+      noHistory: "لا توجد طلبات سحب بعد.",
+      legalNote: "السحوبات تخضع لفحوصات مكافحة الغش ومتطلبات الضرائب.",
+      paymentMethods: {
+        paypal: "PayPal",
+        wise: "Wise",
+        revolut: "Revolut",
+        crypto_usdt: "USDT (عملة رقمية)",
+        crypto_btc: "BTC (عملة رقمية)",
+      },
+      paymentMethodDesc: {
+        paypal: "الأسهل والأكثر شيوعاً للتحويلات الصغيرة.",
+        wise: "تحويلات بنكية منخفضة الرسوم للصيادين الدوليين.",
+        revolut: "ممتاز للمستخدمين في أوروبا وخارجها.",
+        crypto_usdt: "مدفوعات USDT لمجتمع التقنية والأنمي.",
+        crypto_btc: "Bitcoin بدون بيانات بنكية معقدة.",
+      },
+      withdrawalStatuses: {
+        pending: "قيد المراجعة",
+        reviewing: "تحت المراجعة",
+        completed: "تم الدفع",
+        rejected: "مرفوض",
+        fraud_blocked: "مراجعة احتيال",
       },
     },
     communityFeed: {
@@ -2579,6 +2887,16 @@ export const dictionaries: Record<Locale, Dictionary> = {
       stickerCreated: "تم رفع الستيكر.",
       confirmDeleteSticker: "حذف هذا الستيكر نهائياً؟",
       stickerTooLarge: "يجب ألا يتجاوز الستيكر 2 ميغابايت.",
+      withdrawalsTitle: "سحوبات ClashCoins",
+      withdrawalsSubtitle: "مراجعة طلبات السحب وعلامات الاحتيال وتفاصيل الدفع.",
+      noWithdrawals: "لا توجد طلبات سحب مطابقة.",
+      approveWithdrawal: "تعيين كمدفوع",
+      rejectWithdrawal: "رفض واسترداد",
+      markReviewing: "وضع قيد المراجعة",
+      clashCoins: "ClashCoins",
+      paymentMethod: "طريقة الدفع",
+      paymentDestination: "وجهة الدفع",
+      fraudFlags: "علامات احتيال",
       openModeration: "فتح المراجعة",
       resolve: "حل",
       dismiss: "تجاهل",
@@ -2626,6 +2944,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         reports: "البلاغات",
         moderationLog: "سجل المراجعة",
         settings: "الإعدادات",
+        withdrawals: "السحوبات",
       },
       roles: {
         user: "مستخدم",
@@ -2645,6 +2964,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         clipChallenges: "نزالات تحدي المقاطع",
         pointsWagerDuels: "نزالات رهان النقاط",
         pendingWagerInvites: "دعوات رهان بانتظار القبول",
+        pendingWithdrawals: "سحوبات قيد المراجعة",
       },
       quickActions: {
         reviewVideos: "مراجعة الفيديوهات",
@@ -2663,6 +2983,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         clipChallengesDesc: "زر «تحدي هذا المقطع» يظهر تحت كل فيديو معتمد ويُنشئ نزالات تلقائياً بين المستخدمين.",
         pointsWagerDuels: "ساحة رهان النقاط",
         pointsWagerDuelsDesc: "الصيادون يراهنون بنقاطهم ويدعون منافسين — الفائز يأخذ الجائزة في صفحة حصري.",
+        reviewWithdrawals: "مراجعة السحوبات",
+        reviewWithdrawalsDesc: "قبول أو رفض طلبات سحب ClashCoins.",
       },
       table: {
         user: "المستخدم",

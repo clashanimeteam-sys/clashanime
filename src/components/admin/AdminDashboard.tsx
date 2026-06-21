@@ -18,6 +18,7 @@ type DashboardStats = {
   clipChallenges: number;
   pointsWagerDuels: number;
   pendingWagerInvites: number;
+  pendingWithdrawals: number;
 };
 
 export function AdminDashboard() {
@@ -46,6 +47,7 @@ export function AdminDashboard() {
         clipChallengesResult,
         pointsWagerDuelsResult,
         pendingWagerInvitesResult,
+        pendingWithdrawalsResult,
       ] = await Promise.all([
         client.from("profiles").select("*", { count: "exact", head: true }),
         client.from("videos").select("*", { count: "exact", head: true }),
@@ -87,6 +89,16 @@ export function AdminDashboard() {
             }
             return { count: result.count, error: false as const };
           }),
+        client
+          .from("withdrawals")
+          .select("*", { count: "exact", head: true })
+          .in("status", ["pending", "reviewing", "fraud_blocked"])
+          .then((result) => {
+            if (result.error) {
+              return { count: null as number | null, error: true as const };
+            }
+            return { count: result.count, error: false as const };
+          }),
       ]);
 
       const clipChallengesCount =
@@ -97,6 +109,9 @@ export function AdminDashboard() {
 
       const pendingWagerInvitesCount =
         pendingWagerInvitesResult.error ? 0 : (pendingWagerInvitesResult.count ?? 0);
+
+      const pendingWithdrawalsCount =
+        pendingWithdrawalsResult.error ? 0 : (pendingWithdrawalsResult.count ?? 0);
 
       setStats({
         users: users ?? 0,
@@ -111,6 +126,7 @@ export function AdminDashboard() {
         clipChallenges: clipChallengesCount,
         pointsWagerDuels: pointsWagerDuelsCount,
         pendingWagerInvites: pendingWagerInvitesCount,
+        pendingWithdrawals: pendingWithdrawalsCount,
       });
       setLoading(false);
     }
@@ -125,6 +141,7 @@ export function AdminDashboard() {
     { label: t.admin.stats.clipChallenges, value: stats?.clipChallenges ?? 0, href: "/exclusives" },
     { label: t.admin.stats.pointsWagerDuels, value: stats?.pointsWagerDuels ?? 0, href: "/exclusives" },
     { label: t.admin.stats.pendingWagerInvites, value: stats?.pendingWagerInvites ?? 0, href: "/exclusives" },
+    { label: t.admin.stats.pendingWithdrawals, value: stats?.pendingWithdrawals ?? 0, href: "/admin/withdrawals" },
     { label: t.admin.stats.pendingVerifications, value: stats?.pendingVerifications ?? 0, href: "/admin/users" },
     { label: t.admin.stats.communityPosts, value: stats?.communityPosts ?? 0, href: "/community" },
     { label: t.admin.stats.videos, value: stats?.videos ?? 0, href: "/admin/videos" },
@@ -199,9 +216,9 @@ export function AdminDashboard() {
           href="/exclusives"
         />
         <QuickLink
-          title={t.admin.quickActions.clipChallenges}
-          description={t.admin.quickActions.clipChallengesDesc}
-          href="/videos"
+          title={t.admin.quickActions.reviewWithdrawals}
+          description={t.admin.quickActions.reviewWithdrawalsDesc}
+          href="/admin/withdrawals"
         />
       </div>
     </div>

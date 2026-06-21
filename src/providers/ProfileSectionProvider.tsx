@@ -16,14 +16,16 @@ export type ProfileSection =
   | "my-videos"
   | "hunter-system"
   | "bounty-log"
-  | "referral";
+  | "referral"
+  | "wallet";
 
 export function parseProfileSection(hash: string): ProfileSection {
   if (
     hash === "my-videos" ||
     hash === "hunter-system" ||
     hash === "bounty-log" ||
-    hash === "referral"
+    hash === "referral" ||
+    hash === "wallet"
   ) {
     return hash;
   }

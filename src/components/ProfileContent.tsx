@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FollowerCount } from "@/components/FollowButton";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
+import { ClashWalletPanel } from "@/components/ClashWalletPanel";
 import { PointsPanel } from "@/components/PointsPanel";
 import { VideoCard } from "@/components/VideoCard";
 import { profileToVideoChannel } from "@/components/VideoCardChannel";
@@ -593,6 +594,13 @@ export function ProfileContent() {
           profile={profile}
           onProfileRefresh={() => loadProfile({ silent: true })}
           section="referral"
+        />
+      ) : null}
+
+      {activeSection === "wallet" ? (
+        <ClashWalletPanel
+          profile={profile}
+          onProfileRefresh={() => loadProfile({ silent: true })}
         />
       ) : null}
 
