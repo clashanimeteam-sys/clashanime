@@ -74,6 +74,8 @@ export async function GET() {
       p_phone: "+966500000000",
       p_address: "Health Check Address 12345",
       p_id_document_url: "https://example.com/kyc-health-check.jpg",
+      p_whatsapp_opt_in: true,
+      p_whatsapp_phone: "+966500000000",
     });
     submitKycRpc = rpcExists(submitError);
 
@@ -132,6 +134,7 @@ export async function GET() {
       "supabase/scripts/production-withdrawal-paypal-usdt.sql",
       "supabase/scripts/production-payout-kyc.sql",
       "supabase/scripts/production-payout-kyc-name-country.sql",
+      "supabase/scripts/production-payout-kyc-whatsapp.sql",
     ],
     sqlEditor:
       "https://supabase.com/dashboard/project/doqiuduigbdoczdzsima/sql/new",

@@ -12,6 +12,8 @@ type KycSubmission = {
   country_code: string | null;
   country_name: string | null;
   phone: string;
+  whatsapp_opt_in: boolean | null;
+  whatsapp_phone: string | null;
   address: string;
   id_document_url: string;
   status: "pending" | "approved" | "rejected";
@@ -40,7 +42,7 @@ export function AdminKycPanel() {
     let query = supabase
       .from("payout_kyc_submissions")
       .select(
-        "id, user_id, first_name, last_name, country_code, country_name, phone, address, id_document_url, status, admin_notes, created_at",
+        "id, user_id, first_name, last_name, country_code, country_name, phone, whatsapp_opt_in, whatsapp_phone, address, id_document_url, status, admin_notes, created_at",
       )
       .order("created_at", { ascending: false })
       .limit(100);
@@ -160,6 +162,19 @@ export function AdminKycPanel() {
                   <p className="mt-1 text-xs text-zinc-300">
                     {t.wallet.kycPhoneLabel}: {submission.phone}
                   </p>
+                  {submission.whatsapp_opt_in && submission.whatsapp_phone ? (
+                    <p className="mt-1 text-xs text-emerald-300">
+                      {t.wallet.kycWhatsappTitle}:{" "}
+                      <a
+                        href={`https://wa.me/${submission.whatsapp_phone.replace(/\D/g, "")}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline underline-offset-2 hover:text-emerald-200"
+                      >
+                        {submission.whatsapp_phone}
+                      </a>
+                    </p>
+                  ) : null}
                   <p className="mt-1 text-xs text-zinc-300">
                     {t.wallet.kycAddressLabel}: {submission.address}
                   </p>

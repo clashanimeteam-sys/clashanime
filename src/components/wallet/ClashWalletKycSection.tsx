@@ -2,6 +2,7 @@
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { CountryPhoneField } from "@/components/wallet/CountryPhoneField";
+import { WhatsAppIcon } from "@/components/wallet/WhatsAppIcon";
 import {
   buildFullPhoneNumber,
   DEFAULT_KYC_COUNTRY,
@@ -21,6 +22,8 @@ export type PayoutKycSubmission = {
   country_code: string | null;
   country_name: string | null;
   phone: string;
+  whatsapp_opt_in: boolean | null;
+  whatsapp_phone: string | null;
   address: string;
   id_document_url: string;
   status: "pending" | "approved" | "rejected";
@@ -50,6 +53,8 @@ export function ClashWalletKycSection({
   const [lastName, setLastName] = useState("");
   const [countryCode, setCountryCode] = useState(DEFAULT_KYC_COUNTRY.code);
   const [localPhone, setLocalPhone] = useState("");
+  const [whatsappOptIn, setWhatsappOptIn] = useState(false);
+  const [whatsappLocalPhone, setWhatsappLocalPhone] = useState("");
   const [address, setAddress] = useState("");
   const [idFile, setIdFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -75,7 +80,7 @@ export function ClashWalletKycSection({
     const { data } = await supabase
       .from("payout_kyc_submissions")
       .select(
-        "id, first_name, last_name, country_code, country_name, phone, address, id_document_url, status, admin_notes, created_at, updated_at",
+        "id, first_name, last_name, country_code, country_name, phone, whatsapp_opt_in, whatsapp_phone, address, id_document_url, status, admin_notes, created_at, updated_at",
       )
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
@@ -102,6 +107,11 @@ export function ClashWalletKycSection({
 
     const country = getKycCountryByCode(countryCode) ?? DEFAULT_KYC_COUNTRY;
     const fullPhone = buildFullPhoneNumber(country, localPhone);
+    const whatsappPhone = whatsappOptIn
+      ? whatsappLocalPhone.trim()
+        ? buildFullPhoneNumber(country, whatsappLocalPhone)
+        : fullPhone
+      : null;
 
     if (!idFile) {
       setError(t.wallet.kycIdRequired);
@@ -137,6 +147,8 @@ export function ClashWalletKycSection({
         p_phone: fullPhone,
         p_address: address.trim(),
         p_id_document_url: uploaded.publicUrl,
+        p_whatsapp_opt_in: whatsappOptIn,
+        p_whatsapp_phone: whatsappPhone,
       });
 
       if (rpcError) {
@@ -150,6 +162,8 @@ export function ClashWalletKycSection({
       setLastName("");
       setCountryCode(DEFAULT_KYC_COUNTRY.code);
       setLocalPhone("");
+      setWhatsappOptIn(false);
+      setWhatsappLocalPhone("");
       setAddress("");
       setIdFile(null);
       await loadSubmission();
@@ -241,6 +255,53 @@ export function ClashWalletKycSection({
           phonePlaceholder={t.wallet.kycPhoneLocalPlaceholder}
         />
       </div>
+
+      <label
+        className={`mt-3 flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition ${
+          whatsappOptIn
+            ? "border-emerald-400 bg-emerald-50 shadow-sm dark:border-emerald-700 dark:bg-emerald-950/30"
+            : "border-zinc-200 bg-white/80 hover:border-emerald-300 dark:border-zinc-700 dark:bg-zinc-950/50"
+        }`}
+      >
+        <input
+          type="checkbox"
+          checked={whatsappOptIn}
+          onChange={(event) => setWhatsappOptIn(event.target.checked)}
+          className="mt-1"
+        />
+        <span className="space-y-1">
+          <span className="flex items-center gap-2 text-sm font-semibold text-emerald-800 dark:text-emerald-300">
+            <WhatsAppIcon className="h-5 w-5" />
+            {t.wallet.kycWhatsappTitle}
+          </span>
+          <span className="block text-xs leading-relaxed text-emerald-700 dark:text-emerald-400">
+            {t.wallet.kycWhatsappDesc}
+          </span>
+        </span>
+      </label>
+
+      {whatsappOptIn ? (
+        <label className="mt-3 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+          {t.wallet.kycWhatsappNumberLabel}
+          <div className="mt-2 flex overflow-hidden rounded-xl border border-emerald-300 bg-white dark:border-emerald-800 dark:bg-zinc-950">
+            <div className="flex shrink-0 items-center gap-2 border-e border-emerald-200 bg-emerald-50 px-3 dark:border-emerald-900 dark:bg-emerald-950/40">
+              <WhatsAppIcon className="h-4 w-4 text-emerald-600" />
+              <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+                {(getKycCountryByCode(countryCode) ?? DEFAULT_KYC_COUNTRY).dialCode}
+              </span>
+            </div>
+            <input
+              type="tel"
+              inputMode="tel"
+              value={whatsappLocalPhone}
+              onChange={(event) => setWhatsappLocalPhone(event.target.value)}
+              placeholder={t.wallet.kycWhatsappPlaceholder}
+              className="min-w-0 flex-1 bg-transparent px-4 py-2.5 text-sm outline-none"
+            />
+          </div>
+          <p className="mt-2 text-xs text-zinc-500">{t.wallet.kycWhatsappHint}</p>
+        </label>
+      ) : null}
 
       <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
         {t.wallet.kycAddressLabel}

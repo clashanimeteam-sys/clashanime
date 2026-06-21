@@ -433,6 +433,11 @@ export type Dictionary = {
     kycCountryLabel: string;
     kycPhoneLabel: string;
     kycPhoneLocalPlaceholder: string;
+    kycWhatsappTitle: string;
+    kycWhatsappDesc: string;
+    kycWhatsappNumberLabel: string;
+    kycWhatsappPlaceholder: string;
+    kycWhatsappHint: string;
     kycAddressLabel: string;
     kycAddressPlaceholder: string;
     kycIdLabel: string;
@@ -1237,6 +1242,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       kycCountryLabel: "Country",
       kycPhoneLabel: "Phone number",
       kycPhoneLocalPlaceholder: "501234567",
+      kycWhatsappTitle: "WhatsApp",
+      kycWhatsappDesc: "We can contact you on WhatsApp for KYC and payout updates.",
+      kycWhatsappNumberLabel: "WhatsApp number",
+      kycWhatsappPlaceholder: "Same as phone or enter another number",
+      kycWhatsappHint: "Leave empty to use your phone number above on WhatsApp.",
       kycAddressLabel: "Full address",
       kycAddressPlaceholder: "Street, city, country, postal code",
       kycIdLabel: "Government ID photo",
@@ -2046,6 +2056,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       kycCountryLabel: "国",
       kycPhoneLabel: "電話番号",
       kycPhoneLocalPlaceholder: "9012345678",
+      kycWhatsappTitle: "WhatsApp",
+      kycWhatsappDesc: "KYCや出金の連絡はWhatsAppでも可能です。",
+      kycWhatsappNumberLabel: "WhatsApp番号",
+      kycWhatsappPlaceholder: "上と同じ、または別番号",
+      kycWhatsappHint: "空欄の場合は上の電話番号をWhatsAppで使用します。",
       kycAddressLabel: "住所",
       kycAddressPlaceholder: "番地、市区町村、国、郵便番号",
       kycIdLabel: "公的身分証の写真",
@@ -2856,6 +2871,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       kycCountryLabel: "الدولة",
       kycPhoneLabel: "رقم الهاتف",
       kycPhoneLocalPlaceholder: "5XXXXXXXX",
+      kycWhatsappTitle: "واتساب",
+      kycWhatsappDesc: "واتساب — لنتواصل معك بخصوص KYC والسحب.",
+      kycWhatsappNumberLabel: "رقم واتساب",
+      kycWhatsappPlaceholder: "نفس رقم الهاتف أو رقم آخر",
+      kycWhatsappHint: "اتركه فارغاً لاستخدام رقم الهاتف أعلاه على واتساب.",
       kycAddressLabel: "العنوان الكامل",
       kycAddressPlaceholder: "الشارع، المدينة، الدولة، الرمز البريدي",
       kycIdLabel: "صورة الهوية الرسمية",
