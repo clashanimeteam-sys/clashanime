@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ModalPortal } from "@/components/ModalPortal";
+import { UsernameSuggestInput } from "@/components/UsernameSuggestInput";
 import {
   createPointsWagerDuel,
   fetchUserApprovedClipsForWager,
@@ -139,11 +140,11 @@ export function CreatePointsWagerModal({ open, onClose, onCreated }: CreatePoint
                 <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
                   {t.exclusives.inviteOpponent}
                 </span>
-                <input
+                <UsernameSuggestInput
                   value={opponentUsername}
-                  onChange={(event) => setOpponentUsername(event.target.value)}
+                  onChange={setOpponentUsername}
+                  excludeUserId={user.id}
                   placeholder="@username"
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-sm dark:border-zinc-700 dark:bg-zinc-900"
                   required
                 />
               </label>

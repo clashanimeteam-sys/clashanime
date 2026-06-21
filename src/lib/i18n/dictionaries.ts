@@ -165,6 +165,8 @@ export type Dictionary = {
     wagerCancelled: string;
     wagerWinnerPot: string;
     pointsWagerArenaDesc: string;
+    searchingUsernames: string;
+    noUsernameSuggestions: string;
   };
   radio: {
     badge: string;
@@ -812,6 +814,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       wagerWinnerPot: "Winner took the {pot} point pot.",
       pointsWagerArenaDesc:
         "Vote with likes on both clips. When ready, either hunter can finalize — higher likes wins the {pot} point pot.",
+      searchingUsernames: "Searching hunters...",
+      noUsernameSuggestions: "No matching hunters found.",
     },
     radio: {
       badge: "24/7 stream",
@@ -1467,6 +1471,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       wagerWinnerPot: "勝者が {pot} pt のポットを獲得。",
       pointsWagerArenaDesc:
         "両方のクリップにいいねで投票。準備ができたらどちらかが確定 — いいねが多い方が {pot} pt を獲得。",
+      searchingUsernames: "ハンターを検索中...",
+      noUsernameSuggestions: "一致するハンターが見つかりません。",
     },
     radio: {
       badge: "24/7 配信",
@@ -2118,6 +2124,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       wagerWinnerPot: "الفائز أخذ جائزة {pot} نقطة.",
       pointsWagerArenaDesc:
         "صوّت بالإعجاب على المقطعين. عند الجاهزية، أي طرف ينهي النزال — الأكثر إعجاباً يفوز بـ {pot} نقطة.",
+      searchingUsernames: "جارٍ البحث عن الصيادين...",
+      noUsernameSuggestions: "لم يُعثر على صياد مطابق.",
     },
     radio: {
       badge: "بث مباشر 24/7",

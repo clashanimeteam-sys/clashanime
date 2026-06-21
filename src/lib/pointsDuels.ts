@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { normalizeUsernameQuery } from "@/lib/profileSearch";
 import type { Video } from "@/lib/types";
 
 export type PointsWagerDuelStatus = "pending" | "active" | "completed" | "cancelled";
@@ -76,7 +77,7 @@ export async function createPointsWagerDuel(
   if (!supabase) return { duelId: null, error: "offline" };
 
   const { data, error } = await supabase.rpc("create_points_wager_duel", {
-    p_opponent_username: opponentUsername.trim(),
+    p_opponent_username: normalizeUsernameQuery(opponentUsername),
     p_creator_video_id: creatorVideoId,
     p_wager_points: wagerPoints,
   });
