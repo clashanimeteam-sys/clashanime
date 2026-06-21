@@ -1,15 +1,22 @@
 "use client";
 
+import { ClipChallengeCard } from "@/components/exclusives/ClipChallengeCard";
 import { DailyHallOfFame } from "@/components/exclusives/DailyHallOfFame";
+import { ExclusivesChallengeVideos } from "@/components/exclusives/ExclusivesChallengeVideos";
 import { RandomDuelButton } from "@/components/exclusives/RandomDuelButton";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { DailyHallLeader } from "@/lib/dailyHall";
+import type { Video } from "@/lib/types";
 
 type ExclusivesPageContentProps = {
   dailyLeader: DailyHallLeader | null;
+  challengeVideos: Video[];
 };
 
-export function ExclusivesPageContent({ dailyLeader }: ExclusivesPageContentProps) {
+export function ExclusivesPageContent({
+  dailyLeader,
+  challengeVideos,
+}: ExclusivesPageContentProps) {
   const { t } = useLocale();
 
   return (
@@ -27,6 +34,12 @@ export function ExclusivesPageContent({ dailyLeader }: ExclusivesPageContentProp
         <DailyHallOfFame leader={dailyLeader} />
         <RandomDuelButton />
       </div>
+
+      <div className="mt-4">
+        <ClipChallengeCard />
+      </div>
+
+      <ExclusivesChallengeVideos videos={challengeVideos} />
     </div>
   );
 }

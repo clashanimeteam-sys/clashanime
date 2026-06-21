@@ -131,6 +131,10 @@ export type Dictionary = {
     challengeDuelBadge: string;
     challengeDuelTitle: string;
     challengeDuelPageDesc: string;
+    clipChallengeExclusivesDesc: string;
+    browseVideosToChallenge: string;
+    clipChallengeSectionTitle: string;
+    clipChallengeSectionDesc: string;
   };
   radio: {
     badge: string;
@@ -733,6 +737,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       challengeDuelBadge: "Quick Challenge",
       challengeDuelTitle: "Clip Challenge",
       challengeDuelPageDesc: "Two creators, one arena. Vote with likes and comments to crown the stronger clip.",
+      clipChallengeExclusivesDesc:
+        "Under every approved clip you'll find Challenge this clip. Pick your video and spawn a head-to-head duel instantly.",
+      browseVideosToChallenge: "Browse clips to challenge",
+      clipChallengeSectionTitle: "Clips ready to challenge",
+      clipChallengeSectionDesc:
+        "Tap Challenge this clip under any video below to duel it with one of your approved uploads.",
     },
     radio: {
       badge: "24/7 stream",
@@ -1344,6 +1354,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       challengeDuelBadge: "クイック挑戦",
       challengeDuelTitle: "クリップ対決",
       challengeDuelPageDesc: "2人のクリエイター、1つの舞台。いいねとコメントでより強い動画を決めよう。",
+      clipChallengeExclusivesDesc:
+        "承認済み動画の下に「この動画に挑戦」ボタンがあります。自分の動画を選んで即座に対決を開始できます。",
+      browseVideosToChallenge: "挑戦できる動画を見る",
+      clipChallengeSectionTitle: "挑戦できるクリップ",
+      clipChallengeSectionDesc:
+        "下の動画から「この動画に挑戦」を押して、承認済みの自分の動画で対決しましょう。",
     },
     radio: {
       badge: "24/7 配信",
@@ -1951,6 +1967,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       challengeDuelBadge: "التحدي السريع",
       challengeDuelTitle: "نزال المقطع",
       challengeDuelPageDesc: "منشئان و ساحة واحدة. صوّت بالإعجاب والتعليقات لتتوّج بالمقطع الأقوى.",
+      clipChallengeExclusivesDesc:
+        "ستجد زر «تحدي هذا المقطع» تحت أي فيديو معتمد. اختر مقطعك وابدأ نزالاً فورياً وجهاً لوجه.",
+      browseVideosToChallenge: "تصفّح المقاطع للتحدي",
+      clipChallengeSectionTitle: "مقاطع جاهزة للتحدي",
+      clipChallengeSectionDesc:
+        "اضغط «تحدي هذا المقطع» تحت أي فيديو أدناه ونافسه بأحد مقاطعك المعتمدة.",
     },
     radio: {
       badge: "بث مباشر 24/7",

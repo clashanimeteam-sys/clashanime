@@ -29,7 +29,7 @@ export function ChallengeClipButton({
     return user.id === challengedVideoOwnerId;
   }, [user, challengedVideoOwnerId]);
 
-  if (loading || isOwnVideo) return null;
+  if (isOwnVideo) return null;
 
   const buttonClassName =
     variant === "overlay"
@@ -37,13 +37,13 @@ export function ChallengeClipButton({
       : "inline-flex w-full items-center justify-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-2.5 text-sm font-bold text-accent transition-colors hover:border-accent hover:bg-accent/15 dark:border-accent/40 dark:bg-accent/15 dark:text-accent";
 
   function handleClick() {
-    if (!user) return;
+    if (loading || !user) return;
     setOpen(true);
   }
 
   return (
     <>
-      {user ? (
+      {user && !loading ? (
         <button type="button" onClick={handleClick} className={buttonClassName}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
             <path d="M14.5 17.5L3 6V3h3l11.5 11.5" />
