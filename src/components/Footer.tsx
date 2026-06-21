@@ -22,7 +22,7 @@ const informationLinks = [
 
 function FooterColumnHeading({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-500">
+    <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-400 dark:text-zinc-500">
       {children}
     </p>
   );
@@ -32,7 +32,7 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
   return (
     <Link
       href={href}
-      className="block text-sm text-zinc-400 transition-colors hover:text-white"
+      className="block text-sm text-zinc-600 transition-colors hover:text-black dark:text-zinc-400 dark:hover:text-white"
     >
       {children}
     </Link>
@@ -60,7 +60,7 @@ export function Footer() {
   const { t } = useLocale();
 
   return (
-    <footer className="mt-auto border-t border-zinc-800 bg-zinc-950 text-zinc-400">
+    <footer className="mt-auto border-t border-zinc-200 bg-white text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
           <div className="sm:col-span-2 lg:col-span-1">
@@ -70,7 +70,7 @@ export function Footer() {
                 <span className="bg-gradient-to-br from-brand via-red-600 to-orange-500 bg-clip-text text-transparent">
                   {t.home.titlePrimary}
                 </span>
-                <span className="text-white">{t.home.titleSecondary}</span>
+                <span className="text-black dark:text-white">{t.home.titleSecondary}</span>
               </p>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-zinc-500">{t.footer.tagline}</p>
@@ -103,14 +103,14 @@ export function Footer() {
             <nav className="flex flex-col gap-2.5" aria-label={t.footer.socialHeading}>
               <a
                 href="mailto:support@clashanime.com"
-                className="flex items-center gap-2.5 text-sm text-zinc-400 transition-colors hover:text-white"
+                className="flex items-center gap-2.5 text-sm text-zinc-600 transition-colors hover:text-black dark:text-zinc-400 dark:hover:text-white"
               >
                 <SocialIcon type="mail" />
                 {t.footer.contact}
               </a>
               <Link
                 href="/report"
-                className="flex items-center gap-2.5 text-sm text-zinc-400 transition-colors hover:text-white"
+                className="flex items-center gap-2.5 text-sm text-zinc-600 transition-colors hover:text-black dark:text-zinc-400 dark:hover:text-white"
               >
                 <SocialIcon type="report" />
                 {t.footer.reportContent}
@@ -120,8 +120,8 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-zinc-800/80">
-        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-5 text-xs text-zinc-600 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+      <div className="border-t border-zinc-200 dark:border-zinc-800/80">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-5 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 dark:text-zinc-600">
           <p>{t.brand.name.toLowerCase()}.com</p>
           <p>{t.footer.copyright}</p>
         </div>
