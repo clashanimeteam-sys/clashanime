@@ -26,6 +26,8 @@ export type Dictionary = {
     clashLive: string;
     podiumLabel: string;
     challengersLabel: string;
+    clashVs: string;
+    clashBattle: string;
     upload: string;
     maintenanceMode: string;
   };
@@ -680,6 +682,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashLive: "Live Clash",
       podiumLabel: "Podium",
       challengersLabel: "Clash challengers",
+      clashVs: "VS",
+      clashBattle: "Battle",
       upload: "Video Upload",
       maintenanceMode: "ClashAnime is in maintenance mode. Some features are temporarily unavailable.",
     },
@@ -1354,6 +1358,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashLive: "ライブ・クラッシュ",
       podiumLabel: "表彰台",
       challengersLabel: "挑戦者",
+      clashVs: "VS",
+      clashBattle: "対決",
       upload: "動画アップロード",
       maintenanceMode: "ClashAnimeはメンテナンス中です。一部機能が一時的に利用できません。",
     },
@@ -2022,6 +2028,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashLive: "نزال مباشر",
       podiumLabel: "منصة الصدارة",
       challengersLabel: "منافسو النزال",
+      clashVs: "VS",
+      clashBattle: "مواجهة",
       upload: "رفع فيديو",
       maintenanceMode: "ClashAnime في وضع الصيانة. بعض الميزات غير متاحة مؤقتاً.",
     },

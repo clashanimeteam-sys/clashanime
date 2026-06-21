@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChallengeClipButton } from "@/components/duel/ChallengeClipButton";
 import { ClashThumbnailFire } from "@/components/clash/ClashFireFrame";
+import { ClashRivalCornerFlame } from "@/components/clash/ClashVsFlame";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { VideoCardChannel } from "@/components/VideoCardChannel";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -19,6 +20,7 @@ type VideoCardProps = {
   showTrendingDuelBadge?: boolean;
   compact?: boolean;
   clashMode?: boolean;
+  clashRivalFlameSide?: "start" | "end";
 };
 
 type MedalTier = "gold" | "silver" | "bronze" | null;
@@ -100,6 +102,7 @@ export function VideoCard({
   showTrendingDuelBadge = false,
   compact = false,
   clashMode = false,
+  clashRivalFlameSide,
 }: VideoCardProps) {
   const { t } = useLocale();
   const moderationStatus = video.moderation_status;
@@ -158,6 +161,8 @@ export function VideoCard({
           {rank !== undefined ? <RankBadge rank={rank} compact={compact} /> : null}
 
           {clashMode && rank !== undefined ? <ClashThumbnailFire rank={rank} /> : null}
+
+          {clashRivalFlameSide ? <ClashRivalCornerFlame side={clashRivalFlameSide} /> : null}
 
           {showClashBadge && isInClashTop(rank) ? (
             <span
