@@ -5,8 +5,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ChallengeClipButton } from "@/components/duel/ChallengeClipButton";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { VideoCardChannel } from "@/components/VideoCardChannel";
+import { VideoRankBadge } from "@/components/VideoRankBadge";
 import { VideoSettingsMenu } from "@/components/VideoSettingsMenu";
 import { createBrowserClient } from "@/lib/supabase/client";
+import { getVideoPosterUrl, getVideoPreload } from "@/lib/mediaQuality";
 import { incrementVideoViews } from "@/lib/videoEngagement";
 import { blockPublicVideoContextMenu, PUBLIC_VIDEO_CONTROLS_LIST } from "@/lib/videoPlayer";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -15,9 +17,11 @@ import type { Video } from "@/lib/types";
 type VideoSlideProps = {
   video: Video;
   isActive: boolean;
+  showRank?: boolean;
+  onEnded?: () => void;
 };
 
-export function VideoSlide({ video, isActive }: VideoSlideProps) {
+export function VideoSlide({ video, isActive, showRank = false, onEnded }: VideoSlideProps) {
   const { t } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -78,9 +82,12 @@ export function VideoSlide({ video, isActive }: VideoSlideProps) {
             controls
             controlsList={PUBLIC_VIDEO_CONTROLS_LIST}
             onContextMenu={blockPublicVideoContextMenu}
+            onEnded={() => {
+              if (isActive) onEnded?.();
+            }}
             playsInline
-            preload="metadata"
-            poster={video.thumbnail_url}
+            preload={getVideoPreload(isActive)}
+            poster={getVideoPosterUrl(video.thumbnail_url)}
             className="absolute inset-0 h-full w-full object-contain"
           >
             {t.video.unavailable}
@@ -96,7 +103,7 @@ export function VideoSlide({ video, isActive }: VideoSlideProps) {
       ) : (
         <>
           <Image
-            src={video.thumbnail_url}
+            src={getVideoPosterUrl(video.thumbnail_url)}
             alt={video.title}
             fill
             className="object-contain opacity-70"
@@ -107,6 +114,10 @@ export function VideoSlide({ video, isActive }: VideoSlideProps) {
           </div>
         </>
       )}
+
+      {showRank && typeof video.global_rank === "number" ? (
+        <VideoRankBadge rank={video.global_rank} overlay />
+      ) : null}
 
       <span className="pointer-events-none absolute end-4 top-16 inline-flex items-center gap-1 rounded-full bg-black/75 px-2.5 py-1 text-xs font-bold text-white backdrop-blur-sm">
         <svg

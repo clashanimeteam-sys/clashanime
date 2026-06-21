@@ -6,8 +6,11 @@ import { ChallengeClipButton } from "@/components/duel/ChallengeClipButton";
 import { getClashVideoBackdropClass } from "@/components/clash/ClashFireFrame";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { VideoCardChannel } from "@/components/VideoCardChannel";
-import { useLocale } from "@/providers/LocaleProvider";
+import { VideoRankBadge } from "@/components/VideoRankBadge";
+import type { VideoFeedMode } from "@/components/VideoPageContent";
+import { enhanceThumbnailUrl, THUMBNAIL_PRESENTATION_CLASS } from "@/lib/mediaQuality";
 import { isInClashTop } from "@/lib/videoRanking";
+import { useLocale } from "@/providers/LocaleProvider";
 import type { ModerationStatus, Video } from "@/lib/types";
 import { getModerationStatusLabel } from "@/lib/moderation";
 
@@ -19,78 +22,8 @@ type VideoCardProps = {
   showTrendingDuelBadge?: boolean;
   compact?: boolean;
   clashMode?: boolean;
+  feedMode?: VideoFeedMode;
 };
-
-type MedalTier = "gold" | "silver" | "bronze" | null;
-
-function getMedalTier(rank: number): MedalTier {
-  if (rank === 1) return "gold";
-  if (rank === 2) return "silver";
-  if (rank === 3) return "bronze";
-  return null;
-}
-
-const medalStyles: Record<
-  NonNullable<MedalTier>,
-  { badge: string; ring: string }
-> = {
-  gold: {
-    badge:
-      "bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-600 text-amber-950",
-    ring: "ring-2 ring-amber-400/60",
-  },
-  silver: {
-    badge:
-      "bg-gradient-to-br from-slate-200 via-slate-300 to-slate-500 text-slate-900",
-    ring: "ring-2 ring-slate-300/60",
-  },
-  bronze: {
-    badge:
-      "bg-gradient-to-br from-orange-300 via-amber-600 to-orange-800 text-orange-950",
-    ring: "ring-2 ring-orange-400/50",
-  },
-};
-
-function RankBadge({ rank, compact = false }: { rank: number; compact?: boolean }) {
-  const { t } = useLocale();
-  const medal = getMedalTier(rank);
-
-  if (medal) {
-    const style = medalStyles[medal];
-    const medalLabel =
-      medal === "gold"
-        ? t.video.goldMedal
-        : medal === "silver"
-          ? t.video.silverMedal
-          : t.video.bronzeMedal;
-
-    return (
-      <span
-        className={`absolute start-2 top-2 inline-flex items-center gap-0.5 rounded-full font-bold shadow-lg ${compact ? "px-1.5 py-0.5 text-[9px]" : "start-3 top-3 gap-1 px-2.5 py-1 text-xs"} ${style.badge} ${style.ring}`}
-        aria-label={`${medalLabel}, ${t.video.rank} ${rank}`}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className={compact ? "h-2.5 w-2.5" : "h-3.5 w-3.5"}
-          aria-hidden
-        >
-          <path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.8 7.2 17l.9-5.4L4.2 7.7l5.4-.8L12 2z" />
-        </svg>
-        #{rank}
-      </span>
-    );
-  }
-
-  return (
-    <span
-      className={`absolute start-2 top-2 rounded-full bg-brand font-bold text-white shadow ${compact ? "px-1.5 py-0.5 text-[9px]" : "start-3 top-3 px-2.5 py-1 text-xs"}`}
-    >
-      #{rank}
-    </span>
-  );
-}
 
 export function VideoCard({
   video,
@@ -100,8 +33,11 @@ export function VideoCard({
   showTrendingDuelBadge = false,
   compact = false,
   clashMode = false,
+  feedMode,
 }: VideoCardProps) {
   const { t } = useLocale();
+  const videoHref = feedMode ? `/video/${video.id}?feed=${feedMode}` : `/video/${video.id}`;
+  const thumbnailSrc = enhanceThumbnailUrl(video.thumbnail_url, compact ? 480 : 720);
   const moderationStatus = video.moderation_status;
   const showBadge =
     showModerationStatus && moderationStatus && moderationStatus !== "approved";
@@ -122,7 +58,7 @@ export function VideoCard({
             : "border-zinc-200 hover:border-accent/30 dark:border-zinc-800"
       }`}
     >
-      <Link href={`/video/${video.id}`} className="block">
+      <Link href={videoHref} className="block">
         <div
           className={`relative aspect-[9/16] ${
             clashMode && rank !== undefined
@@ -136,7 +72,7 @@ export function VideoCard({
             }`}
           >
             <Image
-              src={video.thumbnail_url}
+              src={thumbnailSrc}
               alt={video.title}
               fill
               sizes={
@@ -144,7 +80,7 @@ export function VideoCard({
                   ? "(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 12vw"
                   : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
               }
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              className={`object-cover transition-transform duration-300 group-hover:scale-105 ${THUMBNAIL_PRESENTATION_CLASS}`}
               unoptimized
             />
 
@@ -166,7 +102,7 @@ export function VideoCard({
             </span>
           </div>
 
-          {rank !== undefined ? <RankBadge rank={rank} compact={compact} /> : null}
+          {rank !== undefined ? <VideoRankBadge rank={rank} compact={compact} /> : null}
 
           {showClashBadge && isInClashTop(rank) ? (
             <span
@@ -209,7 +145,7 @@ export function VideoCard({
       </Link>
 
       <div className={compact ? "space-y-1.5 p-2" : "space-y-3 p-4"}>
-        <Link href={`/video/${video.id}`}>
+        <Link href={videoHref}>
           <h2
             className={`font-bold leading-snug text-black transition-colors hover:text-accent dark:text-white ${compact ? "line-clamp-1 text-[11px]" : "line-clamp-2 text-sm"}`}
           >

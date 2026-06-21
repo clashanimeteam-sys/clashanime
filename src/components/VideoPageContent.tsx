@@ -3,19 +3,39 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { VideoSlide } from "@/components/VideoSlide";
+import { CLASH_TOP_COUNT } from "@/lib/videoRanking";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Video } from "@/lib/types";
+
+export type VideoFeedMode = "clash" | "catalog";
 
 type VideoPageContentProps = {
   video: Video;
   feed: Video[];
+  feedMode: VideoFeedMode;
 };
 
-function mergeFeed(current: Video, feed: Video[]): Video[] {
+function sortClashFeed(videos: Video[]): Video[] {
+  return [...videos]
+    .filter((item) => typeof item.global_rank === "number" && item.global_rank <= CLASH_TOP_COUNT)
+    .sort((a, b) => (a.global_rank ?? 999) - (b.global_rank ?? 999))
+    .slice(0, CLASH_TOP_COUNT);
+}
+
+function sortCatalogFeed(videos: Video[]): Video[] {
+  return [...videos].sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+  );
+}
+
+function buildFeed(current: Video, feed: Video[], feedMode: VideoFeedMode): Video[] {
+  const sorted =
+    feedMode === "clash" ? sortClashFeed([current, ...feed]) : sortCatalogFeed([current, ...feed]);
+
   const ids = new Set<string>();
   const merged: Video[] = [];
 
-  for (const item of [current, ...feed]) {
+  for (const item of sorted) {
     if (ids.has(item.id)) continue;
     ids.add(item.id);
     merged.push(item);
@@ -24,12 +44,13 @@ function mergeFeed(current: Video, feed: Video[]): Video[] {
   return merged;
 }
 
-export function VideoPageContent({ video, feed }: VideoPageContentProps) {
+export function VideoPageContent({ video, feed, feedMode }: VideoPageContentProps) {
   const router = useRouter();
   const { t } = useLocale();
   const containerRef = useRef<HTMLDivElement>(null);
+  const loopFeed = feedMode === "clash";
 
-  const videos = useMemo(() => mergeFeed(video, feed), [video, feed]);
+  const videos = useMemo(() => buildFeed(video, feed, feedMode), [video, feed, feedMode]);
   const [activeId, setActiveId] = useState(video.id);
   const [showSwipeHint, setShowSwipeHint] = useState(false);
 
@@ -43,17 +64,35 @@ export function VideoPageContent({ video, feed }: VideoPageContentProps) {
     container.scrollTo({ top: index * slideHeight, behavior });
   }, []);
 
-  const goToIndex = useCallback(
+  const wrapIndex = useCallback(
     (index: number) => {
-      if (index < 0 || index >= videos.length) return;
-
-      const next = videos[index];
-      setActiveId(next.id);
-      scrollToIndex(index);
-      window.history.replaceState(null, "", `/video/${next.id}`);
+      if (videos.length === 0) return 0;
+      if (!loopFeed) return index;
+      return ((index % videos.length) + videos.length) % videos.length;
     },
-    [scrollToIndex, videos],
+    [loopFeed, videos.length],
   );
+
+  const goToIndex = useCallback(
+    (index: number, behavior: ScrollBehavior = "smooth") => {
+      if (videos.length === 0) return;
+
+      const nextIndex = wrapIndex(index);
+      if (!loopFeed && (nextIndex < 0 || nextIndex >= videos.length)) return;
+
+      const next = videos[nextIndex];
+      setActiveId(next.id);
+      scrollToIndex(nextIndex, behavior);
+      const feedQuery = feedMode === "catalog" ? "?feed=catalog" : "?feed=clash";
+      window.history.replaceState(null, "", `/video/${next.id}${feedQuery}`);
+    },
+    [feedMode, loopFeed, scrollToIndex, videos, wrapIndex],
+  );
+
+  const handleVideoEnded = useCallback(() => {
+    if (!loopFeed || videos.length <= 1) return;
+    goToIndex(activeIndex + 1);
+  }, [activeIndex, goToIndex, loopFeed, videos.length]);
 
   useEffect(() => {
     if (videos.length <= 1) return;
@@ -86,18 +125,19 @@ export function VideoPageContent({ video, feed }: VideoPageContentProps) {
 
       if (next && next.id !== activeId) {
         setActiveId(next.id);
-        window.history.replaceState(null, "", `/video/${next.id}`);
+        const feedQuery = feedMode === "catalog" ? "?feed=catalog" : "?feed=clash";
+        window.history.replaceState(null, "", `/video/${next.id}${feedQuery}`);
       }
     };
 
     container.addEventListener("scroll", onScroll, { passive: true });
     return () => container.removeEventListener("scroll", onScroll);
-  }, [activeId, videos]);
+  }, [activeId, feedMode, videos]);
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        router.push("/");
+        router.push(feedMode === "catalog" ? "/videos" : "/");
         return;
       }
 
@@ -114,7 +154,7 @@ export function VideoPageContent({ video, feed }: VideoPageContentProps) {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeIndex, goToIndex, router]);
+  }, [activeIndex, feedMode, goToIndex, router]);
 
   function handleClose() {
     if (window.history.length > 1) {
@@ -122,7 +162,7 @@ export function VideoPageContent({ video, feed }: VideoPageContentProps) {
       return;
     }
 
-    router.push("/");
+    router.push(feedMode === "catalog" ? "/videos" : "/");
   }
 
   return (
@@ -179,7 +219,13 @@ export function VideoPageContent({ video, feed }: VideoPageContentProps) {
         className="h-full overflow-y-scroll snap-y snap-mandatory overscroll-y-contain [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {videos.map((item) => (
-          <VideoSlide key={item.id} video={item} isActive={item.id === activeId} />
+          <VideoSlide
+            key={item.id}
+            video={item}
+            isActive={item.id === activeId}
+            showRank={feedMode === "clash" || typeof item.global_rank === "number"}
+            onEnded={handleVideoEnded}
+          />
         ))}
       </div>
     </div>

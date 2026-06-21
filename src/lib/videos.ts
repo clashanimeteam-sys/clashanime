@@ -159,10 +159,12 @@ export async function getGloballyRankedVideos(): Promise<Video[]> {
   return fetchApprovedVideos();
 }
 
-/** Top 10 globally ranked videos for the Clash (النزالات) feed. */
+/** Top 12 globally ranked videos for the Clash (النزالات) feed. */
 export async function getClashVideos(): Promise<Video[]> {
   const ranked = await fetchApprovedVideos();
-  const top = ranked.slice(0, CLASH_TOP_COUNT);
+  const top = ranked
+    .slice(0, CLASH_TOP_COUNT)
+    .sort((a, b) => (a.global_rank ?? 999) - (b.global_rank ?? 999));
   await awardClashTrendingBonuses(top);
   return top;
 }

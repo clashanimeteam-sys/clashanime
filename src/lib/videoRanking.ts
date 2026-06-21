@@ -1,6 +1,6 @@
 import type { Video } from "@/lib/types";
 
-export const CLASH_TOP_COUNT = 10;
+export const CLASH_TOP_COUNT = 12;
 
 export function calculateTrendingScore(video: Video): number {
   const ageHours =

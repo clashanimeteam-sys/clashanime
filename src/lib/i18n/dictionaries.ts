@@ -871,7 +871,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       titlePrimary: "Clash",
       titleSecondary: " Anime",
       subtitle:
-        "The top 10 videos worldwide by real-time engagement. Reach global rank #10 to enter Clash.",
+        "The top 12 videos worldwide by real-time engagement. Reach global rank #12 to enter Clash.",
       gridLabel: "Clash Anime grid",
       clashLive: "Live Clash",
       podiumLabel: "Podium",
@@ -965,7 +965,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     pages: {
       videosTitle: "All Videos",
       videosSubtitle:
-        "All approved videos, newest first. Each card shows its global rank. Top 10 also appear in Clash.",
+        "All approved videos, newest first. Each card shows its global rank. Top 12 also appear in Clash.",
       exclusivesTitle: "Exclusives",
       exclusivesSubtitle: "Clips from verified creators on ClashAnime.",
       communityTitle: "Anime Community",
@@ -1510,7 +1510,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       viewChannel: "View channel",
       suspicionScore: "Suspicion score",
       globalRank: "Global rank",
-      inClashTop: "In Clash top 10",
+      inClashTop: "In Clash top 12",
       rejectionReason: "Rejection reason",
       reportReason: "Reason",
       reportedBy: "Reported by",
@@ -1745,7 +1745,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       titlePrimary: "Clash",
       titleSecondary: " Anime",
       subtitle:
-        "リアルタイムのエンゲージメントで世界トップ10の動画のみ表示。世界10位に到達するとクラッシュに入ります。",
+        "リアルタイムのエンゲージメントで世界トップ12の動画のみ表示。世界12位に到達するとクラッシュに入ります。",
       gridLabel: "Clash Animeグリッド",
       clashLive: "ライブ・クラッシュ",
       podiumLabel: "表彰台",
@@ -1839,7 +1839,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     pages: {
       videosTitle: "すべての動画",
       videosSubtitle:
-        "承認済みの全動画を新しい順に表示。各カードに世界ランクを表示。トップ10はクラッシュにも表示されます。",
+        "承認済みの全動画を新しい順に表示。各カードに世界ランクを表示。トップ12はクラッシュにも表示されます。",
       exclusivesTitle: "限定",
       exclusivesSubtitle: "認証済みクリエイターのクリップ。",
       communityTitle: "アニメコミュニティ",
@@ -2376,7 +2376,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       viewChannel: "チャンネルを見る",
       suspicionScore: "疑わしさスコア",
       globalRank: "世界ランク",
-      inClashTop: "クラッシュ上位10",
+      inClashTop: "クラッシュ上位12",
       rejectionReason: "拒否理由",
       reportReason: "理由",
       reportedBy: "報告者",
@@ -2611,7 +2611,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       titlePrimary: "Clash",
       titleSecondary: " Anime",
       subtitle:
-        "أقوى ١٠ فيديوهات عالمياً حسب التفاعل الفوري. عند الوصول للمركز ١٠ يرتفع المقطع إلى النزالات.",
+        "أقوى ١٢ فيديو عالمياً حسب التفاعل الفوري. عند الوصول للمركز ١٢ يرتفع المقطع إلى النزالات.",
       gridLabel: "شبكة Clash Anime",
       clashLive: "نزال مباشر",
       podiumLabel: "منصة الصدارة",
@@ -2705,7 +2705,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     pages: {
       videosTitle: "كل الفيديوهات",
       videosSubtitle:
-        "كل الفيديوهات المعتمدة من الأحدث، مع رقم المركز العالمي. المركز ١–١٠ يظهر أيضاً في النزالات.",
+        "كل الفيديوهات المعتمدة من الأحدث، مع رقم المركز العالمي. المركز ١–١٢ يظهر أيضاً في النزالات.",
       exclusivesTitle: "حصري",
       exclusivesSubtitle: "مقاطع من القنوات الموثّقة على ClashAnime.",
       communityTitle: "مجتمع الأنمي",
@@ -3245,7 +3245,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       viewChannel: "عرض القناة",
       suspicionScore: "درجة الاشتباه",
       globalRank: "المركز العالمي",
-      inClashTop: "في النزالات (أفضل 10)",
+      inClashTop: "في النزالات (أفضل 12)",
       rejectionReason: "سبب الرفض",
       reportReason: "السبب",
       reportedBy: "بلّغ بواسطة",

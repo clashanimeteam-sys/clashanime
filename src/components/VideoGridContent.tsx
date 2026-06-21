@@ -46,6 +46,7 @@ export function VideoGridContent({
               rank={showRank ? video.global_rank : undefined}
               showClashBadge={showRank}
               compact
+              feedMode="catalog"
             />
           ))}
         </section>

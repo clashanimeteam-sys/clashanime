@@ -23,9 +23,9 @@ export function HomeContent({ videos, activeSeason }: HomeContentProps) {
     videos.find((video) => video.global_rank === rank),
   ).filter((video): video is Video => Boolean(video));
 
-  const challengerVideos = videos.filter(
-    (video) => video.global_rank !== undefined && video.global_rank > 3,
-  );
+  const challengerVideos = videos
+    .filter((video) => video.global_rank !== undefined && video.global_rank > 3)
+    .sort((a, b) => (a.global_rank ?? 0) - (b.global_rank ?? 0));
 
   function renderClashCard(video: Video) {
     return (
@@ -34,6 +34,7 @@ export function HomeContent({ videos, activeSeason }: HomeContentProps) {
         rank={video.global_rank}
         clashMode
         showClashBadge
+        feedMode="clash"
       />
     );
   }
