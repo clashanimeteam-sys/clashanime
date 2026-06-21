@@ -11,7 +11,7 @@ type HomeContentProps = {
   videos: Video[];
 };
 
-const PODIUM_ORDER = [2, 1, 3] as const;
+const PODIUM_ORDER = [1, 2, 3] as const;
 
 export function HomeContent({ videos }: HomeContentProps) {
   const { t } = useLocale();
@@ -70,7 +70,7 @@ export function HomeContent({ videos }: HomeContentProps) {
             <h2 className="mb-4 font-display text-sm font-bold uppercase tracking-[0.24em] text-orange-600 dark:text-orange-400">
               {t.home.podiumLabel}
             </h2>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 sm:items-end">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 sm:items-start">
               {podiumVideos.map((video) =>
                 renderClashCard(video, video.global_rank === 1),
               )}
