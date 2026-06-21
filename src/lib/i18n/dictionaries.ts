@@ -2872,7 +2872,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       kycPhoneLabel: "رقم الهاتف",
       kycPhoneLocalPlaceholder: "5XXXXXXXX",
       kycWhatsappTitle: "واتساب",
-      kycWhatsappDesc: "واتساب — لنتواصل معك بخصوص KYC والسحب.",
+      kycWhatsappDesc: "واتساب — لنتواصل معك على رقم الهاتف أعلاه.",
       kycWhatsappNumberLabel: "رقم واتساب",
       kycWhatsappPlaceholder: "نفس رقم الهاتف أو رقم آخر",
       kycWhatsappHint: "اتركه فارغاً لاستخدام رقم الهاتف أعلاه على واتساب.",

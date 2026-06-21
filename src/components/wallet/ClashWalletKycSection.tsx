@@ -54,7 +54,6 @@ export function ClashWalletKycSection({
   const [countryCode, setCountryCode] = useState(DEFAULT_KYC_COUNTRY.code);
   const [localPhone, setLocalPhone] = useState("");
   const [whatsappOptIn, setWhatsappOptIn] = useState(false);
-  const [whatsappLocalPhone, setWhatsappLocalPhone] = useState("");
   const [address, setAddress] = useState("");
   const [idFile, setIdFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -107,11 +106,7 @@ export function ClashWalletKycSection({
 
     const country = getKycCountryByCode(countryCode) ?? DEFAULT_KYC_COUNTRY;
     const fullPhone = buildFullPhoneNumber(country, localPhone);
-    const whatsappPhone = whatsappOptIn
-      ? whatsappLocalPhone.trim()
-        ? buildFullPhoneNumber(country, whatsappLocalPhone)
-        : fullPhone
-      : null;
+    const whatsappPhone = whatsappOptIn ? fullPhone : null;
 
     if (!idFile) {
       setError(t.wallet.kycIdRequired);
@@ -163,7 +158,6 @@ export function ClashWalletKycSection({
       setCountryCode(DEFAULT_KYC_COUNTRY.code);
       setLocalPhone("");
       setWhatsappOptIn(false);
-      setWhatsappLocalPhone("");
       setAddress("");
       setIdFile(null);
       await loadSubmission();
@@ -279,29 +273,6 @@ export function ClashWalletKycSection({
           </span>
         </span>
       </label>
-
-      {whatsappOptIn ? (
-        <label className="mt-3 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-          {t.wallet.kycWhatsappNumberLabel}
-          <div className="mt-2 flex overflow-hidden rounded-xl border border-emerald-300 bg-white dark:border-emerald-800 dark:bg-zinc-950">
-            <div className="flex shrink-0 items-center gap-2 border-e border-emerald-200 bg-emerald-50 px-3 dark:border-emerald-900 dark:bg-emerald-950/40">
-              <WhatsAppIcon className="h-4 w-4 text-emerald-600" />
-              <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
-                {(getKycCountryByCode(countryCode) ?? DEFAULT_KYC_COUNTRY).dialCode}
-              </span>
-            </div>
-            <input
-              type="tel"
-              inputMode="tel"
-              value={whatsappLocalPhone}
-              onChange={(event) => setWhatsappLocalPhone(event.target.value)}
-              placeholder={t.wallet.kycWhatsappPlaceholder}
-              className="min-w-0 flex-1 bg-transparent px-4 py-2.5 text-sm outline-none"
-            />
-          </div>
-          <p className="mt-2 text-xs text-zinc-500">{t.wallet.kycWhatsappHint}</p>
-        </label>
-      ) : null}
 
       <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
         {t.wallet.kycAddressLabel}
