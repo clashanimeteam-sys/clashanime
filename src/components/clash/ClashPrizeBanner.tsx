@@ -1,9 +1,15 @@
 "use client";
 
 import { CashPrizeFallingMoney } from "@/components/clash/CashPrizeFallingMoney";
+import { CashPrizeRankButtons } from "@/components/clash/CashPrizeRankButtons";
+import type { ClashSeason } from "@/lib/clashSeasons";
 import { useLocale } from "@/providers/LocaleProvider";
 
-export function ClashPrizeBanner() {
+type ClashPrizeBannerProps = {
+  activeSeason: ClashSeason | null;
+};
+
+export function ClashPrizeBanner({ activeSeason }: ClashPrizeBannerProps) {
   const { t } = useLocale();
 
   return (
@@ -26,16 +32,7 @@ export function ClashPrizeBanner() {
               <p className="mt-1 text-sm text-amber-100/85">{t.home.cashPrizeSubtitle}</p>
             </div>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {[t.home.cashPrizeRank1, t.home.cashPrizeRank2, t.home.cashPrizeRank3].map((label) => (
-              <span
-                key={label}
-                className="rounded-full border border-amber-400/25 bg-black/25 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-amber-200"
-              >
-                {label}
-              </span>
-            ))}
-          </div>
+          <CashPrizeRankButtons season={activeSeason} />
         </div>
       </div>
     </div>

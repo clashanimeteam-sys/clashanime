@@ -60,7 +60,7 @@ export function HomeContent({ videos, activeSeason }: HomeContentProps) {
           </p>
         </section>
 
-        <ClashPrizeBanner />
+        <ClashPrizeBanner activeSeason={activeSeason} />
 
         <div className="relative overflow-hidden rounded-3xl border border-orange-500/20 shadow-[0_24px_80px_rgba(127,29,29,0.18)]">
           <ClashVideosBackdrop />

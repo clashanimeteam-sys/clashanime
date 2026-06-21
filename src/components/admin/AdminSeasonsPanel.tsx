@@ -1,6 +1,12 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  centsToDollarsInput,
+  DEFAULT_SEASON_PRIZES,
+  dollarsToCents,
+  formatPrizeUsd,
+} from "@/lib/clashSeasons";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -10,6 +16,9 @@ type ClashSeasonRow = {
   starts_at: string;
   ends_at: string;
   status: "scheduled" | "active" | "ended";
+  prize_rank_1_cents: number;
+  prize_rank_2_cents: number;
+  prize_rank_3_cents: number;
   created_at: string;
   updated_at: string;
 };
@@ -26,7 +35,7 @@ function fromLocalInputValue(value: string) {
 }
 
 export function AdminSeasonsPanel() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [seasons, setSeasons] = useState<ClashSeasonRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -40,8 +49,18 @@ export function AdminSeasonsPanel() {
   const [activateOnCreate, setActivateOnCreate] = useState(true);
   const [newSeasonName, setNewSeasonName] = useState("");
   const [durationDays, setDurationDays] = useState(30);
+  const [prizeRank1, setPrizeRank1] = useState(String(DEFAULT_SEASON_PRIZES.rank1Cents / 100));
+  const [prizeRank2, setPrizeRank2] = useState(String(DEFAULT_SEASON_PRIZES.rank2Cents / 100));
+  const [prizeRank3, setPrizeRank3] = useState(String(DEFAULT_SEASON_PRIZES.rank3Cents / 100));
 
   const activeSeason = seasons.find((season) => season.status === "active");
+
+  useEffect(() => {
+    if (!activeSeason) return;
+    setPrizeRank1(centsToDollarsInput(activeSeason.prize_rank_1_cents));
+    setPrizeRank2(centsToDollarsInput(activeSeason.prize_rank_2_cents));
+    setPrizeRank3(centsToDollarsInput(activeSeason.prize_rank_3_cents));
+  }, [activeSeason]);
 
   const loadSeasons = useCallback(async () => {
     if (!supabase) return;
@@ -83,6 +102,9 @@ export function AdminSeasonsPanel() {
       p_starts_at: fromLocalInputValue(startsAt),
       p_ends_at: fromLocalInputValue(endsAt),
       p_activate: activateOnCreate,
+      p_prize_rank_1_cents: dollarsToCents(prizeRank1),
+      p_prize_rank_2_cents: dollarsToCents(prizeRank2),
+      p_prize_rank_3_cents: dollarsToCents(prizeRank3),
     });
 
     if (createError) {
@@ -106,6 +128,9 @@ export function AdminSeasonsPanel() {
     const { error: startError } = await supabase.rpc("start_new_clash_season", {
       p_name: newSeasonName.trim() || null,
       p_duration_days: durationDays,
+      p_prize_rank_1_cents: dollarsToCents(prizeRank1),
+      p_prize_rank_2_cents: dollarsToCents(prizeRank2),
+      p_prize_rank_3_cents: dollarsToCents(prizeRank3),
     });
 
     if (startError) {
@@ -173,6 +198,9 @@ export function AdminSeasonsPanel() {
       p_name: nextName.trim(),
       p_starts_at: fromLocalInputValue(nextStart),
       p_ends_at: fromLocalInputValue(nextEnd),
+      p_prize_rank_1_cents: null,
+      p_prize_rank_2_cents: null,
+      p_prize_rank_3_cents: null,
     });
 
     if (updateError) setError(updateError.message);
@@ -181,6 +209,70 @@ export function AdminSeasonsPanel() {
       await loadSeasons();
     }
     setSaving(false);
+  }
+
+  async function handleSavePrizes(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!supabase || !activeSeason) return;
+
+    setSaving(true);
+    setMessage(null);
+    setError(null);
+
+    const { error: prizeError } = await supabase.rpc("update_clash_season_prizes", {
+      p_id: activeSeason.id,
+      p_prize_rank_1_cents: dollarsToCents(prizeRank1),
+      p_prize_rank_2_cents: dollarsToCents(prizeRank2),
+      p_prize_rank_3_cents: dollarsToCents(prizeRank3),
+    });
+
+    if (prizeError) setError(prizeError.message);
+    else {
+      setMessage(t.admin.seasons.prizesSaved);
+      await loadSeasons();
+    }
+
+    setSaving(false);
+  }
+
+  function renderPrizeFields() {
+    return (
+      <div className="grid gap-3 sm:grid-cols-3">
+        <label className="block text-sm text-zinc-300">
+          {t.admin.seasons.prizeRank1Label}
+          <input
+            type="number"
+            min={0}
+            step={1}
+            value={prizeRank1}
+            onChange={(event) => setPrizeRank1(event.target.value)}
+            className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm"
+          />
+        </label>
+        <label className="block text-sm text-zinc-300">
+          {t.admin.seasons.prizeRank2Label}
+          <input
+            type="number"
+            min={0}
+            step={1}
+            value={prizeRank2}
+            onChange={(event) => setPrizeRank2(event.target.value)}
+            className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm"
+          />
+        </label>
+        <label className="block text-sm text-zinc-300">
+          {t.admin.seasons.prizeRank3Label}
+          <input
+            type="number"
+            min={0}
+            step={1}
+            value={prizeRank3}
+            onChange={(event) => setPrizeRank3(event.target.value)}
+            className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm"
+          />
+        </label>
+      </div>
+    );
   }
 
   return (
@@ -200,12 +292,34 @@ export function AdminSeasonsPanel() {
             {new Date(activeSeason.starts_at).toLocaleString()} →{" "}
             {new Date(activeSeason.ends_at).toLocaleString()}
           </p>
+          <p className="mt-3 text-sm text-emerald-100">
+            {formatPrizeUsd(activeSeason.prize_rank_1_cents, locale)} ·{" "}
+            {formatPrizeUsd(activeSeason.prize_rank_2_cents, locale)} ·{" "}
+            {formatPrizeUsd(activeSeason.prize_rank_3_cents, locale)}
+          </p>
         </div>
       ) : (
         <div className="rounded-2xl border border-amber-500/30 bg-amber-950/20 p-4 text-sm text-amber-100">
           {t.admin.seasons.noActive}
         </div>
       )}
+
+      {activeSeason ? (
+        <form
+          onSubmit={handleSavePrizes}
+          className="rounded-2xl border border-amber-500/25 bg-amber-950/10 p-5"
+        >
+          <h2 className="text-lg font-semibold text-white">{t.admin.seasons.prizeSectionTitle}</h2>
+          <div className="mt-4">{renderPrizeFields()}</div>
+          <button
+            type="submit"
+            disabled={saving}
+            className="mt-4 rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-amber-950 disabled:opacity-50"
+          >
+            {t.admin.seasons.prizeSaveButton}
+          </button>
+        </form>
+      ) : null}
 
       <div className="grid gap-6 xl:grid-cols-2">
         <form
@@ -249,6 +363,12 @@ export function AdminSeasonsPanel() {
               />
               {t.admin.seasons.activateOnCreate}
             </label>
+            <div className="pt-2">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+                {t.admin.seasons.prizeSectionTitle}
+              </p>
+              {renderPrizeFields()}
+            </div>
           </div>
           <button
             type="submit"
@@ -284,6 +404,12 @@ export function AdminSeasonsPanel() {
                 className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm"
               />
             </label>
+            <div className="pt-2">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+                {t.admin.seasons.prizeSectionTitle}
+              </p>
+              {renderPrizeFields()}
+            </div>
           </div>
           <button
             type="button"
@@ -318,6 +444,11 @@ export function AdminSeasonsPanel() {
                     </p>
                     <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-amber-300">
                       {t.admin.seasons.statusLabels[season.status]}
+                    </p>
+                    <p className="mt-2 text-xs text-zinc-400">
+                      {formatPrizeUsd(season.prize_rank_1_cents, locale)} ·{" "}
+                      {formatPrizeUsd(season.prize_rank_2_cents, locale)} ·{" "}
+                      {formatPrizeUsd(season.prize_rank_3_cents, locale)}
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2">

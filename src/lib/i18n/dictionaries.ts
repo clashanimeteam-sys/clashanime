@@ -33,6 +33,10 @@ export type Dictionary = {
     cashPrizeRank1: string;
     cashPrizeRank2: string;
     cashPrizeRank3: string;
+    cashPrizeRankNumber: string;
+    cashPrizeRevealLabel: string;
+    cashPrizeRevealHint: string;
+    cashPrizeTapHint: string;
     clashCoinsTitle: string;
     clashCoinsSubtitle: string;
     clashCoinsExchange: string;
@@ -763,6 +767,12 @@ export type Dictionary = {
       activated: string;
       ended: string;
       startedNew: string;
+      prizeSectionTitle: string;
+      prizeRank1Label: string;
+      prizeRank2Label: string;
+      prizeRank3Label: string;
+      prizeSaveButton: string;
+      prizesSaved: string;
       statusLabels: {
         scheduled: string;
         active: string;
@@ -869,6 +879,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       cashPrizeRank1: "#1 Gold",
       cashPrizeRank2: "#2 Silver",
       cashPrizeRank3: "#3 Bronze",
+      cashPrizeRankNumber: "Rank {rank}",
+      cashPrizeRevealLabel: "Rank {rank} prize",
+      cashPrizeRevealHint: "Paid to the season winner after manual review.",
+      cashPrizeTapHint: "Tap a rank to reveal the cash prize",
       clashCoinsTitle: "ClashCoins — your digital wallet",
       clashCoinsSubtitle: "Turn hunter points into redeemable ClashCoins and cash out like a digital asset.",
       clashCoinsExchange: "10,000 points = $10",
@@ -1627,6 +1641,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
         activated: "Season activated.",
         ended: "Season ended.",
         startedNew: "New season started.",
+        prizeSectionTitle: "Cash prizes (USD)",
+        prizeRank1Label: "Rank 1 prize ($)",
+        prizeRank2Label: "Rank 2 prize ($)",
+        prizeRank3Label: "Rank 3 prize ($)",
+        prizeSaveButton: "Save prizes",
+        prizesSaved: "Prize amounts saved.",
         statusLabels: {
           scheduled: "Scheduled",
           active: "Active",
@@ -1731,6 +1751,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       cashPrizeRank1: "1位 ゴールド",
       cashPrizeRank2: "2位 シルバー",
       cashPrizeRank3: "3位 ブロンズ",
+      cashPrizeRankNumber: "第{rank}位",
+      cashPrizeRevealLabel: "第{rank}位の賞金",
+      cashPrizeRevealHint: "シーズン終了後、審査を経て勝者に支払われます。",
+      cashPrizeTapHint: "順位をタップして賞金額を表示",
       clashCoinsTitle: "ClashCoins — デジタルウォレット",
       clashCoinsSubtitle: "ハンターポイントを換金可能なClashCoinsに変換。",
       clashCoinsExchange: "10,000ポイント = $10",
@@ -2481,6 +2505,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
         activated: "シーズンを有効化しました。",
         ended: "シーズンを終了しました。",
         startedNew: "新シーズンを開始しました。",
+        prizeSectionTitle: "現金賞金（USD）",
+        prizeRank1Label: "1位の賞金（$）",
+        prizeRank2Label: "2位の賞金（$）",
+        prizeRank3Label: "3位の賞金（$）",
+        prizeSaveButton: "賞金を保存",
+        prizesSaved: "賞金額を保存しました。",
         statusLabels: {
           scheduled: "予定",
           active: "有効",
@@ -2585,6 +2615,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       cashPrizeRank1: "المركز 1 ذهب",
       cashPrizeRank2: "المركز 2 فضة",
       cashPrizeRank3: "المركز 3 برونز",
+      cashPrizeRankNumber: "المركز {rank}",
+      cashPrizeRevealLabel: "جائزة المركز {rank}",
+      cashPrizeRevealHint: "تُصرف للفائز بعد انتهاء الموسم ومراجعة الفريق.",
+      cashPrizeTapHint: "اضغط على مركز لعرض الجائزة المالية",
       clashCoinsTitle: "ClashCoins — محفظتك الرقمية",
       clashCoinsSubtitle: "حوّل نقاط الصياد إلى ClashCoins قابلة للسحب كأصول رقمية.",
       clashCoinsExchange: "١٠,٠٠٠ نقطة = ١٠$",
@@ -3338,6 +3372,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
         activated: "تم تفعيل الموسم.",
         ended: "تم إنهاء الموسم.",
         startedNew: "تم بدء موسم جديد.",
+        prizeSectionTitle: "الجوائز المالية (USD)",
+        prizeRank1Label: "جائزة المركز 1 ($)",
+        prizeRank2Label: "جائزة المركز 2 ($)",
+        prizeRank3Label: "جائزة المركز 3 ($)",
+        prizeSaveButton: "حفظ الجوائز",
+        prizesSaved: "تم حفظ مبالغ الجوائز.",
         statusLabels: {
           scheduled: "مجدول",
           active: "نشط",
