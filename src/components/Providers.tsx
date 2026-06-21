@@ -6,6 +6,7 @@ import { AnimeRadioMiniBar } from "@/components/AnimeRadioMiniBar";
 import { AppShell } from "@/components/AppShell";
 import { MobileHeader } from "@/components/MobileHeader";
 import { AuthProvider } from "@/providers/AuthProvider";
+import { PointsWagerNotificationProvider } from "@/providers/PointsWagerNotificationProvider";
 import { AnimeRadioProvider } from "@/providers/AnimeRadioProvider";
 import { LocaleProvider } from "@/providers/LocaleProvider";
 import { MaintenanceGate } from "@/providers/MaintenanceGate";
@@ -41,6 +42,7 @@ export function Providers({ children }: ProvidersProps) {
         <MaintenanceGate>
           <NavigationLoadingProvider>
           <AuthProvider>
+            <PointsWagerNotificationProvider>
             <AnimeRadioProvider>
             <StickersProvider>
               <VideoOverlayProvider>
@@ -57,6 +59,7 @@ export function Providers({ children }: ProvidersProps) {
               </VideoOverlayProvider>
             </StickersProvider>
             </AnimeRadioProvider>
+            </PointsWagerNotificationProvider>
           </AuthProvider>
           </NavigationLoadingProvider>
         </MaintenanceGate>

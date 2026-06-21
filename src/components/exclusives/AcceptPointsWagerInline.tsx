@@ -15,9 +15,18 @@ import { useLocale } from "@/providers/LocaleProvider";
 type AcceptPointsWagerInlineProps = {
   duel: PointsWagerDuelRow;
   onAccepted?: () => void;
+  showReject?: boolean;
+  rejecting?: boolean;
+  onReject?: () => void;
 };
 
-export function AcceptPointsWagerInline({ duel, onAccepted }: AcceptPointsWagerInlineProps) {
+export function AcceptPointsWagerInline({
+  duel,
+  onAccepted,
+  showReject = false,
+  rejecting = false,
+  onReject,
+}: AcceptPointsWagerInlineProps) {
   const { user, refreshProfile } = useAuth();
   const { t } = useLocale();
   const router = useRouter();
@@ -87,14 +96,26 @@ export function AcceptPointsWagerInline({ duel, onAccepted }: AcceptPointsWagerI
 
       {error ? <p className="mt-2 text-xs font-semibold text-red-600">{error}</p> : null}
 
-      <button
-        type="button"
-        disabled={submitting || !selectedClipId}
-        onClick={() => void handleAccept()}
-        className="mt-3 w-full rounded-full bg-accent px-4 py-2 text-sm font-bold text-white disabled:opacity-50"
-      >
-        {submitting ? t.exclusives.acceptingWager : t.exclusives.acceptWagerDuel}
-      </button>
+      <div className={`mt-3 grid gap-2 ${showReject ? "sm:grid-cols-2" : ""}`}>
+        {showReject ? (
+          <button
+            type="button"
+            disabled={submitting || rejecting}
+            onClick={() => onReject?.()}
+            className="w-full rounded-full border border-zinc-300 px-4 py-2 text-sm font-bold text-zinc-700 transition-colors hover:bg-zinc-100 disabled:opacity-50 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-900"
+          >
+            {rejecting ? t.exclusives.rejectingWager : t.exclusives.rejectWagerDuel}
+          </button>
+        ) : null}
+        <button
+          type="button"
+          disabled={submitting || rejecting || !selectedClipId}
+          onClick={() => void handleAccept()}
+          className="w-full rounded-full bg-accent px-4 py-2 text-sm font-bold text-white disabled:opacity-50"
+        >
+          {submitting ? t.exclusives.acceptingWager : t.exclusives.acceptWagerDuel}
+        </button>
+      </div>
     </div>
   );
 }

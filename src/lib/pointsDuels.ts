@@ -127,4 +127,63 @@ export async function cancelPointsWagerDuel(
   return { error: error?.message ?? null };
 }
 
+export async function rejectPointsWagerDuel(
+  supabase: SupabaseClient | null,
+  duelId: string,
+): Promise<{ error: string | null }> {
+  if (!supabase) return { error: "offline" };
+
+  const { error } = await supabase.rpc("reject_points_wager_duel", {
+    p_duel_id: duelId,
+  });
+
+  return { error: error?.message ?? null };
+}
+
+export type PointsWagerInvite = PointsWagerDuelRow & {
+  creatorUsername?: string;
+  creatorDisplayName?: string;
+  creatorAvatarUrl?: string | null;
+};
+
+export async function fetchIncomingPointsWagerInvites(
+  supabase: SupabaseClient | null,
+  userId: string,
+): Promise<PointsWagerInvite[]> {
+  if (!supabase) return [];
+
+  const { data, error } = await supabase
+    .from("points_wager_duels")
+    .select("*")
+    .eq("opponent_id", userId)
+    .eq("status", "pending")
+    .order("created_at", { ascending: true })
+    .limit(10);
+
+  if (error || !data?.length) return [];
+
+  const creatorIds = [...new Set((data as PointsWagerDuelRow[]).map((row) => row.creator_id))];
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("id, username, display_name, avatar_url")
+    .in("id", creatorIds);
+
+  const profileById = new Map(
+    (profiles ?? []).map((profile) => [
+      profile.id as string,
+      profile as { id: string; username: string; display_name: string | null; avatar_url: string | null },
+    ]),
+  );
+
+  return (data as PointsWagerDuelRow[]).map((row) => {
+    const creator = profileById.get(row.creator_id);
+    return {
+      ...row,
+      creatorUsername: creator?.username,
+      creatorDisplayName: creator?.display_name ?? undefined,
+      creatorAvatarUrl: creator?.avatar_url ?? null,
+    };
+  });
+}
+
 export type { UserClipRow };

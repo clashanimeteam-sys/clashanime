@@ -7,6 +7,7 @@ import { CreatePointsWagerModal } from "@/components/exclusives/CreatePointsWage
 import { getSignupUrl } from "@/lib/subscriptionGate";
 import {
   fetchOpenPointsWagerDuels,
+  rejectPointsWagerDuel,
   type PointsWagerDuelRow,
 } from "@/lib/pointsDuels";
 import { createBrowserClient } from "@/lib/supabase/client";
@@ -23,6 +24,7 @@ export function PointsWagerSection({ publicDuels }: PointsWagerSectionProps) {
   const supabase = useMemo(() => createBrowserClient(), []);
   const [modalOpen, setModalOpen] = useState(false);
   const [myDuels, setMyDuels] = useState<PointsWagerDuelRow[]>([]);
+  const [rejectingId, setRejectingId] = useState<string | null>(null);
 
   const loadMyDuels = useCallback(async () => {
     if (!supabase || !user) {
@@ -91,6 +93,16 @@ export function PointsWagerSection({ publicDuels }: PointsWagerSectionProps) {
                 <AcceptPointsWagerInline
                   key={duel.id}
                   duel={duel}
+                  showReject
+                  rejecting={rejectingId === duel.id}
+                  onReject={() => {
+                    if (!supabase) return;
+                    setRejectingId(duel.id);
+                    void rejectPointsWagerDuel(supabase, duel.id).then(() => {
+                      setRejectingId(null);
+                      void loadMyDuels();
+                    });
+                  }}
                   onAccepted={() => void loadMyDuels()}
                 />
               ))}

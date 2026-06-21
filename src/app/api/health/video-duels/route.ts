@@ -39,6 +39,7 @@ export async function GET() {
 
   let createVideoDuelRpc = false;
   let createPointsWagerRpc = false;
+  let rejectPointsWagerRpc = false;
   let profileSearchRpc = false;
 
   if (videoDuelsTable) {
@@ -56,6 +57,11 @@ export async function GET() {
       p_wager_points: 10,
     });
     createPointsWagerRpc = rpcExists(error);
+
+    const { error: rejectError } = await supabase.rpc("reject_points_wager_duel", {
+      p_duel_id: "00000000-0000-0000-0000-000000000000",
+    });
+    rejectPointsWagerRpc = rpcExists(rejectError);
   }
 
   const { data: profileSearchData, error: profileSearchError } = await supabase.rpc(
@@ -75,11 +81,13 @@ export async function GET() {
       createVideoDuelRpc &&
       pointsWagerDuelsTable &&
       createPointsWagerRpc &&
+      rejectPointsWagerRpc &&
       profileSearchRpc,
     videoDuelsTable,
     createVideoDuelRpc,
     pointsWagerDuelsTable,
     createPointsWagerRpc,
+    rejectPointsWagerRpc,
     profileSearchRpc,
     profileSearchError: profileSearchError?.message ?? null,
     sqlScripts: [
@@ -87,6 +95,7 @@ export async function GET() {
       "supabase/scripts/production-video-duels.sql",
       "supabase/scripts/production-points-wager-duels.sql",
       "supabase/scripts/production-profile-username-search.sql",
+      "supabase/scripts/production-reject-points-wager-duel.sql",
     ],
     combinedScript: "supabase/scripts/production-exclusives-full-deploy.sql",
     sqlEditor:

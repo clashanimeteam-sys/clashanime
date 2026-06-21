@@ -167,6 +167,12 @@ export type Dictionary = {
     pointsWagerArenaDesc: string;
     searchingUsernames: string;
     noUsernameSuggestions: string;
+    pointsWagerInviteAlertTitle: string;
+    pointsWagerInviteAlertBody: string;
+    rejectWagerDuel: string;
+    rejectingWager: string;
+    viewWagerOnExclusives: string;
+    pointsWagerAlertSoundHint: string;
   };
   radio: {
     badge: string;
@@ -598,6 +604,7 @@ export type Dictionary = {
       bountyEvents: string;
       clipChallenges: string;
       pointsWagerDuels: string;
+      pendingWagerInvites: string;
     };
     quickActions: {
       reviewVideos: string;
@@ -816,6 +823,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "Vote with likes on both clips. When ready, either hunter can finalize — higher likes wins the {pot} point pot.",
       searchingUsernames: "Searching hunters...",
       noUsernameSuggestions: "No matching hunters found.",
+      pointsWagerInviteAlertTitle: "Points challenge incoming!",
+      pointsWagerInviteAlertBody:
+        "{user} challenged you for {wager} points. Winner takes {pot} points.",
+      rejectWagerDuel: "Reject",
+      rejectingWager: "Rejecting...",
+      viewWagerOnExclusives: "View on Exclusives",
+      pointsWagerAlertSoundHint: "Alert sound stops when you accept or reject.",
     },
     radio: {
       badge: "24/7 stream",
@@ -1259,6 +1273,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         bountyEvents: "Bounty events",
         clipChallenges: "Clip challenge duels",
         pointsWagerDuels: "Points wager duels",
+        pendingWagerInvites: "Pending wager invites",
       },
       quickActions: {
         reviewVideos: "Review videos",
@@ -1473,6 +1488,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "両方のクリップにいいねで投票。準備ができたらどちらかが確定 — いいねが多い方が {pot} pt を獲得。",
       searchingUsernames: "ハンターを検索中...",
       noUsernameSuggestions: "一致するハンターが見つかりません。",
+      pointsWagerInviteAlertTitle: "ポイント挑戦が届きました！",
+      pointsWagerInviteAlertBody:
+        "{user} が {wager} pt の挑戦を送りました。勝者は {pot} pt を獲得します。",
+      rejectWagerDuel: "拒否",
+      rejectingWager: "拒否中...",
+      viewWagerOnExclusives: "限定ページで見る",
+      pointsWagerAlertSoundHint: "受け入れるか拒否すると通知音が止まります。",
     },
     radio: {
       badge: "24/7 配信",
@@ -1912,6 +1934,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         bountyEvents: "報酬イベント",
         clipChallenges: "クリップ挑戦デュエル",
         pointsWagerDuels: "ポイント賭け対決",
+        pendingWagerInvites: "保留中の賭け招待",
       },
       quickActions: {
         reviewVideos: "動画を審査",
@@ -2126,6 +2149,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "صوّت بالإعجاب على المقطعين. عند الجاهزية، أي طرف ينهي النزال — الأكثر إعجاباً يفوز بـ {pot} نقطة.",
       searchingUsernames: "جارٍ البحث عن الصيادين...",
       noUsernameSuggestions: "لم يُعثر على صياد مطابق.",
+      pointsWagerInviteAlertTitle: "تحدي نقاط جديد!",
+      pointsWagerInviteAlertBody:
+        "{user} تحداك بـ {wager} نقطة. الفائز يأخذ {pot} نقطة.",
+      rejectWagerDuel: "رفض",
+      rejectingWager: "جارٍ الرفض...",
+      viewWagerOnExclusives: "عرض في حصري",
+      pointsWagerAlertSoundHint: "يتوقف صوت التنبيه عند القبول أو الرفض.",
     },
     radio: {
       badge: "بث مباشر 24/7",
@@ -2567,6 +2597,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         bountyEvents: "أحداث الجوائز",
         clipChallenges: "نزالات تحدي المقاطع",
         pointsWagerDuels: "نزالات رهان النقاط",
+        pendingWagerInvites: "دعوات رهان بانتظار القبول",
       },
       quickActions: {
         reviewVideos: "مراجعة الفيديوهات",

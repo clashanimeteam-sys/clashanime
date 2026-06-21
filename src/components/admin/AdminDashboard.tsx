@@ -17,6 +17,7 @@ type DashboardStats = {
   bountyEvents: number;
   clipChallenges: number;
   pointsWagerDuels: number;
+  pendingWagerInvites: number;
 };
 
 export function AdminDashboard() {
@@ -44,6 +45,7 @@ export function AdminDashboard() {
         { count: bountyEvents },
         clipChallengesResult,
         pointsWagerDuelsResult,
+        pendingWagerInvitesResult,
       ] = await Promise.all([
         client.from("profiles").select("*", { count: "exact", head: true }),
         client.from("videos").select("*", { count: "exact", head: true }),
@@ -75,6 +77,16 @@ export function AdminDashboard() {
           }
           return { count: result.count, error: false as const };
         }),
+        client
+          .from("points_wager_duels")
+          .select("*", { count: "exact", head: true })
+          .eq("status", "pending")
+          .then((result) => {
+            if (result.error) {
+              return { count: null as number | null, error: true as const };
+            }
+            return { count: result.count, error: false as const };
+          }),
       ]);
 
       const clipChallengesCount =
@@ -82,6 +94,9 @@ export function AdminDashboard() {
 
       const pointsWagerDuelsCount =
         pointsWagerDuelsResult.error ? 0 : (pointsWagerDuelsResult.count ?? 0);
+
+      const pendingWagerInvitesCount =
+        pendingWagerInvitesResult.error ? 0 : (pendingWagerInvitesResult.count ?? 0);
 
       setStats({
         users: users ?? 0,
@@ -95,6 +110,7 @@ export function AdminDashboard() {
         bountyEvents: bountyEvents ?? 0,
         clipChallenges: clipChallengesCount,
         pointsWagerDuels: pointsWagerDuelsCount,
+        pendingWagerInvites: pendingWagerInvitesCount,
       });
       setLoading(false);
     }
@@ -108,6 +124,7 @@ export function AdminDashboard() {
     { label: t.admin.stats.bountyEvents, value: stats?.bountyEvents ?? 0, href: "/admin/users" },
     { label: t.admin.stats.clipChallenges, value: stats?.clipChallenges ?? 0, href: "/exclusives" },
     { label: t.admin.stats.pointsWagerDuels, value: stats?.pointsWagerDuels ?? 0, href: "/exclusives" },
+    { label: t.admin.stats.pendingWagerInvites, value: stats?.pendingWagerInvites ?? 0, href: "/exclusives" },
     { label: t.admin.stats.pendingVerifications, value: stats?.pendingVerifications ?? 0, href: "/admin/users" },
     { label: t.admin.stats.communityPosts, value: stats?.communityPosts ?? 0, href: "/community" },
     { label: t.admin.stats.videos, value: stats?.videos ?? 0, href: "/admin/videos" },
