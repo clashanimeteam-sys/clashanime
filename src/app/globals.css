@@ -333,6 +333,45 @@
   }
 }
 
+@keyframes prize-rank-pulse-gold {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.35);
+    transform: scale(1);
+  }
+
+  50% {
+    box-shadow: 0 0 28px 6px rgba(251, 191, 36, 0.45);
+    transform: scale(1.04);
+  }
+}
+
+@keyframes prize-rank-pulse-silver {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(203, 213, 225, 0.28);
+    transform: scale(1);
+  }
+
+  50% {
+    box-shadow: 0 0 24px 5px rgba(203, 213, 225, 0.38);
+    transform: scale(1.035);
+  }
+}
+
+@keyframes prize-rank-pulse-bronze {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.28);
+    transform: scale(1);
+  }
+
+  50% {
+    box-shadow: 0 0 24px 5px rgba(249, 115, 22, 0.38);
+    transform: scale(1.035);
+  }
+}
+
 @keyframes prize-reveal-pop {
   0% {
     opacity: 0;

@@ -34,6 +34,8 @@ export type Dictionary = {
     cashPrizeRank2: string;
     cashPrizeRank3: string;
     cashPrizeRankNumber: string;
+    cashPrizeRankWord: string;
+    cashPrizeRankSuffix: string;
     cashPrizeRevealLabel: string;
     cashPrizeRevealHint: string;
     cashPrizeTapHint: string;
@@ -880,6 +882,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       cashPrizeRank2: "#2 Silver",
       cashPrizeRank3: "#3 Bronze",
       cashPrizeRankNumber: "Rank {rank}",
+      cashPrizeRankWord: "Rank",
+      cashPrizeRankSuffix: "",
       cashPrizeRevealLabel: "Rank {rank} prize",
       cashPrizeRevealHint: "Paid to the season winner after manual review.",
       cashPrizeTapHint: "Tap a rank to reveal the cash prize",
@@ -1752,6 +1756,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       cashPrizeRank2: "2位 シルバー",
       cashPrizeRank3: "3位 ブロンズ",
       cashPrizeRankNumber: "第{rank}位",
+      cashPrizeRankWord: "第",
+      cashPrizeRankSuffix: "位",
       cashPrizeRevealLabel: "第{rank}位の賞金",
       cashPrizeRevealHint: "シーズン終了後、審査を経て勝者に支払われます。",
       cashPrizeTapHint: "順位をタップして賞金額を表示",
@@ -2616,6 +2622,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       cashPrizeRank2: "المركز 2 فضة",
       cashPrizeRank3: "المركز 3 برونز",
       cashPrizeRankNumber: "المركز {rank}",
+      cashPrizeRankWord: "المركز",
+      cashPrizeRankSuffix: "",
       cashPrizeRevealLabel: "جائزة المركز {rank}",
       cashPrizeRevealHint: "تُصرف للفائز بعد انتهاء الموسم ومراجعة الفريق.",
       cashPrizeTapHint: "اضغط على مركز لعرض الجائزة المالية",
