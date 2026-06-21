@@ -8,7 +8,7 @@ export function ClashPrizeBanner() {
 
   return (
     <div className="mb-8 space-y-4">
-      <div className="relative overflow-hidden rounded-2xl border border-amber-400/30 bg-gradient-to-r from-amber-950 via-red-950 to-orange-950 px-4 py-4 shadow-[inset_0_1px_0_rgba(251,191,36,0.2)] sm:px-6 sm:py-5">
+      <div className="relative min-h-[5.5rem] overflow-hidden rounded-2xl border border-amber-400/30 bg-gradient-to-r from-amber-950 via-red-950 to-orange-950 px-4 py-4 shadow-[inset_0_1px_0_rgba(251,191,36,0.2)] sm:min-h-[6rem] sm:px-6 sm:py-5">
         <CashPrizeFallingMoney />
 
         <div className="relative z-10 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
