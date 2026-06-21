@@ -26,6 +26,11 @@ export type Dictionary = {
     clashLive: string;
     podiumLabel: string;
     challengersLabel: string;
+    cashPrizeTitle: string;
+    cashPrizeSubtitle: string;
+    cashPrizeRank1: string;
+    cashPrizeRank2: string;
+    cashPrizeRank3: string;
     upload: string;
     maintenanceMode: string;
   };
@@ -680,6 +685,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashLive: "Live Clash",
       podiumLabel: "Podium",
       challengersLabel: "Clash challengers",
+      cashPrizeTitle: "Cash prizes for Clash winners",
+      cashPrizeSubtitle: "Top ranked clips earn real rewards every season.",
+      cashPrizeRank1: "#1 Gold",
+      cashPrizeRank2: "#2 Silver",
+      cashPrizeRank3: "#3 Bronze",
       upload: "Video Upload",
       maintenanceMode: "ClashAnime is in maintenance mode. Some features are temporarily unavailable.",
     },
@@ -1354,6 +1364,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashLive: "ライブ・クラッシュ",
       podiumLabel: "表彰台",
       challengersLabel: "挑戦者",
+      cashPrizeTitle: "クラッシュ勝者に現金賞",
+      cashPrizeSubtitle: "上位ランクのクリップはシーズンごとに報酬を獲得。",
+      cashPrizeRank1: "1位 ゴールド",
+      cashPrizeRank2: "2位 シルバー",
+      cashPrizeRank3: "3位 ブロンズ",
       upload: "動画アップロード",
       maintenanceMode: "ClashAnimeはメンテナンス中です。一部機能が一時的に利用できません。",
     },
@@ -2022,6 +2037,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashLive: "نزال مباشر",
       podiumLabel: "منصة الصدارة",
       challengersLabel: "منافسو النزال",
+      cashPrizeTitle: "جوائز مالية لأبطال النزال",
+      cashPrizeSubtitle: "أعلى المراتب تحصل على مكافآت حقيقية كل موسم.",
+      cashPrizeRank1: "المركز 1 ذهب",
+      cashPrizeRank2: "المركز 2 فضة",
+      cashPrizeRank3: "المركز 3 برونز",
       upload: "رفع فيديو",
       maintenanceMode: "ClashAnime في وضع الصيانة. بعض الميزات غير متاحة مؤقتاً.",
     },

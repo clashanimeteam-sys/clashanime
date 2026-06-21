@@ -1,7 +1,8 @@
 "use client";
 
-import { ClashArenaBackdrop } from "@/components/clash/ClashArenaBackdrop";
 import { ClashFireFrame } from "@/components/clash/ClashFireFrame";
+import { ClashPrizeBanner } from "@/components/clash/ClashPrizeBanner";
+import { ClashVideosBackdrop } from "@/components/clash/ClashVideosBackdrop";
 import { SiteTitle } from "@/components/SiteTitle";
 import { VideoCard } from "@/components/VideoCard";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -47,10 +48,8 @@ export function HomeContent({ videos }: HomeContentProps) {
 
   return (
     <div className="relative overflow-hidden">
-      <ClashArenaBackdrop />
-
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6">
-        <section className="mb-10">
+        <section className="mb-8">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-orange-700 backdrop-blur-sm dark:text-orange-300">
             <span className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.9)]" />
             {t.home.clashLive}
@@ -65,42 +64,50 @@ export function HomeContent({ videos }: HomeContentProps) {
           </p>
         </section>
 
-        {podiumVideos.length > 0 ? (
-          <section aria-label={t.home.podiumLabel} className="mb-10">
-            <h2 className="mb-4 font-display text-sm font-bold uppercase tracking-[0.24em] text-orange-600 dark:text-orange-400">
-              {t.home.podiumLabel}
-            </h2>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 sm:items-start">
-              {podiumVideos.map((video) =>
-                renderClashCard(video, video.global_rank === 1),
-              )}
-            </div>
-          </section>
-        ) : null}
+        <ClashPrizeBanner />
 
-        {challengerVideos.length > 0 ? (
-          <section aria-label={t.home.challengersLabel}>
-            <h2 className="mb-4 font-display text-sm font-bold uppercase tracking-[0.24em] text-red-700 dark:text-red-400">
-              {t.home.challengersLabel}
-            </h2>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {challengerVideos.map((video) => renderClashCard(video))}
-            </div>
-          </section>
-        ) : null}
+        <div className="relative overflow-hidden rounded-3xl border border-orange-500/20 shadow-[0_24px_80px_rgba(127,29,29,0.18)]">
+          <ClashVideosBackdrop />
 
-        {videos.length === 0 ? (
-          <p className="text-sm text-zinc-500">{t.pages.emptyVideos}</p>
-        ) : null}
+          <div className="relative z-10 px-4 py-6 sm:px-6 sm:py-8">
+            {podiumVideos.length > 0 ? (
+              <section aria-label={t.home.podiumLabel} className="mb-10">
+                <h2 className="mb-4 font-display text-sm font-bold uppercase tracking-[0.24em] text-amber-200">
+                  {t.home.podiumLabel}
+                </h2>
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 sm:items-start">
+                  {podiumVideos.map((video) =>
+                    renderClashCard(video, video.global_rank === 1),
+                  )}
+                </div>
+              </section>
+            ) : null}
 
-        {podiumVideos.length === 0 && challengerVideos.length === 0 && videos.length > 0 ? (
-          <section
-            aria-label={t.home.gridLabel}
-            className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-          >
-            {videos.map((video) => renderClashCard(video))}
-          </section>
-        ) : null}
+            {challengerVideos.length > 0 ? (
+              <section aria-label={t.home.challengersLabel}>
+                <h2 className="mb-4 font-display text-sm font-bold uppercase tracking-[0.24em] text-orange-200">
+                  {t.home.challengersLabel}
+                </h2>
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {challengerVideos.map((video) => renderClashCard(video))}
+                </div>
+              </section>
+            ) : null}
+
+            {videos.length === 0 ? (
+              <p className="text-sm text-amber-100/80">{t.pages.emptyVideos}</p>
+            ) : null}
+
+            {podiumVideos.length === 0 && challengerVideos.length === 0 && videos.length > 0 ? (
+              <section
+                aria-label={t.home.gridLabel}
+                className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+              >
+                {videos.map((video) => renderClashCard(video))}
+              </section>
+            ) : null}
+          </div>
+        </div>
       </div>
     </div>
   );
