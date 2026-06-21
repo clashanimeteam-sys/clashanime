@@ -3,19 +3,22 @@
 import { ClipChallengeCard } from "@/components/exclusives/ClipChallengeCard";
 import { DailyHallOfFame } from "@/components/exclusives/DailyHallOfFame";
 import { ExclusivesChallengeVideos } from "@/components/exclusives/ExclusivesChallengeVideos";
-import { RandomDuelButton } from "@/components/exclusives/RandomDuelButton";
+import { PointsWagerSection } from "@/components/exclusives/PointsWagerSection";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { DailyHallLeader } from "@/lib/dailyHall";
+import type { PointsWagerDuelRow } from "@/lib/pointsDuels";
 import type { Video } from "@/lib/types";
 
 type ExclusivesPageContentProps = {
   dailyLeader: DailyHallLeader | null;
   challengeVideos: Video[];
+  publicWagerDuels: PointsWagerDuelRow[];
 };
 
 export function ExclusivesPageContent({
   dailyLeader,
   challengeVideos,
+  publicWagerDuels,
 }: ExclusivesPageContentProps) {
   const { t } = useLocale();
 
@@ -32,7 +35,7 @@ export function ExclusivesPageContent({
 
       <div className="grid gap-4 lg:grid-cols-2">
         <DailyHallOfFame leader={dailyLeader} />
-        <RandomDuelButton />
+        <PointsWagerSection publicDuels={publicWagerDuels} />
       </div>
 
       <div className="mt-4">

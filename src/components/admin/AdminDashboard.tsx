@@ -16,6 +16,7 @@ type DashboardStats = {
   communityPosts: number;
   bountyEvents: number;
   clipChallenges: number;
+  pointsWagerDuels: number;
 };
 
 export function AdminDashboard() {
@@ -42,6 +43,7 @@ export function AdminDashboard() {
         { count: communityPosts },
         { count: bountyEvents },
         clipChallengesResult,
+        pointsWagerDuelsResult,
       ] = await Promise.all([
         client.from("profiles").select("*", { count: "exact", head: true }),
         client.from("videos").select("*", { count: "exact", head: true }),
@@ -67,10 +69,19 @@ export function AdminDashboard() {
           }
           return { count: result.count, error: false as const };
         }),
+        client.from("points_wager_duels").select("*", { count: "exact", head: true }).then((result) => {
+          if (result.error) {
+            return { count: null as number | null, error: true as const };
+          }
+          return { count: result.count, error: false as const };
+        }),
       ]);
 
       const clipChallengesCount =
         clipChallengesResult.error ? 0 : (clipChallengesResult.count ?? 0);
+
+      const pointsWagerDuelsCount =
+        pointsWagerDuelsResult.error ? 0 : (pointsWagerDuelsResult.count ?? 0);
 
       setStats({
         users: users ?? 0,
@@ -83,6 +94,7 @@ export function AdminDashboard() {
         communityPosts: communityPosts ?? 0,
         bountyEvents: bountyEvents ?? 0,
         clipChallenges: clipChallengesCount,
+        pointsWagerDuels: pointsWagerDuelsCount,
       });
       setLoading(false);
     }
@@ -95,6 +107,7 @@ export function AdminDashboard() {
     { label: t.admin.stats.activeHunters, value: stats?.activeHunters ?? 0, href: "/admin/users" },
     { label: t.admin.stats.bountyEvents, value: stats?.bountyEvents ?? 0, href: "/admin/users" },
     { label: t.admin.stats.clipChallenges, value: stats?.clipChallenges ?? 0, href: "/exclusives" },
+    { label: t.admin.stats.pointsWagerDuels, value: stats?.pointsWagerDuels ?? 0, href: "/exclusives" },
     { label: t.admin.stats.pendingVerifications, value: stats?.pendingVerifications ?? 0, href: "/admin/users" },
     { label: t.admin.stats.communityPosts, value: stats?.communityPosts ?? 0, href: "/community" },
     { label: t.admin.stats.videos, value: stats?.videos ?? 0, href: "/admin/videos" },
@@ -164,9 +177,9 @@ export function AdminDashboard() {
           href="/exclusives"
         />
         <QuickLink
-          title={t.admin.quickActions.clipChallenges}
-          description={t.admin.quickActions.clipChallengesDesc}
-          href="/videos"
+          title={t.admin.quickActions.pointsWagerDuels}
+          description={t.admin.quickActions.pointsWagerDuelsDesc}
+          href="/exclusives"
         />
       </div>
     </div>

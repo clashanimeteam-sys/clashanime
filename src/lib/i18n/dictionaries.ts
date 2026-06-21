@@ -135,6 +135,36 @@ export type Dictionary = {
     browseVideosToChallenge: string;
     clipChallengeSectionTitle: string;
     clipChallengeSectionDesc: string;
+    pointsWagerBadge: string;
+    pointsWagerTitle: string;
+    pointsWagerDesc: string;
+    startPointsWager: string;
+    creatingPointsWager: string;
+    pointsWagerModalTitle: string;
+    pointsWagerModalDesc: string;
+    loginToPointsWager: string;
+    yourBalance: string;
+    inviteOpponent: string;
+    wagerAmount: string;
+    wagerPotPreview: string;
+    pointsWagerFailed: string;
+    incomingWagerInvites: string;
+    wagerInviteFrom: string;
+    acceptWagerDuel: string;
+    acceptingWager: string;
+    yourOpenWagers: string;
+    waitingOpponent: string;
+    activePointsDuels: string;
+    potLabel: string;
+    watchDuel: string;
+    waitingOpponentInvite: string;
+    cancelWager: string;
+    finalizeWager: string;
+    resolvingWager: string;
+    wagerCompleted: string;
+    wagerCancelled: string;
+    wagerWinnerPot: string;
+    pointsWagerArenaDesc: string;
   };
   radio: {
     badge: string;
@@ -322,6 +352,9 @@ export type Dictionary = {
       community_post: string;
       trending_bonus: string;
       video_duel_challenge: string;
+      points_duel_stake: string;
+      points_duel_win: string;
+      points_duel_refund: string;
     };
   };
   communityFeed: {
@@ -562,6 +595,7 @@ export type Dictionary = {
       communityPosts: string;
       bountyEvents: string;
       clipChallenges: string;
+      pointsWagerDuels: string;
     };
     quickActions: {
       reviewVideos: string;
@@ -578,6 +612,8 @@ export type Dictionary = {
       exclusivesFeaturesDesc: string;
       clipChallenges: string;
       clipChallengesDesc: string;
+      pointsWagerDuels: string;
+      pointsWagerDuelsDesc: string;
     };
     table: {
       user: string;
@@ -743,6 +779,39 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clipChallengeSectionTitle: "Clips ready to challenge",
       clipChallengeSectionDesc:
         "Tap Challenge this clip under any video below to duel it with one of your approved uploads.",
+      pointsWagerBadge: "Points Wager",
+      pointsWagerTitle: "Challenge for points",
+      pointsWagerDesc:
+        "Invite another hunter, stake your points, and duel clips head-to-head. The winner takes the full pot.",
+      startPointsWager: "Open points challenge",
+      creatingPointsWager: "Creating challenge...",
+      pointsWagerModalTitle: "New points challenge",
+      pointsWagerModalDesc:
+        "Call a hunter by username, lock your wager, and pick the clip you want to defend.",
+      loginToPointsWager: "Sign up to stake points and challenge other hunters.",
+      yourBalance: "Your balance",
+      inviteOpponent: "Opponent username",
+      wagerAmount: "Wager (points)",
+      wagerPotPreview: "Winner pot: {pot} points",
+      pointsWagerFailed: "Could not complete the points challenge. Check balance and try again.",
+      incomingWagerInvites: "Invitations waiting for you",
+      wagerInviteFrom: "Challenge for {wager} points — accept with your clip",
+      acceptWagerDuel: "Accept & stake",
+      acceptingWager: "Accepting...",
+      yourOpenWagers: "Your open challenges",
+      waitingOpponent: "Waiting",
+      activePointsDuels: "Live points duels",
+      potLabel: "Pot {pot} pts",
+      watchDuel: "Watch duel",
+      waitingOpponentInvite: "Waiting for {user} to accept and match your wager.",
+      cancelWager: "Cancel & refund",
+      finalizeWager: "Finalize — crown winner",
+      resolvingWager: "Finalizing...",
+      wagerCompleted: "Points duel completed",
+      wagerCancelled: "Challenge cancelled",
+      wagerWinnerPot: "Winner took the {pot} point pot.",
+      pointsWagerArenaDesc:
+        "Vote with likes on both clips. When ready, either hunter can finalize — higher likes wins the {pot} point pot.",
     },
     radio: {
       badge: "24/7 stream",
@@ -933,6 +1002,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         community_post: "Community post",
         trending_bonus: "Trending bounty",
         video_duel_challenge: "Clip challenge duel",
+        points_duel_stake: "Points duel stake",
+        points_duel_win: "Points duel win",
+        points_duel_refund: "Points duel refund",
       },
     },
     communityFeed: {
@@ -1182,6 +1254,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         communityPosts: "Community posts",
         bountyEvents: "Bounty events",
         clipChallenges: "Clip challenge duels",
+        pointsWagerDuels: "Points wager duels",
       },
       quickActions: {
         reviewVideos: "Review videos",
@@ -1198,6 +1271,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         exclusivesFeaturesDesc: "Daily Hall of Fame, clip challenges, trending duels, and random clash.",
         clipChallenges: "Clip challenges",
         clipChallengesDesc: "Users duel clips head-to-head. Challenge button appears under every approved video.",
+        pointsWagerDuels: "Points wager arena",
+        pointsWagerDuelsDesc: "Hunters stake points, invite rivals, and the winner takes the pot on /exclusives.",
       },
       table: {
         user: "User",
@@ -1360,6 +1435,38 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clipChallengeSectionTitle: "挑戦できるクリップ",
       clipChallengeSectionDesc:
         "下の動画から「この動画に挑戦」を押して、承認済みの自分の動画で対決しましょう。",
+      pointsWagerBadge: "ポイント賭け",
+      pointsWagerTitle: "ポイント対決",
+      pointsWagerDesc:
+        "別のハンターを招待し、ポイントを賭けてクリップ対決。勝者が賞金ポットを獲得します。",
+      startPointsWager: "ポイント挑戦を開始",
+      creatingPointsWager: "挑戦を作成中...",
+      pointsWagerModalTitle: "新しいポイント挑戦",
+      pointsWagerModalDesc: "ユーザー名で相手を呼び出し、賭けポイントをロックしてクリップを選びます。",
+      loginToPointsWager: "登録してポイントを賭け、他のハンターに挑戦しましょう。",
+      yourBalance: "残高",
+      inviteOpponent: "相手のユーザー名",
+      wagerAmount: "賭けポイント",
+      wagerPotPreview: "勝者ポット: {pot} pt",
+      pointsWagerFailed: "ポイント挑戦を完了できませんでした。残高を確認してください。",
+      incomingWagerInvites: "あなたへの招待",
+      wagerInviteFrom: "{wager} pt の挑戦 — クリップで受け入れ",
+      acceptWagerDuel: "受け入れて賭ける",
+      acceptingWager: "受け入れ中...",
+      yourOpenWagers: "あなたの公開中の挑戦",
+      waitingOpponent: "待機中",
+      activePointsDuels: "進行中のポイント対決",
+      potLabel: "ポット {pot} pt",
+      watchDuel: "対決を見る",
+      waitingOpponentInvite: "{user} が同額を賭けて受け入れるのを待っています。",
+      cancelWager: "キャンセルして返金",
+      finalizeWager: "確定 — 勝者を決める",
+      resolvingWager: "確定中...",
+      wagerCompleted: "ポイント対決完了",
+      wagerCancelled: "挑戦キャンセル",
+      wagerWinnerPot: "勝者が {pot} pt のポットを獲得。",
+      pointsWagerArenaDesc:
+        "両方のクリップにいいねで投票。準備ができたらどちらかが確定 — いいねが多い方が {pot} pt を獲得。",
     },
     radio: {
       badge: "24/7 配信",
@@ -1547,6 +1654,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         community_post: "コミュニティ投稿",
         trending_bonus: "トレンド報酬",
         video_duel_challenge: "クリップ挑戦デュエル",
+        points_duel_stake: "ポイント対決の賭け",
+        points_duel_win: "ポイント対決の勝利",
+        points_duel_refund: "ポイント対決の返金",
       },
     },
     communityFeed: {
@@ -1795,6 +1905,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         communityPosts: "コミュニティ投稿",
         bountyEvents: "報酬イベント",
         clipChallenges: "クリップ挑戦デュエル",
+        pointsWagerDuels: "ポイント賭け対決",
       },
       quickActions: {
         reviewVideos: "動画を審査",
@@ -1811,6 +1922,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         exclusivesFeaturesDesc: "デイリー殿堂、クリップ挑戦、熱い対決、ランダムクラッシュ。",
         clipChallenges: "クリップ挑戦",
         clipChallengesDesc: "承認済み動画の下に挑戦ボタンが表示され、ユーザー同士が対決できます。",
+        pointsWagerDuels: "ポイント賭けアリーナ",
+        pointsWagerDuelsDesc: "ハンターがポイントを賭け、招待し、勝者がポットを獲得します。",
       },
       table: {
         user: "ユーザー",
@@ -1973,6 +2086,38 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clipChallengeSectionTitle: "مقاطع جاهزة للتحدي",
       clipChallengeSectionDesc:
         "اضغط «تحدي هذا المقطع» تحت أي فيديو أدناه ونافسه بأحد مقاطعك المعتمدة.",
+      pointsWagerBadge: "تحدي النقاط",
+      pointsWagerTitle: "تحدي مقابل نقاط",
+      pointsWagerDesc:
+        "ادعُ صياداً آخر، راهن بنقاطك، ونافسه مقطعاً مقابل مقطع. الفائز يأخذ الجائزة كاملة.",
+      startPointsWager: "افتح تحدي نقاط",
+      creatingPointsWager: "جارٍ إنشاء التحدي...",
+      pointsWagerModalTitle: "تحدي نقاط جديد",
+      pointsWagerModalDesc: "استدعِ صياداً باسم المستخدم، ثبّت رهانك، واختر المقطع الذي تدافع عنه.",
+      loginToPointsWager: "سجّل لتراهن بنقاطك وتتحدى الصيادين.",
+      yourBalance: "رصيدك",
+      inviteOpponent: "اسم المستخدم للخصم",
+      wagerAmount: "الرهان (نقاط)",
+      wagerPotPreview: "جائزة الفائز: {pot} نقطة",
+      pointsWagerFailed: "تعذّر إكمال تحدي النقاط. تحقق من رصيدك وحاول مجدداً.",
+      incomingWagerInvites: "دعوات بانتظارك",
+      wagerInviteFrom: "تحدي بـ {wager} نقطة — اقبل بمقطعك",
+      acceptWagerDuel: "اقبل واراهن",
+      acceptingWager: "جارٍ القبول...",
+      yourOpenWagers: "تحدياتك المفتوحة",
+      waitingOpponent: "بانتظار الخصم",
+      activePointsDuels: "نزالات نقاط مباشرة",
+      potLabel: "جائزة {pot} نقطة",
+      watchDuel: "شاهد النزال",
+      waitingOpponentInvite: "بانتظار {user} لقبول التحدي ومطابقة رهانك.",
+      cancelWager: "إلغاء واسترداد",
+      finalizeWager: "إنهاء — تتويج الفائز",
+      resolvingWager: "جارٍ الإنهاء...",
+      wagerCompleted: "اكتمل تحدي النقاط",
+      wagerCancelled: "تم إلغاء التحدي",
+      wagerWinnerPot: "الفائز أخذ جائزة {pot} نقطة.",
+      pointsWagerArenaDesc:
+        "صوّت بالإعجاب على المقطعين. عند الجاهزية، أي طرف ينهي النزال — الأكثر إعجاباً يفوز بـ {pot} نقطة.",
     },
     radio: {
       badge: "بث مباشر 24/7",
@@ -2162,6 +2307,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         community_post: "منشور مجتمع",
         trending_bonus: "جائزة الترند",
         video_duel_challenge: "نزال تحدي مقطع",
+        points_duel_stake: "رهان نزال نقاط",
+        points_duel_win: "فوز نزال نقاط",
+        points_duel_refund: "استرداد نزال نقاط",
       },
     },
     communityFeed: {
@@ -2410,6 +2558,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         communityPosts: "منشورات المجتمع",
         bountyEvents: "أحداث الجوائز",
         clipChallenges: "نزالات تحدي المقاطع",
+        pointsWagerDuels: "نزالات رهان النقاط",
       },
       quickActions: {
         reviewVideos: "مراجعة الفيديوهات",
@@ -2426,6 +2575,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         exclusivesFeaturesDesc: "لوحة الشرف اليومية، تحدي المقاطع، نزالات مشتعلة، وتحدي عشوائي.",
         clipChallenges: "تحدي المقاطع",
         clipChallengesDesc: "زر «تحدي هذا المقطع» يظهر تحت كل فيديو معتمد ويُنشئ نزالات تلقائياً بين المستخدمين.",
+        pointsWagerDuels: "ساحة رهان النقاط",
+        pointsWagerDuelsDesc: "الصيادون يراهنون بنقاطهم ويدعون منافسين — الفائز يأخذ الجائزة في صفحة حصري.",
       },
       table: {
         user: "المستخدم",

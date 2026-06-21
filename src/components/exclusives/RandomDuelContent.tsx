@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { DuelArenaContent } from "@/components/duel/DuelArenaContent";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Video } from "@/lib/types";
@@ -12,7 +11,6 @@ type RandomDuelContentProps = {
 
 export function RandomDuelContent({ pair }: RandomDuelContentProps) {
   const { t } = useLocale();
-  const router = useRouter();
 
   if (!pair) {
     return (
@@ -37,15 +35,6 @@ export function RandomDuelContent({ pair }: RandomDuelContentProps) {
       badge={t.exclusives.randomDuelBadge}
       title={t.exclusives.randomDuelTitle}
       description={t.exclusives.randomDuelPageDesc}
-      actions={
-        <button
-          type="button"
-          onClick={() => router.refresh()}
-          className="rounded-full border border-accent/30 bg-accent/10 px-4 py-2 text-sm font-semibold text-accent transition-colors hover:border-accent hover:bg-accent/15 dark:border-accent/40 dark:bg-accent/15"
-        >
-          {t.exclusives.shuffleDuel}
-        </button>
-      }
     />
   );
 }
