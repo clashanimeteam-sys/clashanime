@@ -305,3 +305,24 @@
     transform: translateY(-4px);
   }
 }
+
+@keyframes prize-money-fall {
+  0% {
+    transform: translate3d(0, -18%, 0) rotate(-12deg);
+    opacity: 0;
+  }
+
+  8% {
+    opacity: 0.85;
+  }
+
+  55% {
+    transform: translate3d(12px, 55%, 0) rotate(160deg);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: translate3d(-8px, 115%, 0) rotate(320deg);
+    opacity: 0;
+  }
+}

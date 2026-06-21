@@ -1,5 +1,6 @@
 "use client";
 
+import { CashPrizeFallingMoney } from "@/components/clash/CashPrizeFallingMoney";
 import { useLocale } from "@/providers/LocaleProvider";
 
 export function ClashPrizeBanner() {
@@ -7,8 +8,10 @@ export function ClashPrizeBanner() {
 
   return (
     <div className="mb-8 space-y-4">
-      <div className="overflow-hidden rounded-2xl border border-amber-400/30 bg-gradient-to-r from-amber-950 via-red-950 to-orange-950 px-4 py-4 shadow-[inset_0_1px_0_rgba(251,191,36,0.2)] sm:px-6 sm:py-5">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="relative overflow-hidden rounded-2xl border border-amber-400/30 bg-gradient-to-r from-amber-950 via-red-950 to-orange-950 px-4 py-4 shadow-[inset_0_1px_0_rgba(251,191,36,0.2)] sm:px-6 sm:py-5">
+        <CashPrizeFallingMoney />
+
+        <div className="relative z-10 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-3 sm:items-center">
             <span
               aria-hidden
