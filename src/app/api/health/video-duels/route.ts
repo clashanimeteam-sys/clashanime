@@ -11,6 +11,7 @@ function rpcExists(error: { message?: string; code?: string } | null) {
     error.message?.includes("required") ||
     error.message?.includes("minimum wager") ||
     error.message?.includes("missing video ids") ||
+    error.message?.includes("opponent not found") ||
     error.code === "P0001"
   );
 }
@@ -38,6 +39,7 @@ export async function GET() {
 
   let createVideoDuelRpc = false;
   let createPointsWagerRpc = false;
+  let profileSearchRpc = false;
 
   if (videoDuelsTable) {
     const { error } = await supabase.rpc("create_video_duel", {
@@ -56,20 +58,37 @@ export async function GET() {
     createPointsWagerRpc = rpcExists(error);
   }
 
+  const { data: profileSearchData, error: profileSearchError } = await supabase.rpc(
+    "search_profile_usernames",
+    {
+      p_query: "a",
+      p_exclude_user_id: null,
+      p_limit: 1,
+    },
+  );
+
+  profileSearchRpc = !profileSearchError && Array.isArray(profileSearchData);
+
   return NextResponse.json({
     ok:
       videoDuelsTable &&
       createVideoDuelRpc &&
       pointsWagerDuelsTable &&
-      createPointsWagerRpc,
+      createPointsWagerRpc &&
+      profileSearchRpc,
     videoDuelsTable,
     createVideoDuelRpc,
     pointsWagerDuelsTable,
     createPointsWagerRpc,
+    profileSearchRpc,
+    profileSearchError: profileSearchError?.message ?? null,
     sqlScripts: [
+      "supabase/scripts/production-daily-hall-duel.sql",
       "supabase/scripts/production-video-duels.sql",
       "supabase/scripts/production-points-wager-duels.sql",
+      "supabase/scripts/production-profile-username-search.sql",
     ],
+    combinedScript: "supabase/scripts/production-exclusives-full-deploy.sql",
     sqlEditor:
       "https://supabase.com/dashboard/project/doqiuduigbdoczdzsima/sql/new",
   });

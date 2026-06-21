@@ -181,6 +181,11 @@ export function AdminDashboard() {
           description={t.admin.quickActions.pointsWagerDuelsDesc}
           href="/exclusives"
         />
+        <QuickLink
+          title={t.admin.quickActions.clipChallenges}
+          description={t.admin.quickActions.clipChallengesDesc}
+          href="/videos"
+        />
       </div>
     </div>
   );
