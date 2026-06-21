@@ -73,7 +73,6 @@ export async function GET() {
       p_country_name: "Saudi Arabia",
       p_phone: "+966500000000",
       p_address: "Health Check Address 12345",
-      p_id_document_url: "https://example.com/kyc-health-check.jpg",
       p_whatsapp_opt_in: true,
       p_whatsapp_phone: "+966500000000",
     });

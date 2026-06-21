@@ -103,7 +103,7 @@ const en: LegalBundle = {
       },
       {
         heading: "18. ClashCoins payouts, KYC, and anti-fraud",
-        body: "ClashCoins wallet balances may be converted from hunter points and withdrawn subject to manual review.\n\nIdentity verification (KYC):\n• One-time KYC is required per account before any payout is sent\n• You must submit a clear government ID photo, phone number, and full address\n• False, misleading, stolen, or third-party identity data is fraud and may result in balance forfeiture, payout rejection, and permanent account termination\n• We may request additional verification at any time\n\nAnti-fraud controls:\n• Unusual point gains, duplicate accounts, or mismatched payout details may trigger review or blocks\n• Payouts via bank transfer, PayPal, or USDT are processed manually, typically within 24–72 hours after approval\n• ClashAnime may refuse, delay, reverse, or report suspicious payouts to comply with law and protect users",
+        body: "ClashCoins wallet balances may be converted from hunter points and withdrawn subject to manual review.\n\nIdentity verification (KYC):\n• One-time KYC is required per account before any payout is sent\n• You must submit your legal name, phone number, and full address\n• False, misleading, stolen, or third-party identity data is fraud and may result in balance forfeiture, payout rejection, and permanent account termination\n• We may request additional verification at any time\n\nAnti-fraud controls:\n• Unusual point gains, duplicate accounts, or mismatched payout details may trigger review or blocks\n• Payouts via bank transfer, PayPal, or USDT are processed manually, typically within 24–72 hours after approval\n• ClashAnime may refuse, delay, reverse, or report suspicious payouts to comply with law and protect users",
       },
       {
         heading: "19. Contact",
@@ -171,7 +171,7 @@ const en: LegalBundle = {
       },
       {
         heading: "14. Payout identity verification (KYC)",
-        body: "When you request ClashCoins withdrawals we may collect and store:\n• Images of government-issued identity documents\n• Phone number and mailing address\n• Payout destination details linked to your request\n\nWe use this information solely to prevent fraud, comply with legal obligations, and process payouts. Access is restricted to authorized staff. KYC records may be retained longer than general account data where required for anti-fraud, tax, or legal compliance.",
+        body: "When you request ClashCoins withdrawals we may collect and store:\n• Legal name, phone number, and mailing address\n• Optional WhatsApp contact preference\n• Payout destination details linked to your request\n\nWe use this information solely to prevent fraud, comply with legal obligations, and process payouts. Access is restricted to authorized staff. KYC records may be retained longer than general account data where required for anti-fraud, tax, or legal compliance.",
       },
       {
         heading: "15. Contact",
@@ -350,7 +350,7 @@ const ar: LegalBundle = {
       },
       {
         heading: "18. سحوبات ClashCoins وKYC ومكافحة الاحتيال",
-        body: "رصيد ClashCoins قابل للتحويل من نقاط الصياد والسحب بعد مراجعة يدوية.\n\nإثبات الهوية (KYC):\n• KYC لمرة واحدة لكل حساب مطلوب قبل أي سحب\n• يجب إرسال صورة هوية رسمية واضحة ورقم هاتف وعنوان كامل\n• البيانات المزيفة أو المضللة أو المسروقة أو لطرف ثالث احتيال وقد تؤدي لمصادرة الرصيد ورفض السحب وإغلاق الحساب\n• قد نطلب تحققاً إضافياً في أي وقت\n\nمكافحة الاحتيال:\n• المكاسب غير الاعتيادية للنقاط أو الحسابات المكررة أو بيانات سحب متضاربة قد تُعلّق للمراجعة\n• السحب عبر تحويل بنكي أو PayPal أو USDT يدوياً، عادة خلال ٢٤–٧٢ ساعة بعد الموافقة\n• قد نرفض أو نؤجل أو نعكس السحوبات المشبوهة للامتثال للقانون وحماية المستخدمين",
+        body: "رصيد ClashCoins قابل للتحويل من نقاط الصياد والسحب بعد مراجعة يدوية.\n\nإثبات الهوية (KYC):\n• KYC لمرة واحدة لكل حساب مطلوب قبل أي سحب\n• يجب إرسال الاسم القانوني ورقم هاتف وعنوان كامل\n• البيانات المزيفة أو المضللة أو المسروقة أو لطرف ثالث احتيال وقد تؤدي لمصادرة الرصيد ورفض السحب وإغلاق الحساب\n• قد نطلب تحققاً إضافياً في أي وقت\n\nمكافحة الاحتيال:\n• المكاسب غير الاعتيادية للنقاط أو الحسابات المكررة أو بيانات سحب متضاربة قد تُعلّق للمراجعة\n• السحب عبر تحويل بنكي أو PayPal أو USDT يدوياً، عادة خلال ٢٤–٧٢ ساعة بعد الموافقة\n• قد نرفض أو نؤجل أو نعكس السحوبات المشبوهة للامتثال للقانون وحماية المستخدمين",
       },
       {
         heading: "19. التواصل",
@@ -418,7 +418,7 @@ const ar: LegalBundle = {
       },
       {
         heading: "14. إثبات الهوية للسحب (KYC)",
-        body: "عند طلب سحب ClashCoins قد نجمع ونحفظ:\n• صور مستندات هوية رسمية\n• رقم الهاتف والعنوان\n• تفاصيل وجهة السحب المرتبطة بالطلب\n\nنستخدم هذه البيانات فقط لمنع الاحتيال والامتثال القانوني ومعالجة السحوبات. الوصول محصور بالموظفين المخوّلين. قد نحتفظ بسجلات KYC مدة أطول للامتثال لمكافحة الاحتيال والضرائب والقانون.",
+        body: "عند طلب سحب ClashCoins قد نجمع ونحفظ:\n• الاسم القانوني ورقم الهاتف والعنوان\n• تفضيل التواصل عبر واتساب (اختياري)\n• تفاصيل وجهة السحب المرتبطة بالطلب\n\nنستخدم هذه البيانات فقط لمنع الاحتيال والامتثال القانوني ومعالجة السحوبات. الوصول محصور بالموظفين المخوّلين. قد نحتفظ بسجلات KYC مدة أطول للامتثال لمكافحة الاحتيال والضرائب والقانون.",
       },
       {
         heading: "15. التواصل",
@@ -565,7 +565,7 @@ const ja: LegalBundle = {
         "違反・反復侵害・法的リスクによりアカウント停止の可能性があります。",
         "規約は更新される場合があります。更新後の利用は同意とみなされます。",
         "準拠法に従い、まずsupport@clashanime.comへご連絡ください。",
-        "ClashCoins残高の出金にはアカウントごとに1回のKYC（身分証写真・電話・住所）が必要です。虚偽情報は不正とみなし、残高没収や永久停止の対象となります。出金は承認後24〜72時間以内に手動処理されます。",
+        "ClashCoins残高の出金にはアカウントごとに1回のKYC（氏名・電話・住所）が必要です。虚偽情報は不正とみなし、残高没収や永久停止の対象となります。出金は承認後24〜72時間以内に手動処理されます。",
         "dmca@clashanime.com / privacy@clashanime.com / support@clashanime.com",
       ];
       return { heading: jaHeadings[index] ?? section.heading, body: jaBodies[index] ?? section.body };
@@ -597,7 +597,7 @@ const ja: LegalBundle = {
       { heading: "13. 変更", body: "本ページの更新日が最新版を示します。" },
       {
         heading: "14. 出金KYC（本人確認）",
-        body: "ClashCoins出金時に、身分証画像、電話番号、住所、送金先情報を収集・保存する場合があります。不正防止、法令遵守、出金処理のみに使用し、権限のあるスタッフのみがアクセスできます。",
+        body: "ClashCoins出金時に、氏名、電話番号、住所、WhatsApp連絡希望、送金先情報を収集・保存する場合があります。不正防止、法令遵守、出金処理のみに使用し、権限のあるスタッフのみがアクセスできます。",
       },
       { heading: "15. 連絡先", body: "privacy@clashanime.com" },
     ],

@@ -15,7 +15,7 @@ type KycSubmission = {
   whatsapp_opt_in: boolean | null;
   whatsapp_phone: string | null;
   address: string;
-  id_document_url: string;
+  id_document_url: string | null;
   status: "pending" | "approved" | "rejected";
   admin_notes: string | null;
   created_at: string;
@@ -186,19 +186,21 @@ export function AdminKycPanel() {
                   ) : null}
                 </div>
 
-                <a
-                  href={submission.id_document_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block overflow-hidden rounded-xl border border-zinc-700"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={submission.id_document_url}
-                    alt={t.wallet.kycIdLabel}
-                    className="h-36 w-56 object-cover"
-                  />
-                </a>
+                {submission.id_document_url ? (
+                  <a
+                    href={submission.id_document_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block overflow-hidden rounded-xl border border-zinc-700"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={submission.id_document_url}
+                      alt={t.wallet.kycIdLabel}
+                      className="h-36 w-56 object-cover"
+                    />
+                  </a>
+                ) : null}
               </div>
 
               {submission.status === "pending" ? (

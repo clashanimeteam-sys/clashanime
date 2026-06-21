@@ -9,7 +9,6 @@ import {
   getKycCountryByCode,
   getKycCountryLabel,
 } from "@/lib/kycCountries";
-import { uploadMediaFile } from "@/lib/mediaUpload";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -25,7 +24,6 @@ export type PayoutKycSubmission = {
   whatsapp_opt_in: boolean | null;
   whatsapp_phone: string | null;
   address: string;
-  id_document_url: string;
   status: "pending" | "approved" | "rejected";
   admin_notes: string | null;
   created_at: string;
@@ -37,8 +35,6 @@ type ClashWalletKycSectionProps = {
   embedded?: boolean;
   onStatusChange?: (status: PayoutKycStatus) => void;
 };
-
-const MAX_ID_IMAGE_BYTES = 10 * 1024 * 1024;
 
 export function ClashWalletKycSection({
   userId,
@@ -55,7 +51,6 @@ export function ClashWalletKycSection({
   const [localPhone, setLocalPhone] = useState("");
   const [whatsappOptIn, setWhatsappOptIn] = useState(false);
   const [address, setAddress] = useState("");
-  const [idFile, setIdFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -79,7 +74,7 @@ export function ClashWalletKycSection({
     const { data } = await supabase
       .from("payout_kyc_submissions")
       .select(
-        "id, first_name, last_name, country_code, country_name, phone, whatsapp_opt_in, whatsapp_phone, address, id_document_url, status, admin_notes, created_at, updated_at",
+        "id, first_name, last_name, country_code, country_name, phone, whatsapp_opt_in, whatsapp_phone, address, status, admin_notes, created_at, updated_at",
       )
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
@@ -106,34 +101,8 @@ export function ClashWalletKycSection({
 
     const country = getKycCountryByCode(countryCode) ?? DEFAULT_KYC_COUNTRY;
     const fullPhone = buildFullPhoneNumber(country, localPhone);
-    const whatsappPhone = whatsappOptIn ? fullPhone : null;
-
-    if (!idFile) {
-      setError(t.wallet.kycIdRequired);
-      setSubmitting(false);
-      return;
-    }
-
-    if (!idFile.type.startsWith("image/")) {
-      setError(t.wallet.kycInvalidImage);
-      setSubmitting(false);
-      return;
-    }
-
-    if (idFile.size > MAX_ID_IMAGE_BYTES) {
-      setError(t.wallet.kycImageTooLarge);
-      setSubmitting(false);
-      return;
-    }
 
     try {
-      const extension = idFile.name.split(".").pop()?.toLowerCase() || "jpg";
-      const uploaded = await uploadMediaFile({
-        folder: "kyc",
-        filename: `id-${Date.now()}.${extension}`,
-        file: idFile,
-      });
-
       const { error: rpcError } = await supabase!.rpc("submit_payout_kyc", {
         p_first_name: firstName.trim(),
         p_last_name: lastName.trim(),
@@ -141,9 +110,8 @@ export function ClashWalletKycSection({
         p_country_name: getKycCountryLabel(country, locale),
         p_phone: fullPhone,
         p_address: address.trim(),
-        p_id_document_url: uploaded.publicUrl,
         p_whatsapp_opt_in: whatsappOptIn,
-        p_whatsapp_phone: whatsappPhone,
+        p_whatsapp_phone: whatsappOptIn ? fullPhone : null,
       });
 
       if (rpcError) {
@@ -159,10 +127,9 @@ export function ClashWalletKycSection({
       setLocalPhone("");
       setWhatsappOptIn(false);
       setAddress("");
-      setIdFile(null);
       await loadSubmission();
-    } catch (uploadError) {
-      setError(uploadError instanceof Error ? uploadError.message : t.wallet.kycSubmitFailed);
+    } catch (submitError) {
+      setError(submitError instanceof Error ? submitError.message : t.wallet.kycSubmitFailed);
     }
 
     setSubmitting(false);
@@ -284,17 +251,6 @@ export function ClashWalletKycSection({
           className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm dark:border-zinc-700 dark:bg-zinc-950"
         />
       </label>
-
-      <label className="mt-4 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-        {t.wallet.kycIdLabel}
-        <input
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          onChange={(event) => setIdFile(event.target.files?.[0] ?? null)}
-          className="mt-2 block w-full text-sm text-zinc-600 file:me-3 file:rounded-full file:border-0 file:bg-zinc-100 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-zinc-700 dark:text-zinc-400 dark:file:bg-zinc-800 dark:file:text-zinc-200"
-        />
-      </label>
-      <p className="mt-2 text-xs text-zinc-500">{t.wallet.kycIdHint}</p>
 
       <button
         type="submit"
