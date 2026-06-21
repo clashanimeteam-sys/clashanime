@@ -114,6 +114,9 @@ async function uploadViaPresignedUrl({
 
   if (!uploadResponse.ok) {
     await deleteMediaObjects([presignPayload.key]).catch(() => undefined);
+    if (uploadResponse.status === 403) {
+      throw new Error("r2 upload forbidden (check CORS on clashanime-media bucket)");
+    }
     throw new Error(`upload failed (${uploadResponse.status})`);
   }
 

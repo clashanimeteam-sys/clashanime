@@ -255,6 +255,9 @@ export function UploadVideoForm() {
     if (error.message.includes("r2 direct upload blocked")) {
       return messages.r2UploadBlocked;
     }
+    if (error.message.includes("r2 upload forbidden") || error.message.includes("check CORS")) {
+      return messages.r2UploadBlocked;
+    }
     if (error.message === "Failed to fetch") {
       return messages.uploadFailed;
     }

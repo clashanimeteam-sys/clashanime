@@ -22,7 +22,6 @@ export async function createPresignedMediaUploadUrl(params: {
   const command = new PutObjectCommand({
     Bucket: config.bucketName,
     Key: key,
-    ContentType: params.contentType,
   });
 
   const uploadUrl = await getSignedUrl(client, command, { expiresIn: 60 * 10 });

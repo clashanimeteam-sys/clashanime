@@ -26,6 +26,9 @@ export function getR2S3Client(): S3Client | null {
         accessKeyId: config.accessKeyId,
         secretAccessKey: config.secretAccessKey,
       },
+      // R2 rejects default AWS SDK checksum headers on presigned browser PUTs.
+      requestChecksumCalculation: "WHEN_REQUIRED",
+      responseChecksumValidation: "WHEN_REQUIRED",
     });
   }
 
