@@ -109,6 +109,47 @@ export function formatNotificationText(
         typeLabel,
       };
     }
+    case "video_like": {
+      const name = metaString(metadata, "actor_display_name") || metaString(metadata, "actor_username") || "Someone";
+      const title = metaString(metadata, "video_title") || "";
+      return {
+        title: types.video_like.title,
+        body: title
+          ? applyTemplate(types.video_like.bodyWithTitle, { name, title })
+          : applyTemplate(types.video_like.body, { name }),
+        typeLabel,
+      };
+    }
+    case "video_comment": {
+      const name = metaString(metadata, "actor_display_name") || metaString(metadata, "actor_username") || "Someone";
+      const preview = metaString(metadata, "preview");
+      return {
+        title: types.video_comment.title,
+        body: preview
+          ? applyTemplate(types.video_comment.bodyWithPreview, { name, preview })
+          : applyTemplate(types.video_comment.body, { name }),
+        typeLabel,
+      };
+    }
+    case "comment_reply": {
+      const name = metaString(metadata, "actor_display_name") || metaString(metadata, "actor_username") || "Someone";
+      const preview = metaString(metadata, "preview");
+      return {
+        title: types.comment_reply.title,
+        body: preview
+          ? applyTemplate(types.comment_reply.bodyWithPreview, { name, preview })
+          : applyTemplate(types.comment_reply.body, { name }),
+        typeLabel,
+      };
+    }
+    case "comment_like": {
+      const name = metaString(metadata, "actor_display_name") || metaString(metadata, "actor_username") || "Someone";
+      return {
+        title: types.comment_like.title,
+        body: applyTemplate(types.comment_like.body, { name }),
+        typeLabel,
+      };
+    }
     case "mention":
       return {
         title: row.title || t.mentionTitle,
@@ -140,6 +181,10 @@ export const NOTIFICATION_TYPE_KEYS = [
   "points_duel_accepted",
   "season_start",
   "season_end",
+  "video_like",
+  "video_comment",
+  "comment_reply",
+  "comment_like",
   "mention",
   "broadcast",
   "system",

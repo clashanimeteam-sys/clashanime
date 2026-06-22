@@ -448,6 +448,10 @@ export type Dictionary = {
       points_duel_accepted: { label: string; title: string; body: string };
       season_start: { label: string; title: string; body: string };
       season_end: { label: string; title: string; body: string };
+      video_like: { label: string; title: string; body: string; bodyWithTitle: string };
+      video_comment: { label: string; title: string; body: string; bodyWithPreview: string };
+      comment_reply: { label: string; title: string; body: string; bodyWithPreview: string };
+      comment_like: { label: string; title: string; body: string };
       mention: { label: string };
       broadcast: { label: string };
       system: { label: string };
@@ -1597,6 +1601,25 @@ export const dictionaries: Record<Locale, Dictionary> = {
         points_duel_accepted: { label: "Duel accepted", title: "Duel accepted", body: "{name} accepted your points duel" },
         season_start: { label: "Season start", title: "New season started", body: "{season} is now live. Climb the ranks!" },
         season_end: { label: "Season end", title: "Season ended", body: "{season} has ended. Check the Hall of Legends!" },
+        video_like: {
+          label: "Like",
+          title: "New like",
+          body: "{name} liked your clip",
+          bodyWithTitle: "{name} liked your clip: {title}",
+        },
+        video_comment: {
+          label: "Comment",
+          title: "New comment",
+          body: "{name} commented on your clip",
+          bodyWithPreview: "{name} commented: {preview}",
+        },
+        comment_reply: {
+          label: "Reply",
+          title: "New reply",
+          body: "{name} replied to your comment",
+          bodyWithPreview: "{name} replied: {preview}",
+        },
+        comment_like: { label: "Comment like", title: "Comment liked", body: "{name} liked your comment" },
         mention: { label: "Mention" },
         broadcast: { label: "Broadcast" },
         system: { label: "System" },
@@ -2752,6 +2775,25 @@ export const dictionaries: Record<Locale, Dictionary> = {
         points_duel_accepted: { label: "対戦承諾", title: "対戦が承諾されました", body: "{name}さんがポイント対戦を承諾しました" },
         season_start: { label: "シーズン開始", title: "新シーズン開始", body: "{season}が開始しました。ランキングを目指そう！" },
         season_end: { label: "シーズン終了", title: "シーズン終了", body: "{season}が終了しました。殿堂をチェック！" },
+        video_like: {
+          label: "いいね",
+          title: "新しいいいね",
+          body: "{name}さんがあなたのクリップにいいねしました",
+          bodyWithTitle: "{name}さんがいいね: {title}",
+        },
+        video_comment: {
+          label: "コメント",
+          title: "新しいコメント",
+          body: "{name}さんがあなたのクリップにコメントしました",
+          bodyWithPreview: "{name}さん: {preview}",
+        },
+        comment_reply: {
+          label: "返信",
+          title: "新しい返信",
+          body: "{name}さんがあなたのコメントに返信しました",
+          bodyWithPreview: "{name}さん: {preview}",
+        },
+        comment_like: { label: "コメントいいね", title: "コメントにいいね", body: "{name}さんがあなたのコメントにいいねしました" },
         mention: { label: "メンション" },
         broadcast: { label: "一斉通知" },
         system: { label: "システム" },
@@ -3904,6 +3946,25 @@ export const dictionaries: Record<Locale, Dictionary> = {
         points_duel_accepted: { label: "قبول التحدي", title: "تم قبول التحدي", body: "{name} قبل تحدي النقاط" },
         season_start: { label: "بداية موسم", title: "موسم جديد", body: "{season} بدأ الآن. تسلّق الترتيب!" },
         season_end: { label: "نهاية موسم", title: "انتهى الموسم", body: "انتهى {season}. راجع قاعة الأساطير!" },
+        video_like: {
+          label: "إعجاب",
+          title: "إعجاب جديد",
+          body: "أعجب {name} بمقطعك",
+          bodyWithTitle: "أعجب {name} بمقطعك: {title}",
+        },
+        video_comment: {
+          label: "تعليق",
+          title: "تعليق جديد",
+          body: "علّق {name} على مقطعك",
+          bodyWithPreview: "تعليق {name}: {preview}",
+        },
+        comment_reply: {
+          label: "رد",
+          title: "رد جديد",
+          body: "رد {name} على تعليقك",
+          bodyWithPreview: "رد {name}: {preview}",
+        },
+        comment_like: { label: "إعجاب تعليق", title: "إعجاب على تعليق", body: "أعجب {name} بتعليقك" },
         mention: { label: "إشارة" },
         broadcast: { label: "بث" },
         system: { label: "النظام" },
