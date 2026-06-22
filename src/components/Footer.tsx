@@ -14,6 +14,7 @@ const discoverLinks = [
 
 const informationLinks = [
   { key: "privacy" as const, href: "/privacy" },
+  { key: "cookies" as const, href: "/cookies" },
   { key: "terms" as const, href: "/terms" },
   { key: "communityGuidelines" as const, href: "/community-guidelines" },
   { key: "dmca" as const, href: "/dmca" },
