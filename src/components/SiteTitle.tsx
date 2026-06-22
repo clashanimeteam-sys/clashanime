@@ -1,51 +1,72 @@
 "use client";
 
+import { Fredoka } from "next/font/google";
+
+const doodleFont = Fredoka({
+  subsets: ["latin"],
+  weight: ["600", "700"],
+});
+
 type SiteTitleProps = {
   primary: string;
   secondary: string;
 };
 
-function AnimatedLetter({
+/** Google Doodle-style palette — warm clash + classic multi-color anime word */
+const CLASH_COLORS = ["#ef4444", "#f97316", "#facc15", "#dc2626", "#fb923c"] as const;
+const ANIME_COLORS = ["#4285f4", "#ea4335", "#fbbc04", "#4285f4", "#34a853"] as const;
+
+const LETTER_TILTS = [-4, 2, -2, 3, -3, 2, -3, 1, -2, 3, -1] as const;
+
+function DoodleLetter({
   char,
+  color,
   index,
-  variant,
+  peek,
 }: {
   char: string;
+  color: string;
   index: number;
-  variant: "primary" | "secondary";
+  peek?: boolean;
 }) {
   if (char === " ") {
-    return <span className="inline-block w-[0.35em]" aria-hidden />;
+    return <span className="inline-block w-[0.22em]" aria-hidden />;
   }
 
-  const enterDelay = `${index * 0.07}s`;
-  const floatDelay = `${index * 0.11}s`;
-  const trailDelay = `${index * 0.11}s`;
+  const tilt = LETTER_TILTS[index % LETTER_TILTS.length];
 
   return (
     <span
-      className="anime-title-letter relative inline-block will-change-transform"
-      style={
-        {
-          "--enter-delay": enterDelay,
-          "--float-delay": floatDelay,
-          "--trail-delay": trailDelay,
-        } as React.CSSProperties
-      }
+      className={`doodle-letter-slot ${peek ? "doodle-letter-slot-peek" : ""}`}
+      style={{ "--doodle-tilt": `${tilt}deg` } as React.CSSProperties}
     >
+      {peek ? (
+        <span className="doodle-peek" aria-hidden>
+          <svg viewBox="0 0 48 64" className="h-[0.72em] w-[0.52em]" fill="none">
+            <path
+              d="M24 8c-8 0-14 6-14 14 0 4 2 8 5 10v2c-3 2-5 6-5 10 0 7 6 12 14 12s14-5 14-12c0-4-2-8-5-10v-2c3-2 5-6 5-10 0-8-6-14-14-14Z"
+              fill="#1d4ed8"
+            />
+            <path
+              d="M10 18c-4-6-2-14 6-16M38 18c4-6 2-14-6-16M16 6l4 8M32 6l-4 8"
+              stroke="#172554"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            />
+            <circle cx="19" cy="26" r="2" fill="#fff" />
+            <circle cx="29" cy="26" r="2" fill="#fff" />
+            <path d="M20 32c2 2 6 2 8 0" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
+            <path d="M8 42l6-10M40 42l-6-10" stroke="#1d4ed8" strokeWidth="3" strokeLinecap="round" />
+          </svg>
+        </span>
+      ) : null}
       <span
-        className={`anime-title-trail pointer-events-none absolute inset-0 select-none ${
-          variant === "primary" ? "anime-title-trail-primary" : "anime-title-trail-secondary"
-        }`}
-        aria-hidden
-      >
-        {char}
-      </span>
-      <span
-        className={
-          variant === "primary"
-            ? "relative bg-gradient-to-br from-brand via-red-600 to-orange-500 bg-clip-text text-transparent drop-shadow-[0_2px_12px_rgba(179,27,27,0.35)]"
-            : "relative text-black dark:text-white"
+        className="doodle-bubble-letter"
+        style={
+          {
+            "--doodle-fill": color,
+            "--doodle-depth": color,
+          } as React.CSSProperties
         }
       >
         {char}
@@ -54,29 +75,43 @@ function AnimatedLetter({
   );
 }
 
-function splitLetters(text: string, startIndex: number, variant: "primary" | "secondary") {
-  return [...text].map((char, offset) => (
-    <AnimatedLetter key={`${variant}-${startIndex + offset}`} char={char} index={startIndex + offset} variant={variant} />
-  ));
-}
-
 export function SiteTitle({ primary, secondary }: SiteTitleProps) {
-  const secondaryStart = primary.length + 1;
+  const primaryChars = [...primary.toUpperCase()];
+  const secondaryChars = [...secondary.toUpperCase()];
 
   return (
-    <div className="anime-title-wrap relative inline-block max-w-full">
-      <div className="anime-title-speed-lines pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-        <span className="anime-title-speed-line anime-title-speed-line-1" />
-        <span className="anime-title-speed-line anime-title-speed-line-2" />
-        <span className="anime-title-speed-line anime-title-speed-line-3" />
-      </div>
-      <div className="anime-title-aura pointer-events-none absolute -inset-x-6 -inset-y-3 rounded-[2rem] opacity-70" aria-hidden />
-
-      <h1 className="anime-title-heading relative font-display text-4xl font-black uppercase tracking-[0.14em] sm:text-5xl lg:text-6xl">
-        {splitLetters(primary, 0, "primary")}
-        <span className="inline-block w-[0.28em]" aria-hidden />
-        {splitLetters(secondary, secondaryStart, "secondary")}
+    <div className={`doodle-logo-wrap ${doodleFont.className}`}>
+      <div className="doodle-logo-shadow" aria-hidden />
+      <h1 className="doodle-logo" aria-label={`${primary} ${secondary}`}>
+        <span className="doodle-word doodle-word-clash">
+          {primaryChars.map((char, index) => (
+            <DoodleLetter
+              key={`c-${index}`}
+              char={char}
+              color={CLASH_COLORS[index % CLASH_COLORS.length]}
+              index={index}
+            />
+          ))}
+        </span>
+        <span className="doodle-word-gap" aria-hidden />
+        <span className="doodle-word doodle-word-anime">
+          {secondaryChars.map((char, index) => (
+            <DoodleLetter
+              key={`a-${index}`}
+              char={char}
+              color={ANIME_COLORS[index % ANIME_COLORS.length]}
+              index={primaryChars.length + index}
+              peek={char === "A" && index === 0}
+            />
+          ))}
+        </span>
       </h1>
+      <div className="doodle-spark doodle-spark-1" aria-hidden>
+        ✦
+      </div>
+      <div className="doodle-spark doodle-spark-2" aria-hidden>
+        ★
+      </div>
     </div>
   );
 }
