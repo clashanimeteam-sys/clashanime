@@ -1,5 +1,6 @@
 "use client";
 
+import { ClashLiveBadge } from "@/components/clash/ClashLiveBadge";
 import { ClashPrizeBanner } from "@/components/clash/ClashPrizeBanner";
 import { ClashVideosBackdrop } from "@/components/clash/ClashVideosBackdrop";
 import { SeasonCountdown } from "@/components/clash/SeasonCountdown";
@@ -51,6 +52,9 @@ export function HomeContent({ videos, activeSeason }: HomeContentProps) {
             primary={t.home.titlePrimary}
             secondary={t.home.titleSecondary}
           />
+          <div className="mt-3 md:hidden">
+            <ClashLiveBadge />
+          </div>
           <p className="mt-3 max-w-2xl text-sm text-zinc-700 sm:text-base dark:text-zinc-300">
             {t.home.subtitle}
           </p>
