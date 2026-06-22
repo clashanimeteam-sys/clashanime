@@ -127,6 +127,14 @@ export function formatNotificationText(
           typeLabel,
         };
       }
+      case "anime_release_clash": {
+        const anime = metaString(metadata, "anime_title") || "A new anime";
+        return {
+          title: typeField(types, "anime_release_clash", "title", row.title),
+          body: applyTemplate(typeField(types, "anime_release_clash", "body", row.body), { anime }),
+          typeLabel,
+        };
+      }
       case "video_like": {
         const name = metaString(metadata, "actor_display_name") || metaString(metadata, "actor_username") || "Someone";
         const title = metaString(metadata, "video_title") || "";

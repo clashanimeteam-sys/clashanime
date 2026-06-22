@@ -17,6 +17,7 @@ const mainNavItems = [
   { key: "community" as const, href: "/community", icon: "users" },
   { key: "music" as const, href: "/music", icon: "music" },
   { key: "exclusives" as const, href: "/exclusives", icon: "star" },
+  { key: "animeTracker" as const, href: "/tracker", icon: "radar" },
   { key: "clashCoins" as const, href: "/profile#wallet", icon: "wallet", wallet: true as const },
 ];
 
@@ -110,6 +111,17 @@ function NavIcon({ icon }: { icon: string }) {
         <circle cx="9" cy="7" r="4" />
         <path d="M19 8v6" />
         <path d="M22 11h-6" />
+      </svg>
+    );
+  }
+  if (icon === "radar") {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+        <circle cx="12" cy="12" r="2" />
+        <path d="M12 2v2M12 20v2M2 12h2M20 12h2" />
+        <path d="M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        <circle cx="12" cy="12" r="6" />
+        <circle cx="12" cy="12" r="9" />
       </svg>
     );
   }

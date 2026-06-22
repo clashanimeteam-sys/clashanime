@@ -10,6 +10,7 @@ const discoverLinks = [
   { key: "community" as const, href: "/community" },
   { key: "music" as const, href: "/music" },
   { key: "exclusives" as const, href: "/exclusives" },
+  { key: "animeTracker" as const, href: "/tracker" },
 ] as const;
 
 const informationLinks = [

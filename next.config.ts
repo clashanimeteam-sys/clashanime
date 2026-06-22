@@ -23,6 +23,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "listen.moe",
       },
+      {
+        protocol: "https",
+        hostname: "s4.anilist.co",
+      },
     ],
   },
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimeTrackerBanner } from "@/components/tracker/AnimeTrackerBanner";
 import { LiveClashCounter } from "@/components/clash/LiveClashCounter";
 import { ClashPrizeBanner } from "@/components/clash/ClashPrizeBanner";
 import { ClashVideosBackdrop } from "@/components/clash/ClashVideosBackdrop";
@@ -8,6 +9,7 @@ import { HallOfLegends } from "@/components/exclusives/HallOfLegends";
 import { VideoCard } from "@/components/VideoCard";
 import type { ClashSeason } from "@/lib/clashSeasons";
 import type { HallOfLegendsSeason } from "@/lib/hallOfLegends";
+import type { AnimeReleaseClash } from "@/lib/animeTracker";
 import type { ClashArenaStats } from "@/lib/videos";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Video } from "@/lib/types";
@@ -17,11 +19,18 @@ type HomeContentProps = {
   activeSeason: ClashSeason | null;
   arenaStats: ClashArenaStats;
   legendSeasons: HallOfLegendsSeason[];
+  activeReleaseClashes: AnimeReleaseClash[];
 };
 
 const PODIUM_ORDER = [1, 2, 3] as const;
 
-export function HomeContent({ videos, activeSeason, arenaStats, legendSeasons }: HomeContentProps) {
+export function HomeContent({
+  videos,
+  activeSeason,
+  arenaStats,
+  legendSeasons,
+  activeReleaseClashes,
+}: HomeContentProps) {
   const { t } = useLocale();
 
   const podiumVideos = PODIUM_ORDER.map((rank) =>
@@ -54,6 +63,8 @@ export function HomeContent({ videos, activeSeason, arenaStats, legendSeasons }:
         <section className="mb-8">
           <LiveClashCounter initialStats={arenaStats} />
         </section>
+
+        <AnimeTrackerBanner clashes={activeReleaseClashes} />
 
         <ClashPrizeBanner activeSeason={activeSeason} />
 

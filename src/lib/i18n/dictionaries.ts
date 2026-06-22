@@ -11,6 +11,7 @@ export type Dictionary = {
     community: string;
     music: string;
     exclusives: string;
+    animeTracker: string;
     hunterSystem: string;
     bountyRewards: string;
     inviteFriends: string;
@@ -130,6 +131,8 @@ export type Dictionary = {
     videosSubtitle: string;
     exclusivesTitle: string;
     exclusivesSubtitle: string;
+    animeTrackerTitle: string;
+    animeTrackerSubtitle: string;
     communityTitle: string;
     communitySubtitle: string;
     communityBody: string;
@@ -141,6 +144,27 @@ export type Dictionary = {
     videosSearchPlaceholder: string;
     videosSearchResults: string;
     emptyVideoSearch: string;
+  };
+  animeTracker: {
+    badge: string;
+    todayTitle: string;
+    upcomingTitle: string;
+    activeClashesTitle: string;
+    liveClashBadge: string;
+    enterClash: string;
+    clipCount: string;
+    noToday: string;
+    noUpcoming: string;
+    episodeLabel: string;
+    scheduledHint: string;
+    backToTracker: string;
+    clashSubtitle: string;
+    uploadClip: string;
+    matchTagsHint: string;
+    leaderboardTitle: string;
+    noClipsYet: string;
+    bannerBadge: string;
+    bannerTitle: string;
   };
   exclusives: {
     dailyHallBadge: string;
@@ -450,6 +474,7 @@ export type Dictionary = {
       points_duel_accepted: { label: string; title: string; body: string };
       season_start: { label: string; title: string; body: string };
       season_end: { label: string; title: string; body: string };
+      anime_release_clash: { label: string; title: string; body: string };
       video_like: { label: string; title: string; body: string; bodyWithTitle: string };
       video_comment: { label: string; title: string; body: string; bodyWithPreview: string };
       comment_reply: { label: string; title: string; body: string; bodyWithPreview: string };
@@ -967,6 +992,7 @@ export type Dictionary = {
       seasons: string;
       legends: string;
       beatsLounge: string;
+      animeTracker: string;
       contact: string;
       emails: string;
       broadcast: string;
@@ -1055,6 +1081,34 @@ export type Dictionary = {
       approved: string;
       rejected: string;
     };
+    animeTracker: {
+      title: string;
+      subtitle: string;
+      todayCount: string;
+      upcomingCount: string;
+      activeClashes: string;
+      syncButton: string;
+      syncing: string;
+      syncSuccess: string;
+      syncFailed: string;
+      addTitle: string;
+      titleLabel: string;
+      titleArLabel: string;
+      titleJaLabel: string;
+      episodeLabel: string;
+      posterLabel: string;
+      tagsLabel: string;
+      openClashNow: string;
+      addButton: string;
+      listTitle: string;
+      empty: string;
+      openClashButton: string;
+      viewClash: string;
+      deleteButton: string;
+      deleteConfirm: string;
+      created: string;
+      clashOpened: string;
+    };
     roles: {
       user: string;
       moderator: string;
@@ -1139,6 +1193,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       community: "Community",
       music: "Anime Radio",
       exclusives: "Exclusives",
+      animeTracker: "Anime Tracker",
       hunterSystem: "Bounty Hunter System",
       bountyRewards: "Latest bounty rewards",
       inviteFriends: "Invite friends",
@@ -1261,6 +1316,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "All approved videos, newest first. Each card shows its global rank. Top 12 also appear in Clash.",
       exclusivesTitle: "Exclusives",
       exclusivesSubtitle: "Clips from verified creators on ClashAnime.",
+      animeTrackerTitle: "Anime Tracker",
+      animeTrackerSubtitle:
+        "See what drops today and jump into release clashes for the best clips the moment a new episode lands.",
       communityTitle: "Anime Community",
       communitySubtitle: "Follow creators, comment on duels, and climb the grid together.",
       communityBody:
@@ -1274,6 +1332,27 @@ export const dictionaries: Record<Locale, Dictionary> = {
       videosSearchPlaceholder: "Search anime...",
       videosSearchResults: "{count} videos found",
       emptyVideoSearch: 'No videos found for "{query}".',
+    },
+    animeTracker: {
+      badge: "New release radar",
+      todayTitle: "Releasing today",
+      upcomingTitle: "Coming soon",
+      activeClashesTitle: "Live release clashes",
+      liveClashBadge: "Release clash live",
+      enterClash: "Enter clash",
+      clipCount: "{count} clips competing",
+      noToday: "No anime episodes scheduled for today yet. Sync AniList or add releases in admin.",
+      noUpcoming: "No upcoming releases in the next 14 days.",
+      episodeLabel: "Episode {episode}",
+      scheduledHint: "A special clash opens automatically on release day.",
+      backToTracker: "Back to Anime Tracker",
+      clashSubtitle: "Upload clips tagged with this anime and battle for the top spot while the trend is hot.",
+      uploadClip: "Upload your clip",
+      matchTagsHint: "Use hashtags like {tags} on your upload to join this clash.",
+      leaderboardTitle: "Best clips right now",
+      noClipsYet: "No clips yet. Be the first to drop a scene from this release.",
+      bannerBadge: "Trending release",
+      bannerTitle: "{title} just dropped — join the release clash",
     },
     exclusives: {
       dailyHallBadge: "Daily Hall of Fame",
@@ -1605,6 +1684,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
         points_duel_accepted: { label: "Duel accepted", title: "Duel accepted", body: "{name} accepted your points duel" },
         season_start: { label: "Season start", title: "New season started", body: "{season} is now live. Climb the ranks!" },
         season_end: { label: "Season end", title: "Season ended", body: "{season} has ended. Check the Hall of Legends!" },
+        anime_release_clash: {
+          label: "Release clash",
+          title: "New release clash",
+          body: "{anime} just dropped. Submit your best clip!",
+        },
         video_like: {
           label: "Like",
           title: "New like",
@@ -2153,6 +2237,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         seasons: "Clash seasons",
         legends: "Hall of Legends",
         beatsLounge: "Anime Beats Lounge",
+        animeTracker: "Anime Tracker",
         contact: "Contact inbox",
         emails: "Emails",
         broadcast: "Broadcast",
@@ -2241,6 +2326,34 @@ export const dictionaries: Record<Locale, Dictionary> = {
         approved: "Track approved.",
         rejected: "Track rejected.",
       },
+      animeTracker: {
+        title: "Anime Tracker",
+        subtitle: "Manage release schedule, sync AniList, and open release clashes when episodes drop.",
+        todayCount: "Releases today",
+        upcomingCount: "Upcoming (14 days)",
+        activeClashes: "Active release clashes",
+        syncButton: "Sync AniList + process clashes",
+        syncing: "Syncing…",
+        syncSuccess: "Synced {synced} releases. Opened {opened} clashes.",
+        syncFailed: "AniList sync failed.",
+        addTitle: "Add release manually",
+        titleLabel: "Anime title",
+        titleArLabel: "Arabic title (optional)",
+        titleJaLabel: "Japanese title (optional)",
+        episodeLabel: "Episode number",
+        posterLabel: "Poster URL (optional)",
+        tagsLabel: "Match hashtags (comma separated, optional)",
+        openClashNow: "Open release clash immediately",
+        addButton: "Add release",
+        listTitle: "All releases",
+        empty: "No releases yet.",
+        openClashButton: "Open clash",
+        viewClash: "View clash",
+        deleteButton: "Delete",
+        deleteConfirm: "Delete this release from the tracker?",
+        created: "Release added.",
+        clashOpened: "Release clash opened.",
+      },
       roles: {
         user: "User",
         moderator: "Moderator",
@@ -2323,6 +2436,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       community: "コミュニティ",
       music: "アニメラジオ",
       exclusives: "限定",
+      animeTracker: "新作アニメレーダー",
       hunterSystem: "賞金ハンターシステム",
       bountyRewards: "最新の報酬",
       inviteFriends: "友達を招待",
@@ -2445,6 +2559,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "承認済みの全動画を新しい順に表示。各カードに世界ランクを表示。トップ12はクラッシュにも表示されます。",
       exclusivesTitle: "限定",
       exclusivesSubtitle: "認証済みクリエイターのクリップ。",
+      animeTrackerTitle: "新作アニメレーダー",
+      animeTrackerSubtitle: "今日放送の作品と、新エピソード公開時に自動で始まるリリースクラッシュをチェック。",
       communityTitle: "アニメコミュニティ",
       communitySubtitle: "クリエイターをフォローし、コメントしてグリッドを競おう。",
       communityBody:
@@ -2457,6 +2573,27 @@ export const dictionaries: Record<Locale, Dictionary> = {
       videosSearchPlaceholder: "アニメを検索...",
       videosSearchResults: "{count} 件の動画",
       emptyVideoSearch: "「{query}」に一致する動画はありません。",
+    },
+    animeTracker: {
+      badge: "新作レーダー",
+      todayTitle: "本日の放送",
+      upcomingTitle: "近日公開",
+      activeClashesTitle: "開催中のリリースクラッシュ",
+      liveClashBadge: "リリースクラッシュ開催中",
+      enterClash: "クラッシュへ",
+      clipCount: "{count} 本のクリップが参加中",
+      noToday: "本日予定の放送はまだありません。",
+      noUpcoming: "14日以内の予定はありません。",
+      episodeLabel: "第{episode}話",
+      scheduledHint: "放送日に自動で特別クラッシュが開始されます。",
+      backToTracker: "レーダーに戻る",
+      clashSubtitle: "この作品のハッシュタグ付きクリップをアップロードして、トレンド中に頂点を目指そう。",
+      uploadClip: "クリップをアップロード",
+      matchTagsHint: "アップロード時に {tags} などのタグを付けて参加。",
+      leaderboardTitle: "現在のベストクリップ",
+      noClipsYet: "まだクリップがありません。最初のシーンを投稿しよう。",
+      bannerBadge: "話題の新作",
+      bannerTitle: "{title} が公開 — リリースクラッシュに参加",
     },
     exclusives: {
       dailyHallBadge: "デイリー殿堂",
@@ -2781,6 +2918,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
         points_duel_accepted: { label: "対戦承諾", title: "対戦が承諾されました", body: "{name}さんがポイント対戦を承諾しました" },
         season_start: { label: "シーズン開始", title: "新シーズン開始", body: "{season}が開始しました。ランキングを目指そう！" },
         season_end: { label: "シーズン終了", title: "シーズン終了", body: "{season}が終了しました。殿堂をチェック！" },
+        anime_release_clash: {
+          label: "リリースクラッシュ",
+          title: "新リリースクラッシュ",
+          body: "{anime} が公開されました。ベストクリップを投稿！",
+        },
         video_like: {
           label: "いいね",
           title: "新しいいいね",
@@ -3323,6 +3465,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         seasons: "クラッシュシーズン",
         legends: "伝説の殿堂",
         beatsLounge: "アニメ・ビーツ・ラウンジ",
+        animeTracker: "新作アニメレーダー",
         contact: "お問い合わせ受信箱",
         emails: "メール",
         broadcast: "一斉メール",
@@ -3411,6 +3554,34 @@ export const dictionaries: Record<Locale, Dictionary> = {
         approved: "承認しました。",
         rejected: "却下しました。",
       },
+      animeTracker: {
+        title: "新作アニメレーダー",
+        subtitle: "放送スケジュールを管理し、AniList同期とリリースクラッシュの自動開始を行います。",
+        todayCount: "本日の放送",
+        upcomingCount: "近日（14日）",
+        activeClashes: "開催中のクラッシュ",
+        syncButton: "AniList同期 + クラッシュ処理",
+        syncing: "同期中…",
+        syncSuccess: "{synced} 件同期。{opened} 件のクラッシュを開始。",
+        syncFailed: "AniList同期に失敗しました。",
+        addTitle: "手動で追加",
+        titleLabel: "アニメタイトル",
+        titleArLabel: "アラビア語タイトル（任意）",
+        titleJaLabel: "日本語タイトル（任意）",
+        episodeLabel: "話数",
+        posterLabel: "ポスターURL（任意）",
+        tagsLabel: "一致ハッシュタグ（カンマ区切り、任意）",
+        openClashNow: "すぐにリリースクラッシュを開始",
+        addButton: "追加",
+        listTitle: "すべてのリリース",
+        empty: "リリースがありません。",
+        openClashButton: "クラッシュ開始",
+        viewClash: "クラッシュを見る",
+        deleteButton: "削除",
+        deleteConfirm: "このリリースを削除しますか？",
+        created: "リリースを追加しました。",
+        clashOpened: "リリースクラッシュを開始しました。",
+      },
       roles: {
         user: "ユーザー",
         moderator: "モデレーター",
@@ -3493,6 +3664,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       community: "المجتمع",
       music: "راديو الأنمي",
       exclusives: "حصري",
+      animeTracker: "رادار الأنمي الجديد",
       hunterSystem: "نظام صياد الجوائز",
       bountyRewards: "آخر مكافآت الجوائز",
       inviteFriends: "ادعُ أصدقاءك",
@@ -3615,6 +3787,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "كل الفيديوهات المعتمدة من الأحدث، مع رقم المركز العالمي. المركز ١–١٢ يظهر أيضاً في النزالات.",
       exclusivesTitle: "حصري",
       exclusivesSubtitle: "مقاطع من القنوات الموثّقة على ClashAnime.",
+      animeTrackerTitle: "رادار الأنمي الجديد",
+      animeTrackerSubtitle: "تابع ما يُعرض اليوم، وادخل نزالات الإصدار لأفضل اللقطات لحظة نزول الحلقة.",
       communityTitle: "مجتمع الأنمي",
       communitySubtitle: "تابع المبدعين، علّق على النزالات، وتسلّق الشبكة معاً.",
       communityBody:
@@ -3627,6 +3801,27 @@ export const dictionaries: Record<Locale, Dictionary> = {
       videosSearchPlaceholder: "ابحث عن أنمي...",
       videosSearchResults: "تم العثور على {count} فيديو",
       emptyVideoSearch: 'لا توجد فيديوهات لـ "{query}".',
+    },
+    animeTracker: {
+      badge: "رادار الإصدارات",
+      todayTitle: "يُعرض اليوم",
+      upcomingTitle: "قريباً",
+      activeClashesTitle: "نزالات الإصدار المباشرة",
+      liveClashBadge: "نزال إصدار مباشر",
+      enterClash: "ادخل النزال",
+      clipCount: "{count} مقطع يتنافس",
+      noToday: "لا توجد حلقات مجدولة لليوم بعد.",
+      noUpcoming: "لا إصدارات خلال 14 يوماً القادمة.",
+      episodeLabel: "الحلقة {episode}",
+      scheduledHint: "يُفتح نزال خاص تلقائياً يوم الإصدار.",
+      backToTracker: "العودة للرادار",
+      clashSubtitle: "ارفع مقاطعك بوسم هذا الأنمي وتنافس على المركز الأول مع الترند العالمي.",
+      uploadClip: "ارفع مقطعك",
+      matchTagsHint: "استخدم وسوماً مثل {tags} في رفعك للانضمام لهذا النزال.",
+      leaderboardTitle: "أفضل المقاطع الآن",
+      noClipsYet: "لا مقاطع بعد. كن أول من ينشر مشهدًا من هذا الإصدار.",
+      bannerBadge: "إصدار رائج",
+      bannerTitle: "نزل {title} — انضم لنزال الإصدار",
     },
     exclusives: {
       dailyHallBadge: "لوحة الشرف اليومية",
@@ -3954,6 +4149,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
         points_duel_accepted: { label: "قبول التحدي", title: "تم قبول التحدي", body: "{name} قبل تحدي النقاط" },
         season_start: { label: "بداية موسم", title: "موسم جديد", body: "{season} بدأ الآن. تسلّق الترتيب!" },
         season_end: { label: "نهاية موسم", title: "انتهى الموسم", body: "انتهى {season}. راجع قاعة الأساطير!" },
+        anime_release_clash: {
+          label: "نزال إصدار",
+          title: "نزال إصدار جديد",
+          body: "نزل {anime}. ارفع أفضل لقطتك!",
+        },
         video_like: {
           label: "إعجاب",
           title: "إعجاب جديد",
@@ -4497,6 +4697,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         seasons: "مواسم النزال",
         legends: "أرشيف الأساطير",
         beatsLounge: "صالة إيقاعات الأنمي",
+        animeTracker: "رادار الأنمي الجديد",
         contact: "صندوق التواصل",
         emails: "الإيميلات",
         broadcast: "إيميل جماعي",
@@ -4584,6 +4785,34 @@ export const dictionaries: Record<Locale, Dictionary> = {
         created: "تمت إضافة المقطع.",
         approved: "تم اعتماد المقطع.",
         rejected: "تم رفض المقطع.",
+      },
+      animeTracker: {
+        title: "رادار الأنمي الجديد",
+        subtitle: "إدارة جدول الإصدارات، مزامنة AniList، وفتح نزالات الإصدار عند نزول الحلقات.",
+        todayCount: "إصدارات اليوم",
+        upcomingCount: "قريباً (14 يوم)",
+        activeClashes: "نزالات نشطة",
+        syncButton: "مزامنة AniList + معالجة النزالات",
+        syncing: "جاري المزامنة…",
+        syncSuccess: "تمت مزامنة {synced} إصدار. فُتح {opened} نزال.",
+        syncFailed: "فشلت مزامنة AniList.",
+        addTitle: "إضافة إصدار يدوياً",
+        titleLabel: "عنوان الأنمي",
+        titleArLabel: "العنوان بالعربية (اختياري)",
+        titleJaLabel: "العنوان باليابانية (اختياري)",
+        episodeLabel: "رقم الحلقة",
+        posterLabel: "رابط الملصق (اختياري)",
+        tagsLabel: "وسوم المطابقة (مفصولة بفاصلة، اختياري)",
+        openClashNow: "فتح نزال الإصدار فوراً",
+        addButton: "إضافة إصدار",
+        listTitle: "كل الإصدارات",
+        empty: "لا توجد إصدارات بعد.",
+        openClashButton: "فتح النزال",
+        viewClash: "عرض النزال",
+        deleteButton: "حذف",
+        deleteConfirm: "حذف هذا الإصدار من الرادار؟",
+        created: "تمت إضافة الإصدار.",
+        clashOpened: "تم فتح نزال الإصدار.",
       },
       roles: {
         user: "مستخدم",

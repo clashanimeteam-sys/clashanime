@@ -300,6 +300,11 @@ export function AdminDashboard() {
           href="/admin/beats-lounge"
         />
         <QuickLink
+          title={t.admin.animeTracker.title}
+          description={t.admin.animeTracker.subtitle}
+          href="/admin/anime-tracker"
+        />
+        <QuickLink
           title={t.admin.quickActions.animeRadioSettings}
           description={t.admin.quickActions.animeRadioSettingsDesc}
           href="/admin/settings#anime-radio"
