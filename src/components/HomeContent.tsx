@@ -58,7 +58,7 @@ export function HomeContent({ videos, activeSeason }: HomeContentProps) {
             primary={t.home.titlePrimary}
             secondary={t.home.titleSecondary}
           />
-          <p className="mt-3 max-w-2xl text-sm text-zinc-700 sm:text-base dark:text-zinc-300">
+          <p className="mt-3 max-w-2xl text-sm text-zinc-800 sm:text-base dark:text-zinc-200 [text-shadow:0_1px_10px_rgba(255,255,255,0.9)] dark:[text-shadow:0_1px_12px_rgba(0,0,0,0.85)]">
             {t.home.subtitle}
           </p>
         </section>
