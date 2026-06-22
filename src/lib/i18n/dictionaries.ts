@@ -275,6 +275,10 @@ export type Dictionary = {
     animePlaceholder: string;
     youtubePlaceholder: string;
     coverPlaceholder: string;
+    coverFromLibrary: string;
+    coverOrLink: string;
+    coverRemove: string;
+    coverUploadFailed: string;
     submitButton: string;
     submitting: string;
     submitSuccess: string;
@@ -1390,6 +1394,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       animePlaceholder: "Anime name (optional)",
       youtubePlaceholder: "YouTube URL or video ID",
       coverPlaceholder: "Cover image URL (optional)",
+      coverFromLibrary: "Choose from library",
+      coverOrLink: "Or paste image link",
+      coverRemove: "Remove cover",
+      coverUploadFailed: "Could not upload cover image. Try again.",
       submitButton: "Submit for review",
       submitting: "Submitting...",
       submitSuccess: "Track submitted! Staff will review it for the lounge.",
@@ -2522,6 +2530,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       animePlaceholder: "アニメ名（任意）",
       youtubePlaceholder: "YouTube URL または ID",
       coverPlaceholder: "カバー画像URL（任意）",
+      coverFromLibrary: "ライブラリから選択",
+      coverOrLink: "または画像リンクを貼り付け",
+      coverRemove: "カバーを削除",
+      coverUploadFailed: "カバー画像をアップロードできませんでした。",
       submitButton: "審査に提出",
       submitting: "送信中...",
       submitSuccess: "提出しました。スタッフが審査します。",
@@ -3644,6 +3656,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       animePlaceholder: "اسم الأنمي (اختياري)",
       youtubePlaceholder: "رابط YouTube أو معرف الفيديو",
       coverPlaceholder: "رابط صورة الغلاف (اختياري)",
+      coverFromLibrary: "اختر من المكتبة",
+      coverOrLink: "أو الصق رابط الصورة",
+      coverRemove: "إزالة الغلاف",
+      coverUploadFailed: "تعذّر رفع صورة الغلاف. حاول مرة أخرى.",
       submitButton: "إرسال للمراجعة",
       submitting: "جارٍ الإرسال...",
       submitSuccess: "تم الإرسال! سيراجعه الفريق للقائمة.",

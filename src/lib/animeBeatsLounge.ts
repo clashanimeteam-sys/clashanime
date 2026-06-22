@@ -1,3 +1,8 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { uploadToStorageWithFallback } from "@/lib/upload";
+
+export const BEATS_COVER_MAX_BYTES = 5 * 1024 * 1024;
+
 export type BeatsTrack = {
   id: string;
   title: string;
@@ -9,6 +14,38 @@ export type BeatsTrack = {
   sortOrder: number;
   userHasVoted: boolean;
 };
+
+export type BeatsCoverFileError = "invalid" | "tooLarge";
+
+export function validateBeatsCoverFile(file: File): BeatsCoverFileError | null {
+  if (!file.type.startsWith("image/")) return "invalid";
+  if (file.size > BEATS_COVER_MAX_BYTES) return "tooLarge";
+  return null;
+}
+
+export async function uploadBeatsCoverImage(
+  supabase: SupabaseClient,
+  config: { url: string },
+  userId: string,
+  file: File,
+): Promise<string> {
+  const extension = file.name.split(".").pop()?.toLowerCase() || "jpg";
+  const path = `${userId}/beats-${Date.now()}.${extension}`;
+  const filename = `beats-${Date.now()}.${extension}`;
+
+  const uploaded = await uploadToStorageWithFallback({
+    supabase,
+    config,
+    folder: "thumbnails",
+    bucket: "thumbnails",
+    storagePath: path,
+    filename,
+    file,
+    upsert: true,
+  });
+
+  return uploaded.publicUrl;
+}
 
 export function youtubeThumbnail(videoId: string) {
   return `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;

@@ -1,14 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { FormEvent, useState, type ReactNode } from "react";
+import { FormEvent, useEffect, useRef, useState, type ReactNode } from "react";
 import {
   isValidArtworkUrl,
   mapBeatsSubmitError,
   trackArtwork,
+  uploadBeatsCoverImage,
+  validateBeatsCoverFile,
   validateBeatsSubmission,
   type BeatsTrack,
 } from "@/lib/animeBeatsLounge";
+import { getSupabaseConfig } from "@/lib/supabase/config";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
 import { useBeatsLounge } from "@/providers/BeatsLoungeProvider";
@@ -171,6 +174,9 @@ export function BeatsTrackSubmitForm() {
   const [animeTitle, setAnimeTitle] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [artworkUrl, setArtworkUrl] = useState("");
+  const [coverFile, setCoverFile] = useState<File | null>(null);
+  const [coverFilePreview, setCoverFilePreview] = useState<string | null>(null);
+  const coverInputRef = useRef<HTMLInputElement>(null);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -184,7 +190,64 @@ export function BeatsTrackSubmitForm() {
     loginToSubmit: t.lounge.loginToSubmit,
   };
 
-  const coverPreview = isValidArtworkUrl(artworkUrl) && artworkUrl.trim() ? artworkUrl.trim() : null;
+  const coverPreview =
+    coverFilePreview ??
+    (isValidArtworkUrl(artworkUrl) && artworkUrl.trim() ? artworkUrl.trim() : null);
+
+  useEffect(() => {
+    return () => {
+      if (coverFilePreview?.startsWith("blob:")) {
+        URL.revokeObjectURL(coverFilePreview);
+      }
+    };
+  }, [coverFilePreview]);
+
+  function clearCoverSelection() {
+    if (coverFilePreview?.startsWith("blob:")) {
+      URL.revokeObjectURL(coverFilePreview);
+    }
+    setCoverFile(null);
+    setCoverFilePreview(null);
+    setArtworkUrl("");
+    if (coverInputRef.current) coverInputRef.current.value = "";
+  }
+
+  function handleCoverFileSelect(file: File | null) {
+    if (!file) return;
+
+    const fileError = validateBeatsCoverFile(file);
+    if (fileError === "invalid") {
+      setError(t.communityFeed.invalidImage);
+      setMessage(null);
+      return;
+    }
+    if (fileError === "tooLarge") {
+      setError(t.communityFeed.imageTooLarge);
+      setMessage(null);
+      return;
+    }
+
+    if (coverFilePreview?.startsWith("blob:")) {
+      URL.revokeObjectURL(coverFilePreview);
+    }
+
+    setCoverFile(file);
+    setCoverFilePreview(URL.createObjectURL(file));
+    setArtworkUrl("");
+    setError(null);
+  }
+
+  function handleArtworkUrlChange(value: string) {
+    if (coverFile || coverFilePreview) {
+      if (coverFilePreview?.startsWith("blob:")) {
+        URL.revokeObjectURL(coverFilePreview);
+      }
+      setCoverFile(null);
+      setCoverFilePreview(null);
+      if (coverInputRef.current) coverInputRef.current.value = "";
+    }
+    setArtworkUrl(value);
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -208,12 +271,31 @@ export function BeatsTrackSubmitForm() {
     setMessage(null);
     setError(null);
 
+    const config = getSupabaseConfig();
+    let resolvedArtworkUrl = artworkUrl.trim() || null;
+
+    if (coverFile) {
+      if (!config) {
+        setSaving(false);
+        setError(t.lounge.coverUploadFailed);
+        return;
+      }
+
+      try {
+        resolvedArtworkUrl = await uploadBeatsCoverImage(supabase, config, user.id, coverFile);
+      } catch {
+        setSaving(false);
+        setError(t.lounge.coverUploadFailed);
+        return;
+      }
+    }
+
     const { error: submitError } = await supabase.rpc("submit_anime_beats_track", {
       p_title: title.trim(),
       p_artist: artist.trim(),
       p_youtube_input: youtubeUrl.trim(),
       p_anime_title: animeTitle.trim() || null,
-      p_artwork_url: artworkUrl.trim() || null,
+      p_artwork_url: resolvedArtworkUrl,
     });
 
     setSaving(false);
@@ -227,7 +309,7 @@ export function BeatsTrackSubmitForm() {
     setArtist("");
     setAnimeTitle("");
     setYoutubeUrl("");
-    setArtworkUrl("");
+    clearCoverSelection();
     setMessage(t.lounge.submitSuccess);
   }
 
@@ -294,14 +376,31 @@ export function BeatsTrackSubmitForm() {
         </LoungeField>
 
         <LoungeField label={t.lounge.coverPlaceholder}>
-          <input
-            value={artworkUrl}
-            onChange={(event) => setArtworkUrl(event.target.value)}
-            placeholder="https://..."
-            className={fieldClass}
-            inputMode="url"
-            autoComplete="off"
-          />
+          <div className="space-y-3">
+            <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed border-fuchsia-400/50 bg-fuchsia-500/10 px-4 py-3 text-sm font-semibold text-fuchsia-100 transition hover:border-fuchsia-300 hover:bg-fuchsia-500/15">
+              {t.lounge.coverFromLibrary}
+              <input
+                ref={coverInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(event) => handleCoverFileSelect(event.target.files?.[0] ?? null)}
+              />
+            </label>
+
+            <p className="text-center text-xs font-medium text-zinc-400">{t.lounge.coverOrLink}</p>
+
+            <input
+              value={artworkUrl}
+              onChange={(event) => handleArtworkUrlChange(event.target.value)}
+              placeholder="https://..."
+              className={fieldClass}
+              inputMode="url"
+              autoComplete="off"
+              disabled={Boolean(coverFile)}
+            />
+          </div>
+
           {coverPreview ? (
             <div className="mt-3 flex items-center gap-3 rounded-xl border-2 border-zinc-600 bg-zinc-950 p-3">
               <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg ring-2 ring-fuchsia-400/40">
@@ -314,7 +413,18 @@ export function BeatsTrackSubmitForm() {
                   unoptimized
                 />
               </div>
-              <p className="text-xs text-zinc-400">{t.lounge.coverPlaceholder}</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-medium text-zinc-300">
+                  {coverFile ? t.lounge.coverFromLibrary : t.lounge.coverPlaceholder}
+                </p>
+                <button
+                  type="button"
+                  onClick={clearCoverSelection}
+                  className="mt-1 text-xs font-semibold text-fuchsia-300 hover:text-fuchsia-200"
+                >
+                  {t.lounge.coverRemove}
+                </button>
+              </div>
             </div>
           ) : null}
         </LoungeField>
