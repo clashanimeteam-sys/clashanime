@@ -1,13 +1,34 @@
-import { copyFileSync, existsSync } from "node:fs";
 import { execSync } from "node:child_process";
+import { existsSync } from "node:fs";
+import sharp from "sharp";
 
 const source = "public/logo2.png";
+const canvas = 1024;
+const zoom = 1.18;
 
 if (!existsSync(source)) {
   throw new Error("Missing public/logo2.png");
 }
 
-const copies = [
+const meta = await sharp(source).metadata();
+const width = meta.width ?? canvas;
+const height = meta.height ?? canvas;
+
+const scaledW = Math.round(width * zoom);
+const scaledH = Math.round(height * zoom);
+
+const icon = await sharp(source)
+  .resize(scaledW, scaledH, { fit: "fill", kernel: sharp.kernel.lanczos3 })
+  .extract({
+    left: Math.floor((scaledW - canvas) / 2),
+    top: Math.floor((scaledH - canvas) / 2),
+    width: canvas,
+    height: canvas,
+  })
+  .png()
+  .toBuffer();
+
+const outputs = [
   "public/icon.png",
   "public/icon-512.png",
   "public/logo.png",
@@ -16,16 +37,15 @@ const copies = [
   "public/icon-180.png",
 ];
 
-for (const target of copies) {
-  copyFileSync(source, target);
+for (const path of outputs) {
+  await sharp(icon).toFile(path);
 }
 
-// ICO needs multiple sizes; resize only for the container format, no color/crop edits.
+await sharp(icon).resize(32, 32).toFile("public/icon-32.png");
+
 execSync(
-  `magick "${source}" -define icon:auto-resize=256,128,64,48,32,16 public/favicon.ico`,
+  "magick public/icon.png -define icon:auto-resize=256,128,64,48,32,16 public/favicon.ico",
   { stdio: "inherit" },
 );
 
-execSync(`magick "${source}" -resize 32x32 public/icon-32.png`, { stdio: "inherit" });
-
-console.log("Icons copied from public/logo2.png without visual modification (1024x1024).");
+console.log(`Icons generated from logo2.png at ${Math.round(zoom * 100)}% zoom (${canvas}x${canvas}).`);
