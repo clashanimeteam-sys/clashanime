@@ -1,6 +1,5 @@
 "use client";
 
-import { ClashHeroBackdrop } from "@/components/clash/ClashHeroBackdrop";
 import { ClashPrizeBanner } from "@/components/clash/ClashPrizeBanner";
 import { ClashVideosBackdrop } from "@/components/clash/ClashVideosBackdrop";
 import { SeasonCountdown } from "@/components/clash/SeasonCountdown";
@@ -42,13 +41,12 @@ export function HomeContent({ videos, activeSeason }: HomeContentProps) {
 
   return (
     <div className="relative overflow-hidden">
-      <ClashHeroBackdrop />
       <div
         className={`relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 ${activeSeason ? "pt-36 sm:pt-8" : ""}`}
       >
         {activeSeason ? <SeasonCountdown season={activeSeason} /> : null}
 
-        <section className="relative mb-8">
+        <section className="mb-8">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-orange-700 backdrop-blur-sm dark:text-orange-300">
             <span className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.9)]" />
             {t.home.clashLive}
@@ -58,7 +56,7 @@ export function HomeContent({ videos, activeSeason }: HomeContentProps) {
             primary={t.home.titlePrimary}
             secondary={t.home.titleSecondary}
           />
-          <p className="mt-3 max-w-2xl text-sm text-zinc-800 sm:text-base dark:text-zinc-200 [text-shadow:0_1px_10px_rgba(255,255,255,0.9)] dark:[text-shadow:0_1px_12px_rgba(0,0,0,0.85)]">
+          <p className="mt-3 max-w-2xl text-sm text-zinc-700 sm:text-base dark:text-zinc-300">
             {t.home.subtitle}
           </p>
         </section>
