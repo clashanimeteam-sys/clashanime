@@ -2,18 +2,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import type {
-  AnimeRelease,
-  AnimeReleaseClash,
-  AnimeReleaseUpcoming,
-} from "@/lib/animeTracker";
+import type { AnimeReleaseClash } from "@/lib/animeTracker";
 import { localizedAnimeTitle } from "@/lib/animeTracker";
+import type { JikanAnimeEntry } from "@/lib/jikan";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
 
+export type JikanTrackerEntry = JikanAnimeEntry & {
+  clashId?: string | null;
+};
+
 type AnimeTrackerPageContentProps = {
-  todayReleases: AnimeRelease[];
-  upcomingReleases: AnimeReleaseUpcoming[];
+  todayReleases: JikanTrackerEntry[];
+  upcomingReleases: JikanAnimeEntry[];
   activeClashes: AnimeReleaseClash[];
 };
 
@@ -38,15 +39,24 @@ function ReleasePoster({ url, title }: { url: string | null; title: string }) {
   );
 }
 
+function localizedJikanTitle(
+  entry: Pick<JikanAnimeEntry, "title" | "titleEnglish" | "titleJapanese">,
+  locale: "en" | "ja" | "ar",
+): string {
+  if (locale === "ja" && entry.titleJapanese) return entry.titleJapanese;
+  if (entry.titleEnglish) return entry.titleEnglish;
+  return entry.title;
+}
+
 function ReleaseCard({
   release,
   showClashLink,
 }: {
-  release: AnimeRelease | AnimeReleaseUpcoming;
+  release: JikanTrackerEntry | JikanAnimeEntry;
   showClashLink?: boolean;
 }) {
-  const { t, locale, formatDateTime } = useLocale();
-  const title = localizedAnimeTitle(release, locale);
+  const { t, locale, formatDateTime, formatNumber } = useLocale();
+  const title = localizedJikanTitle(release, locale);
   const clashId = "clashId" in release ? release.clashId : null;
   const hasClash = Boolean(clashId);
 
@@ -54,15 +64,38 @@ function ReleaseCard({
     <article className="flex gap-4 rounded-2xl border border-violet-500/20 bg-violet-950/20 p-4 backdrop-blur-sm">
       <ReleasePoster url={release.posterUrl} title={title} />
       <div className="min-w-0 flex-1">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-violet-300">
-          {t.animeTracker.episodeLabel.replace("{episode}", String(release.episodeNumber))}
-        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-violet-300">
+            {t.animeTracker.episodeLabel.replace("{episode}", String(release.episodeNumber))}
+          </p>
+          <span className="rounded-full bg-blue-500/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-blue-200">
+            {t.animeTracker.jikanSource}
+          </span>
+        </div>
         <h3 className="mt-1 text-lg font-bold text-white">{title}</h3>
         <p className="mt-1 text-sm text-zinc-300">
-          {release.airsAt
-            ? formatDateTime(release.airsAt, { dateStyle: "medium", timeStyle: "short" })
-            : formatDateTime(release.releaseDate, { dateStyle: "medium" })}
+          {release.broadcastLabel ??
+            (release.airsAt
+              ? formatDateTime(release.airsAt, { dateStyle: "medium", timeStyle: "short" })
+              : formatDateTime(release.releaseDate, { dateStyle: "medium" }))}
         </p>
+        <div className="mt-2 flex flex-wrap gap-2 text-xs text-zinc-400">
+          {release.score ? (
+            <span className="rounded-full border border-amber-500/30 px-2 py-0.5 text-amber-200">
+              {t.animeTracker.scoreLabel.replace("{score}", formatNumber(release.score))}
+            </span>
+          ) : null}
+          {release.rank ? (
+            <span className="rounded-full border border-zinc-700 px-2 py-0.5">
+              {t.animeTracker.rankLabel.replace("{rank}", formatNumber(release.rank))}
+            </span>
+          ) : null}
+          {release.genres.slice(0, 3).map((genre) => (
+            <span key={genre} className="rounded-full border border-zinc-700 px-2 py-0.5">
+              {genre}
+            </span>
+          ))}
+        </div>
         {hasClash && showClashLink ? (
           <Link
             href={`/tracker/clash/${clashId}`}
@@ -70,9 +103,17 @@ function ReleaseCard({
           >
             {t.animeTracker.enterClash}
           </Link>
-        ) : release.status === "scheduled" ? (
+        ) : showClashLink ? (
           <p className="mt-3 text-xs text-zinc-400">{t.animeTracker.scheduledHint}</p>
         ) : null}
+        <a
+          href={release.malUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 inline-block text-xs text-violet-300 hover:text-violet-200"
+        >
+          {t.animeTracker.malLink}
+        </a>
       </div>
     </article>
   );
@@ -131,6 +172,7 @@ export function AnimeTrackerPageContent({
           {t.pages.animeTrackerTitle}
         </h1>
         <p className="mt-3 max-w-2xl text-sm text-zinc-300 sm:text-base">{t.pages.animeTrackerSubtitle}</p>
+        <p className="mt-2 text-xs text-zinc-500">{t.animeTracker.jikanAttribution}</p>
       </header>
 
       {activeClashes.length > 0 ? (
@@ -153,7 +195,7 @@ export function AnimeTrackerPageContent({
         {todayReleases.length > 0 ? (
           <div className="grid gap-4">
             {todayReleases.map((release) => (
-              <ReleaseCard key={release.id} release={release} showClashLink />
+              <ReleaseCard key={`${release.malId}-${release.releaseDate}`} release={release} showClashLink />
             ))}
           </div>
         ) : (
@@ -170,7 +212,7 @@ export function AnimeTrackerPageContent({
         {upcomingReleases.length > 0 ? (
           <div className="grid gap-4 sm:grid-cols-2">
             {upcomingReleases.map((release) => (
-              <ReleaseCard key={release.id} release={release} />
+              <ReleaseCard key={`${release.malId}-${release.releaseDate}`} release={release} />
             ))}
           </div>
         ) : (

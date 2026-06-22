@@ -1,3 +1,4 @@
+import { getJstDateParts } from "@/lib/jikan";
 import { createServerClient } from "@/lib/supabase/server";
 import type {
   AnimeRelease,
@@ -144,6 +145,28 @@ async function attachChannels(
     channel: video.user_id ? profileMap.get(video.user_id) ?? null : null,
     clashRank: Number(video.rank_position),
   }));
+}
+
+export async function getTodayClashLinksByMalId(): Promise<Map<number, string>> {
+  const supabase = await createServerClient();
+  if (!supabase) return new Map();
+
+  const { date } = getJstDateParts();
+
+  const { data, error } = await supabase
+    .from("anime_releases")
+    .select("mal_id, clash_id")
+    .eq("release_date", date)
+    .not("mal_id", "is", null)
+    .not("clash_id", "is", null);
+
+  if (error || !data) return new Map();
+
+  return new Map(
+    data
+      .filter((row) => row.mal_id && row.clash_id)
+      .map((row) => [Number(row.mal_id), String(row.clash_id)]),
+  );
 }
 
 export async function getAnimeTrackerToday(): Promise<AnimeRelease[]> {

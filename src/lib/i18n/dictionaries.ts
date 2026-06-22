@@ -165,6 +165,11 @@ export type Dictionary = {
     noClipsYet: string;
     bannerBadge: string;
     bannerTitle: string;
+    jikanSource: string;
+    jikanAttribution: string;
+    scoreLabel: string;
+    rankLabel: string;
+    malLink: string;
   };
   exclusives: {
     dailyHallBadge: string;
@@ -1318,7 +1323,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       exclusivesSubtitle: "Clips from verified creators on ClashAnime.",
       animeTrackerTitle: "Anime Tracker",
       animeTrackerSubtitle:
-        "See what drops today and jump into release clashes for the best clips the moment a new episode lands.",
+        "Live schedule from Jikan (MyAnimeList). See what drops today and jump into release clashes for the best clips.",
       communityTitle: "Anime Community",
       communitySubtitle: "Follow creators, comment on duels, and climb the grid together.",
       communityBody:
@@ -1353,6 +1358,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       noClipsYet: "No clips yet. Be the first to drop a scene from this release.",
       bannerBadge: "Trending release",
       bannerTitle: "{title} just dropped — join the release clash",
+      jikanSource: "MAL",
+      jikanAttribution: "Schedule data via Jikan API (MyAnimeList).",
+      scoreLabel: "Score {score}",
+      rankLabel: "Rank #{rank}",
+      malLink: "View on MyAnimeList →",
     },
     exclusives: {
       dailyHallBadge: "Daily Hall of Fame",
@@ -2328,14 +2338,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       },
       animeTracker: {
         title: "Anime Tracker",
-        subtitle: "Manage release schedule, sync AniList, and open release clashes when episodes drop.",
+        subtitle: "Manage release schedule, sync Jikan (MyAnimeList), and open release clashes when episodes drop.",
         todayCount: "Releases today",
         upcomingCount: "Upcoming (14 days)",
         activeClashes: "Active release clashes",
-        syncButton: "Sync AniList + process clashes",
+        syncButton: "Sync Jikan + process clashes",
         syncing: "Syncing…",
         syncSuccess: "Synced {synced} releases. Opened {opened} clashes.",
-        syncFailed: "AniList sync failed.",
+        syncFailed: "Jikan sync failed.",
         addTitle: "Add release manually",
         titleLabel: "Anime title",
         titleArLabel: "Arabic title (optional)",
@@ -2560,7 +2570,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       exclusivesTitle: "限定",
       exclusivesSubtitle: "認証済みクリエイターのクリップ。",
       animeTrackerTitle: "新作アニメレーダー",
-      animeTrackerSubtitle: "今日放送の作品と、新エピソード公開時に自動で始まるリリースクラッシュをチェック。",
+      animeTrackerSubtitle: "Jikan（MyAnimeList）から取得したライブ放送表。今日の放送とリリースクラッシュをチェック。",
       communityTitle: "アニメコミュニティ",
       communitySubtitle: "クリエイターをフォローし、コメントしてグリッドを競おう。",
       communityBody:
@@ -2594,6 +2604,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       noClipsYet: "まだクリップがありません。最初のシーンを投稿しよう。",
       bannerBadge: "話題の新作",
       bannerTitle: "{title} が公開 — リリースクラッシュに参加",
+      jikanSource: "MAL",
+      jikanAttribution: "放送データ: Jikan API（MyAnimeList）",
+      scoreLabel: "スコア {score}",
+      rankLabel: "ランク #{rank}",
+      malLink: "MyAnimeListで見る →",
     },
     exclusives: {
       dailyHallBadge: "デイリー殿堂",
@@ -3556,14 +3571,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       },
       animeTracker: {
         title: "新作アニメレーダー",
-        subtitle: "放送スケジュールを管理し、AniList同期とリリースクラッシュの自動開始を行います。",
+        subtitle: "放送スケジュールを管理し、Jikan（MyAnimeList）同期とリリースクラッシュの自動開始を行います。",
         todayCount: "本日の放送",
         upcomingCount: "近日（14日）",
         activeClashes: "開催中のクラッシュ",
-        syncButton: "AniList同期 + クラッシュ処理",
+        syncButton: "Jikan同期 + クラッシュ処理",
         syncing: "同期中…",
         syncSuccess: "{synced} 件同期。{opened} 件のクラッシュを開始。",
-        syncFailed: "AniList同期に失敗しました。",
+        syncFailed: "Jikan同期に失敗しました。",
         addTitle: "手動で追加",
         titleLabel: "アニメタイトル",
         titleArLabel: "アラビア語タイトル（任意）",
@@ -3788,7 +3803,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       exclusivesTitle: "حصري",
       exclusivesSubtitle: "مقاطع من القنوات الموثّقة على ClashAnime.",
       animeTrackerTitle: "رادار الأنمي الجديد",
-      animeTrackerSubtitle: "تابع ما يُعرض اليوم، وادخل نزالات الإصدار لأفضل اللقطات لحظة نزول الحلقة.",
+      animeTrackerSubtitle: "جدول مباشر من Jikan (MyAnimeList). تابع ما يُعرض اليوم وادخل نزالات الإصدار لأفضل اللقطات.",
       communityTitle: "مجتمع الأنمي",
       communitySubtitle: "تابع المبدعين، علّق على النزالات، وتسلّق الشبكة معاً.",
       communityBody:
@@ -3822,6 +3837,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       noClipsYet: "لا مقاطع بعد. كن أول من ينشر مشهدًا من هذا الإصدار.",
       bannerBadge: "إصدار رائج",
       bannerTitle: "نزل {title} — انضم لنزال الإصدار",
+      jikanSource: "MAL",
+      jikanAttribution: "بيانات الجدول عبر Jikan API (MyAnimeList).",
+      scoreLabel: "التقييم {score}",
+      rankLabel: "الترتيب #{rank}",
+      malLink: "عرض على MyAnimeList ←",
     },
     exclusives: {
       dailyHallBadge: "لوحة الشرف اليومية",
@@ -4788,14 +4808,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       },
       animeTracker: {
         title: "رادار الأنمي الجديد",
-        subtitle: "إدارة جدول الإصدارات، مزامنة AniList، وفتح نزالات الإصدار عند نزول الحلقات.",
+        subtitle: "إدارة جدول الإصدارات، مزامنة Jikan (MyAnimeList)، وفتح نزالات الإصدار عند نزول الحلقات.",
         todayCount: "إصدارات اليوم",
         upcomingCount: "قريباً (14 يوم)",
         activeClashes: "نزالات نشطة",
-        syncButton: "مزامنة AniList + معالجة النزالات",
+        syncButton: "مزامنة Jikan + معالجة النزالات",
         syncing: "جاري المزامنة…",
         syncSuccess: "تمت مزامنة {synced} إصدار. فُتح {opened} نزال.",
-        syncFailed: "فشلت مزامنة AniList.",
+        syncFailed: "فشلت مزامنة Jikan.",
         addTitle: "إضافة إصدار يدوياً",
         titleLabel: "عنوان الأنمي",
         titleArLabel: "العنوان بالعربية (اختياري)",
