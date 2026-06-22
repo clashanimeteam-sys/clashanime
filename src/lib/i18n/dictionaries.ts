@@ -376,6 +376,8 @@ export type Dictionary = {
     loading: string;
     disabledHint: string;
     empty: string;
+    settingsLabel: string;
+    settingsHint: string;
     mentionTitle: string;
     mentionPreviewCommunity: string;
     mentionPreviewComment: string;
@@ -1394,6 +1396,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       loading: "Loading notifications...",
       disabledHint: "Turn on notifications to see updates here.",
       empty: "No notifications yet.",
+      settingsLabel: "Notification settings",
+      settingsHint: "The number shows unread notifications. Opening one marks it as read.",
       mentionTitle: "You were mentioned",
       mentionPreviewCommunity: "mentioned you in a community post.",
       mentionPreviewComment: "mentioned you in a comment.",
@@ -2420,6 +2424,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       loading: "通知を読み込み中...",
       disabledHint: "通知をオンにするとここに表示されます。",
       empty: "通知はまだありません。",
+      settingsLabel: "通知設定",
+      settingsHint: "数字は未読件数です。通知を開くと既読になります。",
       mentionTitle: "メンションされました",
       mentionPreviewCommunity: "がコミュニティ投稿であなたをメンションしました。",
       mentionPreviewComment: "がコメントであなたをメンションしました。",
@@ -3442,6 +3448,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       loading: "جارٍ تحميل الإشعارات...",
       disabledHint: "فعّل الإشعارات لرؤية التحديثات هنا.",
       empty: "لا توجد إشعارات بعد.",
+      settingsLabel: "إعدادات الإشعارات",
+      settingsHint: "الرقم يوضّح الإشعارات غير المقروءة. عند فتح إشعار ينقص العدد.",
       mentionTitle: "تم ذكرك",
       mentionPreviewCommunity: "ذكرك في منشور بالمجتمع.",
       mentionPreviewComment: "ذكرك في تعليق.",
