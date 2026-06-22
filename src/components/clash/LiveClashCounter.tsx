@@ -19,14 +19,17 @@ function splitCounterText(template: string, battles: string, fighters: string) {
   return parts.map((part, index) => {
     if (part === "{battles}") {
       return (
-        <span key={`b-${index}`} className="live-clash-stat live-clash-stat-battles">
-          {battles}
+        <span key={`b-${index}`} className="live-clash-stat-group">
+          <span className="live-clash-stat live-clash-stat-target">{battles}</span>
+          <span className="live-clash-swords" aria-hidden>
+            ⚔️
+          </span>
         </span>
       );
     }
     if (part === "{fighters}") {
       return (
-        <span key={`f-${index}`} className="live-clash-stat live-clash-stat-fighters">
+        <span key={`f-${index}`} className="live-clash-stat live-clash-stat-target">
           {fighters}
         </span>
       );
@@ -84,6 +87,7 @@ export function LiveClashCounter({ initialStats }: LiveClashCounterProps) {
       aria-live="polite"
       aria-atomic="true"
     >
+      <span className="live-clash-counter-shimmer" aria-hidden />
       <div className="live-clash-counter-head">
         <span className="live-clash-counter-dot" aria-hidden />
         <span className="live-clash-counter-label">{t.home.liveClashCounterTitle}</span>
