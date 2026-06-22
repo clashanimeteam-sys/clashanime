@@ -42,11 +42,32 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.clashanime.com"),
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon.png", type: "image/png", sizes: "512x512" },
-      { url: "/icon-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon.ico", sizes: "any", media: "(prefers-color-scheme: light)" },
+      { url: "/favicon-dark.ico", sizes: "any", media: "(prefers-color-scheme: dark)" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512", media: "(prefers-color-scheme: light)" },
+      {
+        url: "/icon-dark-512.png",
+        type: "image/png",
+        sizes: "512x512",
+        media: "(prefers-color-scheme: dark)",
+      },
+      { url: "/icon-32.png", type: "image/png", sizes: "32x32", media: "(prefers-color-scheme: light)" },
+      {
+        url: "/icon-dark-32.png",
+        type: "image/png",
+        sizes: "32x32",
+        media: "(prefers-color-scheme: dark)",
+      },
     ],
-    apple: [{ url: "/icon-180.png", sizes: "180x180", type: "image/png" }],
+    apple: [
+      { url: "/icon-180.png", sizes: "180x180", type: "image/png", media: "(prefers-color-scheme: light)" },
+      {
+        url: "/icon-dark-180.png",
+        sizes: "180x180",
+        type: "image/png",
+        media: "(prefers-color-scheme: dark)",
+      },
+    ],
   },
   openGraph: {
     title: "Clash Anime",
