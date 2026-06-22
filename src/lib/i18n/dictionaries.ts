@@ -245,6 +245,40 @@ export type Dictionary = {
     streamError: string;
     poweredBy: string;
   };
+  lounge: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    tabRadio: string;
+    tabLounge: string;
+    keepListening: string;
+    play: string;
+    pause: string;
+    mute: string;
+    unmute: string;
+    volume: string;
+    nowPlaying: string;
+    playing: string;
+    communityPlaylist: string;
+    pickTrack: string;
+    previous: string;
+    next: string;
+    playlistTitle: string;
+    emptyPlaylist: string;
+    voteTrack: string;
+    loginToVote: string;
+    nowPlayingBadge: string;
+    submitTitle: string;
+    submitDesc: string;
+    trackTitlePlaceholder: string;
+    artistPlaceholder: string;
+    animePlaceholder: string;
+    youtubePlaceholder: string;
+    submitButton: string;
+    submitting: string;
+    submitSuccess: string;
+    loginToSubmit: string;
+  };
   legal: {
     reportTitle: string;
     reportIntro: string;
@@ -895,6 +929,7 @@ export type Dictionary = {
       kyc: string;
       seasons: string;
       legends: string;
+      beatsLounge: string;
       contact: string;
       emails: string;
       broadcast: string;
@@ -959,6 +994,29 @@ export type Dictionary = {
       deleteConfirm: string;
       deleted: string;
       snapshotSuccess: string;
+    };
+    beatsLounge: {
+      title: string;
+      subtitle: string;
+      pendingCount: string;
+      approvedCount: string;
+      totalVotes: string;
+      addTrackTitle: string;
+      titleLabel: string;
+      artistLabel: string;
+      animeLabel: string;
+      youtubeLabel: string;
+      sortLabel: string;
+      addButton: string;
+      queueTitle: string;
+      empty: string;
+      approveButton: string;
+      rejectButton: string;
+      deleteButton: string;
+      deleteConfirm: string;
+      created: string;
+      approved: string;
+      rejected: string;
     };
     roles: {
       user: string;
@@ -1291,6 +1349,41 @@ export const dictionaries: Record<Locale, Dictionary> = {
       openFullPlayer: "Open radio",
       streamError: "Could not connect to the stream. Try again in a moment.",
       poweredBy: "Anime OST stream by LISTEN.moe. Lofi beats via Nightwave Plaza.",
+    },
+    lounge: {
+      badge: "Anime Beats Lounge",
+      title: "Anime Beats Lounge",
+      subtitle:
+        "A community-curated playlist of the best anime music. Vote for your favorites and keep listening while you browse Clash Anime.",
+      tabRadio: "Live Radio",
+      tabLounge: "Beats Lounge",
+      keepListening: "Keep listening while you browse videos, community, and your profile.",
+      play: "Play playlist",
+      pause: "Pause",
+      mute: "Mute",
+      unmute: "Unmute",
+      volume: "Volume",
+      nowPlaying: "Now playing",
+      playing: "Playing",
+      communityPlaylist: "Community playlist",
+      pickTrack: "Pick a track to start",
+      previous: "Previous",
+      next: "Next",
+      playlistTitle: "Community playlist",
+      emptyPlaylist: "No approved tracks yet. Submit a song or wait for staff to curate the lounge.",
+      voteTrack: "Vote for this track",
+      loginToVote: "Sign in to vote",
+      nowPlayingBadge: "Now",
+      submitTitle: "Suggest a track",
+      submitDesc: "Share a YouTube link to an anime song the community should hear next.",
+      trackTitlePlaceholder: "Song title",
+      artistPlaceholder: "Artist",
+      animePlaceholder: "Anime name (optional)",
+      youtubePlaceholder: "YouTube URL or video ID",
+      submitButton: "Submit for review",
+      submitting: "Submitting...",
+      submitSuccess: "Track submitted! Staff will review it for the lounge.",
+      loginToSubmit: "Sign in to suggest tracks for the community playlist.",
     },
     legal: {
       reportTitle: "Report Content",
@@ -1963,6 +2056,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         kyc: "Payout KYC",
         seasons: "Clash seasons",
         legends: "Hall of Legends",
+        beatsLounge: "Anime Beats Lounge",
         contact: "Contact inbox",
         emails: "Emails",
         broadcast: "Broadcast",
@@ -2027,6 +2121,29 @@ export const dictionaries: Record<Locale, Dictionary> = {
         deleteConfirm: "Remove this winner from the Hall of Legends?",
         deleted: "Winner removed.",
         snapshotSuccess: "Archived {count} winners.",
+      },
+      beatsLounge: {
+        title: "Anime Beats Lounge",
+        subtitle: "Review community submissions and manage the curated playlist on /music.",
+        pendingCount: "Pending submissions",
+        approvedCount: "Approved tracks",
+        totalVotes: "Community votes",
+        addTrackTitle: "Add track directly",
+        titleLabel: "Song title",
+        artistLabel: "Artist",
+        animeLabel: "Anime (optional)",
+        youtubeLabel: "YouTube URL or ID",
+        sortLabel: "Sort order (higher = earlier)",
+        addButton: "Add to lounge",
+        queueTitle: "All lounge tracks",
+        empty: "No tracks yet.",
+        approveButton: "Approve",
+        rejectButton: "Reject",
+        deleteButton: "Delete",
+        deleteConfirm: "Delete this track from the lounge?",
+        created: "Track added.",
+        approved: "Track approved.",
+        rejected: "Track rejected.",
       },
       roles: {
         user: "User",
@@ -2354,6 +2471,40 @@ export const dictionaries: Record<Locale, Dictionary> = {
       openFullPlayer: "ラジオを開く",
       streamError: "ストリームに接続できませんでした。しばらくして再試行してください。",
       poweredBy: "OST配信: LISTEN.moe / Lofi: Nightwave Plaza",
+    },
+    lounge: {
+      badge: "アニメ・ビーツ・ラウンジ",
+      title: "アニメ・ビーツ・ラウンジ",
+      subtitle: "コミュニティが選んだ最高のアニメ音楽プレイリスト。投票して、サイト内を回りながら聴き続けよう。",
+      tabRadio: "ライブラジオ",
+      tabLounge: "ビーツ・ラウンジ",
+      keepListening: "動画やコミュニティを見ながら聴き続けられます。",
+      play: "再生",
+      pause: "一時停止",
+      mute: "ミュート",
+      unmute: "ミュート解除",
+      volume: "音量",
+      nowPlaying: "再生中",
+      playing: "再生中",
+      communityPlaylist: "コミュニティプレイリスト",
+      pickTrack: "曲を選んで開始",
+      previous: "前へ",
+      next: "次へ",
+      playlistTitle: "コミュニティプレイリスト",
+      emptyPlaylist: "承認済みの曲がまだありません。",
+      voteTrack: "この曲に投票",
+      loginToVote: "投票するにはログイン",
+      nowPlayingBadge: "再生中",
+      submitTitle: "曲を提案",
+      submitDesc: "コミュニティに聴いてほしいアニメ曲のYouTubeリンクを送ってください。",
+      trackTitlePlaceholder: "曲名",
+      artistPlaceholder: "アーティスト",
+      animePlaceholder: "アニメ名（任意）",
+      youtubePlaceholder: "YouTube URL または ID",
+      submitButton: "審査に提出",
+      submitting: "送信中...",
+      submitSuccess: "提出しました。スタッフが審査します。",
+      loginToSubmit: "曲を提案するにはログインしてください。",
     },
     legal: {
       reportTitle: "コンテンツを報告",
@@ -3017,6 +3168,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         kyc: "出金KYC",
         seasons: "クラッシュシーズン",
         legends: "伝説の殿堂",
+        beatsLounge: "アニメ・ビーツ・ラウンジ",
         contact: "お問い合わせ受信箱",
         emails: "メール",
         broadcast: "一斉メール",
@@ -3081,6 +3233,29 @@ export const dictionaries: Record<Locale, Dictionary> = {
         deleteConfirm: "この勝者を殿堂から削除しますか？",
         deleted: "勝者を削除しました。",
         snapshotSuccess: "{count} 人の勝者をアーカイブしました。",
+      },
+      beatsLounge: {
+        title: "アニメ・ビーツ・ラウンジ",
+        subtitle: "コミュニティ提出を審査し、/music のプレイリストを管理します。",
+        pendingCount: "審査待ち",
+        approvedCount: "承認済み",
+        totalVotes: "投票数",
+        addTrackTitle: "曲を直接追加",
+        titleLabel: "曲名",
+        artistLabel: "アーティスト",
+        animeLabel: "アニメ（任意）",
+        youtubeLabel: "YouTube URL / ID",
+        sortLabel: "並び順（大きいほど先）",
+        addButton: "ラウンジに追加",
+        queueTitle: "すべての曲",
+        empty: "曲がありません。",
+        approveButton: "承認",
+        rejectButton: "却下",
+        deleteButton: "削除",
+        deleteConfirm: "この曲を削除しますか？",
+        created: "曲を追加しました。",
+        approved: "承認しました。",
+        rejected: "却下しました。",
       },
       roles: {
         user: "ユーザー",
@@ -3408,6 +3583,40 @@ export const dictionaries: Record<Locale, Dictionary> = {
       openFullPlayer: "فتح الراديو",
       streamError: "تعذّر الاتصال بالبث. حاول مرة أخرى بعد قليل.",
       poweredBy: "بث OST من LISTEN.moe · إيقاعات Lofi من Nightwave Plaza.",
+    },
+    lounge: {
+      badge: "صالة إيقاعات الأنمي",
+      title: "صالة إيقاعات الأنمي الحي",
+      subtitle: "قائمة تشغيل يختارها المجتمع لأجمل موسيقى الأنمي. صوّت لالمفضلة واستمر بالاستماع أثناء تصفح الموقع.",
+      tabRadio: "راديو مباشر",
+      tabLounge: "صالة الإيقاعات",
+      keepListening: "استمر بالاستماع أثناء تصفح الفيديوهات والمجتمع وملفك الشخصي.",
+      play: "تشغيل القائمة",
+      pause: "إيقاف",
+      mute: "كتم",
+      unmute: "إلغاء الكتم",
+      volume: "الصوت",
+      nowPlaying: "يشتغل الآن",
+      playing: "قيد التشغيل",
+      communityPlaylist: "قائمة المجتمع",
+      pickTrack: "اختر مقطعاً للبدء",
+      previous: "السابق",
+      next: "التالي",
+      playlistTitle: "قائمة تشغيل المجتمع",
+      emptyPlaylist: "لا توجد مقاطع معتمدة بعد. اقترح أغنية أو انتظر مراجعة الفريق.",
+      voteTrack: "صوّت لهذا المقطع",
+      loginToVote: "سجّل الدخول للتصويت",
+      nowPlayingBadge: "الآن",
+      submitTitle: "اقترح مقطعاً",
+      submitDesc: "شارك رابط YouTube لأغنية أنمي ينبغي أن يسمعها المجتمع.",
+      trackTitlePlaceholder: "عنوان الأغنية",
+      artistPlaceholder: "الفنان",
+      animePlaceholder: "اسم الأنمي (اختياري)",
+      youtubePlaceholder: "رابط YouTube أو معرف الفيديو",
+      submitButton: "إرسال للمراجعة",
+      submitting: "جارٍ الإرسال...",
+      submitSuccess: "تم الإرسال! سيراجعه الفريق للقائمة.",
+      loginToSubmit: "سجّل الدخول لاقتراح مقاطع للمجتمع.",
     },
     legal: {
       reportTitle: "تقرير المحتوى",
@@ -4074,6 +4283,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         kyc: "KYC السحب",
         seasons: "مواسم النزال",
         legends: "أرشيف الأساطير",
+        beatsLounge: "صالة إيقاعات الأنمي",
         contact: "صندوق التواصل",
         emails: "الإيميلات",
         broadcast: "إيميل جماعي",
@@ -4138,6 +4348,29 @@ export const dictionaries: Record<Locale, Dictionary> = {
         deleteConfirm: "إزالة هذا الفائز من أرشيف الأساطير؟",
         deleted: "تمت إزالة الفائز.",
         snapshotSuccess: "تم أرشفة {count} فائز.",
+      },
+      beatsLounge: {
+        title: "صالة إيقاعات الأنمي",
+        subtitle: "راجع اقتراحات المجتمع وأدر قائمة التشغيل في /music.",
+        pendingCount: "اقتراحات قيد المراجعة",
+        approvedCount: "مقاطع معتمدة",
+        totalVotes: "أصوات المجتمع",
+        addTrackTitle: "إضافة مقطع مباشرة",
+        titleLabel: "عنوان الأغنية",
+        artistLabel: "الفنان",
+        animeLabel: "الأنمي (اختياري)",
+        youtubeLabel: "رابط YouTube أو المعرف",
+        sortLabel: "ترتيب العرض (الأعلى = أسبق)",
+        addButton: "إضافة للصالة",
+        queueTitle: "كل مقاطع الصالة",
+        empty: "لا توجد مقاطع بعد.",
+        approveButton: "اعتماد",
+        rejectButton: "رفض",
+        deleteButton: "حذف",
+        deleteConfirm: "حذف هذا المقطع من الصالة؟",
+        created: "تمت إضافة المقطع.",
+        approved: "تم اعتماد المقطع.",
+        rejected: "تم رفض المقطع.",
       },
       roles: {
         user: "مستخدم",

@@ -1,11 +1,13 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { AnimeRadioController } from "@/components/radio/AnimeRadioController";
 import { AnimeRadioMiniBar } from "@/components/AnimeRadioMiniBar";
+import { BeatsLoungeMiniBar } from "@/components/lounge/BeatsLoungeMiniBar";
+import { AnimeRadioController } from "@/components/radio/AnimeRadioController";
 import { AppShell } from "@/components/AppShell";
 import { MobileHeader } from "@/components/MobileHeader";
 import { AuthProvider } from "@/providers/AuthProvider";
+import { BeatsLoungeProvider } from "@/providers/BeatsLoungeProvider";
 import { PointsWagerNotificationProvider } from "@/providers/PointsWagerNotificationProvider";
 import { AnimeRadioProvider } from "@/providers/AnimeRadioProvider";
 import { LocaleProvider } from "@/providers/LocaleProvider";
@@ -31,6 +33,15 @@ function isAdminRoute(pathname: string) {
   return pathname.startsWith("/admin");
 }
 
+function RadioOrLoungeMiniBar() {
+  return (
+    <>
+      <AnimeRadioMiniBar />
+      <BeatsLoungeMiniBar />
+    </>
+  );
+}
+
 export function Providers({ children }: ProvidersProps) {
   const pathname = usePathname();
   const authRoute = isAuthRoute(pathname);
@@ -44,6 +55,7 @@ export function Providers({ children }: ProvidersProps) {
           <AuthProvider>
             <PointsWagerNotificationProvider>
             <AnimeRadioProvider>
+            <BeatsLoungeProvider>
             <StickersProvider>
               <VideoOverlayProvider>
             {authRoute || adminRoute ? (
@@ -53,11 +65,12 @@ export function Providers({ children }: ProvidersProps) {
                 <MobileHeader />
                 <AppShell>{children}</AppShell>
                 <AnimeRadioController />
-                <AnimeRadioMiniBar />
+                <RadioOrLoungeMiniBar />
               </>
             )}
               </VideoOverlayProvider>
             </StickersProvider>
+            </BeatsLoungeProvider>
             </AnimeRadioProvider>
             </PointsWagerNotificationProvider>
           </AuthProvider>

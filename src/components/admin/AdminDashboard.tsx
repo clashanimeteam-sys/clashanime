@@ -295,6 +295,11 @@ export function AdminDashboard() {
           href="/admin/settings"
         />
         <QuickLink
+          title={t.admin.beatsLounge.title}
+          description={t.admin.beatsLounge.subtitle}
+          href="/admin/beats-lounge"
+        />
+        <QuickLink
           title={t.admin.quickActions.animeRadioSettings}
           description={t.admin.quickActions.animeRadioSettingsDesc}
           href="/admin/settings#anime-radio"

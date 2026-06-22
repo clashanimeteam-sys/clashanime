@@ -7,6 +7,7 @@ import { getRadioStation } from "@/lib/animeRadio";
 import { AnimeRadioArtwork } from "@/components/radio/AnimeRadioArtwork";
 import { AnimeRadioVisualizer } from "@/components/radio/AnimeRadioVisualizer";
 import { useAnimeRadio } from "@/providers/AnimeRadioProvider";
+import { useBeatsLounge } from "@/providers/BeatsLoungeProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
 function stationLabel(
@@ -31,8 +32,9 @@ export function AnimeRadioMiniBar() {
     setVolume,
     toggleMute,
   } = useAnimeRadio();
+  const { hasStarted: loungeStarted } = useBeatsLounge();
 
-  if (!hasStarted || pathname === "/music" || pathname.startsWith("/video/")) {
+  if (!hasStarted || loungeStarted || pathname === "/music" || pathname.startsWith("/video/")) {
     return null;
   }
 
