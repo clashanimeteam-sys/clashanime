@@ -23,8 +23,9 @@ type DashboardStats = {
   openContactMessages: number;
   welcomeEmailsSent: number;
   accountDeletions: number;
-  inAppNotifications: number;
-};
+    inAppNotifications: number;
+    legendWinners: number;
+  };
 
 export function AdminDashboard() {
   const { t } = useLocale();
@@ -58,6 +59,7 @@ export function AdminDashboard() {
         welcomeEmailsResult,
         accountDeletionsResult,
         inAppNotificationsResult,
+        legendWinnersResult,
       ] = await Promise.all([
         client.from("profiles").select("*", { count: "exact", head: true }),
         client.from("videos").select("*", { count: "exact", head: true }),
@@ -158,6 +160,15 @@ export function AdminDashboard() {
             }
             return { count: result.count, error: false as const };
           }),
+        client
+          .from("clash_season_winners")
+          .select("*", { count: "exact", head: true })
+          .then((result) => {
+            if (result.error) {
+              return { count: null as number | null, error: true as const };
+            }
+            return { count: result.count, error: false as const };
+          }),
       ]);
 
       const clipChallengesCount =
@@ -181,6 +192,8 @@ export function AdminDashboard() {
         accountDeletionsResult.error ? 0 : (accountDeletionsResult.count ?? 0);
       const inAppNotificationsCount =
         inAppNotificationsResult.error ? 0 : (inAppNotificationsResult.count ?? 0);
+      const legendWinnersCount =
+        legendWinnersResult.error ? 0 : (legendWinnersResult.count ?? 0);
 
       setStats({
         users: users ?? 0,
@@ -201,6 +214,7 @@ export function AdminDashboard() {
         welcomeEmailsSent: welcomeEmailsSentCount,
         accountDeletions: accountDeletionsCount,
         inAppNotifications: inAppNotificationsCount,
+        legendWinners: legendWinnersCount,
       });
       setLoading(false);
     }
@@ -221,6 +235,7 @@ export function AdminDashboard() {
     { label: t.admin.stats.welcomeEmailsSent, value: stats?.welcomeEmailsSent ?? 0, href: "/admin/emails" },
     { label: t.admin.stats.accountDeletions, value: stats?.accountDeletions ?? 0, href: "/admin/emails" },
     { label: t.admin.stats.inAppNotifications, value: stats?.inAppNotifications ?? 0, href: "/admin/emails" },
+    { label: t.admin.stats.legendWinners, value: stats?.legendWinners ?? 0, href: "/admin/legends" },
     { label: t.admin.stats.pendingVerifications, value: stats?.pendingVerifications ?? 0, href: "/admin/users" },
     { label: t.admin.stats.communityPosts, value: stats?.communityPosts ?? 0, href: "/community" },
     { label: t.admin.stats.videos, value: stats?.videos ?? 0, href: "/admin/videos" },
@@ -288,6 +303,11 @@ export function AdminDashboard() {
           title={t.admin.quickActions.exclusivesFeatures}
           description={t.admin.quickActions.exclusivesFeaturesDesc}
           href="/exclusives"
+        />
+        <QuickLink
+          title={t.admin.legends.title}
+          description={t.admin.legends.subtitle}
+          href="/admin/legends"
         />
         <QuickLink
           title={t.admin.quickActions.pointsWagerDuels}

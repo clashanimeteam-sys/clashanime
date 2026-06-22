@@ -2,20 +2,24 @@
 
 import { ClipChallengeCard } from "@/components/exclusives/ClipChallengeCard";
 import { DailyHallOfFame } from "@/components/exclusives/DailyHallOfFame";
+import { HallOfLegends } from "@/components/exclusives/HallOfLegends";
 import { PointsWagerSection } from "@/components/exclusives/PointsWagerSection";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
 import type { DailyHallLeader } from "@/lib/dailyHall";
+import type { HallOfLegendsSeason } from "@/lib/hallOfLegends";
 import type { PointsWagerDuelRow } from "@/lib/pointsDuels";
 
 type ExclusivesPageContentProps = {
   dailyLeader: DailyHallLeader | null;
   publicWagerDuels: PointsWagerDuelRow[];
+  legendSeasons: HallOfLegendsSeason[];
 };
 
 export function ExclusivesPageContent({
   dailyLeader,
   publicWagerDuels,
+  legendSeasons,
 }: ExclusivesPageContentProps) {
   const { t } = useLocale();
   usePageTitle(t.pages.exclusivesTitle);
@@ -31,6 +35,10 @@ export function ExclusivesPageContent({
       <div className="grid gap-4 lg:grid-cols-2">
         <DailyHallOfFame leader={dailyLeader} />
         <PointsWagerSection publicDuels={publicWagerDuels} />
+      </div>
+
+      <div className="mt-4">
+        <HallOfLegends seasons={legendSeasons} />
       </div>
 
       <div className="mt-4">

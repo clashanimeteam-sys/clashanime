@@ -4,8 +4,10 @@ import { LiveClashCounter } from "@/components/clash/LiveClashCounter";
 import { ClashPrizeBanner } from "@/components/clash/ClashPrizeBanner";
 import { ClashVideosBackdrop } from "@/components/clash/ClashVideosBackdrop";
 import { SeasonCountdown } from "@/components/clash/SeasonCountdown";
+import { HallOfLegends } from "@/components/exclusives/HallOfLegends";
 import { VideoCard } from "@/components/VideoCard";
 import type { ClashSeason } from "@/lib/clashSeasons";
+import type { HallOfLegendsSeason } from "@/lib/hallOfLegends";
 import type { ClashArenaStats } from "@/lib/videos";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Video } from "@/lib/types";
@@ -14,11 +16,12 @@ type HomeContentProps = {
   videos: Video[];
   activeSeason: ClashSeason | null;
   arenaStats: ClashArenaStats;
+  legendSeasons: HallOfLegendsSeason[];
 };
 
 const PODIUM_ORDER = [1, 2, 3] as const;
 
-export function HomeContent({ videos, activeSeason, arenaStats }: HomeContentProps) {
+export function HomeContent({ videos, activeSeason, arenaStats, legendSeasons }: HomeContentProps) {
   const { t } = useLocale();
 
   const podiumVideos = PODIUM_ORDER.map((rank) =>
@@ -53,6 +56,12 @@ export function HomeContent({ videos, activeSeason, arenaStats }: HomeContentPro
         </section>
 
         <ClashPrizeBanner activeSeason={activeSeason} />
+
+        {legendSeasons.length > 0 ? (
+          <section className="mb-8">
+            <HallOfLegends seasons={legendSeasons.slice(0, 2)} compact />
+          </section>
+        ) : null}
 
         <div className="relative overflow-hidden rounded-3xl border border-orange-500/20 shadow-[0_24px_80px_rgba(127,29,29,0.18)]">
           <ClashVideosBackdrop />

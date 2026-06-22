@@ -149,6 +149,11 @@ export type Dictionary = {
     interactionKing: string;
     pointsToday: string;
     noDailyLeader: string;
+    hallOfLegendsBadge: string;
+    hallOfLegendsTitle: string;
+    hallOfLegendsSubtitle: string;
+    noHallOfLegends: string;
+    seasonWinnerRank: string;
     randomDuelBadge: string;
     randomDuelTitle: string;
     randomDuelDesc: string;
@@ -889,6 +894,7 @@ export type Dictionary = {
       withdrawals: string;
       kyc: string;
       seasons: string;
+      legends: string;
       contact: string;
       emails: string;
       broadcast: string;
@@ -934,6 +940,26 @@ export type Dictionary = {
         ended: string;
       };
     };
+    legends: {
+      title: string;
+      subtitle: string;
+      statsArchived: string;
+      statsEnded: string;
+      statsWinners: string;
+      seasonListTitle: string;
+      openSeasons: string;
+      emptySeasons: string;
+      winnersCount: string;
+      viewWinners: string;
+      snapshotButton: string;
+      resnapshotButton: string;
+      winnersTitle: string;
+      noWinners: string;
+      deleteWinner: string;
+      deleteConfirm: string;
+      deleted: string;
+      snapshotSuccess: string;
+    };
     roles: {
       user: string;
       moderator: string;
@@ -958,6 +984,7 @@ export type Dictionary = {
     welcomeEmailsSent: string;
     accountDeletions: string;
     inAppNotifications: string;
+    legendWinners: string;
   };
     quickActions: {
       reviewVideos: string;
@@ -1160,6 +1187,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       interactionKing: "Interaction King Today",
       pointsToday: "pts today",
       noDailyLeader: "No daily champion yet. Like, comment, post, and invite friends to claim the crown.",
+      hallOfLegendsBadge: "Hall of Legends",
+      hallOfLegendsTitle: "Hall of Legends",
+      hallOfLegendsSubtitle:
+        "A permanent gallery of past season champions. These creators earned the podium and inspire the next wave of hunters.",
+      noHallOfLegends:
+        "No archived season champions yet. When a season ends, top-ranked clips are preserved here forever.",
+      seasonWinnerRank: "Rank #{rank}",
       randomDuelBadge: "Random Duel",
       randomDuelTitle: "Random Duel",
       randomDuelDesc: "Jump into a surprise head-to-head between two clips and vote for your favorite.",
@@ -1928,6 +1962,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         withdrawals: "Withdrawals",
         kyc: "Payout KYC",
         seasons: "Clash seasons",
+        legends: "Hall of Legends",
         contact: "Contact inbox",
         emails: "Emails",
         broadcast: "Broadcast",
@@ -1973,6 +2008,26 @@ export const dictionaries: Record<Locale, Dictionary> = {
           ended: "Ended",
         },
       },
+      legends: {
+        title: "Hall of Legends",
+        subtitle: "Archive past season winners and keep champions visible across the site.",
+        statsArchived: "Archived seasons",
+        statsEnded: "Ended seasons",
+        statsWinners: "Total winners",
+        seasonListTitle: "Season archive",
+        openSeasons: "Open seasons panel",
+        emptySeasons: "No seasons yet.",
+        winnersCount: "{count} winners archived",
+        viewWinners: "View winners",
+        snapshotButton: "Archive winners",
+        resnapshotButton: "Re-archive winners",
+        winnersTitle: "Winners — {season}",
+        noWinners: "No winners archived for this season yet.",
+        deleteWinner: "Remove",
+        deleteConfirm: "Remove this winner from the Hall of Legends?",
+        deleted: "Winner removed.",
+        snapshotSuccess: "Archived {count} winners.",
+      },
       roles: {
         user: "User",
         moderator: "Moderator",
@@ -1997,6 +2052,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         welcomeEmailsSent: "Welcome emails sent",
         accountDeletions: "Accounts deleted",
         inAppNotifications: "In-app notifications",
+        legendWinners: "Hall of Legends winners",
       },
       quickActions: {
         reviewVideos: "Review videos",
@@ -2010,7 +2066,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         animeRadioSettings: "Anime radio",
         animeRadioSettingsDesc: "Control autoplay, volume, and the mini player.",
         exclusivesFeatures: "Exclusives arena",
-        exclusivesFeaturesDesc: "Daily Hall of Fame, clip challenges, trending duels, and random clash.",
+        exclusivesFeaturesDesc: "Daily Hall of Fame, Hall of Legends, clip challenges, trending duels, and random clash.",
         clipChallenges: "Clip challenges",
         clipChallengesDesc: "Users duel clips head-to-head. Challenge button appears under every approved video.",
         pointsWagerDuels: "Points wager arena",
@@ -2196,6 +2252,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       interactionKing: "今日の交流王",
       pointsToday: "pt 今日",
       noDailyLeader: "まだ今日の王者はいません。いいね、投稿、招待で王座を狙おう。",
+      hallOfLegendsBadge: "伝説の殿堂",
+      hallOfLegendsTitle: "伝説の殿堂",
+      hallOfLegendsSubtitle:
+        "過去シーズンの王者を永久保存。ここに名を刻んだクリエイターが次のハンターの目標になる。",
+      noHallOfLegends:
+        "まだアーカイブされたシーズン王者はいません。シーズン終了時に上位3位がここに保存されます。",
+      seasonWinnerRank: "第{rank}位",
       randomDuelBadge: "ランダム対決",
       randomDuelTitle: "ランダム対決",
       randomDuelDesc: "2本のクリップが突然マッチ。好きな方に投票しよう。",
@@ -2953,6 +3016,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         withdrawals: "出金",
         kyc: "出金KYC",
         seasons: "クラッシュシーズン",
+        legends: "伝説の殿堂",
         contact: "お問い合わせ受信箱",
         emails: "メール",
         broadcast: "一斉メール",
@@ -2998,6 +3062,26 @@ export const dictionaries: Record<Locale, Dictionary> = {
           ended: "終了",
         },
       },
+      legends: {
+        title: "伝説の殿堂",
+        subtitle: "過去シーズンの王者をアーカイブし、サイト全体で表示します。",
+        statsArchived: "アーカイブ済みシーズン",
+        statsEnded: "終了シーズン",
+        statsWinners: "総勝者数",
+        seasonListTitle: "シーズンアーカイブ",
+        openSeasons: "シーズン管理を開く",
+        emptySeasons: "シーズンがありません。",
+        winnersCount: "{count} 人をアーカイブ",
+        viewWinners: "勝者を見る",
+        snapshotButton: "勝者をアーカイブ",
+        resnapshotButton: "再アーカイブ",
+        winnersTitle: "勝者 — {season}",
+        noWinners: "このシーズンの勝者はまだありません。",
+        deleteWinner: "削除",
+        deleteConfirm: "この勝者を殿堂から削除しますか？",
+        deleted: "勝者を削除しました。",
+        snapshotSuccess: "{count} 人の勝者をアーカイブしました。",
+      },
       roles: {
         user: "ユーザー",
         moderator: "モデレーター",
@@ -3022,6 +3106,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         welcomeEmailsSent: "送信済みウェルカムメール",
         accountDeletions: "削除されたアカウント",
         inAppNotifications: "アプリ内通知",
+        legendWinners: "伝説の殿堂の勝者",
       },
       quickActions: {
         reviewVideos: "動画を審査",
@@ -3221,6 +3306,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       interactionKing: "ملك التفاعلات اليوم",
       pointsToday: "نقطة اليوم",
       noDailyLeader: "لا بطل اليوم بعد. تفاعل، انشر، وادعُ أصدقاءك لتتوج.",
+      hallOfLegendsBadge: "أرشيف الأساطير",
+      hallOfLegendsTitle: "أرشيف الأساطير",
+      hallOfLegendsSubtitle:
+        "معرض دائم لأبطال المواسم السابقة. هؤلاء الفائزون يُلهمون الصيادين الجدد للوصول إلى القمة.",
+      noHallOfLegends:
+        "لا يوجد أبطال مؤرشفون بعد. عند انتهاء الموسم، يُحفظ أفضل 3 مقاطع هنا إلى الأبد.",
+      seasonWinnerRank: "المركز #{rank}",
       randomDuelBadge: "نزال عشوائي",
       randomDuelTitle: "التحدي العشوائي",
       randomDuelDesc: "انتقل فوراً لمواجهة بين فيديوين مختارين عشوائياً وصوّت لأقوى مقطع.",
@@ -3981,6 +4073,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         withdrawals: "السحوبات",
         kyc: "KYC السحب",
         seasons: "مواسم النزال",
+        legends: "أرشيف الأساطير",
         contact: "صندوق التواصل",
         emails: "الإيميلات",
         broadcast: "إيميل جماعي",
@@ -4026,6 +4119,26 @@ export const dictionaries: Record<Locale, Dictionary> = {
           ended: "منتهٍ",
         },
       },
+      legends: {
+        title: "أرشيف الأساطير",
+        subtitle: "أرشفة فائزي المواسم السابقة وإظهارهم في الموقع.",
+        statsArchived: "مواسم مؤرشفة",
+        statsEnded: "مواسم منتهية",
+        statsWinners: "إجمالي الفائزين",
+        seasonListTitle: "أرشيف المواسم",
+        openSeasons: "فتح لوحة المواسم",
+        emptySeasons: "لا توجد مواسم بعد.",
+        winnersCount: "{count} فائز مؤرشف",
+        viewWinners: "عرض الفائزين",
+        snapshotButton: "أرشفة الفائزين",
+        resnapshotButton: "إعادة الأرشفة",
+        winnersTitle: "الفائزون — {season}",
+        noWinners: "لا يوجد فائزون مؤرشفون لهذا الموسم بعد.",
+        deleteWinner: "إزالة",
+        deleteConfirm: "إزالة هذا الفائز من أرشيف الأساطير؟",
+        deleted: "تمت إزالة الفائز.",
+        snapshotSuccess: "تم أرشفة {count} فائز.",
+      },
       roles: {
         user: "مستخدم",
         moderator: "مشرف",
@@ -4050,6 +4163,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         welcomeEmailsSent: "إيميلات ترحيب مرسلة",
         accountDeletions: "حسابات محذوفة",
         inAppNotifications: "إشعارات داخل التطبيق",
+        legendWinners: "فائزو أرشيف الأساطير",
       },
       quickActions: {
         reviewVideos: "مراجعة الفيديوهات",
