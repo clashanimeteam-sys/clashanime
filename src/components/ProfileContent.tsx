@@ -7,6 +7,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FollowerCount } from "@/components/FollowButton";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { ClashWalletPanel } from "@/components/ClashWalletPanel";
+import { DeleteAccountSection } from "@/components/DeleteAccountSection";
 import { PointsPanel } from "@/components/PointsPanel";
 import { VideoCard } from "@/components/VideoCard";
 import { profileToVideoChannel } from "@/components/VideoCardChannel";
@@ -570,6 +571,8 @@ export function ProfileContent() {
               {t.auth.signOut}
             </button>
           </div>
+
+          <DeleteAccountSection />
         </>
       ) : null}
 

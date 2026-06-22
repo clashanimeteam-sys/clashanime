@@ -352,6 +352,15 @@ export type Dictionary = {
     verifiedBadge: string;
     displayNameCooldown: string;
     displayNameCooldownDays: string;
+    deleteAccountTitle: string;
+    deleteAccountWarning: string;
+    deleteAccountCheckbox: string;
+    deleteAccountTypeWord: string;
+    deleteAccountButton: string;
+    deleteAccountDeleting: string;
+    deleteAccountFailed: string;
+    deleteAccountWordMismatch: string;
+    deleteAccountConfirmRequired: string;
   };
   points: {
     systemTitle: string;
@@ -754,6 +763,14 @@ export type Dictionary = {
       status: string;
       user: string;
     };
+    accountDeletionsTitle: string;
+    noAccountDeletions: string;
+    accountDeletionsTable: {
+      when: string;
+      email: string;
+      name: string;
+      farewell: string;
+    };
     approveWithdrawal: string;
     rejectWithdrawal: string;
     markReviewing: string;
@@ -877,6 +894,7 @@ export type Dictionary = {
     pendingKyc: string;
     openContactMessages: string;
     welcomeEmailsSent: string;
+    accountDeletions: string;
   };
     quickActions: {
       reviewVideos: string;
@@ -1291,6 +1309,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
       verifiedBadge: "Verified channel",
       displayNameCooldown: "You can change your channel name again in {days} day(s).",
       displayNameCooldownDays: "Channel name can only be changed once every 14 days.",
+      deleteAccountTitle: "Delete account",
+      deleteAccountWarning:
+        "This permanently deletes your account, videos, points, wallet data, and all associated records. You cannot recover your account after deletion.",
+      deleteAccountCheckbox:
+        "I understand that deleting my account is permanent and cannot be undone.",
+      deleteAccountTypeWord: 'Type "{word}" to confirm',
+      deleteAccountButton: "Delete my account permanently",
+      deleteAccountDeleting: "Deleting account...",
+      deleteAccountFailed: "Could not delete your account. Please try again or contact support.",
+      deleteAccountWordMismatch: "Confirmation word does not match.",
+      deleteAccountConfirmRequired: "Please check the confirmation box first.",
     },
     points: {
       systemTitle: "Bounty Hunter Rewards",
@@ -1709,6 +1738,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         status: "Status",
         user: "User",
       },
+      accountDeletionsTitle: "Deleted accounts",
+      noAccountDeletions: "No account deletions logged yet.",
+      accountDeletionsTable: {
+        when: "When",
+        email: "Email",
+        name: "Name",
+        farewell: "Farewell email",
+      },
       approveWithdrawal: "Mark paid",
       rejectWithdrawal: "Reject & refund",
       markReviewing: "Mark reviewing",
@@ -1832,6 +1869,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pendingKyc: "Pending payout KYC",
         openContactMessages: "Open contact messages",
         welcomeEmailsSent: "Welcome emails sent",
+        accountDeletions: "Accounts deleted",
       },
       quickActions: {
         reviewVideos: "Review videos",
@@ -2239,6 +2277,16 @@ export const dictionaries: Record<Locale, Dictionary> = {
       verifiedBadge: "認証済みチャンネル",
       displayNameCooldown: "チャンネル名はあと {days} 日で変更できます。",
       displayNameCooldownDays: "チャンネル名は14日に1回だけ変更できます。",
+      deleteAccountTitle: "アカウント削除",
+      deleteAccountWarning:
+        "アカウント、動画、ポイント、ウォレットデータ、関連レコードが完全に削除されます。削除後は復元できません。",
+      deleteAccountCheckbox: "アカウント削除は永久であり、元に戻せないことを理解しました。",
+      deleteAccountTypeWord: "確認のため「{word}」と入力してください",
+      deleteAccountButton: "アカウントを完全に削除",
+      deleteAccountDeleting: "削除中...",
+      deleteAccountFailed: "アカウントを削除できませんでした。もう一度お試しください。",
+      deleteAccountWordMismatch: "確認ワードが一致しません。",
+      deleteAccountConfirmRequired: "まず確認チェックボックスをオンにしてください。",
     },
     points: {
       systemTitle: "バウンティハンター報酬",
@@ -2654,6 +2702,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         status: "状態",
         user: "ユーザー",
       },
+      accountDeletionsTitle: "削除されたアカウント",
+      noAccountDeletions: "まだ削除記録がありません。",
+      accountDeletionsTable: {
+        when: "日時",
+        email: "メール",
+        name: "名前",
+        farewell: "お別れメール",
+      },
       approveWithdrawal: "支払い済みにする",
       rejectWithdrawal: "拒否して返金",
       markReviewing: "審査中にする",
@@ -2777,6 +2833,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pendingKyc: "保留中の出金KYC",
         openContactMessages: "未対応のお問い合わせ",
         welcomeEmailsSent: "送信済みウェルカムメール",
+        accountDeletions: "削除されたアカウント",
       },
       quickActions: {
         reviewVideos: "動画を審査",
@@ -3186,6 +3243,16 @@ export const dictionaries: Record<Locale, Dictionary> = {
       verifiedBadge: "قناة موثّقة",
       displayNameCooldown: "يمكنك تغيير اسم القناة بعد {days} يوماً.",
       displayNameCooldownDays: "يمكن تغيير اسم القناة مرة واحدة كل 14 يوماً فقط.",
+      deleteAccountTitle: "حذف الحساب",
+      deleteAccountWarning:
+        "سيؤدي هذا إلى حذف حسابك ومقاطعك ونقاطك ومحفظة ClashCoins وجميع بياناتك نهائياً. لن تتمكن من استرجاع الحساب بعد الحذف.",
+      deleteAccountCheckbox: "أفهم أن حذف الحساب نهائي ولا يمكن التراجع عنه.",
+      deleteAccountTypeWord: 'اكتب "{word}" للتأكيد',
+      deleteAccountButton: "حذف حسابي نهائياً",
+      deleteAccountDeleting: "جارٍ حذف الحساب...",
+      deleteAccountFailed: "تعذّر حذف الحساب. حاول مجدداً أو تواصل مع الدعم.",
+      deleteAccountWordMismatch: "كلمة التأكيد غير صحيحة.",
+      deleteAccountConfirmRequired: "يرجى تفعيل مربع التأكيد أولاً.",
     },
     points: {
       systemTitle: "نظام صياد الجوائز",
@@ -3602,6 +3669,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         status: "الحالة",
         user: "المستخدم",
       },
+      accountDeletionsTitle: "الحسابات المحذوفة",
+      noAccountDeletions: "لا توجد سجلات حذف بعد.",
+      accountDeletionsTable: {
+        when: "الوقت",
+        email: "البريد",
+        name: "الاسم",
+        farewell: "إيميل الوداع",
+      },
       approveWithdrawal: "تعيين كمدفوع",
       rejectWithdrawal: "رفض واسترداد",
       markReviewing: "وضع قيد المراجعة",
@@ -3725,6 +3800,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pendingKyc: "KYC سحب قيد المراجعة",
         openContactMessages: "رسائل تواصل مفتوحة",
         welcomeEmailsSent: "إيميلات ترحيب مرسلة",
+        accountDeletions: "حسابات محذوفة",
       },
       quickActions: {
         reviewVideos: "مراجعة الفيديوهات",

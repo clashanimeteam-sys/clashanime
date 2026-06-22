@@ -19,10 +19,21 @@ type EmailRow = {
   username?: string | null;
 };
 
+type DeletionRow = {
+  id: string;
+  user_id: string | null;
+  email: string;
+  display_name: string | null;
+  farewell_status: "sent" | "failed" | "skipped";
+  error_message: string | null;
+  deleted_at: string;
+};
+
 export function AdminEmailsPanel() {
   const { t } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [rows, setRows] = useState<EmailRow[]>([]);
+  const [deletions, setDeletions] = useState<DeletionRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<"all" | EmailRow["status"]>("all");
@@ -45,15 +56,28 @@ export function AdminEmailsPanel() {
       query = query.eq("status", statusFilter);
     }
 
-    const { data, error: fetchError } = await query;
+    const [emailsResult, deletionsResult] = await Promise.all([
+      query,
+      supabase
+        .from("account_deletion_log")
+        .select("id, user_id, email, display_name, farewell_status, error_message, deleted_at")
+        .order("deleted_at", { ascending: false })
+        .limit(100),
+    ]);
 
-    if (fetchError) {
-      setError(fetchError.message);
+    if (emailsResult.error) {
+      setError(emailsResult.error.message);
       setLoading(false);
       return;
     }
 
-    const emailRows = data ?? [];
+    if (deletionsResult.error) {
+      setError(deletionsResult.error.message);
+      setLoading(false);
+      return;
+    }
+
+    const emailRows = emailsResult.data ?? [];
     const userIds = [...new Set(emailRows.map((row) => row.user_id).filter(Boolean))];
 
     const { data: profiles } = userIds.length
@@ -68,6 +92,7 @@ export function AdminEmailsPanel() {
         username: usernameById.get(row.user_id) ?? null,
       })),
     );
+    setDeletions(deletionsResult.data ?? []);
     setLoading(false);
   }, [supabase, statusFilter]);
 
@@ -76,7 +101,7 @@ export function AdminEmailsPanel() {
   }, [loadRows]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-white">{t.admin.emailsTitle}</h1>
         <p className="mt-2 text-sm text-zinc-400">{t.admin.emailsSubtitle}</p>
@@ -152,6 +177,63 @@ export function AdminEmailsPanel() {
           </table>
         </div>
       )}
+
+      <div className="space-y-4">
+        <h2 className="text-lg font-semibold text-white">{t.admin.accountDeletionsTitle}</h2>
+        {loading ? (
+          <p className="text-sm text-zinc-400">{t.admin.loading}</p>
+        ) : deletions.length === 0 ? (
+          <p className="text-sm text-zinc-400">{t.admin.noAccountDeletions}</p>
+        ) : (
+          <div className="overflow-x-auto rounded-xl border border-zinc-800">
+            <table className="min-w-full text-sm">
+              <thead className="bg-zinc-900 text-zinc-400">
+                <tr>
+                  <th className="px-4 py-3 text-start font-medium">
+                    {t.admin.accountDeletionsTable.when}
+                  </th>
+                  <th className="px-4 py-3 text-start font-medium">
+                    {t.admin.accountDeletionsTable.email}
+                  </th>
+                  <th className="px-4 py-3 text-start font-medium">
+                    {t.admin.accountDeletionsTable.name}
+                  </th>
+                  <th className="px-4 py-3 text-start font-medium">
+                    {t.admin.accountDeletionsTable.farewell}
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-800">
+                {deletions.map((row) => (
+                  <tr key={row.id} className="bg-black/40">
+                    <td className="px-4 py-3 text-zinc-300">
+                      {new Date(row.deleted_at).toLocaleString()}
+                    </td>
+                    <td className="px-4 py-3 text-zinc-300">{row.email}</td>
+                    <td className="px-4 py-3 text-zinc-300">{row.display_name ?? "—"}</td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                          row.farewell_status === "sent"
+                            ? "bg-emerald-500/15 text-emerald-400"
+                            : row.farewell_status === "failed"
+                              ? "bg-red-500/15 text-red-400"
+                              : "bg-zinc-500/15 text-zinc-400"
+                        }`}
+                      >
+                        {row.farewell_status}
+                      </span>
+                      {row.error_message ? (
+                        <p className="mt-1 text-xs text-red-400">{row.error_message}</p>
+                      ) : null}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

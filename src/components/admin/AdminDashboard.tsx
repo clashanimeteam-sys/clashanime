@@ -22,6 +22,7 @@ type DashboardStats = {
   pendingKyc: number;
   openContactMessages: number;
   welcomeEmailsSent: number;
+  accountDeletions: number;
 };
 
 export function AdminDashboard() {
@@ -54,6 +55,7 @@ export function AdminDashboard() {
         pendingKycResult,
         openContactMessagesResult,
         welcomeEmailsResult,
+        accountDeletionsResult,
       ] = await Promise.all([
         client.from("profiles").select("*", { count: "exact", head: true }),
         client.from("videos").select("*", { count: "exact", head: true }),
@@ -136,6 +138,15 @@ export function AdminDashboard() {
             }
             return { count: result.count, error: false as const };
           }),
+        client
+          .from("account_deletion_log")
+          .select("*", { count: "exact", head: true })
+          .then((result) => {
+            if (result.error) {
+              return { count: null as number | null, error: true as const };
+            }
+            return { count: result.count, error: false as const };
+          }),
       ]);
 
       const clipChallengesCount =
@@ -155,6 +166,8 @@ export function AdminDashboard() {
         openContactMessagesResult.error ? 0 : (openContactMessagesResult.count ?? 0);
       const welcomeEmailsSentCount =
         welcomeEmailsResult.error ? 0 : (welcomeEmailsResult.count ?? 0);
+      const accountDeletionsCount =
+        accountDeletionsResult.error ? 0 : (accountDeletionsResult.count ?? 0);
 
       setStats({
         users: users ?? 0,
@@ -173,6 +186,7 @@ export function AdminDashboard() {
         pendingKyc: pendingKycCount,
         openContactMessages: openContactMessagesCount,
         welcomeEmailsSent: welcomeEmailsSentCount,
+        accountDeletions: accountDeletionsCount,
       });
       setLoading(false);
     }
@@ -191,6 +205,7 @@ export function AdminDashboard() {
     { label: t.admin.stats.pendingKyc, value: stats?.pendingKyc ?? 0, href: "/admin/kyc" },
     { label: t.admin.stats.openContactMessages, value: stats?.openContactMessages ?? 0, href: "/admin/contact" },
     { label: t.admin.stats.welcomeEmailsSent, value: stats?.welcomeEmailsSent ?? 0, href: "/admin/emails" },
+    { label: t.admin.stats.accountDeletions, value: stats?.accountDeletions ?? 0, href: "/admin/emails" },
     { label: t.admin.stats.pendingVerifications, value: stats?.pendingVerifications ?? 0, href: "/admin/users" },
     { label: t.admin.stats.communityPosts, value: stats?.communityPosts ?? 0, href: "/community" },
     { label: t.admin.stats.videos, value: stats?.videos ?? 0, href: "/admin/videos" },
