@@ -282,11 +282,14 @@ function DoodleLetter({
 }
 
 export function ElementalSiteTitle({ primary, secondary }: ElementalSiteTitleProps) {
-  const clashChars = [...primary.toUpperCase().trim()];
-  const animeChars = [...secondary.toUpperCase().trim()];
+  const clashChars = [..."CLASH"];
+  const animeChars = [..."ANIME"];
 
   return (
-    <div className={`doodle-logo-wrap doodle-logo-wrap-sidebar doodle-logo-wrap-interactive ${doodleFont.className}`}>
+    <div
+      dir="ltr"
+      className={`doodle-logo-ltr doodle-logo-wrap doodle-logo-wrap-sidebar doodle-logo-wrap-interactive ${doodleFont.className}`}
+    >
       <div className="doodle-logo-shadow" aria-hidden />
       <span className="doodle-fx doodle-fire-glow" aria-hidden />
       <span className="doodle-fx doodle-thunder-glow" aria-hidden />

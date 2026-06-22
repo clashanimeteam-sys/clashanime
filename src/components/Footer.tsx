@@ -70,7 +70,10 @@ export function Footer() {
           <div className="sm:col-span-2 lg:col-span-1">
             <Link href="/" className="inline-flex flex-col gap-3">
               <BrandLogo className="h-14 w-14" />
-              <p className="font-display text-lg font-black uppercase italic leading-none tracking-[0.14em]">
+              <p
+                dir="ltr"
+                className="doodle-logo-ltr font-display text-lg font-black uppercase italic leading-none tracking-[0.14em]"
+              >
                 <span className="bg-gradient-to-br from-brand via-red-600 to-orange-500 bg-clip-text text-transparent">
                   {t.home.titlePrimary}
                 </span>
@@ -126,7 +129,9 @@ export function Footer() {
 
       <div className="border-t border-zinc-200 dark:border-zinc-800/80">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-5 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 dark:text-zinc-600">
-          <p>{t.brand.name.toLowerCase()}.com</p>
+          <p dir="ltr" className="doodle-logo-ltr">
+            {t.brand.name.toLowerCase()}.com
+          </p>
           <p>{t.footer.copyright}</p>
         </div>
       </div>

@@ -83,7 +83,7 @@ export function SiteTitle({ primary, secondary, variant = "hero" }: SiteTitlePro
     variant === "sidebar" ? "doodle-logo-wrap doodle-logo-wrap-sidebar" : "doodle-logo-wrap";
 
   return (
-    <div className={`${wrapClass} ${doodleFont.className}`}>
+    <div dir="ltr" className={`doodle-logo-ltr ${wrapClass} ${doodleFont.className}`}>
       <div className="doodle-logo-shadow" aria-hidden />
       <h1 className="doodle-logo" aria-label={`${primary} ${secondary}`}>
         <span className="doodle-word doodle-word-clash">

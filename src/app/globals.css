@@ -403,6 +403,18 @@
 }
 
 /* Homepage title — Google Doodle balloon / 3D letter style (anime edition) */
+/* Brand wordmark is always Latin LTR — isolate from page RTL (Arabic). */
+.doodle-logo-ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.doodle-logo-ltr .doodle-logo,
+.doodle-logo-ltr .doodle-word {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
 .doodle-logo-wrap {
   position: relative;
   display: inline-block;
