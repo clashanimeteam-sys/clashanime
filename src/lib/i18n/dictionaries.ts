@@ -771,6 +771,36 @@ export type Dictionary = {
       name: string;
       farewell: string;
     };
+    broadcastTitle: string;
+    broadcastSubtitle: string;
+    broadcastComposeTitle: string;
+    broadcastSubjectLabel: string;
+    broadcastMessageLabel: string;
+    broadcastPersonalizeHint: string;
+    broadcastCtaLabel: string;
+    broadcastCtaUrlLabel: string;
+    broadcastConfirmCheckbox: string;
+    broadcastSendButton: string;
+    broadcastSending: string;
+    broadcastUsersTitle: string;
+    broadcastNoUsers: string;
+    broadcastUsersTable: {
+      email: string;
+      name: string;
+    };
+    broadcastConfirm: string;
+    broadcastSendSuccess: string;
+    broadcastSendFailed: string;
+    broadcastLoadFailed: string;
+    broadcastHistoryTitle: string;
+    broadcastNoHistory: string;
+    broadcastHistoryTable: {
+      when: string;
+      subject: string;
+      sent: string;
+      failed: string;
+      status: string;
+    };
     approveWithdrawal: string;
     rejectWithdrawal: string;
     markReviewing: string;
@@ -830,6 +860,7 @@ export type Dictionary = {
       seasons: string;
       contact: string;
       emails: string;
+      broadcast: string;
     };
     seasons: {
       title: string;
@@ -1746,6 +1777,36 @@ export const dictionaries: Record<Locale, Dictionary> = {
         name: "Name",
         farewell: "Farewell email",
       },
+      broadcastTitle: "Broadcast email",
+      broadcastSubtitle: "Send a branded email to every registered user in one click.",
+      broadcastComposeTitle: "Compose campaign",
+      broadcastSubjectLabel: "Subject",
+      broadcastMessageLabel: "Message",
+      broadcastPersonalizeHint: "Use {user_name} to personalize each email.",
+      broadcastCtaLabel: "Button label (optional)",
+      broadcastCtaUrlLabel: "Button link",
+      broadcastConfirmCheckbox: "I understand this will email every user on the platform.",
+      broadcastSendButton: "Send to all users",
+      broadcastSending: "Sending...",
+      broadcastUsersTitle: "All users",
+      broadcastNoUsers: "No users with email addresses found.",
+      broadcastUsersTable: {
+        email: "Email",
+        name: "Name",
+      },
+      broadcastConfirm: "Send this email to {count} users now?",
+      broadcastSendSuccess: "Sent {sent}/{total} emails. Failed: {failed}.",
+      broadcastSendFailed: "Could not send the broadcast.",
+      broadcastLoadFailed: "Could not load users.",
+      broadcastHistoryTitle: "Broadcast history",
+      broadcastNoHistory: "No broadcasts sent yet.",
+      broadcastHistoryTable: {
+        when: "When",
+        subject: "Subject",
+        sent: "Sent",
+        failed: "Failed",
+        status: "Status",
+      },
       approveWithdrawal: "Mark paid",
       rejectWithdrawal: "Reject & refund",
       markReviewing: "Mark reviewing",
@@ -1805,6 +1866,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         seasons: "Clash seasons",
         contact: "Contact inbox",
         emails: "Emails",
+        broadcast: "Broadcast",
       },
       seasons: {
         title: "Clash seasons",
@@ -2710,6 +2772,33 @@ export const dictionaries: Record<Locale, Dictionary> = {
         name: "名前",
         farewell: "お別れメール",
       },
+      broadcastTitle: "一斉メール",
+      broadcastSubtitle: "登録ユーザー全員にブランド付きメールを一括送信します。",
+      broadcastComposeTitle: "メール作成",
+      broadcastSubjectLabel: "件名",
+      broadcastMessageLabel: "本文",
+      broadcastPersonalizeHint: "{user_name} で各ユーザーに名前を差し込めます。",
+      broadcastCtaLabel: "ボタン文言（任意）",
+      broadcastCtaUrlLabel: "ボタンリンク",
+      broadcastConfirmCheckbox: "全ユーザーに送信することを理解しました。",
+      broadcastSendButton: "全員に送信",
+      broadcastSending: "送信中...",
+      broadcastUsersTitle: "全ユーザー",
+      broadcastNoUsers: "メール付きユーザーが見つかりません。",
+      broadcastUsersTable: { email: "メール", name: "名前" },
+      broadcastConfirm: "今すぐ {count} 人に送信しますか？",
+      broadcastSendSuccess: "{sent}/{total} 件送信。失敗: {failed}",
+      broadcastSendFailed: "一斉送信に失敗しました。",
+      broadcastLoadFailed: "ユーザーを読み込めませんでした。",
+      broadcastHistoryTitle: "送信履歴",
+      broadcastNoHistory: "まだ一斉送信はありません。",
+      broadcastHistoryTable: {
+        when: "日時",
+        subject: "件名",
+        sent: "送信",
+        failed: "失敗",
+        status: "状態",
+      },
       approveWithdrawal: "支払い済みにする",
       rejectWithdrawal: "拒否して返金",
       markReviewing: "審査中にする",
@@ -2769,6 +2858,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         seasons: "クラッシュシーズン",
         contact: "お問い合わせ受信箱",
         emails: "メール",
+        broadcast: "一斉メール",
       },
       seasons: {
         title: "クラッシュシーズン",
@@ -3677,6 +3767,33 @@ export const dictionaries: Record<Locale, Dictionary> = {
         name: "الاسم",
         farewell: "إيميل الوداع",
       },
+      broadcastTitle: "إيميل جماعي",
+      broadcastSubtitle: "أرسل إيميلاً منسقاً إلى كل المستخدمين المسجّلين بضغطة واحدة.",
+      broadcastComposeTitle: "كتابة الرسالة",
+      broadcastSubjectLabel: "الموضوع",
+      broadcastMessageLabel: "نص الرسالة",
+      broadcastPersonalizeHint: "استخدم {user_name} لتخصيص الاسم في كل إيميل.",
+      broadcastCtaLabel: "نص الزر (اختياري)",
+      broadcastCtaUrlLabel: "رابط الزر",
+      broadcastConfirmCheckbox: "أفهم أن هذا سيُرسل إلى كل مستخدم في المنصة.",
+      broadcastSendButton: "إرسال للجميع",
+      broadcastSending: "جارٍ الإرسال...",
+      broadcastUsersTitle: "كل المستخدمين",
+      broadcastNoUsers: "لا يوجد مستخدمون ببريد إلكتروني.",
+      broadcastUsersTable: { email: "البريد", name: "الاسم" },
+      broadcastConfirm: "إرسال هذا الإيميل إلى {count} مستخدم الآن؟",
+      broadcastSendSuccess: "تم إرسال {sent}/{total}. فشل: {failed}",
+      broadcastSendFailed: "تعذّر الإرسال الجماعي.",
+      broadcastLoadFailed: "تعذّر تحميل المستخدمين.",
+      broadcastHistoryTitle: "سجل الإرسال الجماعي",
+      broadcastNoHistory: "لا يوجد إرسال جماعي بعد.",
+      broadcastHistoryTable: {
+        when: "الوقت",
+        subject: "الموضوع",
+        sent: "تم الإرسال",
+        failed: "فشل",
+        status: "الحالة",
+      },
       approveWithdrawal: "تعيين كمدفوع",
       rejectWithdrawal: "رفض واسترداد",
       markReviewing: "وضع قيد المراجعة",
@@ -3736,6 +3853,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         seasons: "مواسم النزال",
         contact: "صندوق التواصل",
         emails: "الإيميلات",
+        broadcast: "إيميل جماعي",
       },
       seasons: {
         title: "مواسم النزال",

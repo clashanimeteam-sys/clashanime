@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { isStaff } from "@/lib/admin";
+import { isAdmin, isStaff } from "@/lib/admin";
 import type { Profile } from "@/lib/types";
 
 export async function getStaffUser(supabase: SupabaseClient) {
@@ -23,4 +23,12 @@ export async function getStaffUser(supabase: SupabaseClient) {
   }
 
   return { user, profile };
+}
+
+export async function getAdminUser(supabase: SupabaseClient) {
+  const result = await getStaffUser(supabase);
+  if (!result.user || !isAdmin(result.profile as Pick<Profile, "role"> | null)) {
+    return { user: null, profile: null };
+  }
+  return result;
 }
