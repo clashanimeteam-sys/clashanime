@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CommentThread, updateCommentInTree } from "@/components/CommentThread";
 import { ComposerMediaButtons } from "@/components/ComposerMediaButtons";
+import { MentionHashtagTextarea } from "@/components/MentionHashtagTextarea";
 import { ModalPortal } from "@/components/ModalPortal";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { useRequireSubscription } from "@/hooks/useRequireSubscription";
@@ -69,7 +70,7 @@ export function VideoCommentsModal({
   const { t } = useLocale();
   const { requireSubscription } = useRequireSubscription();
   const supabase = useMemo(() => createBrowserClient(), []);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
   useScrollLock(open);
 
@@ -153,10 +154,22 @@ export function VideoCommentsModal({
 
     if (counts) {
       onCommentsCountChange(counts.comments_count);
+      const postedBody = commentBody;
       setCommentBody("");
       setReplyTo(null);
       await loadComments();
       inputRef.current?.focus();
+
+      void fetch("/api/notifications/mentions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: postedBody,
+          link: `/watch/${videoId}`,
+          title: t.notifications.mentionTitle,
+          preview: t.notifications.mentionPreviewComment,
+        }),
+      });
     } else {
       setError(t.video.actionFailed);
     }
@@ -404,12 +417,14 @@ export function VideoCommentsModal({
                     onStickerPick={appendSticker}
                   />
 
-                  <input
-                    ref={inputRef}
+                  <MentionHashtagTextarea
                     value={commentBody}
-                    onChange={(event) => setCommentBody(event.target.value)}
+                    onChange={setCommentBody}
+                    multiline={false}
                     maxLength={500}
                     placeholder={t.video.commentPlaceholder}
+                    excludeUserId={user.id}
+                    inputRef={inputRef}
                     className="min-w-0 flex-1 bg-transparent text-sm font-semibold text-black outline-none placeholder:text-zinc-400 dark:text-white"
                   />
 

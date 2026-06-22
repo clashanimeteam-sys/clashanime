@@ -8,6 +8,8 @@ import { FollowerCount } from "@/components/FollowButton";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { ClashWalletPanel } from "@/components/ClashWalletPanel";
 import { DeleteAccountSection } from "@/components/DeleteAccountSection";
+import { MentionHashtagTextarea } from "@/components/MentionHashtagTextarea";
+import { NotificationBell } from "@/components/NotificationBell";
 import { PointsPanel } from "@/components/PointsPanel";
 import { VideoCard } from "@/components/VideoCard";
 import { profileToVideoChannel } from "@/components/VideoCardChannel";
@@ -22,6 +24,14 @@ import {
   isDisplayNameCooldownError,
   rememberDisplayNameChange,
 } from "@/lib/profileDisplayName";
+import {
+  canChangeProfileUsernameForProfile,
+  getProfileUsernameCooldownRemainingDays,
+  isUsernameCooldownError,
+  isUsernameInvalidError,
+  isUsernameTakenError,
+  normalizeUsernameInput,
+} from "@/lib/profileUsername";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 import { useProfileSection } from "@/providers/ProfileSectionProvider";
@@ -51,6 +61,7 @@ export function ProfileContent() {
   const [videos, setVideos] = useState<Video[]>([]);
   const [videoCount, setVideoCount] = useState(0);
   const [displayName, setDisplayName] = useState("");
+  const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -66,11 +77,17 @@ export function ProfileContent() {
     displayName.trim() !== (profile.display_name ?? profile.username);
   const canChangeDisplayName = canChangeProfileDisplayNameForProfile(profile);
   const displayNameCooldownDays = getProfileDisplayNameCooldownRemainingDays(profile);
+  const canChangeUsername = canChangeProfileUsernameForProfile(profile);
+  const usernameCooldownDays = getProfileUsernameCooldownRemainingDays(profile);
+  const usernameChanged =
+    profile !== null && normalizeUsernameInput(username) !== profile.username;
   const bioChanged = profile !== null && bio.trim() !== (profile.bio ?? "");
 
   const hasChanges =
     profile !== null &&
-    ((displayNameChanged && canChangeDisplayName) || bioChanged);
+    ((displayNameChanged && canChangeDisplayName) ||
+      (usernameChanged && canChangeUsername) ||
+      bioChanged);
 
   const userId = user?.id;
 
@@ -144,6 +161,7 @@ export function ProfileContent() {
     setProfile(profileData);
     if (!options?.silent) {
       setDisplayName(profileData.display_name ?? profileData.username);
+      setUsername(profileData.username);
       setBio(profileData.bio ?? "");
     }
     if (profileData.display_name_changed_at) {
@@ -174,6 +192,11 @@ export function ProfileContent() {
   useEffect(() => {
     if (!profile || canChangeProfileDisplayNameForProfile(profile)) return;
     setDisplayName(profile.display_name ?? profile.username);
+  }, [profile]);
+
+  useEffect(() => {
+    if (!profile || canChangeProfileUsernameForProfile(profile)) return;
+    setUsername(profile.username);
   }, [profile]);
 
   async function uploadImage(
@@ -250,7 +273,9 @@ export function ProfileContent() {
 
     const nextDisplayName = displayName.trim() || profile.username;
     const nextBio = bio.trim();
+    const nextUsername = normalizeUsernameInput(username) || profile.username;
     const nameChanged = nextDisplayName !== (profile.display_name ?? profile.username);
+    const handleChanged = nextUsername !== profile.username;
 
     if (nameChanged && !canChangeProfileDisplayNameForProfile(profile)) {
       setError(
@@ -260,6 +285,17 @@ export function ProfileContent() {
         ),
       );
       setDisplayName(profile.display_name ?? profile.username);
+      return;
+    }
+
+    if (handleChanged && !canChangeProfileUsernameForProfile(profile)) {
+      setError(
+        t.profile.usernameCooldown.replace(
+          "{days}",
+          String(getProfileUsernameCooldownRemainingDays(profile)),
+        ),
+      );
+      setUsername(profile.username);
       return;
     }
 
@@ -273,6 +309,7 @@ export function ProfileContent() {
     const rpcResult = await supabase.rpc("update_own_profile_settings", {
       p_bio: nextBio,
       p_display_name: nextDisplayName,
+      p_username: handleChanged ? nextUsername : null,
     });
 
     if (!rpcResult.error && rpcResult.data) {
@@ -325,16 +362,34 @@ export function ProfileContent() {
 
     if (saveError || !savedProfile) {
       setSaving(false);
+      if (saveError && isUsernameTakenError(saveError.message)) {
+        setError(t.profile.usernameTaken);
+        setUsername(profile.username);
+        return;
+      }
+      if (saveError && isUsernameInvalidError(saveError.message)) {
+        setError(t.profile.usernameInvalid);
+        setUsername(profile.username);
+        return;
+      }
       setError(
         saveError && isDisplayNameCooldownError(saveError.message)
           ? t.profile.displayNameCooldown.replace(
               "{days}",
               String(getProfileDisplayNameCooldownRemainingDays(profile)),
             )
-          : (saveError?.message ?? "Could not save profile."),
+          : saveError && isUsernameCooldownError(saveError.message)
+            ? t.profile.usernameCooldown.replace(
+                "{days}",
+                String(getProfileUsernameCooldownRemainingDays(profile)),
+              )
+            : (saveError?.message ?? "Could not save profile."),
       );
       if (saveError && isDisplayNameCooldownError(saveError.message)) {
         setDisplayName(profile.display_name ?? profile.username);
+      }
+      if (saveError && isUsernameCooldownError(saveError.message)) {
+        setUsername(profile.username);
       }
       return;
     }
@@ -356,6 +411,7 @@ export function ProfileContent() {
 
     setProfile(savedProfile);
     setDisplayName(savedProfile.display_name ?? savedProfile.username);
+    setUsername(savedProfile.username);
     setBio(savedProfile.bio ?? "");
     setSaving(false);
     setMessage(t.profile.saved);
@@ -476,7 +532,8 @@ export function ProfileContent() {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 pt-12 sm:pt-14">
+                <div className="flex flex-wrap items-center gap-2 pt-12 sm:pt-14">
+                  <NotificationBell />
                   <Link
                     href="/upload"
                     className="rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-black"
@@ -531,17 +588,50 @@ export function ProfileContent() {
                 <p className="mt-2 text-xs text-zinc-500">{t.profile.displayNameCooldownDays}</p>
               )}
             </label>
+            <label className="block">
+              <span className="mb-1 block text-sm font-medium text-black dark:text-white">
+                {t.profile.username}
+              </span>
+              <div className="relative">
+                <span className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-sm text-zinc-500">
+                  @
+                </span>
+                <input
+                  value={username}
+                  onChange={(event) => {
+                    if (!canChangeUsername) return;
+                    setUsername(normalizeUsernameInput(event.target.value));
+                    setMessage(null);
+                  }}
+                  readOnly={!canChangeUsername}
+                  aria-readonly={!canChangeUsername}
+                  className={`w-full rounded-lg border py-2 ps-7 pe-3 text-sm outline-none focus:border-zinc-500 dark:text-white ${
+                    canChangeUsername
+                      ? "border-zinc-300 bg-white text-black dark:border-zinc-700 dark:bg-black"
+                      : "cursor-not-allowed border-zinc-200 bg-zinc-100 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400"
+                  }`}
+                />
+              </div>
+              {!canChangeUsername ? (
+                <p className="mt-2 text-xs text-amber-600 dark:text-amber-400">
+                  {t.profile.usernameCooldown.replace("{days}", String(usernameCooldownDays))}
+                </p>
+              ) : (
+                <p className="mt-2 text-xs text-zinc-500">{t.profile.usernameCooldownDays}</p>
+              )}
+            </label>
             <label className="block sm:col-span-2">
               <span className="mb-1 block text-sm font-medium text-black dark:text-white">
                 {t.profile.bio}
               </span>
-              <textarea
+              <MentionHashtagTextarea
                 value={bio}
-                onChange={(event) => {
-                  setBio(event.target.value);
+                onChange={(value) => {
+                  setBio(value);
                   setMessage(null);
                 }}
                 rows={3}
+                excludeUserId={user.id}
                 className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-black dark:text-white"
               />
             </label>

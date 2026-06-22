@@ -29,11 +29,23 @@ type DeletionRow = {
   deleted_at: string;
 };
 
+type NotificationRow = {
+  id: string;
+  user_id: string;
+  type: string;
+  title: string;
+  body: string;
+  read_at: string | null;
+  created_at: string;
+  username?: string | null;
+};
+
 export function AdminEmailsPanel() {
   const { t } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [rows, setRows] = useState<EmailRow[]>([]);
   const [deletions, setDeletions] = useState<DeletionRow[]>([]);
+  const [notifications, setNotifications] = useState<NotificationRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<"all" | EmailRow["status"]>("all");
@@ -56,12 +68,17 @@ export function AdminEmailsPanel() {
       query = query.eq("status", statusFilter);
     }
 
-    const [emailsResult, deletionsResult] = await Promise.all([
+    const [emailsResult, deletionsResult, notificationsResult] = await Promise.all([
       query,
       supabase
         .from("account_deletion_log")
         .select("id, user_id, email, display_name, farewell_status, error_message, deleted_at")
         .order("deleted_at", { ascending: false })
+        .limit(100),
+      supabase
+        .from("user_notifications")
+        .select("id, user_id, type, title, body, read_at, created_at")
+        .order("created_at", { ascending: false })
         .limit(100),
     ]);
 
@@ -77,8 +94,19 @@ export function AdminEmailsPanel() {
       return;
     }
 
+    if (notificationsResult.error) {
+      setError(notificationsResult.error.message);
+      setLoading(false);
+      return;
+    }
+
     const emailRows = emailsResult.data ?? [];
-    const userIds = [...new Set(emailRows.map((row) => row.user_id).filter(Boolean))];
+    const userIds = [
+      ...new Set([
+        ...emailRows.map((row) => row.user_id).filter(Boolean),
+        ...(notificationsResult.data ?? []).map((row) => row.user_id),
+      ]),
+    ];
 
     const { data: profiles } = userIds.length
       ? await supabase.from("profiles").select("id, username").in("id", userIds)
@@ -93,6 +121,12 @@ export function AdminEmailsPanel() {
       })),
     );
     setDeletions(deletionsResult.data ?? []);
+    setNotifications(
+      (notificationsResult.data ?? []).map((row) => ({
+        ...row,
+        username: usernameById.get(row.user_id) ?? null,
+      })),
+    );
     setLoading(false);
   }, [supabase, statusFilter]);
 
@@ -226,6 +260,56 @@ export function AdminEmailsPanel() {
                       {row.error_message ? (
                         <p className="mt-1 text-xs text-red-400">{row.error_message}</p>
                       ) : null}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      <div>
+        <h2 className="text-lg font-semibold text-white">{t.admin.inAppNotificationsTitle}</h2>
+        {loading ? (
+          <p className="mt-3 text-sm text-zinc-400">{t.admin.loading}</p>
+        ) : notifications.length === 0 ? (
+          <p className="mt-3 text-sm text-zinc-400">{t.admin.noInAppNotifications}</p>
+        ) : (
+          <div className="mt-3 overflow-x-auto rounded-xl border border-zinc-800">
+            <table className="min-w-full text-sm">
+              <thead className="bg-zinc-900 text-zinc-400">
+                <tr>
+                  <th className="px-4 py-3 text-start font-medium">
+                    {t.admin.inAppNotificationsTable.when}
+                  </th>
+                  <th className="px-4 py-3 text-start font-medium">
+                    {t.admin.inAppNotificationsTable.user}
+                  </th>
+                  <th className="px-4 py-3 text-start font-medium">
+                    {t.admin.inAppNotificationsTable.type}
+                  </th>
+                  <th className="px-4 py-3 text-start font-medium">
+                    {t.admin.inAppNotificationsTable.title}
+                  </th>
+                  <th className="px-4 py-3 text-start font-medium">
+                    {t.admin.inAppNotificationsTable.read}
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-800">
+                {notifications.map((row) => (
+                  <tr key={row.id} className="bg-black/40">
+                    <td className="px-4 py-3 text-zinc-300">
+                      {new Date(row.created_at).toLocaleString()}
+                    </td>
+                    <td className="px-4 py-3 text-zinc-300">
+                      {row.username ? `@${row.username}` : row.user_id.slice(0, 8)}
+                    </td>
+                    <td className="px-4 py-3 text-zinc-300">{row.type}</td>
+                    <td className="px-4 py-3 text-zinc-300">{row.title}</td>
+                    <td className="px-4 py-3 text-zinc-300">
+                      {row.read_at ? "✓" : "—"}
                     </td>
                   </tr>
                 ))}

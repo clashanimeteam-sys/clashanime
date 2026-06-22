@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import { MentionHashtagTextarea } from "@/components/MentionHashtagTextarea";
 import { computeContentFingerprints } from "@/lib/contentFingerprint";
 import { analyzeContentAuthenticity } from "@/lib/contentHeuristics";
 import {
@@ -351,9 +352,11 @@ export function UploadVideoForm() {
         <span className="mb-1 block text-sm font-medium text-black dark:text-white">
           {t.upload.hashtags}
         </span>
-        <input
+        <MentionHashtagTextarea
           value={hashtags}
-          onChange={(event) => setHashtags(event.target.value)}
+          onChange={setHashtags}
+          mode="hashtags"
+          multiline={false}
           placeholder={t.upload.hashtagsPlaceholder}
           className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-black dark:text-white"
         />

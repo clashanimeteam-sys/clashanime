@@ -352,6 +352,11 @@ export type Dictionary = {
     verifiedBadge: string;
     displayNameCooldown: string;
     displayNameCooldownDays: string;
+    username: string;
+    usernameCooldown: string;
+    usernameCooldownDays: string;
+    usernameTaken: string;
+    usernameInvalid: string;
     deleteAccountTitle: string;
     deleteAccountWarning: string;
     deleteAccountCheckbox: string;
@@ -361,6 +366,19 @@ export type Dictionary = {
     deleteAccountFailed: string;
     deleteAccountWordMismatch: string;
     deleteAccountConfirmRequired: string;
+  };
+  notifications: {
+    bellLabel: string;
+    title: string;
+    subtitle: string;
+    markAllRead: string;
+    enableInApp: string;
+    loading: string;
+    disabledHint: string;
+    empty: string;
+    mentionTitle: string;
+    mentionPreviewCommunity: string;
+    mentionPreviewComment: string;
   };
   points: {
     systemTitle: string;
@@ -771,6 +789,15 @@ export type Dictionary = {
       name: string;
       farewell: string;
     };
+    inAppNotificationsTitle: string;
+    noInAppNotifications: string;
+    inAppNotificationsTable: {
+      when: string;
+      user: string;
+      type: string;
+      title: string;
+      read: string;
+    };
     broadcastTitle: string;
     broadcastSubtitle: string;
     broadcastComposeTitle: string;
@@ -926,6 +953,7 @@ export type Dictionary = {
     openContactMessages: string;
     welcomeEmailsSent: string;
     accountDeletions: string;
+    inAppNotifications: string;
   };
     quickActions: {
       reviewVideos: string;
@@ -1340,6 +1368,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       verifiedBadge: "Verified channel",
       displayNameCooldown: "You can change your channel name again in {days} day(s).",
       displayNameCooldownDays: "Channel name can only be changed once every 14 days.",
+      username: "Username (@handle)",
+      usernameCooldown: "You can change your username again in {days} day(s).",
+      usernameCooldownDays: "Username can only be changed once every 30 days.",
+      usernameTaken: "This username is already taken.",
+      usernameInvalid: "Username must be at least 3 characters (a-z, 0-9, _).",
       deleteAccountTitle: "Delete account",
       deleteAccountWarning:
         "This permanently deletes your account, videos, points, wallet data, and all associated records. You cannot recover your account after deletion.",
@@ -1351,6 +1384,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
       deleteAccountFailed: "Could not delete your account. Please try again or contact support.",
       deleteAccountWordMismatch: "Confirmation word does not match.",
       deleteAccountConfirmRequired: "Please check the confirmation box first.",
+    },
+    notifications: {
+      bellLabel: "Notifications",
+      title: "Notifications",
+      subtitle: "Updates from ClashAnime",
+      markAllRead: "Mark all read",
+      enableInApp: "Enable in-app notifications",
+      loading: "Loading notifications...",
+      disabledHint: "Turn on notifications to see updates here.",
+      empty: "No notifications yet.",
+      mentionTitle: "You were mentioned",
+      mentionPreviewCommunity: "mentioned you in a community post.",
+      mentionPreviewComment: "mentioned you in a comment.",
     },
     points: {
       systemTitle: "Bounty Hunter Rewards",
@@ -1777,6 +1823,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
         name: "Name",
         farewell: "Farewell email",
       },
+      inAppNotificationsTitle: "In-app notifications",
+      noInAppNotifications: "No in-app notifications logged yet.",
+      inAppNotificationsTable: {
+        when: "When",
+        user: "User",
+        type: "Type",
+        title: "Title",
+        read: "Read",
+      },
       broadcastTitle: "Broadcast email",
       broadcastSubtitle: "Send a branded email to every registered user in one click.",
       broadcastComposeTitle: "Compose campaign",
@@ -1932,6 +1987,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         openContactMessages: "Open contact messages",
         welcomeEmailsSent: "Welcome emails sent",
         accountDeletions: "Accounts deleted",
+        inAppNotifications: "In-app notifications",
       },
       quickActions: {
         reviewVideos: "Review videos",
@@ -2339,6 +2395,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       verifiedBadge: "認証済みチャンネル",
       displayNameCooldown: "チャンネル名はあと {days} 日で変更できます。",
       displayNameCooldownDays: "チャンネル名は14日に1回だけ変更できます。",
+      username: "ユーザー名（@ハンドル）",
+      usernameCooldown: "ユーザー名はあと {days} 日で変更できます。",
+      usernameCooldownDays: "ユーザー名は30日に1回だけ変更できます。",
+      usernameTaken: "このユーザー名は既に使用されています。",
+      usernameInvalid: "ユーザー名は3文字以上（a-z、0-9、_）である必要があります。",
       deleteAccountTitle: "アカウント削除",
       deleteAccountWarning:
         "アカウント、動画、ポイント、ウォレットデータ、関連レコードが完全に削除されます。削除後は復元できません。",
@@ -2349,6 +2410,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
       deleteAccountFailed: "アカウントを削除できませんでした。もう一度お試しください。",
       deleteAccountWordMismatch: "確認ワードが一致しません。",
       deleteAccountConfirmRequired: "まず確認チェックボックスをオンにしてください。",
+    },
+    notifications: {
+      bellLabel: "通知",
+      title: "通知",
+      subtitle: "ClashAnimeからの更新",
+      markAllRead: "すべて既読",
+      enableInApp: "アプリ内通知を有効にする",
+      loading: "通知を読み込み中...",
+      disabledHint: "通知をオンにするとここに表示されます。",
+      empty: "通知はまだありません。",
+      mentionTitle: "メンションされました",
+      mentionPreviewCommunity: "がコミュニティ投稿であなたをメンションしました。",
+      mentionPreviewComment: "がコメントであなたをメンションしました。",
     },
     points: {
       systemTitle: "バウンティハンター報酬",
@@ -2772,6 +2846,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
         name: "名前",
         farewell: "お別れメール",
       },
+      inAppNotificationsTitle: "アプリ内通知",
+      noInAppNotifications: "まだアプリ内通知の記録がありません。",
+      inAppNotificationsTable: {
+        when: "日時",
+        user: "ユーザー",
+        type: "種類",
+        title: "タイトル",
+        read: "既読",
+      },
       broadcastTitle: "一斉メール",
       broadcastSubtitle: "登録ユーザー全員にブランド付きメールを一括送信します。",
       broadcastComposeTitle: "メール作成",
@@ -2924,6 +3007,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         openContactMessages: "未対応のお問い合わせ",
         welcomeEmailsSent: "送信済みウェルカムメール",
         accountDeletions: "削除されたアカウント",
+        inAppNotifications: "アプリ内通知",
       },
       quickActions: {
         reviewVideos: "動画を審査",
@@ -3333,6 +3417,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       verifiedBadge: "قناة موثّقة",
       displayNameCooldown: "يمكنك تغيير اسم القناة بعد {days} يوماً.",
       displayNameCooldownDays: "يمكن تغيير اسم القناة مرة واحدة كل 14 يوماً فقط.",
+      username: "اسم المستخدم (@)",
+      usernameCooldown: "يمكنك تغيير اسم المستخدم بعد {days} يوماً.",
+      usernameCooldownDays: "يمكن تغيير اسم المستخدم مرة واحدة كل 30 يوماً فقط.",
+      usernameTaken: "اسم المستخدم موجود بالفعل.",
+      usernameInvalid: "اسم المستخدم يجب أن يكون 3 أحرف على الأقل (a-z, 0-9, _).",
       deleteAccountTitle: "حذف الحساب",
       deleteAccountWarning:
         "سيؤدي هذا إلى حذف حسابك ومقاطعك ونقاطك ومحفظة ClashCoins وجميع بياناتك نهائياً. لن تتمكن من استرجاع الحساب بعد الحذف.",
@@ -3343,6 +3432,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
       deleteAccountFailed: "تعذّر حذف الحساب. حاول مجدداً أو تواصل مع الدعم.",
       deleteAccountWordMismatch: "كلمة التأكيد غير صحيحة.",
       deleteAccountConfirmRequired: "يرجى تفعيل مربع التأكيد أولاً.",
+    },
+    notifications: {
+      bellLabel: "الإشعارات",
+      title: "الإشعارات",
+      subtitle: "تحديثات من ClashAnime",
+      markAllRead: "تعليم الكل كمقروء",
+      enableInApp: "تفعيل الإشعارات داخل التطبيق",
+      loading: "جارٍ تحميل الإشعارات...",
+      disabledHint: "فعّل الإشعارات لرؤية التحديثات هنا.",
+      empty: "لا توجد إشعارات بعد.",
+      mentionTitle: "تم ذكرك",
+      mentionPreviewCommunity: "ذكرك في منشور بالمجتمع.",
+      mentionPreviewComment: "ذكرك في تعليق.",
     },
     points: {
       systemTitle: "نظام صياد الجوائز",
@@ -3767,6 +3869,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
         name: "الاسم",
         farewell: "إيميل الوداع",
       },
+      inAppNotificationsTitle: "الإشعارات داخل التطبيق",
+      noInAppNotifications: "لا توجد إشعارات داخل التطبيق بعد.",
+      inAppNotificationsTable: {
+        when: "الوقت",
+        user: "المستخدم",
+        type: "النوع",
+        title: "العنوان",
+        read: "مقروء",
+      },
       broadcastTitle: "إيميل جماعي",
       broadcastSubtitle: "أرسل إيميلاً منسقاً إلى كل المستخدمين المسجّلين بضغطة واحدة.",
       broadcastComposeTitle: "كتابة الرسالة",
@@ -3919,6 +4030,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         openContactMessages: "رسائل تواصل مفتوحة",
         welcomeEmailsSent: "إيميلات ترحيب مرسلة",
         accountDeletions: "حسابات محذوفة",
+        inAppNotifications: "إشعارات داخل التطبيق",
       },
       quickActions: {
         reviewVideos: "مراجعة الفيديوهات",

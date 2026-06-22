@@ -6,6 +6,7 @@ import {
   getPublicSiteUrl,
 } from "@/lib/email/emailLayout";
 import { sendBroadcastEmailToUser } from "@/lib/email/broadcastEmail";
+import { insertUserNotifications } from "@/lib/notifications/createNotifications";
 import { createServerClient } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/admin";
 import type { Locale } from "@/lib/types";
@@ -147,6 +148,20 @@ export async function POST(request: Request) {
   }
 
   const status = failedCount === authUsers.length ? "failed" : "completed";
+
+  const notificationPreview =
+    message.length > 140 ? `${message.slice(0, 137).trim()}...` : message;
+
+  await insertUserNotifications(
+    serviceRole,
+    authUsers.map((authUser) => ({
+      user_id: authUser.id,
+      type: "broadcast",
+      title: subject,
+      body: notificationPreview,
+      link: ctaUrl ?? getPublicSiteUrl(),
+    })),
+  );
 
   await serviceRole
     .from("admin_broadcast_emails")

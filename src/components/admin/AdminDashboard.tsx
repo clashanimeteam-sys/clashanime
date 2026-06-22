@@ -23,6 +23,7 @@ type DashboardStats = {
   openContactMessages: number;
   welcomeEmailsSent: number;
   accountDeletions: number;
+  inAppNotifications: number;
 };
 
 export function AdminDashboard() {
@@ -56,6 +57,7 @@ export function AdminDashboard() {
         openContactMessagesResult,
         welcomeEmailsResult,
         accountDeletionsResult,
+        inAppNotificationsResult,
       ] = await Promise.all([
         client.from("profiles").select("*", { count: "exact", head: true }),
         client.from("videos").select("*", { count: "exact", head: true }),
@@ -147,6 +149,15 @@ export function AdminDashboard() {
             }
             return { count: result.count, error: false as const };
           }),
+        client
+          .from("user_notifications")
+          .select("*", { count: "exact", head: true })
+          .then((result) => {
+            if (result.error) {
+              return { count: null as number | null, error: true as const };
+            }
+            return { count: result.count, error: false as const };
+          }),
       ]);
 
       const clipChallengesCount =
@@ -168,6 +179,8 @@ export function AdminDashboard() {
         welcomeEmailsResult.error ? 0 : (welcomeEmailsResult.count ?? 0);
       const accountDeletionsCount =
         accountDeletionsResult.error ? 0 : (accountDeletionsResult.count ?? 0);
+      const inAppNotificationsCount =
+        inAppNotificationsResult.error ? 0 : (inAppNotificationsResult.count ?? 0);
 
       setStats({
         users: users ?? 0,
@@ -187,6 +200,7 @@ export function AdminDashboard() {
         openContactMessages: openContactMessagesCount,
         welcomeEmailsSent: welcomeEmailsSentCount,
         accountDeletions: accountDeletionsCount,
+        inAppNotifications: inAppNotificationsCount,
       });
       setLoading(false);
     }
@@ -206,6 +220,7 @@ export function AdminDashboard() {
     { label: t.admin.stats.openContactMessages, value: stats?.openContactMessages ?? 0, href: "/admin/contact" },
     { label: t.admin.stats.welcomeEmailsSent, value: stats?.welcomeEmailsSent ?? 0, href: "/admin/emails" },
     { label: t.admin.stats.accountDeletions, value: stats?.accountDeletions ?? 0, href: "/admin/emails" },
+    { label: t.admin.stats.inAppNotifications, value: stats?.inAppNotifications ?? 0, href: "/admin/emails" },
     { label: t.admin.stats.pendingVerifications, value: stats?.pendingVerifications ?? 0, href: "/admin/users" },
     { label: t.admin.stats.communityPosts, value: stats?.communityPosts ?? 0, href: "/community" },
     { label: t.admin.stats.videos, value: stats?.videos ?? 0, href: "/admin/videos" },

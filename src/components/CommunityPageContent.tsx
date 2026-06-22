@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { CommunityPostActions } from "@/components/CommunityPostActions";
 import { CommunityReportModal } from "@/components/CommunityReportModal";
 import { ComposerMediaButtons } from "@/components/ComposerMediaButtons";
+import { MentionHashtagTextarea } from "@/components/MentionHashtagTextarea";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { RichBodyContent } from "@/components/RichBodyContent";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
@@ -224,6 +225,19 @@ export function CommunityPageContent() {
       return;
     }
 
+    if (trimmed) {
+      void fetch("/api/notifications/mentions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: trimmed,
+          link: "/community",
+          title: t.notifications.mentionTitle,
+          preview: t.notifications.mentionPreviewCommunity,
+        }),
+      });
+    }
+
     setBody("");
     setImageFile(null);
     setImagePreview(null);
@@ -279,12 +293,13 @@ export function CommunityPageContent() {
           <label className="block text-sm font-semibold text-black dark:text-white">
             {t.points.communityPostLabel}
           </label>
-          <textarea
+          <MentionHashtagTextarea
             value={body}
-            onChange={(event) => setBody(event.target.value)}
+            onChange={setBody}
             rows={4}
             maxLength={2000}
             placeholder={t.communityFeed.postPlaceholder}
+            excludeUserId={user.id}
             className="mt-2 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-accent dark:border-zinc-700 dark:bg-black dark:text-white"
           />
 

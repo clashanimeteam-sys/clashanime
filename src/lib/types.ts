@@ -17,6 +17,7 @@ export type Profile = {
   level?: number;
   referred_by?: string | null;
   display_name_changed_at?: string | null;
+  username_changed_at?: string | null;
   created_at: string;
   updated_at: string;
 };
