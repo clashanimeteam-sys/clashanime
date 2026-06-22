@@ -115,6 +115,7 @@ export type Dictionary = {
     copyright: string;
     privacy: string;
     cookies: string;
+    disclaimer: string;
     terms: string;
     communityGuidelines: string;
     dmca: string;
@@ -972,6 +973,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       copyright: "© 2026 Clash Anime. All rights reserved.",
       privacy: "Privacy Policy",
       cookies: "Cookie Policy",
+      disclaimer: "Disclaimer",
       terms: "Terms of Use",
       communityGuidelines: "Community Guidelines",
       dmca: "DMCA",
@@ -1855,6 +1857,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       copyright: "© 2026 Clash Anime. All rights reserved.",
       privacy: "プライバシーポリシー",
       cookies: "クッキーポリシー",
+      disclaimer: "免責事項",
       terms: "利用規約",
       communityGuidelines: "コミュニティガイドライン",
       dmca: "DMCA",
@@ -2730,6 +2733,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       copyright: "© 2026 Clash Anime. جميع الحقوق محفوظة.",
       privacy: "سياسة الخصوصية",
       cookies: "سياسة الكوكيز",
+      disclaimer: "إخلاء المسؤولية",
       terms: "شروط الاستخدام",
       communityGuidelines: "إرشادات المجتمع",
       dmca: "DMCA",
