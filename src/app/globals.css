@@ -586,9 +586,285 @@
   filter: blur(5px);
 }
 
+/* Interactive Google Doodle — chibi mascots on letters + fire/thunder */
+.doodle-logo-wrap-interactive {
+  padding: 0.2rem 0 0.35rem;
+}
+
+.doodle-logo-wrap-interactive .doodle-logo {
+  gap: 0.06em;
+}
+
+.doodle-fx {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 999px;
+  filter: blur(10px);
+}
+
+.doodle-fire-glow {
+  top: 6%;
+  left: 8%;
+  width: 78%;
+  height: 2rem;
+  background: rgba(251, 146, 60, 0.28);
+  animation: doodle-fire-pulse 2.4s ease-in-out infinite;
+}
+
+.doodle-thunder-glow {
+  bottom: 2%;
+  left: 10%;
+  width: 72%;
+  height: 1.6rem;
+  background: rgba(96, 165, 250, 0.22);
+  animation: doodle-thunder-pulse 4s ease-in-out infinite;
+}
+
+.doodle-mascot {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+  line-height: 0;
+}
+
+.doodle-mascot-svg {
+  width: 0.62em;
+  height: auto;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+}
+
+.doodle-mascot-svg-peek {
+  width: 0.52em;
+}
+
+.doodle-mascot-top {
+  bottom: 78%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.doodle-mascot-inside {
+  bottom: 0.12em;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+.doodle-mascot-inside-bottom {
+  bottom: -0.02em;
+  left: 46%;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+.doodle-mascot-behind {
+  bottom: 0.06em;
+  left: 50%;
+  transform: translateX(-48%);
+  z-index: 0;
+}
+
+.doodle-mascot-lean {
+  right: -0.12em;
+  bottom: 0.08em;
+  z-index: 3;
+}
+
+.doodle-letter-slot-clash .doodle-bubble-letter {
+  position: relative;
+  z-index: 1;
+}
+
+.doodle-letter-slot-anime .doodle-bubble-letter {
+  position: relative;
+  z-index: 1;
+}
+
+.doodle-bolt-letter {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 0.34em;
+  height: 0.92em;
+  vertical-align: bottom;
+}
+
+.doodle-bolt-svg {
+  width: 100%;
+  height: 100%;
+  animation: doodle-bolt-flash 1.6s steps(2, end) infinite;
+  filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.75));
+}
+
+.doodle-ember {
+  position: absolute;
+  width: 0.2rem;
+  height: 0.2rem;
+  border-radius: 999px;
+  background: #fb923c;
+  box-shadow: 0 0 5px #f97316;
+  pointer-events: none;
+}
+
+.doodle-ember-1 {
+  top: 28%;
+  left: 6%;
+  animation: doodle-ember-rise 2.2s ease-out infinite;
+}
+
+.doodle-ember-2 {
+  top: 48%;
+  right: 8%;
+  animation: doodle-ember-rise 2.6s ease-out infinite 0.7s;
+}
+
+.doodle-logo-wrap-interactive .doodle-word-clash .doodle-bubble-letter {
+  animation: doodle-clash-wiggle 5s ease-in-out infinite;
+}
+
+.doodle-logo-wrap-interactive .doodle-word-anime .doodle-bubble-letter {
+  animation: doodle-anime-wiggle 5.5s ease-in-out infinite;
+}
+
+.doodle-letter-slot-clash:nth-child(1) .doodle-bubble-letter {
+  animation-delay: 0s;
+}
+
+.doodle-letter-slot-clash:nth-child(2) .doodle-bubble-letter {
+  animation-delay: 0.15s;
+}
+
+.doodle-letter-slot-clash:nth-child(3) .doodle-bubble-letter {
+  animation-delay: 0.3s;
+}
+
+.doodle-letter-slot-clash:nth-child(4) .doodle-bubble-letter {
+  animation-delay: 0.45s;
+}
+
+.doodle-letter-slot-clash:nth-child(5) .doodle-bubble-letter {
+  animation-delay: 0.6s;
+}
+
+.doodle-letter-slot-anime:nth-child(1) .doodle-bubble-letter {
+  animation-delay: 0.1s;
+}
+
+.doodle-letter-slot-anime:nth-child(2) .doodle-bubble-letter {
+  animation-delay: 0.25s;
+}
+
+.doodle-letter-slot-anime:nth-child(4) .doodle-bubble-letter {
+  animation-delay: 0.4s;
+}
+
+.doodle-letter-slot-anime:nth-child(5) .doodle-bubble-letter {
+  animation-delay: 0.55s;
+}
+
+@keyframes doodle-fire-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.95;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes doodle-thunder-pulse {
+  0%,
+  84%,
+  100% {
+    opacity: 0.35;
+  }
+
+  86% {
+    opacity: 0.85;
+  }
+
+  90% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes doodle-bolt-flash {
+  0%,
+  100% {
+    opacity: 0.88;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes doodle-ember-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-0.75rem) scale(0.2);
+  }
+}
+
+@keyframes doodle-clash-wiggle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-0.04em);
+  }
+}
+
+@keyframes doodle-anime-wiggle {
+  0%,
+  88%,
+  100% {
+    transform: translateY(0);
+  }
+
+  90% {
+    transform: translate(-0.5px, 0.5px);
+  }
+
+  92% {
+    transform: translate(0.5px, -0.5px);
+  }
+}
+
 @media (min-width: 1024px) {
   .doodle-logo-wrap-sidebar .doodle-logo {
     font-size: 2.5rem;
+  }
+
+  .doodle-mascot-svg {
+    width: 0.58em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doodle-logo-wrap-interactive .doodle-bubble-letter,
+  .doodle-bolt-svg,
+  .doodle-fire-glow,
+  .doodle-thunder-glow,
+  .doodle-ember {
+    animation: none !important;
   }
 }
 
