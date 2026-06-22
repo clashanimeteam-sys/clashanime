@@ -105,13 +105,13 @@ export function Footer() {
           <div>
             <FooterColumnHeading>{t.footer.socialHeading}</FooterColumnHeading>
             <nav className="flex flex-col gap-2.5" aria-label={t.footer.socialHeading}>
-              <a
-                href="mailto:support@clashanime.com"
+              <Link
+                href="/contact"
                 className="flex items-center gap-2.5 text-sm text-zinc-600 transition-colors hover:text-black dark:text-zinc-400 dark:hover:text-white"
               >
                 <SocialIcon type="mail" />
                 {t.footer.contact}
-              </a>
+              </Link>
               <Link
                 href="/report"
                 className="flex items-center gap-2.5 text-sm text-zinc-600 transition-colors hover:text-black dark:text-zinc-400 dark:hover:text-white"

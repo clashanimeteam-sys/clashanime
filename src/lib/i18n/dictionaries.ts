@@ -266,6 +266,32 @@ export type Dictionary = {
     reportVideoRequired: string;
     reportDmcaHint: string;
   };
+  contact: {
+    pageTitle: string;
+    pageSubtitle: string;
+    formTitle: string;
+    emailLabel: string;
+    emailPlaceholder: string;
+    messageLabel: string;
+    messagePlaceholder: string;
+    whatsappLabel: string;
+    whatsappPlaceholder: string;
+    optional: string;
+    required: string;
+    submit: string;
+    submitting: string;
+    success: string;
+    failed: string;
+    emailInvalid: string;
+    messageTooShort: string;
+    supportCardTitle: string;
+    supportCardDesc: string;
+    responseTime: string;
+    helpTitle: string;
+    helpGlobal: string;
+    helpWallet: string;
+    helpAccount: string;
+  };
   auth: {
     logIn: string;
     signUp: string;
@@ -694,6 +720,19 @@ export type Dictionary = {
       approved: string;
       rejected: string;
     };
+    contactTitle: string;
+    contactSubtitle: string;
+    noContactMessages: string;
+    contactReply: string;
+    contactReplyPlaceholder: string;
+    saveContactReply: string;
+    markContactReplied: string;
+    markContactClosed: string;
+    contactStatuses: {
+      open: string;
+      replied: string;
+      closed: string;
+    };
     approveWithdrawal: string;
     rejectWithdrawal: string;
     markReviewing: string;
@@ -751,6 +790,7 @@ export type Dictionary = {
       withdrawals: string;
       kyc: string;
       seasons: string;
+      contact: string;
     };
     seasons: {
       title: string;
@@ -813,6 +853,7 @@ export type Dictionary = {
       pendingWagerInvites: string;
     pendingWithdrawals: string;
     pendingKyc: string;
+    openContactMessages: string;
   };
     quickActions: {
       reviewVideos: string;
@@ -835,6 +876,8 @@ export type Dictionary = {
       reviewWithdrawalsDesc: string;
       reviewKyc: string;
       reviewKycDesc: string;
+      reviewContact: string;
+      reviewContactDesc: string;
     };
     table: {
       user: string;
@@ -1137,6 +1180,33 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reportFailed: "Could not submit the report. Check the video ID and try again.",
       reportVideoRequired: "Enter a video ID.",
       reportDmcaHint: "For formal DMCA notices, see the DMCA page.",
+    },
+    contact: {
+      pageTitle: "Contact Us",
+      pageSubtitle:
+        "Tell us about your issue and we will get back to you. Include as much detail as possible so we can help faster.",
+      formTitle: "Contact form",
+      emailLabel: "Email address",
+      emailPlaceholder: "you@example.com",
+      messageLabel: "Describe your issue",
+      messagePlaceholder: "What happened? Include steps, links, or error messages if you have them.",
+      whatsappLabel: "WhatsApp / Phone",
+      whatsappPlaceholder: "+966 5XX XXX XXXX",
+      optional: "Optional",
+      required: "Required",
+      submit: "Send message",
+      submitting: "Sending...",
+      success: "Message sent. Our team will reply as soon as possible.",
+      failed: "Could not send your message. Please try again.",
+      emailInvalid: "Enter a valid email address.",
+      messageTooShort: "Please write at least 10 characters about your issue.",
+      supportCardTitle: "ClashAnime Support",
+      supportCardDesc: "We help with accounts, uploads, ClashCoins, and technical issues.",
+      responseTime: "Typical response within 24–48 hours.",
+      helpTitle: "How we can help",
+      helpGlobal: "Global platform — Arabic, English, and Japanese support.",
+      helpWallet: "ClashCoins, withdrawals, and KYC payout questions.",
+      helpAccount: "Login, verification, bans, and account security.",
     },
     auth: {
       logIn: "Log In",
@@ -1582,6 +1652,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
         approved: "Approved",
         rejected: "Rejected",
       },
+      contactTitle: "Contact messages",
+      contactSubtitle: "Read and reply to support messages from users.",
+      noContactMessages: "No contact messages match this filter.",
+      contactReply: "Staff reply / notes",
+      contactReplyPlaceholder: "Internal reply notes or summary of your response...",
+      saveContactReply: "Save reply",
+      markContactReplied: "Mark replied",
+      markContactClosed: "Close",
+      contactStatuses: {
+        open: "Open",
+        replied: "Replied",
+        closed: "Closed",
+      },
       approveWithdrawal: "Mark paid",
       rejectWithdrawal: "Reject & refund",
       markReviewing: "Mark reviewing",
@@ -1639,6 +1722,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         withdrawals: "Withdrawals",
         kyc: "Payout KYC",
         seasons: "Clash seasons",
+        contact: "Contact inbox",
       },
       seasons: {
         title: "Clash seasons",
@@ -1701,6 +1785,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pendingWagerInvites: "Pending wager invites",
         pendingWithdrawals: "Pending withdrawals",
         pendingKyc: "Pending payout KYC",
+        openContactMessages: "Open contact messages",
       },
       quickActions: {
         reviewVideos: "Review videos",
@@ -1723,6 +1808,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         reviewWithdrawalsDesc: "Approve or reject ClashCoin payout requests.",
         reviewKyc: "Review payout KYC",
         reviewKycDesc: "Verify identity documents before enabling user payouts.",
+        reviewContact: "Contact messages",
+        reviewContactDesc: "Read support requests and record your replies.",
       },
       table: {
         user: "User",
@@ -2018,6 +2105,33 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reportFailed: "報告を送信できませんでした。動画IDを確認してください。",
       reportVideoRequired: "動画IDを入力してください。",
       reportDmcaHint: "正式なDMCA通知はDMCAページをご覧ください。",
+    },
+    contact: {
+      pageTitle: "お問い合わせ",
+      pageSubtitle:
+        "問題の内容をお送りください。できるだけ早くご返信します。詳細があるほどスムーズに対応できます。",
+      formTitle: "お問い合わせフォーム",
+      emailLabel: "メールアドレス",
+      emailPlaceholder: "you@example.com",
+      messageLabel: "問題の内容",
+      messagePlaceholder: "何が起きましたか？手順、リンク、エラーメッセージがあれば記載してください。",
+      whatsappLabel: "WhatsApp / 電話",
+      whatsappPlaceholder: "+81 90 XXXX XXXX",
+      optional: "任意",
+      required: "必須",
+      submit: "送信する",
+      submitting: "送信中...",
+      success: "送信しました。チームから折り返しご連絡します。",
+      failed: "送信できませんでした。もう一度お試しください。",
+      emailInvalid: "有効なメールアドレスを入力してください。",
+      messageTooShort: "問題の内容を10文字以上入力してください。",
+      supportCardTitle: "ClashAnime サポート",
+      supportCardDesc: "アカウント、アップロード、ClashCoins、技術的な問題をサポートします。",
+      responseTime: "通常24〜48時間以内に返信します。",
+      helpTitle: "サポート内容",
+      helpGlobal: "グローバル対応 — アラビア語、英語、日本語。",
+      helpWallet: "ClashCoins、出金、KYCに関する質問。",
+      helpAccount: "ログイン、認証、BAN、アカウントセキュリティ。",
     },
     auth: {
       logIn: "ログイン",
@@ -2460,6 +2574,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
         approved: "承認済み",
         rejected: "却下",
       },
+      contactTitle: "お問い合わせ",
+      contactSubtitle: "ユーザーからのサポートメッセージを確認し返信します。",
+      noContactMessages: "該当するお問い合わせがありません。",
+      contactReply: "スタッフ返信 / メモ",
+      contactReplyPlaceholder: "返信内容や対応メモ...",
+      saveContactReply: "返信を保存",
+      markContactReplied: "返信済みにする",
+      markContactClosed: "クローズ",
+      contactStatuses: {
+        open: "未対応",
+        replied: "返信済み",
+        closed: "クローズ",
+      },
       approveWithdrawal: "支払い済みにする",
       rejectWithdrawal: "拒否して返金",
       markReviewing: "審査中にする",
@@ -2517,6 +2644,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         withdrawals: "出金",
         kyc: "出金KYC",
         seasons: "クラッシュシーズン",
+        contact: "お問い合わせ受信箱",
       },
       seasons: {
         title: "クラッシュシーズン",
@@ -2579,6 +2707,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pendingWagerInvites: "保留中の賭け招待",
         pendingWithdrawals: "保留中の出金",
         pendingKyc: "保留中の出金KYC",
+        openContactMessages: "未対応のお問い合わせ",
       },
       quickActions: {
         reviewVideos: "動画を審査",
@@ -2601,6 +2730,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         reviewWithdrawalsDesc: "ClashCoin出金リクエストを承認または拒否します。",
         reviewKyc: "出金KYCを審査",
         reviewKycDesc: "出金を有効にする前に本人確認書類を確認します。",
+        reviewContact: "お問い合わせ",
+        reviewContactDesc: "サポート依頼を確認し返信を記録します。",
       },
       table: {
         user: "ユーザー",
@@ -2898,6 +3029,33 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reportFailed: "تعذّر إرسال البلاغ. تحقق من معرّف الفيديو وحاول مجدداً.",
       reportVideoRequired: "أدخل معرّف الفيديو.",
       reportDmcaHint: "لإشعارات DMCA الرسمية، راجع صفحة DMCA.",
+    },
+    contact: {
+      pageTitle: "اتصل بنا",
+      pageSubtitle:
+        "أخبرنا عن مشكلتك وسنعود إليك في أقرب وقت. كلما زادت التفاصيل، كان بإمكاننا مساعدتك أسرع.",
+      formTitle: "نموذج التواصل",
+      emailLabel: "البريد الإلكتروني",
+      emailPlaceholder: "you@example.com",
+      messageLabel: "صف المشكلة",
+      messagePlaceholder: "ما الذي حدث؟ أضف الخطوات أو الروابط أو رسائل الخطأ إن وُجدت.",
+      whatsappLabel: "واتساب / هاتف",
+      whatsappPlaceholder: "+966 5XX XXX XXXX",
+      optional: "اختياري",
+      required: "إلزامي",
+      submit: "إرسال الرسالة",
+      submitting: "جارٍ الإرسال...",
+      success: "تم إرسال رسالتك. سيرد عليك فريقنا في أقرب وقت.",
+      failed: "تعذّر إرسال الرسالة. حاول مرة أخرى.",
+      emailInvalid: "أدخل بريداً إلكترونياً صالحاً.",
+      messageTooShort: "اكتب 10 أحرف على الأقل عن مشكلتك.",
+      supportCardTitle: "دعم ClashAnime",
+      supportCardDesc: "نساعدك في الحساب، الرفع، ClashCoins، والمشاكل التقنية.",
+      responseTime: "عادةً نرد خلال 24–48 ساعة.",
+      helpTitle: "كيف نساعدك",
+      helpGlobal: "منصة عالمية — دعم بالعربية والإنجليزية واليابانية.",
+      helpWallet: "أسئلة ClashCoins والسحب وتحقق KYC.",
+      helpAccount: "تسجيل الدخول، التوثيق، الحظر، وأمان الحساب.",
     },
     auth: {
       logIn: "تسجيل الدخول",
@@ -3341,6 +3499,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
         approved: "موافق عليه",
         rejected: "مرفوض",
       },
+      contactTitle: "رسائل التواصل",
+      contactSubtitle: "اقرأ رسائل الدعم من المستخدمين وسجّل ردودك.",
+      noContactMessages: "لا توجد رسائل تواصل مطابقة.",
+      contactReply: "رد الفريق / ملاحظات",
+      contactReplyPlaceholder: "ملاحظات الرد أو ملخص ما أرسلته للمستخدم...",
+      saveContactReply: "حفظ الرد",
+      markContactReplied: "تعيين كمُرد عليه",
+      markContactClosed: "إغلاق",
+      contactStatuses: {
+        open: "مفتوحة",
+        replied: "تم الرد",
+        closed: "مغلقة",
+      },
       approveWithdrawal: "تعيين كمدفوع",
       rejectWithdrawal: "رفض واسترداد",
       markReviewing: "وضع قيد المراجعة",
@@ -3398,6 +3569,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         withdrawals: "السحوبات",
         kyc: "KYC السحب",
         seasons: "مواسم النزال",
+        contact: "صندوق التواصل",
       },
       seasons: {
         title: "مواسم النزال",
@@ -3460,6 +3632,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pendingWagerInvites: "دعوات رهان بانتظار القبول",
         pendingWithdrawals: "سحوبات قيد المراجعة",
         pendingKyc: "KYC سحب قيد المراجعة",
+        openContactMessages: "رسائل تواصل مفتوحة",
       },
       quickActions: {
         reviewVideos: "مراجعة الفيديوهات",
@@ -3482,6 +3655,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         reviewWithdrawalsDesc: "قبول أو رفض طلبات سحب ClashCoins.",
         reviewKyc: "مراجعة KYC للسحب",
         reviewKycDesc: "تحقق من مستندات الهوية قبل تفعيل السحب للمستخدم.",
+        reviewContact: "رسائل التواصل",
+        reviewContactDesc: "اقرأ طلبات الدعم وسجّل ردودك.",
       },
       table: {
         user: "المستخدم",
