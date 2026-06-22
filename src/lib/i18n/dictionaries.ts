@@ -113,6 +113,7 @@ export type Dictionary = {
     socialHeading: string;
     contact: string;
     copyright: string;
+    about: string;
     privacy: string;
     cookies: string;
     disclaimer: string;
@@ -972,6 +973,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       socialHeading: "Social Media",
       contact: "Contact",
       copyright: "© 2026 Clash Anime. All rights reserved.",
+      about: "About Us",
       privacy: "Privacy Policy",
       cookies: "Cookie Policy",
       disclaimer: "Disclaimer",
@@ -1857,6 +1859,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       socialHeading: "SNS",
       contact: "お問い合わせ",
       copyright: "© 2026 Clash Anime. All rights reserved.",
+      about: "私たちについて",
       privacy: "プライバシーポリシー",
       cookies: "クッキーポリシー",
       disclaimer: "免責事項",
@@ -2734,6 +2737,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       socialHeading: "التواصل",
       contact: "اتصل بنا",
       copyright: "© 2026 Clash Anime. جميع الحقوق محفوظة.",
+      about: "من نحن",
       privacy: "سياسة الخصوصية",
       cookies: "سياسة الكوكيز",
       disclaimer: "إخلاء المسؤولية",

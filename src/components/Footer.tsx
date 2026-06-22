@@ -13,6 +13,7 @@ const discoverLinks = [
 ] as const;
 
 const informationLinks = [
+  { key: "about" as const, href: "/about" },
   { key: "privacy" as const, href: "/privacy" },
   { key: "cookies" as const, href: "/cookies" },
   { key: "disclaimer" as const, href: "/disclaimer" },
