@@ -1,16 +1,11 @@
 "use client";
 
-import { Fredoka, Orbitron } from "next/font/google";
-import { useId } from "react";
+import { Orbitron } from "next/font/google";
+import { useId, type CSSProperties } from "react";
 
-const clashFont = Orbitron({
+const titleFont = Orbitron({
   subsets: ["latin"],
   weight: ["800", "900"],
-});
-
-const animeFont = Fredoka({
-  subsets: ["latin"],
-  weight: ["600", "700"],
 });
 
 type ElementalSiteTitleProps = {
@@ -18,12 +13,13 @@ type ElementalSiteTitleProps = {
   secondary: string;
 };
 
+/** Fire → green → blue arc like the reference poster */
 const ANIME_TONES = [
-  { top: "#fda4af", bottom: "#e11d48" },
-  { top: "#d8b4fe", bottom: "#9333ea" },
+  { top: "#fde047", bottom: "#ea580c", glow: "rgba(249,115,22,0.7)" },
+  { top: "#bef264", bottom: "#ca8a04", glow: "rgba(234,179,8,0.65)" },
   null,
-  { top: "#7dd3fc", bottom: "#0284c7" },
-  { top: "#86efac", bottom: "#16a34a" },
+  { top: "#67e8f9", bottom: "#2563eb", glow: "rgba(56,189,248,0.85)" },
+  { top: "#93c5fd", bottom: "#1d4ed8", glow: "rgba(59,130,246,0.85)" },
 ] as const;
 
 function StrawHat() {
@@ -41,7 +37,6 @@ function StrawHat() {
         />
         <path d="M12 28h40" stroke="#b45309" strokeWidth="2.2" strokeLinecap="round" />
         <rect x="18" y="24" width="28" height="5" rx="2" fill="#dc2626" />
-        <path d="M20 26.5h24" stroke="#991b1b" strokeWidth="1" strokeLinecap="round" />
         <defs>
           <linearGradient id={`hat-top-${id}`} x1="32" y1="10" x2="32" y2="28" gradientUnits="userSpaceOnUse">
             <stop stopColor="#fde047" />
@@ -57,23 +52,24 @@ function StrawHat() {
   );
 }
 
-function LightningStrike() {
+function ThunderBolt() {
   const id = useId().replace(/:/g, "");
 
   return (
     <span className="elemental-lightning-slot" aria-hidden>
-      <svg viewBox="0 0 28 52" className="elemental-lightning-svg" fill="none">
+      <svg viewBox="0 0 32 58" className="elemental-lightning-svg" fill="none">
         <path
-          d="M16 1 5 28h9l-3 23 17-31H18l5-19Z"
+          d="M18 1 4 32h11l-5 25 22-38H19l5-18Z"
           fill={`url(#bolt-${id})`}
-          stroke="#fff"
-          strokeWidth="1.2"
+          stroke="#ecfccb"
+          strokeWidth="1.4"
         />
+        <path d="M10 18h12M8 28h10" stroke="#bbf7d0" strokeWidth="1.2" strokeLinecap="round" opacity="0.8" />
         <defs>
-          <linearGradient id={`bolt-${id}`} x1="14" y1="1" x2="14" y2="52" gradientUnits="userSpaceOnUse">
+          <linearGradient id={`bolt-${id}`} x1="16" y1="1" x2="16" y2="58" gradientUnits="userSpaceOnUse">
             <stop stopColor="#fef08a" />
-            <stop offset="0.5" stopColor="#22d3ee" />
-            <stop offset="1" stopColor="#6366f1" />
+            <stop offset="0.35" stopColor="#4ade80" />
+            <stop offset="1" stopColor="#16a34a" />
           </linearGradient>
         </defs>
       </svg>
@@ -82,24 +78,31 @@ function LightningStrike() {
 }
 
 function ClashLetter({ char }: { char: string }) {
+  const letter = (
+    <span className="elemental-letter elemental-letter-clash">
+      <span className="elemental-letter-stone" aria-hidden />
+      <span className="elemental-letter-fire">{char}</span>
+    </span>
+  );
+
   if (char === "A") {
     return (
       <span className="elemental-letter-slot elemental-letter-slot-hat">
         <StrawHat />
-        <span className="elemental-letter elemental-letter-clash">{char}</span>
+        {letter}
       </span>
     );
   }
 
-  return <span className="elemental-letter elemental-letter-clash">{char}</span>;
+  return letter;
 }
 
 function AnimeLetter({ char, index }: { char: string; index: number }) {
   if (char === "I") {
-    return <LightningStrike />;
+    return <ThunderBolt />;
   }
 
-  const tone = ANIME_TONES[index % ANIME_TONES.length] ?? ANIME_TONES[0];
+  const tone = ANIME_TONES[index] ?? ANIME_TONES[0];
 
   return (
     <span
@@ -108,10 +111,12 @@ function AnimeLetter({ char, index }: { char: string; index: number }) {
         {
           "--anime-top": tone.top,
           "--anime-bottom": tone.bottom,
-        } as React.CSSProperties
+          "--anime-glow": tone.glow,
+        } as CSSProperties
       }
     >
-      {char}
+      <span className="elemental-letter-stone" aria-hidden />
+      <span className="elemental-letter-shock">{char}</span>
     </span>
   );
 }
@@ -121,16 +126,20 @@ export function ElementalSiteTitle({ primary, secondary }: ElementalSiteTitlePro
   const animeChars = [...secondary.toUpperCase().trim()];
 
   return (
-    <div className={`elemental-title-wrap ${clashFont.className}`}>
-      <span className="elemental-glow elemental-glow-clash" aria-hidden />
-      <span className="elemental-glow elemental-glow-anime" aria-hidden />
+    <div className={`elemental-title-wrap ${titleFont.className}`}>
+      <span className="elemental-fx elemental-smoke" aria-hidden />
+      <span className="elemental-fx elemental-spark elemental-spark-1" aria-hidden />
+      <span className="elemental-fx elemental-spark elemental-spark-2" aria-hidden />
+      <span className="elemental-fx elemental-spark elemental-spark-3" aria-hidden />
+      <span className="elemental-fx elemental-thunder-flash" aria-hidden />
+
       <h1 className="elemental-title" aria-label={`${primary}${secondary}`}>
         <span className="elemental-row elemental-row-clash">
           {clashChars.map((char, index) => (
             <ClashLetter key={`c-${index}`} char={char} />
           ))}
         </span>
-        <span className={`elemental-row elemental-row-anime ${animeFont.className}`}>
+        <span className="elemental-row elemental-row-anime elemental-row-thunder">
           {animeChars.map((char, index) => (
             <AnimeLetter key={`a-${index}`} char={char} index={index} />
           ))}

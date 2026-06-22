@@ -592,37 +592,63 @@
   }
 }
 
-/* Elemental sidebar title — CLASH (arena) + ANIME (vivid bubble) */
+/* Elemental sidebar title — stone + lava CLASH / thunder ANIME */
 .elemental-title-wrap {
   position: relative;
   display: block;
   width: 100%;
-  padding: 0.35rem 0 0.45rem;
+  padding: 0.45rem 0 0.65rem;
   isolation: isolate;
+  overflow: visible;
 }
 
-.elemental-glow {
+.elemental-fx {
   position: absolute;
-  border-radius: 999px;
   pointer-events: none;
   z-index: 0;
-  filter: blur(14px);
 }
 
-.elemental-glow-clash {
-  top: 8%;
-  left: 10%;
-  width: 72%;
-  height: 2.2rem;
-  background: rgba(251, 146, 60, 0.35);
+.elemental-smoke {
+  bottom: -0.15rem;
+  left: 5%;
+  width: 90%;
+  height: 1.1rem;
+  background: radial-gradient(ellipse at center, rgba(100, 116, 139, 0.35) 0%, transparent 72%);
+  filter: blur(4px);
 }
 
-.elemental-glow-anime {
-  bottom: 0;
-  left: 8%;
-  width: 78%;
-  height: 1.8rem;
-  background: rgba(168, 85, 247, 0.22);
+.elemental-spark {
+  width: 0.22rem;
+  height: 0.22rem;
+  border-radius: 999px;
+  background: #fde047;
+  box-shadow: 0 0 6px #f97316;
+}
+
+.elemental-spark-1 {
+  top: 18%;
+  left: 4%;
+  animation: elemental-spark-fly 2.4s ease-out infinite;
+}
+
+.elemental-spark-2 {
+  top: 42%;
+  right: 6%;
+  animation: elemental-spark-fly 2.8s ease-out infinite 0.5s;
+}
+
+.elemental-spark-3 {
+  bottom: 22%;
+  left: 22%;
+  animation: elemental-spark-fly 3s ease-out infinite 1s;
+}
+
+.elemental-thunder-flash {
+  inset: 0;
+  border-radius: 0.5rem;
+  background: radial-gradient(circle at 50% 78%, rgba(125, 211, 252, 0.28), transparent 62%);
+  opacity: 0;
+  animation: elemental-thunder-flash 4.2s ease-in-out infinite;
 }
 
 .elemental-title {
@@ -632,8 +658,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.22rem;
-  line-height: 0.95;
+  gap: 0.18rem;
+  line-height: 0.92;
   text-transform: uppercase;
 }
 
@@ -641,19 +667,24 @@
   display: inline-flex;
   align-items: flex-end;
   justify-content: center;
-  gap: 0.05em;
+  gap: 0.04em;
 }
 
 .elemental-row-clash {
-  font-size: 1.55rem;
+  font-size: 1.48rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+}
+
+.elemental-row-anime {
+  font-size: 1.42rem;
   font-weight: 900;
   letter-spacing: 0.05em;
 }
 
-.elemental-row-anime {
-  font-size: 1.48rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+.elemental-row-thunder {
+  animation: elemental-thunder-rumble 4.2s ease-in-out infinite;
 }
 
 .elemental-letter-slot {
@@ -662,112 +693,233 @@
 }
 
 .elemental-letter-slot-hat {
-  padding-top: 0.38em;
+  padding-top: 0.42em;
 }
 
 .elemental-letter {
   position: relative;
   display: inline-block;
+}
+
+.elemental-letter-stone {
+  position: absolute;
+  inset: -0.04em -0.06em;
+  z-index: 0;
+  border-radius: 0.08em;
+  background: linear-gradient(145deg, #57534e 0%, #292524 45%, #1c1917 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.45);
+}
+
+.elemental-letter-stone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(118deg, transparent 42%, rgba(0, 0, 0, 0.35) 43%, transparent 44%),
+    linear-gradient(62deg, transparent 58%, rgba(0, 0, 0, 0.28) 59%, transparent 61%);
+  opacity: 0.65;
+}
+
+.elemental-letter-fire,
+.elemental-letter-shock {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  -webkit-text-stroke: 0.055em #1c1917;
+  paint-order: stroke fill;
 }
 
-.elemental-letter-clash {
+.elemental-letter-fire {
   background-image: linear-gradient(
     180deg,
-    #fff7ed 0%,
-    #fde68a 16%,
-    #fb923c 48%,
-    #ef4444 78%,
-    #b91c1c 100%
+    #fffbeb 0%,
+    #fde047 18%,
+    #fb923c 42%,
+    #ef4444 68%,
+    #991b1b 100%
   );
-  -webkit-text-stroke: 0.035em rgba(69, 26, 3, 0.65);
-  paint-order: stroke fill;
-  filter: drop-shadow(0 2px 4px rgba(180, 83, 9, 0.35));
+  background-size: 100% 220%;
+  animation: elemental-fire-flicker 0.22s steps(4, end) infinite;
+  filter: drop-shadow(0 0 7px rgba(249, 115, 22, 0.75));
 }
 
-.elemental-letter-anime {
+.elemental-letter-shock {
   background-image: linear-gradient(
     180deg,
-    var(--anime-top, #fda4af) 0%,
-    var(--anime-bottom, #e11d48) 100%
+    var(--anime-top, #67e8f9) 0%,
+    var(--anime-bottom, #2563eb) 100%
   );
-  -webkit-text-stroke: 0.05em #ffffff;
-  paint-order: stroke fill;
-  filter: drop-shadow(0 2px 3px rgba(15, 23, 42, 0.22));
+  animation: elemental-electric-crackle 0.16s steps(3, end) infinite;
+  filter: drop-shadow(0 0 6px var(--anime-glow, rgba(56, 189, 248, 0.8)));
 }
 
 .elemental-hat-slot {
   position: absolute;
-  top: -0.05em;
+  top: -0.02em;
   left: 50%;
-  z-index: 2;
+  z-index: 3;
   transform: translateX(-50%);
-  pointer-events: none;
 }
 
 .elemental-hat-svg {
-  width: 0.95em;
+  width: 0.92em;
   height: auto;
-  animation: elemental-hat-bob 2.8s ease-in-out infinite;
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25));
+  animation: elemental-hat-bob 3s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
 }
 
 .elemental-lightning-slot {
   display: inline-flex;
   align-items: flex-end;
   justify-content: center;
-  width: 0.36em;
-  height: 0.92em;
-  margin-inline: 0.03em;
+  width: 0.38em;
+  height: 0.95em;
+  margin-inline: 0.02em;
   vertical-align: bottom;
 }
 
 .elemental-lightning-svg {
   width: 100%;
   height: 100%;
-  animation: elemental-bolt-flash 1.8s ease-in-out infinite;
-  filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.75));
+  animation: elemental-bolt-strike 0.55s steps(2, end) infinite;
+  filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.95));
+}
+
+@keyframes elemental-fire-flicker {
+  0% {
+    background-position: 0% 0%;
+    filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.65)) brightness(1);
+  }
+
+  50% {
+    background-position: 0% 55%;
+    filter: drop-shadow(0 0 11px rgba(251, 191, 36, 0.95)) brightness(1.18);
+  }
+
+  100% {
+    background-position: 0% 30%;
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8)) brightness(0.94);
+  }
+}
+
+@keyframes elemental-electric-crackle {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 5px var(--anime-glow, rgba(56, 189, 248, 0.7))) brightness(1);
+  }
+
+  50% {
+    filter: drop-shadow(0 0 12px var(--anime-glow, rgba(56, 189, 248, 1))) brightness(1.25);
+  }
+}
+
+@keyframes elemental-thunder-rumble {
+  0%,
+  86%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  88% {
+    transform: translate(-1px, 1px);
+  }
+
+  90% {
+    transform: translate(1px, -1px);
+  }
+
+  92% {
+    transform: translate(-1px, 0);
+  }
+
+  94% {
+    transform: translate(1px, 1px);
+  }
+}
+
+@keyframes elemental-thunder-flash {
+  0%,
+  84%,
+  100% {
+    opacity: 0;
+  }
+
+  86% {
+    opacity: 0.55;
+  }
+
+  88% {
+    opacity: 0.15;
+  }
+
+  90% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes elemental-bolt-strike {
+  0%,
+  100% {
+    opacity: 0.85;
+    transform: scale(1) rotate(0deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.1) rotate(-3deg);
+  }
+}
+
+@keyframes elemental-spark-fly {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.5);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0.4rem, -0.9rem) scale(0.2);
+  }
 }
 
 @keyframes elemental-hat-bob {
   0%,
   100% {
-    transform: translateX(-50%) rotate(-4deg);
+    transform: translateX(-50%) rotate(-5deg);
   }
 
   50% {
-    transform: translateX(-50%) rotate(4deg) translateY(-1px);
-  }
-}
-
-@keyframes elemental-bolt-flash {
-  0%,
-  100% {
-    opacity: 0.9;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.06);
+    transform: translateX(-50%) rotate(5deg) translateY(-1px);
   }
 }
 
 @media (min-width: 1024px) {
   .elemental-row-clash {
-    font-size: 1.72rem;
+    font-size: 1.65rem;
   }
 
   .elemental-row-anime {
-    font-size: 1.65rem;
+    font-size: 1.58rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .elemental-letter-fire,
+  .elemental-letter-shock,
+  .elemental-row-thunder,
+  .elemental-thunder-flash,
+  .elemental-lightning-svg,
   .elemental-hat-svg,
-  .elemental-lightning-svg {
+  .elemental-spark {
     animation: none !important;
   }
 }
