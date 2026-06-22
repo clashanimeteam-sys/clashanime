@@ -1430,7 +1430,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     upload: {
       create: "Create",
-      title: "Upload duel clip",
+      title: "Upload video",
       subtitle: "Short vertical clips only: 10 seconds to 1 minute.",
       originalOnly:
         "Only original content is allowed. Each upload is scanned automatically for duplicates before publishing.",
@@ -2304,7 +2304,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     upload: {
       create: "作成",
-      title: "デュエルクリップをアップロード",
+      title: "動画をアップロード",
       subtitle: "縦型ショート動画のみ：10秒から1分まで。",
       originalOnly:
         "オリジナルコンテンツのみ投稿できます。公開前に自動で重複チェックを行います。",
@@ -3181,7 +3181,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     upload: {
       create: "إنشاء",
-      title: "رفع مقطع نزال",
+      title: "رفع فيديو",
       subtitle: "مقاطع قصيرة عمودية فقط: من 10 ثوانٍ إلى دقيقة.",
       originalOnly:
         "يُسمح بالمحتوى الأصلي فقط. يُفحص كل رفع تلقائياً للكشف عن التكرار قبل النشر.",

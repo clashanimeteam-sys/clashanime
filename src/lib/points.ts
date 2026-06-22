@@ -91,8 +91,7 @@ export function getLevelProgress(points: number) {
 }
 
 export function canUploadVideos(profile: Pick<Profile, "level" | "points"> | null | undefined) {
-  if (!profile) return false;
-  return (profile.level ?? pointsToLevel(profile.points ?? 0)) >= 2;
+  return Boolean(profile);
 }
 
 export function canPostToCommunity(profile: Pick<Profile, "level" | "points"> | null | undefined) {

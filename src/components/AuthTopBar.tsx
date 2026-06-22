@@ -70,10 +70,10 @@ export function AuthTopBar() {
       <div className="flex items-center gap-3">
         {loading ? (
           <span className="h-9 w-24 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-900" />
-        ) : user ? (
+        ) : (
           <>
             <Link
-              href="/upload"
+              href={user ? "/upload" : "/login?next=%2Fupload"}
               className="inline-flex items-center gap-2 rounded-full border border-zinc-300 px-3 py-1.5 text-sm font-medium text-black transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-950"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
@@ -81,28 +81,30 @@ export function AuthTopBar() {
               </svg>
               {t.upload.create}
             </Link>
-            <Link
-              href="/profile"
-              className="rounded-full transition-opacity hover:opacity-80"
-              aria-label={t.profile.customize}
-            >
-              <UserAvatar name={displayName} avatarUrl={avatarUrl} />
-            </Link>
-          </>
-        ) : (
-          <>
-            <Link
-              href="/login"
-              className="text-sm font-medium text-zinc-700 transition-colors hover:text-black dark:text-zinc-300 dark:hover:text-white"
-            >
-              {t.auth.logIn}
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-lg border border-zinc-300 px-3 py-1.5 text-sm font-medium text-black transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-950"
-            >
-              {t.auth.signUp}
-            </Link>
+            {user ? (
+              <Link
+                href="/profile"
+                className="rounded-full transition-opacity hover:opacity-80"
+                aria-label={t.profile.customize}
+              >
+                <UserAvatar name={displayName} avatarUrl={avatarUrl} />
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/login?next=%2Fupload"
+                  className="text-sm font-medium text-zinc-700 transition-colors hover:text-black dark:text-zinc-300 dark:hover:text-white"
+                >
+                  {t.auth.logIn}
+                </Link>
+                <Link
+                  href="/signup?next=%2Fupload"
+                  className="rounded-lg border border-zinc-300 px-3 py-1.5 text-sm font-medium text-black transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-950"
+                >
+                  {t.auth.signUp}
+                </Link>
+              </>
+            )}
           </>
         )}
       </div>

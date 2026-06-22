@@ -13,7 +13,7 @@ export default function UploadPage() {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.replace("/login");
+      router.replace("/login?next=%2Fupload");
     }
   }, [loading, user, router]);
 
