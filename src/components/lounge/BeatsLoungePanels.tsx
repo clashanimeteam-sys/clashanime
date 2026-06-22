@@ -1,8 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { FormEvent, useState } from "react";
-import { trackArtwork, type BeatsTrack } from "@/lib/animeBeatsLounge";
+import { FormEvent, useState, type ReactNode } from "react";
+import {
+  mapBeatsSubmitError,
+  trackArtwork,
+  validateBeatsSubmission,
+  type BeatsTrack,
+} from "@/lib/animeBeatsLounge";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
 import { useBeatsLounge } from "@/providers/BeatsLoungeProvider";
@@ -11,6 +16,26 @@ import { useLocale } from "@/providers/LocaleProvider";
 type BeatsPlaylistListProps = {
   onVote?: () => void;
 };
+
+function LoungeField({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className="block">
+      <span className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.14em] text-fuchsia-200/90">
+        {label}
+      </span>
+      {children}
+    </label>
+  );
+}
+
+const fieldClass =
+  "w-full rounded-xl border border-white/12 bg-zinc-950/70 px-3.5 py-2.5 text-sm text-white placeholder:text-zinc-500 shadow-inner shadow-black/20 outline-none transition focus:border-fuchsia-400/50 focus:ring-2 focus:ring-fuchsia-500/20";
 
 export function BeatsPlaylistList({ onVote }: BeatsPlaylistListProps) {
   const { t } = useLocale();
@@ -41,30 +66,39 @@ export function BeatsPlaylistList({ onVote }: BeatsPlaylistListProps) {
 
   if (playlist.length === 0) {
     return (
-      <p className="rounded-2xl border border-dashed border-white/15 bg-black/30 px-4 py-6 text-sm text-zinc-300">
-        {t.lounge.emptyPlaylist}
-      </p>
+      <div className="rounded-2xl border border-dashed border-fuchsia-300/25 bg-gradient-to-br from-fuchsia-950/20 via-black/30 to-violet-950/20 px-5 py-8 text-center">
+        <p className="text-3xl" aria-hidden>
+          🎧
+        </p>
+        <p className="mt-3 text-sm font-medium leading-relaxed text-zinc-300">
+          {t.lounge.emptyPlaylist}
+        </p>
+      </div>
     );
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2.5">
       {playlist.map((track, index) => {
         const active = index === currentIndex;
 
         return (
           <div
             key={track.id}
-            className={`flex items-center gap-3 rounded-2xl border p-3 transition-colors ${
+            className={`group flex items-center gap-3 rounded-2xl border p-3 transition-all ${
               active
-                ? "border-fuchsia-400/50 bg-fuchsia-500/10"
-                : "border-white/10 bg-black/35 hover:border-white/20"
+                ? "border-fuchsia-400/55 bg-gradient-to-r from-fuchsia-500/15 via-fuchsia-500/5 to-transparent shadow-lg shadow-fuchsia-500/10"
+                : "border-white/10 bg-zinc-950/55 hover:border-fuchsia-300/25 hover:bg-zinc-950/75"
             }`}
           >
+            <span className="w-6 shrink-0 text-center text-xs font-bold text-zinc-500">
+              {index + 1}
+            </span>
+
             <button
               type="button"
               onClick={() => playTrack(index)}
-              className="relative h-14 w-20 shrink-0 overflow-hidden rounded-xl"
+              className="relative h-14 w-20 shrink-0 overflow-hidden rounded-xl ring-1 ring-white/10 transition group-hover:ring-fuchsia-400/40"
             >
               <Image
                 src={trackArtwork(track)}
@@ -74,13 +108,18 @@ export function BeatsPlaylistList({ onVote }: BeatsPlaylistListProps) {
                 sizes="80px"
                 unoptimized
               />
+              {active ? (
+                <span className="absolute inset-0 flex items-center justify-center bg-black/35 text-[10px] font-bold uppercase text-fuchsia-200">
+                  ▶
+                </span>
+              ) : null}
             </button>
 
             <button type="button" onClick={() => playTrack(index)} className="min-w-0 flex-1 text-start">
               <p className="truncate text-sm font-bold text-white">{track.title}</p>
               <p className="truncate text-xs text-zinc-300">{track.artist}</p>
               {track.animeTitle ? (
-                <p className="truncate text-[11px] text-fuchsia-200/80">{track.animeTitle}</p>
+                <p className="truncate text-[11px] text-fuchsia-200/85">{track.animeTitle}</p>
               ) : null}
             </button>
 
@@ -89,17 +128,17 @@ export function BeatsPlaylistList({ onVote }: BeatsPlaylistListProps) {
                 type="button"
                 disabled={!user || votingId === track.id}
                 onClick={() => void handleVote(track)}
-                className={`rounded-full px-2.5 py-1 text-xs font-bold ${
+                className={`rounded-full px-3 py-1 text-xs font-bold transition ${
                   track.userHasVoted
-                    ? "bg-fuchsia-500 text-white"
-                    : "border border-white/20 text-zinc-200"
+                    ? "bg-fuchsia-500 text-white shadow-md shadow-fuchsia-500/30"
+                    : "border border-white/15 bg-white/5 text-zinc-200 hover:border-fuchsia-400/40"
                 } disabled:opacity-50`}
                 title={user ? t.lounge.voteTrack : t.lounge.loginToVote}
               >
                 ♥ {track.voteCount}
               </button>
               {active ? (
-                <span className="text-[10px] font-bold uppercase tracking-wide text-fuchsia-300">
+                <span className="rounded-full bg-fuchsia-500/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-fuchsia-200">
                   {t.lounge.nowPlayingBadge}
                 </span>
               ) : null}
@@ -123,9 +162,30 @@ export function BeatsTrackSubmitForm() {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const errorLabels = {
+    errorTitleRequired: t.lounge.errorTitleRequired,
+    errorArtistRequired: t.lounge.errorArtistRequired,
+    errorYoutubeRequired: t.lounge.errorYoutubeRequired,
+    errorYoutubeInvalid: t.lounge.errorYoutubeInvalid,
+    loginToSubmit: t.lounge.loginToSubmit,
+  };
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!user || !supabase) return;
+
+    const clientError = validateBeatsSubmission({
+      title,
+      artist,
+      youtubeUrl,
+      errors: errorLabels,
+    });
+
+    if (clientError) {
+      setError(clientError);
+      setMessage(null);
+      return;
+    }
 
     setSaving(true);
     setMessage(null);
@@ -141,7 +201,7 @@ export function BeatsTrackSubmitForm() {
     setSaving(false);
 
     if (submitError) {
-      setError(submitError.message);
+      setError(mapBeatsSubmitError(submitError.message, errorLabels));
       return;
     }
 
@@ -154,57 +214,85 @@ export function BeatsTrackSubmitForm() {
 
   if (!user) {
     return (
-      <p className="rounded-2xl border border-white/10 bg-black/30 px-4 py-4 text-sm text-zinc-300">
-        {t.lounge.loginToSubmit}
-      </p>
+      <div className="rounded-2xl border border-fuchsia-300/20 bg-gradient-to-br from-fuchsia-950/25 to-violet-950/20 px-5 py-6">
+        <p className="text-sm leading-relaxed text-zinc-300">{t.lounge.loginToSubmit}</p>
+      </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3 rounded-2xl border border-white/10 bg-black/35 p-4">
-      <h3 className="text-sm font-bold uppercase tracking-[0.18em] text-fuchsia-300">
-        {t.lounge.submitTitle}
-      </h3>
-      <p className="text-xs text-zinc-400">{t.lounge.submitDesc}</p>
+    <form
+      onSubmit={handleSubmit}
+      className="overflow-hidden rounded-2xl border border-fuchsia-300/20 bg-gradient-to-br from-fuchsia-950/30 via-zinc-950/80 to-violet-950/25 p-5 shadow-xl shadow-fuchsia-950/20"
+    >
+      <div className="mb-4">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-300">
+          {t.lounge.submitTitle}
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-zinc-400">{t.lounge.submitDesc}</p>
+      </div>
 
-      <input
-        value={title}
-        onChange={(event) => setTitle(event.target.value)}
-        placeholder={t.lounge.trackTitlePlaceholder}
-        className="w-full rounded-xl border border-white/10 bg-black/50 px-3 py-2 text-sm text-white"
-        required
-      />
-      <input
-        value={artist}
-        onChange={(event) => setArtist(event.target.value)}
-        placeholder={t.lounge.artistPlaceholder}
-        className="w-full rounded-xl border border-white/10 bg-black/50 px-3 py-2 text-sm text-white"
-        required
-      />
-      <input
-        value={animeTitle}
-        onChange={(event) => setAnimeTitle(event.target.value)}
-        placeholder={t.lounge.animePlaceholder}
-        className="w-full rounded-xl border border-white/10 bg-black/50 px-3 py-2 text-sm text-white"
-      />
-      <input
-        value={youtubeUrl}
-        onChange={(event) => setYoutubeUrl(event.target.value)}
-        placeholder={t.lounge.youtubePlaceholder}
-        className="w-full rounded-xl border border-white/10 bg-black/50 px-3 py-2 text-sm text-white"
-        required
-      />
+      <div className="space-y-3">
+        <LoungeField label={t.lounge.trackTitlePlaceholder}>
+          <input
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+            placeholder={t.lounge.trackTitlePlaceholder}
+            className={fieldClass}
+            autoComplete="off"
+          />
+        </LoungeField>
+
+        <LoungeField label={t.lounge.artistPlaceholder}>
+          <input
+            value={artist}
+            onChange={(event) => setArtist(event.target.value)}
+            placeholder={t.lounge.artistPlaceholder}
+            className={fieldClass}
+            autoComplete="off"
+          />
+        </LoungeField>
+
+        <LoungeField label={t.lounge.animePlaceholder}>
+          <input
+            value={animeTitle}
+            onChange={(event) => setAnimeTitle(event.target.value)}
+            placeholder={t.lounge.animePlaceholder}
+            className={fieldClass}
+            autoComplete="off"
+          />
+        </LoungeField>
+
+        <LoungeField label={t.lounge.youtubePlaceholder}>
+          <input
+            value={youtubeUrl}
+            onChange={(event) => setYoutubeUrl(event.target.value)}
+            placeholder="https://youtu.be/..."
+            className={fieldClass}
+            inputMode="url"
+            autoComplete="off"
+          />
+        </LoungeField>
+      </div>
 
       <button
         type="submit"
         disabled={saving}
-        className="rounded-full bg-fuchsia-500 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
+        className="mt-5 w-full rounded-full bg-gradient-to-r from-fuchsia-500 to-violet-600 px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-fuchsia-500/25 transition hover:brightness-110 disabled:opacity-50"
       >
         {saving ? t.lounge.submitting : t.lounge.submitButton}
       </button>
 
-      {message ? <p className="text-sm text-emerald-400">{message}</p> : null}
-      {error ? <p className="text-sm text-red-400">{error}</p> : null}
+      {message ? (
+        <p className="mt-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">
+          {message}
+        </p>
+      ) : null}
+      {error ? (
+        <p className="mt-3 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+          {error}
+        </p>
+      ) : null}
     </form>
   );
 }

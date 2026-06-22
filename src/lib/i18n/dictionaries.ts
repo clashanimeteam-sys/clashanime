@@ -278,6 +278,10 @@ export type Dictionary = {
     submitting: string;
     submitSuccess: string;
     loginToSubmit: string;
+    errorTitleRequired: string;
+    errorArtistRequired: string;
+    errorYoutubeRequired: string;
+    errorYoutubeInvalid: string;
   };
   legal: {
     reportTitle: string;
@@ -1384,6 +1388,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       submitting: "Submitting...",
       submitSuccess: "Track submitted! Staff will review it for the lounge.",
       loginToSubmit: "Sign in to suggest tracks for the community playlist.",
+      errorTitleRequired: "Enter the song title.",
+      errorArtistRequired: "Enter the artist name.",
+      errorYoutubeRequired: "Paste a YouTube link or video ID.",
+      errorYoutubeInvalid: "That YouTube link does not look valid.",
     },
     legal: {
       reportTitle: "Report Content",
@@ -2505,6 +2513,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       submitting: "送信中...",
       submitSuccess: "提出しました。スタッフが審査します。",
       loginToSubmit: "曲を提案するにはログインしてください。",
+      errorTitleRequired: "曲名を入力してください。",
+      errorArtistRequired: "アーティスト名を入力してください。",
+      errorYoutubeRequired: "YouTubeリンクまたはIDを入力してください。",
+      errorYoutubeInvalid: "YouTubeリンクが正しくありません。",
     },
     legal: {
       reportTitle: "コンテンツを報告",
@@ -3617,6 +3629,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       submitting: "جارٍ الإرسال...",
       submitSuccess: "تم الإرسال! سيراجعه الفريق للقائمة.",
       loginToSubmit: "سجّل الدخول لاقتراح مقاطع للمجتمع.",
+      errorTitleRequired: "أدخل عنوان الأغنية.",
+      errorArtistRequired: "أدخل اسم الفنان.",
+      errorYoutubeRequired: "الصق رابط YouTube أو معرف الفيديو.",
+      errorYoutubeInvalid: "رابط YouTube غير صالح.",
     },
     legal: {
       reportTitle: "تقرير المحتوى",
