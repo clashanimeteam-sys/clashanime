@@ -121,12 +121,12 @@ function loadYoutubeApi() {
   });
 }
 
-/** Hidden YouTube iframe host — audio-only, persists across page navigation. */
+/** In-viewport hidden host — off-screen iframes are muted/blocked by browsers. */
 export function BeatsLoungeAudioEngine() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed -start-[9999px] top-0 h-[240px] w-[320px] overflow-hidden opacity-0"
+      className="pointer-events-none fixed bottom-0 start-0 z-0 h-[180px] w-[320px] overflow-hidden opacity-[0.01]"
     >
       <div id={BEATS_YOUTUBE_HOST_ID} className="h-full w-full" />
     </div>
@@ -141,6 +141,7 @@ export function BeatsLoungeProvider({
   const playlistRef = useRef<BeatsTrack[]>(initialPlaylist);
   const currentIndexRef = useRef(0);
   const pendingAutoplayRef = useRef(false);
+  const pendingPlayIndexRef = useRef<number | null>(null);
   const volumeRef = useRef(0.55);
   const mutedRef = useRef(false);
 
@@ -187,30 +188,54 @@ export function BeatsLoungeProvider({
   const applyVolumeRef = useRef(applyVolume);
   applyVolumeRef.current = applyVolume;
 
+  const requestPlayback = useCallback((player: YoutubePlayer) => {
+    pendingAutoplayRef.current = true;
+    try {
+      player.playVideo();
+    } catch {
+      /* user gesture may be required */
+    }
+    window.requestAnimationFrame(() => {
+      try {
+        player.playVideo();
+      } catch {
+        /* retry once on next frame */
+      }
+    });
+  }, []);
+
   const loadVideoAtIndex = useCallback(
     (index: number, autoplay: boolean) => {
       const track = playlistRef.current[index];
-      if (!track || !playerRef.current) return;
+      if (!track) return;
 
       setCurrentIndex(index);
       currentIndexRef.current = index;
       setPlayerError(null);
+
+      const player = playerRef.current;
+      if (!player) {
+        if (autoplay) {
+          pendingPlayIndexRef.current = index;
+          pendingAutoplayRef.current = true;
+        }
+        return;
+      }
+
       pendingAutoplayRef.current = autoplay;
-      playerRef.current.loadVideoById({ videoId: track.youtubeVideoId, startSeconds: 0 });
+      pendingPlayIndexRef.current = null;
+      player.loadVideoById({ videoId: track.youtubeVideoId, startSeconds: 0 });
       applyVolume(volumeRef.current, mutedRef.current);
 
       if (autoplay) {
-        window.setTimeout(() => {
-          try {
-            playerRef.current?.playVideo();
-          } catch {
-            /* user gesture may be required */
-          }
-        }, 150);
+        requestPlayback(player);
       }
     },
-    [applyVolume],
+    [applyVolume, requestPlayback],
   );
+
+  const loadVideoAtIndexRef = useRef(loadVideoAtIndex);
+  loadVideoAtIndexRef.current = loadVideoAtIndex;
 
   useEffect(() => {
     let cancelled = false;
@@ -232,6 +257,7 @@ export function BeatsLoungeProvider({
       const firstTrack = playlistRef.current[0];
       const playerVars: Record<string, string | number> = {
         autoplay: 0,
+        enablejsapi: 1,
         controls: 0,
         disablekb: 1,
         fs: 0,
@@ -260,6 +286,11 @@ export function BeatsLoungeProvider({
               setCurrentIndex(0);
               currentIndexRef.current = 0;
             }
+
+            const pendingIndex = pendingPlayIndexRef.current;
+            if (pendingIndex !== null && pendingAutoplayRef.current) {
+              loadVideoAtIndexRef.current(pendingIndex, true);
+            }
           },
           onStateChange: (event) => {
             const YT = window.YT;
@@ -270,6 +301,7 @@ export function BeatsLoungeProvider({
               setHasStarted(true);
               setPlayerError(null);
               pendingAutoplayRef.current = false;
+              pendingPlayIndexRef.current = null;
             } else if (event.data === YT.PlayerState.PAUSED) {
               setIsPlaying(false);
             } else if (event.data === YT.PlayerState.ENDED) {
@@ -278,14 +310,17 @@ export function BeatsLoungeProvider({
               pendingAutoplayRef.current &&
               (event.data === YT.PlayerState.CUED || event.data === YT.PlayerState.BUFFERING)
             ) {
-              event.target.playVideo();
+              requestPlayback(event.target);
             }
           },
-          onError: () => {
+          onError: (event) => {
             setPlayerError("playback-error");
             setIsPlaying(false);
             pendingAutoplayRef.current = false;
-            playNextRef.current();
+            pendingPlayIndexRef.current = null;
+            if (event.data === 2 || event.data === 100 || event.data === 101 || event.data === 150) {
+              playNextRef.current();
+            }
           },
         },
       });
@@ -354,11 +389,11 @@ export function BeatsLoungeProvider({
         state === YT.PlayerState.ENDED ||
         state === YT.PlayerState.UNSTARTED)
     ) {
-      player.playVideo();
+      requestPlayback(player);
     } else {
       loadVideoAtIndex(currentIndexRef.current, true);
     }
-  }, [isPlaying, loadVideoAtIndex]);
+  }, [isPlaying, loadVideoAtIndex, requestPlayback]);
 
   const playPrevious = useCallback(() => {
     if (playlistRef.current.length === 0) return;
