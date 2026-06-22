@@ -43,10 +43,10 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/logo2.png", type: "image/png", sizes: "1024x1024" },
       { url: "/icon-32.png", type: "image/png", sizes: "32x32" },
     ],
-    apple: [{ url: "/icon-180.png", sizes: "180x180", type: "image/png" }],
+    apple: [{ url: "/logo2.png", sizes: "1024x1024", type: "image/png" }],
   },
   openGraph: {
     title: "Clash Anime",
@@ -54,14 +54,14 @@ export const metadata: Metadata = {
       "Anime clips ranked by community engagement. Share videos and climb the grid on ClashAnime.com.",
     siteName: "Clash Anime",
     type: "website",
-    images: [{ url: "/icon.png", width: 512, height: 512, alt: "Clash Anime" }],
+    images: [{ url: "/logo2.png", width: 1024, height: 1024, alt: "Clash Anime" }],
   },
   twitter: {
     card: "summary",
     title: "Clash Anime",
     description:
       "Anime clips ranked by community engagement. Share videos and climb the grid on ClashAnime.com.",
-    images: ["/icon.png"],
+    images: ["/logo2.png"],
   },
 };
 
