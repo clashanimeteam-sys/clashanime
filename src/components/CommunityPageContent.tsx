@@ -20,6 +20,7 @@ import { getSignupUrl } from "@/lib/subscriptionGate";
 import { getPublicStorageUrl } from "@/lib/upload";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
+import { usePageTitle } from "@/providers/PageTitleProvider";
 
 type CommunityPost = {
   id: string;
@@ -53,6 +54,7 @@ export function CommunityPageContent() {
   const router = useRouter();
   const { user, profile, profileLoading } = useAuth();
   const { t } = useLocale();
+  usePageTitle(t.pages.communityTitle);
   const supabase = useMemo(() => createBrowserClient(), []);
   const config = useMemo(() => getSupabaseConfig(), []);
 
@@ -274,12 +276,9 @@ export function CommunityPageContent() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-      <div className="mb-8">
-        <h1 className="text-start text-2xl font-bold text-black dark:text-white sm:text-3xl">
-          {t.pages.communityTitle}
-        </h1>
-        <p className="mt-3 rounded-xl border border-accent/20 bg-accent/5 px-3 py-2 text-xs text-zinc-700 dark:text-zinc-300">
+    <div className="mx-auto max-w-3xl px-4 py-4 sm:px-6">
+      <div className="mb-6">
+        <p className="rounded-xl border border-accent/20 bg-accent/5 px-3 py-2 text-xs text-zinc-700 dark:text-zinc-300">
           {t.communityFeed.animeOnlyNotice}{" "}
           <Link href="/community-guidelines" className="font-semibold text-accent hover:underline">
             {t.footer.communityGuidelines}

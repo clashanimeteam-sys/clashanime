@@ -25,6 +25,7 @@ import { getSignupUrl } from "@/lib/subscriptionGate";
 import { appendStickerToken, bodyHasRenderableContent } from "@/lib/stickers";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
+import { usePageTitle } from "@/providers/PageTitleProvider";
 import type { VideoComment } from "@/lib/types";
 
 type CommunityPostPageContentProps = {
@@ -43,6 +44,7 @@ export function CommunityPostPageContent({ postId }: CommunityPostPageContentPro
   const { user } = useAuth();
   const { requireSubscription } = useRequireSubscription();
   const { t } = useLocale();
+  usePageTitle(t.communityFeed.commentsTitle);
   const supabase = useMemo(() => createBrowserClient(), []);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -225,8 +227,7 @@ export function CommunityPostPageContent({ postId }: CommunityPostPageContentPro
       </article>
 
       <section id="comments" className="mt-8 scroll-mt-24">
-        <h1 className="text-2xl font-bold text-black dark:text-white">{t.communityFeed.commentsTitle}</h1>
-        <p className="mt-1 text-sm text-zinc-500">
+        <p className="text-sm text-zinc-500">
           {post.comments_count.toLocaleString()} {t.communityFeed.commentsCountLabel}
         </p>
 

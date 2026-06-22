@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { useLocale } from "@/providers/LocaleProvider";
+import { usePageTitle } from "@/providers/PageTitleProvider";
 import type { Video } from "@/lib/types";
 import type { ReactNode } from "react";
 
@@ -78,15 +79,13 @@ export function DuelArenaContent({
   backLabel,
 }: DuelArenaContentProps) {
   const { t } = useLocale();
+  usePageTitle(title);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+    <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6">
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-sm font-bold uppercase tracking-wide text-accent">{badge}</p>
-          <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
-            {title}
-          </h1>
           <p className="mt-2 text-base font-medium leading-relaxed text-zinc-700 dark:text-zinc-300">
             {description}
           </p>

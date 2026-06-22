@@ -24,11 +24,13 @@ import { fetchPublicSiteFlags } from "@/lib/siteSettings";
 import { MAX_CLIP_SECONDS, MIN_CLIP_SECONDS } from "@/lib/types";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
+import { usePageTitle } from "@/providers/PageTitleProvider";
 
 export function UploadVideoForm() {
   const router = useRouter();
   const { user, profile } = useAuth();
   const { t } = useLocale();
+  usePageTitle(t.upload.title);
   const supabase = useMemo(() => createBrowserClient(), []);
   const config = useMemo(() => getSupabaseConfig(), []);
 
@@ -273,9 +275,8 @@ export function UploadVideoForm() {
 
   if (profile && !uploadUnlocked) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
-        <h1 className="text-3xl font-bold text-black dark:text-white">{t.upload.title}</h1>
-        <p className="mt-4 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
+      <div className="mx-auto max-w-2xl px-4 py-6 sm:px-6">
+        <p className="rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
           {t.upload.levelRequired}
         </p>
       </div>
@@ -283,10 +284,9 @@ export function UploadVideoForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-5 px-4 py-8 sm:px-6">
+    <form onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-5 px-4 py-4 sm:px-6">
       <div>
-        <h1 className="text-3xl font-bold text-black dark:text-white">{t.upload.title}</h1>
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{t.upload.subtitle}</p>
+        <p className="text-sm text-zinc-600 dark:text-zinc-400">{t.upload.subtitle}</p>
         <p className="mt-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300">
           {t.upload.originalOnly}
         </p>

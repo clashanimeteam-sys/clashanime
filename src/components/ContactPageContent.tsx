@@ -6,6 +6,7 @@ import { BrandLogo } from "@/components/BrandLogo";
 import { getAboutCopy } from "@/lib/aboutCopy";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
+import { usePageTitle } from "@/providers/PageTitleProvider";
 
 function FieldLabel({
   label,
@@ -67,6 +68,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function ContactPageContent() {
   const { t, locale } = useLocale();
+  usePageTitle(t.contact.pageTitle);
   const { user } = useAuth();
   const teamCopy = getAboutCopy(locale);
 
@@ -146,12 +148,9 @@ export function ContactPageContent() {
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+      <div className="relative mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
         <div className="max-w-2xl">
-          <h1 className="text-3xl font-bold tracking-tight text-black sm:text-4xl dark:text-white">
-            {t.contact.pageTitle}
-          </h1>
-          <p className="mt-4 text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
+          <p className="text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
             {t.contact.pageSubtitle}
           </p>
         </div>

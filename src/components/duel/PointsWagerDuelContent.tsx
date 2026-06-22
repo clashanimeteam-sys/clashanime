@@ -13,6 +13,7 @@ import type { PointsWagerDuelRecord } from "@/lib/pointsDuels";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
+import { usePageTitle } from "@/providers/PageTitleProvider";
 
 type PointsWagerDuelContentProps = {
   duel: PointsWagerDuelRecord;
@@ -22,6 +23,15 @@ export function PointsWagerDuelContent({ duel }: PointsWagerDuelContentProps) {
   const { user, refreshProfile } = useAuth();
   const { t } = useLocale();
   const router = useRouter();
+  const pageTitle =
+    duel.status === "pending"
+      ? t.exclusives.pointsWagerTitle
+      : duel.status === "completed"
+        ? t.exclusives.wagerCompleted
+        : duel.status === "cancelled"
+          ? t.exclusives.wagerCancelled
+          : t.exclusives.pointsWagerTitle;
+  usePageTitle(pageTitle);
   const supabase = useMemo(() => createBrowserClient(), []);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -60,13 +70,10 @@ export function PointsWagerDuelContent({ duel }: PointsWagerDuelContentProps) {
 
   if (duel.status === "pending") {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+      <div className="mx-auto max-w-3xl px-4 py-4 sm:px-6">
         <p className="text-sm font-bold uppercase tracking-wide text-amber-600 dark:text-amber-300">
           {t.exclusives.pointsWagerBadge}
         </p>
-        <h1 className="mt-1 text-3xl font-extrabold text-zinc-900 dark:text-white">
-          {t.exclusives.pointsWagerTitle}
-        </h1>
         <p className="mt-3 text-base text-zinc-700 dark:text-zinc-300">
           {t.exclusives.wagerPotPreview.replace("{pot}", String(pot))}
         </p>
@@ -104,12 +111,9 @@ export function PointsWagerDuelContent({ duel }: PointsWagerDuelContentProps) {
 
   if (duel.status === "completed" || duel.status === "cancelled") {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6">
-        <h1 className="text-2xl font-extrabold text-zinc-900 dark:text-white">
-          {duel.status === "completed" ? t.exclusives.wagerCompleted : t.exclusives.wagerCancelled}
-        </h1>
+      <div className="mx-auto max-w-3xl px-4 py-10 text-center sm:px-6">
         {duel.winner_id ? (
-          <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">
             {t.exclusives.wagerWinnerPot.replace("{pot}", String(pot))}
           </p>
         ) : null}

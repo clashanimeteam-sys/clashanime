@@ -1,14 +1,15 @@
 "use client";
 
 import { useLocale } from "@/providers/LocaleProvider";
+import { usePageTitle } from "@/providers/PageTitleProvider";
 
 export default function SettingsPage() {
   const { t } = useLocale();
+  usePageTitle(t.nav.settings);
 
   return (
-    <div className="mx-auto max-w-3xl bg-white px-4 py-8 dark:bg-black sm:px-6">
-      <h1 className="text-3xl font-bold text-black dark:text-white">{t.nav.settings}</h1>
-      <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+    <div className="mx-auto max-w-3xl bg-white px-4 py-4 dark:bg-black sm:px-6">
+      <p className="text-sm text-zinc-600 dark:text-zinc-400">
         Theme and language controls are available in the sidebar.
       </p>
     </div>

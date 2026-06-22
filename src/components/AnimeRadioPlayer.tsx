@@ -8,6 +8,7 @@ import { AnimeRadioScene } from "@/components/radio/AnimeRadioScene";
 import { AnimeRadioVisualizer } from "@/components/radio/AnimeRadioVisualizer";
 import { useAnimeRadio } from "@/providers/AnimeRadioProvider";
 import { useLocale } from "@/providers/LocaleProvider";
+import { usePageTitle } from "@/providers/PageTitleProvider";
 
 function stationLabel(
   stationId: RadioStationId,
@@ -18,6 +19,7 @@ function stationLabel(
 
 export function AnimeRadioPlayer() {
   const { t } = useLocale();
+  usePageTitle(t.radio.title);
   const {
     stationId,
     isPlaying,
@@ -48,8 +50,8 @@ export function AnimeRadioPlayer() {
         trackKey={trackKey}
       />
 
-      <div className="relative z-10 mx-auto max-w-5xl px-4 py-8 sm:px-6">
-        <section className="relative mb-8 overflow-hidden rounded-3xl border border-white/10 bg-black/25 p-6 backdrop-blur-md sm:p-8">
+      <div className="relative z-10 mx-auto max-w-5xl px-4 py-4 sm:px-6">
+        <section className="relative mb-6 overflow-hidden rounded-3xl border border-white/10 bg-black/25 p-6 backdrop-blur-md sm:p-8">
           <AnimeRadioScene
             active={isPlaying}
             accentFrom={station.accentFrom}
@@ -60,7 +62,6 @@ export function AnimeRadioPlayer() {
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-accent">
               {t.radio.badge}
             </p>
-            <h1 className="mt-2 text-3xl font-bold text-white sm:text-4xl">{t.radio.title}</h1>
           </div>
         </section>
 

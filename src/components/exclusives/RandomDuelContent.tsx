@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { DuelArenaContent } from "@/components/duel/DuelArenaContent";
 import { useLocale } from "@/providers/LocaleProvider";
+import { usePageTitle } from "@/providers/PageTitleProvider";
 import type { Video } from "@/lib/types";
 
 type RandomDuelContentProps = {
@@ -11,14 +12,12 @@ type RandomDuelContentProps = {
 
 export function RandomDuelContent({ pair }: RandomDuelContentProps) {
   const { t } = useLocale();
+  usePageTitle(t.exclusives.randomDuelTitle);
 
   if (!pair) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6">
-        <h1 className="text-2xl font-extrabold text-zinc-900 dark:text-white">
-          {t.exclusives.randomDuelTitle}
-        </h1>
-        <p className="mt-3 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+      <div className="mx-auto max-w-3xl px-4 py-10 text-center sm:px-6">
+        <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
           {t.exclusives.noDuelVideos}
         </p>
         <Link href="/exclusives" className="mt-6 inline-flex text-sm font-semibold text-accent hover:underline">

@@ -8,6 +8,7 @@ import { ClashLiveBadge } from "@/components/clash/ClashLiveBadge";
 import { NotificationBell } from "@/components/NotificationBell";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
+import { usePageTitleContext } from "@/providers/PageTitleProvider";
 
 function UserAvatar({
   name,
@@ -46,6 +47,7 @@ export function AuthTopBar() {
   const { user, profile, loading } = useAuth();
   const { t } = useLocale();
   const pathname = usePathname();
+  const { title: pageTitle } = usePageTitleContext();
 
   const displayName =
     profile?.display_name ??
@@ -106,22 +108,26 @@ export function AuthTopBar() {
     </>
   );
 
-  if (isHome) {
-    return (
-      <div className="flex items-stretch justify-between">
-        <ClashLiveBadge />
-        <div className="flex items-center gap-3 px-4 py-3 sm:px-6">{actionButtons}</div>
-      </div>
-    );
-  }
+  const leftSlot = isHome ? (
+    <ClashLiveBadge />
+  ) : pageTitle ? (
+    <h1 className="page-corner-title">{pageTitle}</h1>
+  ) : (
+    <div className="md:hidden">
+      <BrandMark />
+    </div>
+  );
 
   return (
-    <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3 dark:border-zinc-800 sm:px-6">
-      <div className="md:hidden">
-        <BrandMark />
+    <div
+      className={`flex items-stretch justify-between ${isHome ? "" : "gap-3 px-4 sm:px-6"}`}
+    >
+      <div className="flex min-w-0 items-center">{leftSlot}</div>
+      <div
+        className={`flex shrink-0 items-center gap-3 py-2 ${isHome ? "px-4 sm:px-6" : ""}`}
+      >
+        {actionButtons}
       </div>
-      <div className="hidden md:block" aria-hidden />
-      <div className="flex items-center gap-3">{actionButtons}</div>
     </div>
   );
 }

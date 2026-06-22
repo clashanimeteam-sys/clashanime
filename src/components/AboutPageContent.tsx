@@ -4,6 +4,7 @@ import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
 import { getAboutCopy, type AboutIcon } from "@/lib/aboutCopy";
 import { useLocale } from "@/providers/LocaleProvider";
+import { usePageTitle } from "@/providers/PageTitleProvider";
 
 function AboutIconBadge({ icon }: { icon: AboutIcon }) {
   const className =
@@ -106,6 +107,7 @@ function AboutIconBadge({ icon }: { icon: AboutIcon }) {
 export function AboutPageContent() {
   const { locale } = useLocale();
   const copy = getAboutCopy(locale);
+  usePageTitle(copy.title);
 
   return (
     <div className="relative overflow-hidden">
@@ -114,15 +116,12 @@ export function AboutPageContent() {
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+      <div className="relative mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
         <div className="flex flex-col items-center text-center">
           <BrandLogo className="h-16 w-16" />
           <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-brand">
             ClashAnime
           </p>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight text-black sm:text-4xl dark:text-white">
-            {copy.title}
-          </h1>
         </div>
 
         <p className="mt-8 text-center text-base leading-[1.85] text-zinc-700 sm:text-lg dark:text-zinc-300">

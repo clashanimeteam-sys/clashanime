@@ -4,16 +4,17 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { ReportContentForm } from "@/components/ReportContentForm";
 import { useLocale } from "@/providers/LocaleProvider";
+import { usePageTitle } from "@/providers/PageTitleProvider";
 
 function ReportContentPageInner() {
   const searchParams = useSearchParams();
   const { t } = useLocale();
+  usePageTitle(t.legal.reportTitle);
   const videoParam = searchParams.get("video") ?? "";
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
-      <h1 className="text-3xl font-bold text-black dark:text-white">{t.legal.reportTitle}</h1>
-      <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+    <div className="mx-auto max-w-2xl px-4 py-6 sm:px-6">
+      <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
         {t.legal.reportIntro}
       </p>
 

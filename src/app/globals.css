@@ -554,3 +554,27 @@
     animation: none !important;
   }
 }
+
+/* Page titles — top corner via AuthTopBar */
+.page-corner-title {
+  max-width: min(52vw, 20rem);
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #09090b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dark .page-corner-title {
+  color: #fafafa;
+}
+
+@media (min-width: 640px) {
+  .page-corner-title {
+    max-width: 24rem;
+    font-size: 1.125rem;
+  }
+}

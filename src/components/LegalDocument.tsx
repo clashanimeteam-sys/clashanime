@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useLocale } from "@/providers/LocaleProvider";
+import { usePageTitle } from "@/providers/PageTitleProvider";
 
 type LegalDocumentProps = {
   title: string;
@@ -23,11 +24,11 @@ const RELATED_LINKS = [
 
 export function LegalDocument({ title, updated, intro, sections }: LegalDocumentProps) {
   const { t } = useLocale();
+  usePageTitle(title);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-      <h1 className="text-3xl font-bold text-black dark:text-white">{title}</h1>
-      <p className="mt-2 text-xs text-zinc-500">{updated}</p>
+    <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
+      <p className="text-xs text-zinc-500">{updated}</p>
 
       {intro ? (
         <p className="mt-6 rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-sm leading-relaxed text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-zinc-300">

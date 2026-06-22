@@ -2,6 +2,7 @@
 
 import { VideoCard } from "@/components/VideoCard";
 import { useLocale } from "@/providers/LocaleProvider";
+import { usePageTitle } from "@/providers/PageTitleProvider";
 import type { Video } from "@/lib/types";
 
 type VideoGridContentProps = {
@@ -22,18 +23,20 @@ export function VideoGridContent({
   headerExtra,
 }: VideoGridContentProps) {
   const { t } = useLocale();
+  usePageTitle(title);
 
   return (
-    <div className="mx-auto max-w-[1920px] px-4 py-8 sm:px-6">
-      <section className="mb-8">
-        <h1 className="text-3xl font-bold text-black dark:text-white">{title}</h1>
-        {subtitle ? (
-          <p className="mt-3 max-w-2xl text-sm text-zinc-600 sm:text-base dark:text-zinc-400">
-            {subtitle}
-          </p>
-        ) : null}
-        {headerExtra ? <div className="mt-5">{headerExtra}</div> : null}
-      </section>
+    <div className="mx-auto max-w-[1920px] px-4 py-4 sm:px-6">
+      {(subtitle || headerExtra) ? (
+        <section className="mb-6">
+          {subtitle ? (
+            <p className="max-w-2xl text-sm text-zinc-600 sm:text-base dark:text-zinc-400">
+              {subtitle}
+            </p>
+          ) : null}
+          {headerExtra ? <div className={subtitle ? "mt-4" : ""}>{headerExtra}</div> : null}
+        </section>
+      ) : null}
 
       {videos.length === 0 ? (
         <p className="text-sm text-zinc-500">{emptyMessage}</p>
