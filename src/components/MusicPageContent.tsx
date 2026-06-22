@@ -60,13 +60,14 @@ export function MusicPageContent({ initialPlaylist }: MusicPageContentProps) {
         </button>
       </div>
 
-      {mode === "radio" ? (
-        <AnimeRadioPlayer />
-      ) : (
-        <div className="mx-auto max-w-5xl px-4 pb-8 sm:px-6">
-          <AnimeBeatsLoungeSection initialPlaylist={initialPlaylist} />
-        </div>
-      )}
+      {mode === "radio" ? <AnimeRadioPlayer /> : null}
+
+      <div
+        className={`mx-auto max-w-5xl px-4 pb-8 sm:px-6 ${mode === "lounge" ? "" : "hidden"}`}
+        aria-hidden={mode !== "lounge"}
+      >
+        <AnimeBeatsLoungeSection initialPlaylist={initialPlaylist} />
+      </div>
     </div>
   );
 }

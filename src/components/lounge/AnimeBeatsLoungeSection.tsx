@@ -23,6 +23,7 @@ export function AnimeBeatsLoungeSection({ initialPlaylist }: AnimeBeatsLoungeSec
     isPlaying,
     isReady,
     playerError,
+    needsUserAction,
     setPlaylist,
     togglePlay,
     playNext,
@@ -32,6 +33,7 @@ export function AnimeBeatsLoungeSection({ initialPlaylist }: AnimeBeatsLoungeSec
     setVolume,
     toggleMute,
     playTrack,
+    unlockPlayback,
   } = useBeatsLounge();
 
   useEffect(() => {
@@ -135,10 +137,10 @@ export function AnimeBeatsLoungeSection({ initialPlaylist }: AnimeBeatsLoungeSec
                 <button
                   type="button"
                   onClick={handlePlayToggle}
-                  disabled={!isReady || playlist.length === 0}
+                  disabled={playlist.length === 0}
                   className="inline-flex h-12 min-w-36 items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-500 to-violet-600 px-7 text-sm font-bold text-white shadow-lg shadow-fuchsia-500/40 transition hover:brightness-110 disabled:opacity-50"
                 >
-                  {isPlaying ? t.lounge.pause : t.lounge.play}
+                  {!isReady ? t.lounge.playerLoading : isPlaying ? t.lounge.pause : t.lounge.play}
                 </button>
                 <button
                   type="button"
@@ -187,6 +189,17 @@ export function AnimeBeatsLoungeSection({ initialPlaylist }: AnimeBeatsLoungeSec
               </label>
 
               <p className="mt-4 text-sm text-zinc-300">{t.lounge.backgroundListening}</p>
+              <p className="mt-2 text-xs text-zinc-400">{t.lounge.audioSourceHint}</p>
+
+              {needsUserAction ? (
+                <button
+                  type="button"
+                  onClick={unlockPlayback}
+                  className="mt-3 w-full max-w-md rounded-xl border-2 border-amber-400/50 bg-amber-500/20 px-4 py-3 text-sm font-bold text-amber-100 transition hover:bg-amber-500/30"
+                >
+                  {t.lounge.unlockAudio}
+                </button>
+              ) : null}
 
               {playerError ? (
                 <p className="mt-3 rounded-xl border border-amber-400/40 bg-amber-500/15 px-3 py-2 text-sm font-medium text-amber-100">
