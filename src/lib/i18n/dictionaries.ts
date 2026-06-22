@@ -728,6 +728,10 @@ export type Dictionary = {
     saveContactReply: string;
     markContactReplied: string;
     markContactClosed: string;
+    sendContactReplyEmail: string;
+    sendingContactReply: string;
+    contactReplySent: string;
+    contactReplyFailed: string;
     contactStatuses: {
       open: string;
       replied: string;
@@ -1660,6 +1664,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       saveContactReply: "Save reply",
       markContactReplied: "Mark replied",
       markContactClosed: "Close",
+      sendContactReplyEmail: "Send reply by email",
+      sendingContactReply: "Sending...",
+      contactReplySent: "Reply email sent to the user.",
+      contactReplyFailed: "Could not send the reply email.",
       contactStatuses: {
         open: "Open",
         replied: "Replied",
@@ -2582,6 +2590,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       saveContactReply: "返信を保存",
       markContactReplied: "返信済みにする",
       markContactClosed: "クローズ",
+      sendContactReplyEmail: "メールで返信を送信",
+      sendingContactReply: "送信中...",
+      contactReplySent: "ユーザーに返信メールを送信しました。",
+      contactReplyFailed: "返信メールを送信できませんでした。",
       contactStatuses: {
         open: "未対応",
         replied: "返信済み",
@@ -3507,6 +3519,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       saveContactReply: "حفظ الرد",
       markContactReplied: "تعيين كمُرد عليه",
       markContactClosed: "إغلاق",
+      sendContactReplyEmail: "إرسال الرد بالإيميل",
+      sendingContactReply: "جارٍ الإرسال...",
+      contactReplySent: "تم إرسال الرد للمستخدم بالإيميل.",
+      contactReplyFailed: "تعذّر إرسال الرد بالإيميل.",
       contactStatuses: {
         open: "مفتوحة",
         replied: "تم الرد",

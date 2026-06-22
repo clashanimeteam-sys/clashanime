@@ -27,6 +27,7 @@ export function AdminContactPanel() {
   const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<ContactMessageStatus | "all">("open");
   const [draftReplies, setDraftReplies] = useState<Record<string, string>>({});
+  const [sendingId, setSendingId] = useState<string | null>(null);
 
   const loadMessages = useCallback(async () => {
     if (!supabase) return;
@@ -106,6 +107,40 @@ export function AdminContactPanel() {
 
     setMessage(t.admin.saved);
     await loadMessages();
+  }
+
+  async function sendReplyEmail(id: string) {
+    const reply = draftReplies[id]?.trim() ?? "";
+    if (reply.length < 5) {
+      setError(t.admin.contactReplyPlaceholder);
+      return;
+    }
+
+    setSendingId(id);
+    setMessage(null);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/admin/contact/send-reply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messageId: id, reply }),
+      });
+
+      const payload = (await response.json()) as { error?: string };
+
+      if (!response.ok) {
+        setError(payload.error || t.admin.contactReplyFailed);
+        return;
+      }
+
+      setMessage(t.admin.contactReplySent);
+      await loadMessages();
+    } catch {
+      setError(t.admin.contactReplyFailed);
+    } finally {
+      setSendingId(null);
+    }
   }
 
   return (
@@ -188,6 +223,14 @@ export function AdminContactPanel() {
                   className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-200 hover:border-zinc-500"
                 >
                   {t.admin.saveContactReply}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => sendReplyEmail(row.id)}
+                  disabled={sendingId === row.id}
+                  className="rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-white hover:opacity-90 disabled:opacity-60"
+                >
+                  {sendingId === row.id ? t.admin.sendingContactReply : t.admin.sendContactReplyEmail}
                 </button>
                 <button
                   type="button"

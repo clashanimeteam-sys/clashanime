@@ -1,11 +1,9 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
 import { getAboutCopy } from "@/lib/aboutCopy";
-import { submitContactMessage } from "@/lib/contactMessages";
-import { createBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -70,7 +68,6 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export function ContactPageContent() {
   const { t, locale } = useLocale();
   const { user } = useAuth();
-  const supabase = useMemo(() => createBrowserClient(), []);
   const teamCopy = getAboutCopy(locale);
 
   const [email, setEmail] = useState("");
@@ -88,7 +85,6 @@ export function ContactPageContent() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!supabase) return;
 
     setSuccess(null);
     setError(null);
@@ -105,26 +101,36 @@ export function ContactPageContent() {
 
     setSubmitting(true);
 
-    const result = await submitContactMessage(supabase, {
-      email: email.trim(),
-      message: message.trim(),
-      whatsapp: whatsapp.trim() || null,
-      locale,
-    });
+    try {
+      const response = await fetch("/api/contact/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim(),
+          message: message.trim(),
+          whatsapp: whatsapp.trim() || null,
+          locale,
+        }),
+      });
 
-    setSubmitting(false);
+      const payload = (await response.json()) as { error?: string };
 
-    if (!result.ok) {
-      setError(result.error || t.contact.failed);
-      return;
+      if (!response.ok) {
+        setError(payload.error || t.contact.failed);
+        return;
+      }
+
+      setSuccess(t.contact.success);
+      setMessage("");
+      if (!user?.email) {
+        setEmail("");
+      }
+      setWhatsapp("");
+    } catch {
+      setError(t.contact.failed);
+    } finally {
+      setSubmitting(false);
     }
-
-    setSuccess(t.contact.success);
-    setMessage("");
-    if (!user?.email) {
-      setEmail("");
-    }
-    setWhatsapp("");
   }
 
   const helpItems = [
