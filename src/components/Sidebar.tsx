@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { ElementalSiteTitle } from "@/components/ElementalSiteTitle";
 import { BrandLogo } from "@/components/BrandLogo";
-import { SiteTitle } from "@/components/SiteTitle";
 import { LocaleFlags } from "@/components/LocaleFlags";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { isStaff } from "@/lib/admin";
@@ -156,10 +156,9 @@ export function Sidebar() {
           className="group mt-4 flex justify-center"
           aria-label={`${t.home.titlePrimary}${t.home.titleSecondary}`}
         >
-          <SiteTitle
+          <ElementalSiteTitle
             primary={t.home.titlePrimary}
             secondary={t.home.titleSecondary}
-            variant="sidebar"
           />
         </Link>
       </div>

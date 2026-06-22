@@ -592,6 +592,228 @@
   }
 }
 
+/* Elemental sidebar title — stone + fire / lightning (anime arena) */
+.elemental-title-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0.15rem 0 0.35rem;
+  isolation: isolate;
+}
+
+.elemental-title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.14rem;
+  font-size: 1.65rem;
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.elemental-row {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.04em;
+}
+
+.elemental-letter-slot {
+  position: relative;
+  display: inline-block;
+}
+
+.elemental-letter {
+  position: relative;
+  display: inline-block;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  paint-order: stroke fill;
+  -webkit-text-stroke: 0.04em rgba(0, 0, 0, 0.55);
+}
+
+.elemental-letter-clash {
+  background-image: linear-gradient(
+    180deg,
+    #fef9c3 0%,
+    #fbbf24 18%,
+    #f97316 45%,
+    #ef4444 72%,
+    #7f1d1d 100%
+  );
+  text-shadow:
+    0 0.04em 0 #451a03,
+    0 0.08em 0 #7c2d12,
+    0 0.12em 0.14em rgba(0, 0, 0, 0.45);
+  filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.55));
+  animation: elemental-fire-flicker 2.4s ease-in-out infinite;
+}
+
+.elemental-letter-anime {
+  background-image: linear-gradient(
+    180deg,
+    #e0f2fe 0%,
+    #38bdf8 35%,
+    #2563eb 68%,
+    #1e3a8a 100%
+  );
+  text-shadow:
+    0 0.04em 0 #0c4a6e,
+    0 0.08em 0 #1e3a8a,
+    0 0.12em 0.14em rgba(0, 0, 0, 0.45);
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.45));
+  animation: elemental-shock-pulse 2.8s ease-in-out infinite;
+}
+
+.elemental-slash-slot {
+  position: absolute;
+  left: -0.08em;
+  top: -0.35em;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.92;
+}
+
+.elemental-slash-svg {
+  width: 0.55em;
+  height: 0.65em;
+  animation: elemental-slash-swing 2.6s ease-in-out infinite;
+  filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.8));
+}
+
+.elemental-lightning-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.42em;
+  height: 1em;
+  vertical-align: middle;
+  margin-inline: 0.02em;
+}
+
+.elemental-lightning-svg {
+  width: 100%;
+  height: 100%;
+  animation: elemental-bolt-flash 1.6s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.9));
+}
+
+.elemental-ember {
+  position: absolute;
+  width: 0.28rem;
+  height: 0.28rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, #fde047 0%, #f97316 55%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.elemental-ember-1 {
+  top: 12%;
+  left: 8%;
+  animation: elemental-ember-rise 2.8s ease-out infinite;
+}
+
+.elemental-ember-2 {
+  top: 28%;
+  right: 6%;
+  animation: elemental-ember-rise 3.2s ease-out infinite 0.6s;
+}
+
+.elemental-ember-3 {
+  bottom: 8%;
+  left: 18%;
+  animation: elemental-ember-rise 3s ease-out infinite 1.1s;
+}
+
+@keyframes elemental-fire-flicker {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 5px rgba(249, 115, 22, 0.45));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.75));
+  }
+}
+
+@keyframes elemental-shock-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.35));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.7));
+  }
+}
+
+@keyframes elemental-slash-swing {
+  0%,
+  100% {
+    transform: rotate(-8deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(6deg) scale(1.06);
+  }
+}
+
+@keyframes elemental-bolt-flash {
+  0%,
+  100% {
+    opacity: 0.88;
+    transform: scale(1);
+  }
+
+  45% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+
+  55% {
+    opacity: 0.75;
+  }
+}
+
+@keyframes elemental-ember-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-1.2rem) scale(0.2);
+  }
+}
+
+@media (min-width: 1024px) {
+  .elemental-title {
+    font-size: 1.85rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elemental-letter-clash,
+  .elemental-letter-anime,
+  .elemental-slash-svg,
+  .elemental-lightning-svg,
+  .elemental-ember {
+    animation: none !important;
+  }
+}
+
 @keyframes doodle-logo-idle {
   0%,
   100% {
