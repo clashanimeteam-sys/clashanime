@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { FormEvent, useState, type ReactNode } from "react";
 import {
+  isValidArtworkUrl,
   mapBeatsSubmitError,
   trackArtwork,
   validateBeatsSubmission,
@@ -169,6 +170,7 @@ export function BeatsTrackSubmitForm() {
   const [artist, setArtist] = useState("");
   const [animeTitle, setAnimeTitle] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [artworkUrl, setArtworkUrl] = useState("");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -178,8 +180,11 @@ export function BeatsTrackSubmitForm() {
     errorArtistRequired: t.lounge.errorArtistRequired,
     errorYoutubeRequired: t.lounge.errorYoutubeRequired,
     errorYoutubeInvalid: t.lounge.errorYoutubeInvalid,
+    errorCoverInvalid: t.lounge.errorCoverInvalid,
     loginToSubmit: t.lounge.loginToSubmit,
   };
+
+  const coverPreview = isValidArtworkUrl(artworkUrl) && artworkUrl.trim() ? artworkUrl.trim() : null;
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -189,6 +194,7 @@ export function BeatsTrackSubmitForm() {
       title,
       artist,
       youtubeUrl,
+      artworkUrl,
       errors: errorLabels,
     });
 
@@ -207,6 +213,7 @@ export function BeatsTrackSubmitForm() {
       p_artist: artist.trim(),
       p_youtube_input: youtubeUrl.trim(),
       p_anime_title: animeTitle.trim() || null,
+      p_artwork_url: artworkUrl.trim() || null,
     });
 
     setSaving(false);
@@ -220,6 +227,7 @@ export function BeatsTrackSubmitForm() {
     setArtist("");
     setAnimeTitle("");
     setYoutubeUrl("");
+    setArtworkUrl("");
     setMessage(t.lounge.submitSuccess);
   }
 
@@ -283,6 +291,32 @@ export function BeatsTrackSubmitForm() {
             inputMode="url"
             autoComplete="off"
           />
+        </LoungeField>
+
+        <LoungeField label={t.lounge.coverPlaceholder}>
+          <input
+            value={artworkUrl}
+            onChange={(event) => setArtworkUrl(event.target.value)}
+            placeholder="https://..."
+            className={fieldClass}
+            inputMode="url"
+            autoComplete="off"
+          />
+          {coverPreview ? (
+            <div className="mt-3 flex items-center gap-3 rounded-xl border-2 border-zinc-600 bg-zinc-950 p-3">
+              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg ring-2 ring-fuchsia-400/40">
+                <Image
+                  src={coverPreview}
+                  alt=""
+                  fill
+                  className="object-cover"
+                  sizes="64px"
+                  unoptimized
+                />
+              </div>
+              <p className="text-xs text-zinc-400">{t.lounge.coverPlaceholder}</p>
+            </div>
+          ) : null}
         </LoungeField>
       </div>
 

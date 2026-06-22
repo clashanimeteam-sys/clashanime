@@ -274,6 +274,7 @@ export type Dictionary = {
     artistPlaceholder: string;
     animePlaceholder: string;
     youtubePlaceholder: string;
+    coverPlaceholder: string;
     submitButton: string;
     submitting: string;
     submitSuccess: string;
@@ -282,6 +283,7 @@ export type Dictionary = {
     errorArtistRequired: string;
     errorYoutubeRequired: string;
     errorYoutubeInvalid: string;
+    errorCoverInvalid: string;
     playbackError: string;
     audioOnlyBadge: string;
     backgroundListening: string;
@@ -1387,6 +1389,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       artistPlaceholder: "Artist",
       animePlaceholder: "Anime name (optional)",
       youtubePlaceholder: "YouTube URL or video ID",
+      coverPlaceholder: "Cover image URL (optional)",
       submitButton: "Submit for review",
       submitting: "Submitting...",
       submitSuccess: "Track submitted! Staff will review it for the lounge.",
@@ -1395,6 +1398,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       errorArtistRequired: "Enter the artist name.",
       errorYoutubeRequired: "Paste a YouTube link or video ID.",
       errorYoutubeInvalid: "That YouTube link does not look valid.",
+      errorCoverInvalid: "That cover image link must start with http:// or https://.",
       playbackError:
         "This track could not play (embedding may be blocked). Skipping to the next track — try another song.",
       audioOnlyBadge: "Audio only",
@@ -2517,6 +2521,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       artistPlaceholder: "アーティスト",
       animePlaceholder: "アニメ名（任意）",
       youtubePlaceholder: "YouTube URL または ID",
+      coverPlaceholder: "カバー画像URL（任意）",
       submitButton: "審査に提出",
       submitting: "送信中...",
       submitSuccess: "提出しました。スタッフが審査します。",
@@ -2525,6 +2530,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       errorArtistRequired: "アーティスト名を入力してください。",
       errorYoutubeRequired: "YouTubeリンクまたはIDを入力してください。",
       errorYoutubeInvalid: "YouTubeリンクが正しくありません。",
+      errorCoverInvalid: "カバー画像URLは http:// または https:// で始めてください。",
       playbackError:
         "この曲は再生できません（埋め込みが制限されている可能性があります）。次の曲へスキップします。",
       audioOnlyBadge: "音声のみ",
@@ -3637,6 +3643,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       artistPlaceholder: "الفنان",
       animePlaceholder: "اسم الأنمي (اختياري)",
       youtubePlaceholder: "رابط YouTube أو معرف الفيديو",
+      coverPlaceholder: "رابط صورة الغلاف (اختياري)",
       submitButton: "إرسال للمراجعة",
       submitting: "جارٍ الإرسال...",
       submitSuccess: "تم الإرسال! سيراجعه الفريق للقائمة.",
@@ -3645,6 +3652,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       errorArtistRequired: "أدخل اسم الفنان.",
       errorYoutubeRequired: "الصق رابط YouTube أو معرف الفيديو.",
       errorYoutubeInvalid: "رابط YouTube غير صالح.",
+      errorCoverInvalid: "رابط صورة الغلاف يجب أن يبدأ بـ http:// أو https://.",
       playbackError:
         "تعذّر تشغيل هذا المقطع (قد يكون التضمين محظوراً). سننتقل للمقطع التالي — جرّب أغنية أخرى.",
       audioOnlyBadge: "صوت فقط",

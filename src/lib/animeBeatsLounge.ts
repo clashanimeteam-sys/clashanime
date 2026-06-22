@@ -42,8 +42,21 @@ const SUBMIT_ERROR_KEYS = {
   "valid artist required": "errorArtistRequired",
   "youtube url or video id required": "errorYoutubeRequired",
   "invalid youtube url or video id": "errorYoutubeInvalid",
+  "invalid artwork url": "errorCoverInvalid",
   "login required": "loginToSubmit",
 } as const;
+
+export function isValidArtworkUrl(input: string): boolean {
+  const raw = input.trim();
+  if (!raw) return true;
+
+  try {
+    const url = new URL(raw);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
 
 export function mapBeatsSubmitError(
   message: string,
@@ -62,11 +75,13 @@ export function validateBeatsSubmission(input: {
   title: string;
   artist: string;
   youtubeUrl: string;
+  artworkUrl?: string;
   errors: Record<(typeof SUBMIT_ERROR_KEYS)[keyof typeof SUBMIT_ERROR_KEYS], string>;
 }): string | null {
   if (!input.title.trim()) return input.errors.errorTitleRequired;
   if (!input.artist.trim()) return input.errors.errorArtistRequired;
   if (!input.youtubeUrl.trim()) return input.errors.errorYoutubeRequired;
   if (!extractYoutubeVideoId(input.youtubeUrl.trim())) return input.errors.errorYoutubeInvalid;
+  if (input.artworkUrl && !isValidArtworkUrl(input.artworkUrl)) return input.errors.errorCoverInvalid;
   return null;
 }
