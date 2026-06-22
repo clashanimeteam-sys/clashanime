@@ -438,6 +438,20 @@ export type Dictionary = {
     mentionTitle: string;
     mentionPreviewCommunity: string;
     mentionPreviewComment: string;
+    types: {
+      follow: { label: string; title: string; body: string };
+      new_video: { label: string; title: string; body: string };
+      new_music: { label: string; title: string; body: string };
+      community_post: { label: string; title: string; body: string; bodyWithPreview: string };
+      video_duel: { label: string; title: string; body: string };
+      points_duel: { label: string; title: string; body: string };
+      points_duel_accepted: { label: string; title: string; body: string };
+      season_start: { label: string; title: string; body: string };
+      season_end: { label: string; title: string; body: string };
+      mention: { label: string };
+      broadcast: { label: string };
+      system: { label: string };
+    };
   };
   points: {
     systemTitle: string;
@@ -849,6 +863,7 @@ export type Dictionary = {
       farewell: string;
     };
     inAppNotificationsTitle: string;
+    inAppNotificationsFilterAll: string;
     noInAppNotifications: string;
     inAppNotificationsTable: {
       when: string;
@@ -1567,6 +1582,25 @@ export const dictionaries: Record<Locale, Dictionary> = {
       mentionTitle: "You were mentioned",
       mentionPreviewCommunity: "mentioned you in a community post.",
       mentionPreviewComment: "mentioned you in a comment.",
+      types: {
+        follow: { label: "Follow", title: "New follower", body: "{name} started following you" },
+        new_video: { label: "Video", title: "New video", body: "{channel} published: {title}" },
+        new_music: { label: "Music", title: "New music", body: "{channel} added a track: {title}" },
+        community_post: {
+          label: "Community",
+          title: "Community post",
+          body: "{channel} posted in Community",
+          bodyWithPreview: "{channel} posted: {preview}",
+        },
+        video_duel: { label: "Challenge", title: "Clip challenge", body: "{name} challenged your clip" },
+        points_duel: { label: "Points duel", title: "Points duel challenge", body: "{name} challenged you for {points} points" },
+        points_duel_accepted: { label: "Duel accepted", title: "Duel accepted", body: "{name} accepted your points duel" },
+        season_start: { label: "Season start", title: "New season started", body: "{season} is now live. Climb the ranks!" },
+        season_end: { label: "Season end", title: "Season ended", body: "{season} has ended. Check the Hall of Legends!" },
+        mention: { label: "Mention" },
+        broadcast: { label: "Broadcast" },
+        system: { label: "System" },
+      },
     },
     points: {
       systemTitle: "Bounty Hunter Rewards",
@@ -1994,6 +2028,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         farewell: "Farewell email",
       },
       inAppNotificationsTitle: "In-app notifications",
+      inAppNotificationsFilterAll: "All types",
       noInAppNotifications: "No in-app notifications logged yet.",
       inAppNotificationsTable: {
         when: "When",
@@ -2702,6 +2737,25 @@ export const dictionaries: Record<Locale, Dictionary> = {
       mentionTitle: "メンションされました",
       mentionPreviewCommunity: "がコミュニティ投稿であなたをメンションしました。",
       mentionPreviewComment: "がコメントであなたをメンションしました。",
+      types: {
+        follow: { label: "フォロー", title: "新しいフォロワー", body: "{name}さんがあなたをフォローしました" },
+        new_video: { label: "動画", title: "新しい動画", body: "{channel}が公開: {title}" },
+        new_music: { label: "音楽", title: "新しい音楽", body: "{channel}がトラックを追加: {title}" },
+        community_post: {
+          label: "コミュニティ",
+          title: "コミュニティ投稿",
+          body: "{channel}がコミュニティに投稿しました",
+          bodyWithPreview: "{channel}の投稿: {preview}",
+        },
+        video_duel: { label: "挑戦", title: "クリップ挑戦", body: "{name}さんがあなたのクリップに挑戦しました" },
+        points_duel: { label: "ポイント対戦", title: "ポイント対戦の挑戦", body: "{name}さんが{points}ポイントで挑戦しました" },
+        points_duel_accepted: { label: "対戦承諾", title: "対戦が承諾されました", body: "{name}さんがポイント対戦を承諾しました" },
+        season_start: { label: "シーズン開始", title: "新シーズン開始", body: "{season}が開始しました。ランキングを目指そう！" },
+        season_end: { label: "シーズン終了", title: "シーズン終了", body: "{season}が終了しました。殿堂をチェック！" },
+        mention: { label: "メンション" },
+        broadcast: { label: "一斉通知" },
+        system: { label: "システム" },
+      },
     },
     points: {
       systemTitle: "バウンティハンター報酬",
@@ -3126,6 +3180,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         farewell: "お別れメール",
       },
       inAppNotificationsTitle: "アプリ内通知",
+      inAppNotificationsFilterAll: "すべての種類",
       noInAppNotifications: "まだアプリ内通知の記録がありません。",
       inAppNotificationsTable: {
         when: "日時",
@@ -3834,6 +3889,25 @@ export const dictionaries: Record<Locale, Dictionary> = {
       mentionTitle: "تم ذكرك",
       mentionPreviewCommunity: "ذكرك في منشور بالمجتمع.",
       mentionPreviewComment: "ذكرك في تعليق.",
+      types: {
+        follow: { label: "متابعة", title: "متابع جديد", body: "{name} بدأ بمتابعتك" },
+        new_video: { label: "فيديو", title: "فيديو جديد", body: "{channel} نشر: {title}" },
+        new_music: { label: "موسيقى", title: "موسيقى جديدة", body: "{channel} أضاف مقطعاً: {title}" },
+        community_post: {
+          label: "المجتمع",
+          title: "منشور مجتمع",
+          body: "{channel} نشر في المجتمع",
+          bodyWithPreview: "منشور {channel}: {preview}",
+        },
+        video_duel: { label: "تحدي", title: "تحدي مقطع", body: "{name} تحدّى مقطعك" },
+        points_duel: { label: "تحدي نقاط", title: "تحدي نقاط", body: "{name} تحدّاك بـ {points} نقطة" },
+        points_duel_accepted: { label: "قبول التحدي", title: "تم قبول التحدي", body: "{name} قبل تحدي النقاط" },
+        season_start: { label: "بداية موسم", title: "موسم جديد", body: "{season} بدأ الآن. تسلّق الترتيب!" },
+        season_end: { label: "نهاية موسم", title: "انتهى الموسم", body: "انتهى {season}. راجع قاعة الأساطير!" },
+        mention: { label: "إشارة" },
+        broadcast: { label: "بث" },
+        system: { label: "النظام" },
+      },
     },
     points: {
       systemTitle: "نظام صياد الجوائز",
@@ -4259,6 +4333,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         farewell: "إيميل الوداع",
       },
       inAppNotificationsTitle: "الإشعارات داخل التطبيق",
+      inAppNotificationsFilterAll: "كل الأنواع",
       noInAppNotifications: "لا توجد إشعارات داخل التطبيق بعد.",
       inAppNotificationsTable: {
         when: "الوقت",

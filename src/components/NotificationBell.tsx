@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createBrowserClient } from "@/lib/supabase/client";
+import { formatNotificationText } from "@/lib/notifications/formatNotification";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -14,6 +15,7 @@ type NotificationRow = {
   link: string | null;
   read_at: string | null;
   created_at: string;
+  metadata?: Record<string, unknown> | null;
 };
 
 export function NotificationBell() {
@@ -38,10 +40,10 @@ export function NotificationBell() {
     const [notificationsResult, prefsResult] = await Promise.all([
       supabase
         .from("user_notifications")
-        .select("id, type, title, body, link, read_at, created_at")
+        .select("id, type, title, body, link, read_at, created_at, metadata")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false })
-        .limit(30),
+        .limit(50),
       supabase
         .from("user_notification_preferences")
         .select("in_app_enabled")
@@ -68,6 +70,47 @@ export function NotificationBell() {
     }, 60000);
     return () => window.clearInterval(timer);
   }, [user, loadNotifications]);
+
+  useEffect(() => {
+    if (!supabase || !user) return;
+
+    const channel = supabase
+      .channel(`user-notifications:${user.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "user_notifications",
+          filter: `user_id=eq.${user.id}`,
+        },
+        (payload) => {
+          const next = payload.new as NotificationRow;
+          setRows((current) => {
+            if (current.some((row) => row.id === next.id)) return current;
+            return [next, ...current].slice(0, 50);
+          });
+        },
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "user_notifications",
+          filter: `user_id=eq.${user.id}`,
+        },
+        (payload) => {
+          const next = payload.new as NotificationRow;
+          setRows((current) => current.map((row) => (row.id === next.id ? next : row)));
+        },
+      )
+      .subscribe();
+
+    return () => {
+      void supabase.removeChannel(channel);
+    };
+  }, [supabase, user]);
 
   useEffect(() => {
     function handlePointerDown(event: MouseEvent) {
@@ -248,6 +291,7 @@ export function NotificationBell() {
             ) : (
               rows.map((row) => {
                 const isUnread = !row.read_at;
+                const formatted = formatNotificationText(row, t.notifications);
                 const content = (
                   <div
                     className={`flex items-start gap-3 border-b border-zinc-100 px-4 py-3 last:border-b-0 dark:border-zinc-900 ${
@@ -255,8 +299,13 @@ export function NotificationBell() {
                     }`}
                   >
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-semibold text-black dark:text-white">{row.title}</p>
-                      <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">{row.body}</p>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="text-sm font-semibold text-black dark:text-white">{formatted.title}</p>
+                        <span className="rounded-full bg-zinc-200 px-2 py-0.5 text-[10px] font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                          {formatted.typeLabel}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">{formatted.body}</p>
                       <p className="mt-2 text-[10px] text-zinc-400">
                         {new Date(row.created_at).toLocaleString()}
                       </p>

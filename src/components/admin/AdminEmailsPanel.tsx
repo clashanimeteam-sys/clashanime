@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { NOTIFICATION_TYPE_KEYS } from "@/lib/notifications/formatNotification";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -49,6 +50,7 @@ export function AdminEmailsPanel() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<"all" | EmailRow["status"]>("all");
+  const [notificationTypeFilter, setNotificationTypeFilter] = useState<"all" | string>("all");
 
   const loadRows = useCallback(async () => {
     if (!supabase) return;
@@ -68,6 +70,16 @@ export function AdminEmailsPanel() {
       query = query.eq("status", statusFilter);
     }
 
+    let notificationsQuery = supabase
+      .from("user_notifications")
+      .select("id, user_id, type, title, body, read_at, created_at")
+      .order("created_at", { ascending: false })
+      .limit(100);
+
+    if (notificationTypeFilter !== "all") {
+      notificationsQuery = notificationsQuery.eq("type", notificationTypeFilter);
+    }
+
     const [emailsResult, deletionsResult, notificationsResult] = await Promise.all([
       query,
       supabase
@@ -75,11 +87,7 @@ export function AdminEmailsPanel() {
         .select("id, user_id, email, display_name, farewell_status, error_message, deleted_at")
         .order("deleted_at", { ascending: false })
         .limit(100),
-      supabase
-        .from("user_notifications")
-        .select("id, user_id, type, title, body, read_at, created_at")
-        .order("created_at", { ascending: false })
-        .limit(100),
+      notificationsQuery,
     ]);
 
     if (emailsResult.error) {
@@ -128,7 +136,7 @@ export function AdminEmailsPanel() {
       })),
     );
     setLoading(false);
-  }, [supabase, statusFilter]);
+  }, [supabase, statusFilter, notificationTypeFilter]);
 
   useEffect(() => {
     void loadRows();
@@ -271,6 +279,33 @@ export function AdminEmailsPanel() {
 
       <div>
         <h2 className="text-lg font-semibold text-white">{t.admin.inAppNotificationsTitle}</h2>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => setNotificationTypeFilter("all")}
+            className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+              notificationTypeFilter === "all"
+                ? "bg-accent/20 text-accent"
+                : "border border-zinc-700 text-zinc-400 hover:text-white"
+            }`}
+          >
+            {t.admin.inAppNotificationsFilterAll}
+          </button>
+          {NOTIFICATION_TYPE_KEYS.map((typeKey) => (
+            <button
+              key={typeKey}
+              type="button"
+              onClick={() => setNotificationTypeFilter(typeKey)}
+              className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+                notificationTypeFilter === typeKey
+                  ? "bg-accent/20 text-accent"
+                  : "border border-zinc-700 text-zinc-400 hover:text-white"
+              }`}
+            >
+              {t.notifications.types[typeKey]?.label ?? typeKey}
+            </button>
+          ))}
+        </div>
         {loading ? (
           <p className="mt-3 text-sm text-zinc-400">{t.admin.loading}</p>
         ) : notifications.length === 0 ? (
@@ -306,7 +341,9 @@ export function AdminEmailsPanel() {
                     <td className="px-4 py-3 text-zinc-300">
                       {row.username ? `@${row.username}` : row.user_id.slice(0, 8)}
                     </td>
-                    <td className="px-4 py-3 text-zinc-300">{row.type}</td>
+                    <td className="px-4 py-3 text-zinc-300">
+                      {t.notifications.types[row.type as keyof typeof t.notifications.types]?.label ?? row.type}
+                    </td>
                     <td className="px-4 py-3 text-zinc-300">{row.title}</td>
                     <td className="px-4 py-3 text-zinc-300">
                       {row.read_at ? "✓" : "—"}
