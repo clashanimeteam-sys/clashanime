@@ -1,6 +1,5 @@
 "use client";
 
-import { ClashLiveBadge } from "@/components/clash/ClashLiveBadge";
 import { ClashPrizeBanner } from "@/components/clash/ClashPrizeBanner";
 import { ClashVideosBackdrop } from "@/components/clash/ClashVideosBackdrop";
 import { SeasonCountdown } from "@/components/clash/SeasonCountdown";
@@ -43,9 +42,8 @@ export function HomeContent({ videos, activeSeason }: HomeContentProps) {
   return (
     <div className="relative overflow-hidden">
       <div
-        className={`relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 ${activeSeason ? "pt-36 sm:pt-8" : "pt-10 sm:pt-8"}`}
+        className={`relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 ${activeSeason ? "pt-36 sm:pt-8" : ""}`}
       >
-        <ClashLiveBadge />
         {activeSeason ? <SeasonCountdown season={activeSeason} /> : null}
 
         <section className="mb-8">

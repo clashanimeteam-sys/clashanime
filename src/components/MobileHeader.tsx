@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAuth } from "@/providers/AuthProvider";
@@ -14,11 +15,17 @@ const locales: { code: Locale; label: string }[] = [
 ];
 
 export function MobileHeader() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   const { locale, setLocale, t } = useLocale();
   const { user, loading } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black md:hidden">
+    <header
+      className={`sticky top-0 z-50 bg-white dark:bg-black md:hidden ${
+        isHome ? "" : "border-b border-zinc-200 dark:border-zinc-800"
+      }`}
+    >
       <div className="flex h-16 items-center justify-between gap-3 px-4">
         <Link href="/" className="flex items-center">
           <BrandLogo className="h-[4.5rem] w-[4.5rem]" priority />
