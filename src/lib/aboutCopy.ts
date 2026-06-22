@@ -26,7 +26,7 @@ export type AboutCopy = {
 };
 
 const aboutAr: AboutCopy = {
-  title: "من نحن",
+  title: "معلومات عنا",
   intro:
     "بدأنا ClashAnime من شغفنا بعالم الأنمي، بهدف إنشاء مساحة تكسر قيود المشاهدة العادية. نحن نؤمن بأن الأنمي ليس مجرد قصص نشاهدها، بل هو تجربة تستحق التنافس، والتحليل، والمشاركة مع مجتمع عالمي يفهم قيمتها.",
   storyHeading: "قصة ClashAnime",
@@ -163,5 +163,14 @@ const aboutEn: AboutCopy = {
 
 export function getAboutCopy(locale: Locale): AboutCopy {
   if (locale === "ar") return aboutAr;
+  if (locale === "ja") {
+    return {
+      ...aboutEn,
+      title: "私たちについて",
+      teamHeading: "チーム",
+      teamContactLabel: "チームへのお問い合わせ",
+      ctaButton: "今すぐ参加",
+    };
+  }
   return aboutEn;
 }

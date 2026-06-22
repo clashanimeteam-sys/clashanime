@@ -234,7 +234,7 @@ const en: LegalBundle = {
     ],
   },
   dmca: {
-    title: "DMCA / Copyright Policy",
+    title: "Digital Millennium Copyright Act",
     updated: UPDATED_EN,
     intro:
       "ClashAnime respects intellectual property rights and responds to valid copyright notices under the DMCA and similar laws.",
@@ -481,7 +481,7 @@ const ar: LegalBundle = {
     ],
   },
   dmca: {
-    title: "DMCA / حقوق النشر",
+    title: "قانون الألفية الرقمية لحقوق المؤلف",
     updated: UPDATED_AR,
     intro:
       "ClashAnime تحترم حقوق الملكية الفكرية وتستجيب للإشعارات الصالحة بموجب DMCA والقوانين المماثلة.",
@@ -626,7 +626,7 @@ const ja: LegalBundle = {
     ],
   },
   dmca: {
-    title: "DMCA / 著作権",
+    title: "デジタルミレニアム著作権法",
     updated: UPDATED_JA,
     intro: "ClashAnimeは知的財産権を尊重し、有効な著作権通知に対応します。",
     sections: [

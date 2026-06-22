@@ -116,7 +116,7 @@ export function getCookiePolicyCopy(locale: "en" | "ar" | "ja"): LegalPageCopy {
   if (locale === "ar") {
     return {
       ...termifyCookiePolicyEn,
-      title: "سياسة الكوكيز",
+      title: "سياسة ملفات تعريف الارتباط",
       updated: "آخر تحديث: 1 يوليو 2026",
     };
   }

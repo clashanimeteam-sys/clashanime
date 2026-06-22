@@ -122,7 +122,7 @@ export function getDisclaimerCopy(locale: "en" | "ar" | "ja"): LegalPageCopy {
   if (locale === "ar") {
     return {
       ...termifyDisclaimerEn,
-      title: "إخلاء المسؤولية",
+      title: "تنصل",
       updated: "آخر تحديث: 1 يوليو 2026",
     };
   }

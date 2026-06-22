@@ -186,7 +186,7 @@ export function getEulaCopy(locale: "en" | "ar" | "ja"): LegalPageCopy {
   if (locale === "ar") {
     return {
       ...termifyEulaEn,
-      title: "اتفاقية الترخيص الإلكتروني (EULA)",
+      title: "اتفاقية ترخيص المستخدم النهائي",
       updated: "آخر تحديث: 22 يونيو 2026",
     };
   }
@@ -194,7 +194,7 @@ export function getEulaCopy(locale: "en" | "ar" | "ja"): LegalPageCopy {
   if (locale === "ja") {
     return {
       ...termifyEulaEn,
-      title: "エンドユーザーライセンス契約 (EULA)",
+      title: "エンドユーザーライセンス契約",
       updated: "最終更新: 2026年6月22日",
     };
   }
