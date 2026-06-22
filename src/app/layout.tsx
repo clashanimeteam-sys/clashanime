@@ -41,8 +41,12 @@ export const metadata: Metadata = {
     "Watch anime duels ranked in real time. Like, comment, and climb the trending grid on ClashAnime.com.",
   metadataBase: new URL("https://www.clashanime.com"),
   icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/icon-32.png", type: "image/png", sizes: "32x32" },
+    ],
+    apple: [{ url: "/icon-180.png", sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
     title: "Clash Anime",
@@ -50,14 +54,14 @@ export const metadata: Metadata = {
       "Anime clips ranked by community engagement. Share videos and climb the grid on ClashAnime.com.",
     siteName: "Clash Anime",
     type: "website",
-    images: [{ url: "/logo.png" }],
+    images: [{ url: "/icon.png", width: 512, height: 512, alt: "Clash Anime" }],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "Clash Anime",
     description:
       "Anime clips ranked by community engagement. Share videos and climb the grid on ClashAnime.com.",
-    images: ["/logo.png"],
+    images: ["/icon.png"],
   },
 };
 
