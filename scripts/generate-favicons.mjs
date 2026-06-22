@@ -9,7 +9,7 @@ function whiteMatteRgb(data, width, height) {
     const g = data[ri + 1];
     const b = data[ri + 2];
     const oi = p * 4;
-    const a = 255 - Math.max(r, g, b);
+    const a = 255 - Math.min(r, g, b);
     if (a <= 8) {
       out[oi] = out[oi + 1] = out[oi + 2] = out[oi + 3] = 0;
       continue;
@@ -102,11 +102,41 @@ for (const [path, resize] of outputs) {
   await (resize ? sharp(icon).resize(resize, resize) : sharp(icon)).toFile(path);
 }
 
-await sharp(icon)
-  .modulate({ brightness: 1.38, saturation: 1.45 })
-  .linear(1.12, -12)
-  .png()
-  .toFile("public/icon-dark-512.png");
+async function brightenForDarkTabs(buf) {
+  const { data, info } = await sharp(buf).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  for (let i = 0; i < data.length; i += 4) {
+    const a = data[i + 3];
+    if (a === 0) continue;
+
+    let r = data[i];
+    let g = data[i + 1];
+    let b = data[i + 2];
+    const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    const isRed = r > g + 35 && r > b + 35;
+
+    if (isRed) {
+      r = Math.min(255, r * 1.06 + 8);
+      g = Math.max(0, g * 0.95);
+      b = Math.max(0, b * 0.95);
+    } else if (lum < 150) {
+      const lift = (150 - lum) * 0.95;
+      r = Math.min(255, r + lift);
+      g = Math.min(255, g + lift);
+      b = Math.min(255, b + lift * 1.05);
+    }
+
+    data[i] = Math.round(r);
+    data[i + 1] = Math.round(g);
+    data[i + 2] = Math.round(b);
+  }
+
+  return sharp(data, {
+    raw: { width: info.width, height: info.height, channels: info.channels },
+  }).png();
+}
+
+const darkIcon = await brightenForDarkTabs(icon);
+await darkIcon.toFile("public/icon-dark-512.png");
 
 await sharp("public/icon-dark-512.png").resize(180, 180).toFile("public/icon-dark-180.png");
 await sharp("public/icon-dark-512.png").resize(32, 32).toFile("public/icon-dark-32.png");
