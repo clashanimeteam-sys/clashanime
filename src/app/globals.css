@@ -646,3 +646,119 @@
     font-size: 1.125rem;
   }
 }
+
+/* Live Clash Counter — arena status on homepage */
+.live-clash-counter {
+  max-width: 42rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(249, 115, 22, 0.28);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 247, 237, 0.95) 0%,
+    rgba(254, 215, 170, 0.55) 50%,
+    rgba(254, 226, 226, 0.45) 100%
+  );
+  padding: 0.85rem 1rem;
+  box-shadow: 0 8px 28px rgba(249, 115, 22, 0.12);
+  transition: box-shadow 0.35s ease, transform 0.35s ease;
+}
+
+.dark .live-clash-counter {
+  border-color: rgba(251, 146, 60, 0.32);
+  background: linear-gradient(
+    135deg,
+    rgba(69, 10, 10, 0.72) 0%,
+    rgba(124, 45, 18, 0.55) 55%,
+    rgba(30, 27, 75, 0.35) 100%
+  );
+  box-shadow: 0 10px 32px rgba(249, 115, 22, 0.18);
+}
+
+.live-clash-counter-pulse {
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.25), 0 12px 36px rgba(249, 115, 22, 0.22);
+  transform: translateY(-1px);
+}
+
+.live-clash-counter-head {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.35rem;
+}
+
+.live-clash-counter-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: #f97316;
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.95);
+  animation: live-dot 1.35s ease-in-out infinite;
+}
+
+.live-clash-counter-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #c2410c;
+}
+
+.dark .live-clash-counter-label {
+  color: #fdba74;
+}
+
+.live-clash-counter-text {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.55;
+  color: #431407;
+}
+
+.dark .live-clash-counter-text {
+  color: #ffedd5;
+}
+
+.live-clash-stat {
+  font-family: var(--font-orbitron), var(--font-geist-sans), sans-serif;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+.live-clash-stat-battles {
+  color: #ea580c;
+  text-shadow: 0 0 12px rgba(249, 115, 22, 0.35);
+}
+
+.live-clash-stat-fighters {
+  color: #dc2626;
+  text-shadow: 0 0 12px rgba(220, 38, 38, 0.3);
+}
+
+.dark .live-clash-stat-battles {
+  color: #fb923c;
+}
+
+.dark .live-clash-stat-fighters {
+  color: #f87171;
+}
+
+@media (min-width: 640px) {
+  .live-clash-counter {
+    padding: 1rem 1.15rem;
+  }
+
+  .live-clash-counter-text {
+    font-size: 1.05rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-clash-counter-dot {
+    animation: none !important;
+  }
+
+  .live-clash-counter-pulse {
+    transform: none;
+  }
+}

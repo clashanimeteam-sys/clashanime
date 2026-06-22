@@ -159,6 +159,63 @@ export async function getGloballyRankedVideos(): Promise<Video[]> {
   return fetchApprovedVideos();
 }
 
+export type ClashArenaStats = {
+  /** All approved videos on the platform. */
+  activeBattles: number;
+  /** Total engagement across all videos (likes + comments + views + shares). */
+  heroesFighting: number;
+};
+
+export async function getClashArenaStats(): Promise<ClashArenaStats> {
+  const supabase = await createServerClient();
+
+  if (!supabase) {
+    const engagement = MOCK_VIDEOS.reduce(
+      (sum, video) =>
+        sum +
+        video.likes_count +
+        video.comments_count +
+        (video.views_count ?? 0) +
+        (video.shares_count ?? 0),
+      0,
+    );
+    return { activeBattles: MOCK_VIDEOS.length, heroesFighting: engagement };
+  }
+
+  const { data, error, count } = await supabase
+    .from("videos")
+    .select("likes_count, comments_count, views_count, shares_count", { count: "exact" })
+    .eq("moderation_status", "approved");
+
+  if (error || !data) {
+    const engagement = MOCK_VIDEOS.reduce(
+      (sum, video) =>
+        sum +
+        video.likes_count +
+        video.comments_count +
+        (video.views_count ?? 0) +
+        (video.shares_count ?? 0),
+      0,
+    );
+    return { activeBattles: MOCK_VIDEOS.length, heroesFighting: engagement };
+  }
+
+  const heroesFighting = data.reduce(
+    (sum, video) =>
+      sum +
+      (video.likes_count ?? 0) +
+      (video.comments_count ?? 0) +
+      (video.views_count ?? 0) +
+      (video.shares_count ?? 0),
+    0,
+  );
+
+  return {
+    activeBattles: count ?? data.length,
+    heroesFighting,
+  };
+}
+
 /** Top 12 globally ranked videos for the Clash (النزالات) feed. */
 export async function getClashVideos(): Promise<Video[]> {
   const ranked = await fetchApprovedVideos();

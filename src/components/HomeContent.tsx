@@ -1,21 +1,24 @@
 "use client";
 
+import { LiveClashCounter } from "@/components/clash/LiveClashCounter";
 import { ClashPrizeBanner } from "@/components/clash/ClashPrizeBanner";
 import { ClashVideosBackdrop } from "@/components/clash/ClashVideosBackdrop";
 import { SeasonCountdown } from "@/components/clash/SeasonCountdown";
 import { VideoCard } from "@/components/VideoCard";
 import type { ClashSeason } from "@/lib/clashSeasons";
+import type { ClashArenaStats } from "@/lib/videos";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Video } from "@/lib/types";
 
 type HomeContentProps = {
   videos: Video[];
   activeSeason: ClashSeason | null;
+  arenaStats: ClashArenaStats;
 };
 
 const PODIUM_ORDER = [1, 2, 3] as const;
 
-export function HomeContent({ videos, activeSeason }: HomeContentProps) {
+export function HomeContent({ videos, activeSeason, arenaStats }: HomeContentProps) {
   const { t } = useLocale();
 
   const podiumVideos = PODIUM_ORDER.map((rank) =>
@@ -46,9 +49,7 @@ export function HomeContent({ videos, activeSeason }: HomeContentProps) {
         {activeSeason ? <SeasonCountdown season={activeSeason} /> : null}
 
         <section className="mb-8">
-          <p className="max-w-2xl text-sm text-zinc-700 sm:text-base dark:text-zinc-300">
-            {t.home.subtitle}
-          </p>
+          <LiveClashCounter initialStats={arenaStats} />
         </section>
 
         <ClashPrizeBanner activeSeason={activeSeason} />

@@ -24,6 +24,8 @@ export type Dictionary = {
     titlePrimary: string;
     titleSecondary: string;
     subtitle: string;
+    liveClashCounterTitle: string;
+    liveClashCounter: string;
     gridLabel: string;
     clashLive: string;
     podiumLabel: string;
@@ -1029,6 +1031,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       titleSecondary: " Anime",
       subtitle:
         "The top 12 videos worldwide by real-time engagement. Reach global rank #12 to enter Clash.",
+      liveClashCounterTitle: "Live Clash Counter",
+      liveClashCounter:
+        "In the arena now: {battles} blazing battles.. {fighters} heroes fighting!",
       gridLabel: "Clash Anime grid",
       clashLive: "Live Clash",
       podiumLabel: "Podium",
@@ -2063,6 +2068,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       titleSecondary: " Anime",
       subtitle:
         "リアルタイムのエンゲージメントで世界トップ12の動画のみ表示。世界12位に到達するとクラッシュに入ります。",
+      liveClashCounterTitle: "ライブ・クラッシュ・カウンター",
+      liveClashCounter:
+        "現在アリーナ：{battles} の燃えるバトル.. {fighters} 人のヒーローが戦闘中！",
       gridLabel: "Clash Animeグリッド",
       clashLive: "ライブ・クラッシュ",
       podiumLabel: "表彰台",
@@ -3085,6 +3093,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       titleSecondary: " Anime",
       subtitle:
         "أقوى ١٢ فيديو عالمياً حسب التفاعل الفوري. عند الوصول للمركز ١٢ يرتفع المقطع إلى النزالات.",
+      liveClashCounterTitle: "عداد النزالات اللحظي",
+      liveClashCounter:
+        "حالياً في الساحة: {battles} نزالاً مشتعلاً.. {fighters} بطل يقاتل الآن!",
       gridLabel: "شبكة Clash Anime",
       clashLive: "نزال مباشر",
       podiumLabel: "منصة الصدارة",
