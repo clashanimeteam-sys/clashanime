@@ -61,29 +61,33 @@ async function buildCanvasIcon(sourcePath) {
   const cropped = await sharp(png).extract(box).png().toBuffer();
 
   const canvas = 512;
+  const shiftDown = Math.round(canvas * 0.07);
   const zoom = 1.12;
   const target = Math.round(canvas * zoom);
-  const scale = Math.min(target / box.width, target / box.height);
+  const maxLogoH = canvas - shiftDown - 4;
+  const scale = Math.min(target / box.width, target / box.height, maxLogoH / box.height);
   const logoW = Math.round(box.width * scale);
   const logoH = Math.round(box.height * scale);
 
-  const oversized = await sharp(cropped)
+  const logoBuf = await sharp(cropped)
     .resize(logoW, logoH, { fit: "fill", kernel: sharp.kernel.lanczos3 })
-    .extend({
-      top: Math.max(0, Math.floor((target - logoH) / 2)),
-      bottom: Math.max(0, Math.ceil((target - logoH) / 2)),
-      left: Math.max(0, Math.floor((target - logoW) / 2)),
-      right: Math.max(0, Math.ceil((target - logoW) / 2)),
-      background: { r: 0, g: 0, b: 0, alpha: 0 },
-    })
     .png()
     .toBuffer();
 
-  const meta = await sharp(oversized).metadata();
-  const left = Math.floor((meta.width - canvas) / 2);
-  const top = Math.floor((meta.height - canvas) / 2);
+  const top = Math.max(0, Math.floor((canvas - logoH) / 2) + shiftDown);
+  const left = Math.max(0, Math.floor((canvas - logoW) / 2));
 
-  return sharp(oversized).extract({ left, top, width: canvas, height: canvas }).png().toBuffer();
+  return sharp({
+    create: {
+      width: canvas,
+      height: canvas,
+      channels: 4,
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
+    },
+  })
+    .composite([{ input: logoBuf, left, top }])
+    .png()
+    .toBuffer();
 }
 
 const icon = await buildCanvasIcon("public/logo2.png");
