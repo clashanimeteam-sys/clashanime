@@ -737,6 +737,23 @@ export type Dictionary = {
       replied: string;
       closed: string;
     };
+    emailsTitle: string;
+    emailsSubtitle: string;
+    noEmails: string;
+    emailsFilterAll: string;
+    emailStatuses: {
+      pending: string;
+      sent: string;
+      failed: string;
+    };
+    emailsTable: {
+      when: string;
+      to: string;
+      type: string;
+      locale: string;
+      status: string;
+      user: string;
+    };
     approveWithdrawal: string;
     rejectWithdrawal: string;
     markReviewing: string;
@@ -795,6 +812,7 @@ export type Dictionary = {
       kyc: string;
       seasons: string;
       contact: string;
+      emails: string;
     };
     seasons: {
       title: string;
@@ -858,6 +876,7 @@ export type Dictionary = {
     pendingWithdrawals: string;
     pendingKyc: string;
     openContactMessages: string;
+    welcomeEmailsSent: string;
   };
     quickActions: {
       reviewVideos: string;
@@ -1673,6 +1692,23 @@ export const dictionaries: Record<Locale, Dictionary> = {
         replied: "Replied",
         closed: "Closed",
       },
+      emailsTitle: "Transactional emails",
+      emailsSubtitle: "Welcome emails and other automated messages sent to users.",
+      noEmails: "No emails logged yet.",
+      emailsFilterAll: "All",
+      emailStatuses: {
+        pending: "Pending",
+        sent: "Sent",
+        failed: "Failed",
+      },
+      emailsTable: {
+        when: "When",
+        to: "To",
+        type: "Type",
+        locale: "Locale",
+        status: "Status",
+        user: "User",
+      },
       approveWithdrawal: "Mark paid",
       rejectWithdrawal: "Reject & refund",
       markReviewing: "Mark reviewing",
@@ -1731,6 +1767,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         kyc: "Payout KYC",
         seasons: "Clash seasons",
         contact: "Contact inbox",
+        emails: "Emails",
       },
       seasons: {
         title: "Clash seasons",
@@ -1794,6 +1831,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pendingWithdrawals: "Pending withdrawals",
         pendingKyc: "Pending payout KYC",
         openContactMessages: "Open contact messages",
+        welcomeEmailsSent: "Welcome emails sent",
       },
       quickActions: {
         reviewVideos: "Review videos",
@@ -2599,6 +2637,23 @@ export const dictionaries: Record<Locale, Dictionary> = {
         replied: "返信済み",
         closed: "クローズ",
       },
+      emailsTitle: "トランザクションメール",
+      emailsSubtitle: "ウェルカムメールなど、ユーザーへ送った自動メールの記録です。",
+      noEmails: "まだメール記録がありません。",
+      emailsFilterAll: "すべて",
+      emailStatuses: {
+        pending: "保留",
+        sent: "送信済み",
+        failed: "失敗",
+      },
+      emailsTable: {
+        when: "日時",
+        to: "宛先",
+        type: "種類",
+        locale: "言語",
+        status: "状態",
+        user: "ユーザー",
+      },
       approveWithdrawal: "支払い済みにする",
       rejectWithdrawal: "拒否して返金",
       markReviewing: "審査中にする",
@@ -2657,6 +2712,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         kyc: "出金KYC",
         seasons: "クラッシュシーズン",
         contact: "お問い合わせ受信箱",
+        emails: "メール",
       },
       seasons: {
         title: "クラッシュシーズン",
@@ -2720,6 +2776,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pendingWithdrawals: "保留中の出金",
         pendingKyc: "保留中の出金KYC",
         openContactMessages: "未対応のお問い合わせ",
+        welcomeEmailsSent: "送信済みウェルカムメール",
       },
       quickActions: {
         reviewVideos: "動画を審査",
@@ -3528,6 +3585,23 @@ export const dictionaries: Record<Locale, Dictionary> = {
         replied: "تم الرد",
         closed: "مغلقة",
       },
+      emailsTitle: "الإيميلات التلقائية",
+      emailsSubtitle: "إيميلات الترحيب والرسائل التلقائية الأخرى المرسلة للمستخدمين.",
+      noEmails: "لا توجد إيميلات مسجّلة بعد.",
+      emailsFilterAll: "الكل",
+      emailStatuses: {
+        pending: "قيد الإرسال",
+        sent: "تم الإرسال",
+        failed: "فشل",
+      },
+      emailsTable: {
+        when: "الوقت",
+        to: "إلى",
+        type: "النوع",
+        locale: "اللغة",
+        status: "الحالة",
+        user: "المستخدم",
+      },
       approveWithdrawal: "تعيين كمدفوع",
       rejectWithdrawal: "رفض واسترداد",
       markReviewing: "وضع قيد المراجعة",
@@ -3586,6 +3660,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         kyc: "KYC السحب",
         seasons: "مواسم النزال",
         contact: "صندوق التواصل",
+        emails: "الإيميلات",
       },
       seasons: {
         title: "مواسم النزال",
@@ -3649,6 +3724,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pendingWithdrawals: "سحوبات قيد المراجعة",
         pendingKyc: "KYC سحب قيد المراجعة",
         openContactMessages: "رسائل تواصل مفتوحة",
+        welcomeEmailsSent: "إيميلات ترحيب مرسلة",
       },
       quickActions: {
         reviewVideos: "مراجعة الفيديوهات",

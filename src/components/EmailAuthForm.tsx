@@ -19,7 +19,7 @@ export function EmailAuthForm({
   onError,
   onSuccess,
 }: EmailAuthFormProps) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -42,7 +42,7 @@ export function EmailAuthForm({
 
     setLoading(true);
 
-    const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(redirectNext)}`;
+    const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(redirectNext)}&locale=${locale}`;
     const { error } = await supabase.auth.signInWithOtp({
       email: trimmed,
       options: {

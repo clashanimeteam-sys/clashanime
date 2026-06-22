@@ -9,7 +9,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
 const navItems: Array<{
-  key: "dashboard" | "users" | "videos" | "community" | "stickers" | "reports" | "moderationLog" | "withdrawals" | "kyc" | "seasons" | "contact" | "settings";
+  key: "dashboard" | "users" | "videos" | "community" | "stickers" | "reports" | "moderationLog" | "withdrawals" | "kyc" | "seasons" | "contact" | "emails" | "settings";
   href: string;
   adminOnly?: boolean;
 }> = [
@@ -21,6 +21,7 @@ const navItems: Array<{
   { key: "reports", href: "/admin/reports" },
   { key: "kyc", href: "/admin/kyc" },
   { key: "contact", href: "/admin/contact" },
+  { key: "emails", href: "/admin/emails" },
   { key: "seasons", href: "/admin/seasons" },
   { key: "withdrawals", href: "/admin/withdrawals" },
   { key: "moderationLog", href: "/admin/moderation-log" },

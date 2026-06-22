@@ -1,5 +1,10 @@
 import type { Locale } from "@/lib/types";
 import { getContactNotifyEmail, sendResendEmail } from "@/lib/email/resend";
+import {
+  containsArabic,
+  emailParagraph,
+  wrapEmailHtml,
+} from "@/lib/email/emailLayout";
 
 function escapeHtml(value: string): string {
   return value
@@ -72,12 +77,16 @@ export async function sendContactAutoReply(input: {
   const result = await sendResendEmail({
     to: input.to,
     subject: copy.subject,
-    html: `
-      <h2>${escapeHtml(copy.heading)}</h2>
-      <p>${escapeHtml(copy.body)}</p>
-      <p style="color:#666;font-size:13px">${escapeHtml(copy.footer)}</p>
-      <p>— ClashAnime Support</p>
-    `,
+    html: wrapEmailHtml({
+      locale: input.locale,
+      title: copy.heading,
+      bodyHtml: `
+        <h1 style="margin:0 0 18px;font-size:22px;line-height:1.35;color:#09090b;font-weight:800">${escapeHtml(copy.heading)}</h1>
+        ${emailParagraph(copy.body)}
+        <p style="color:#71717a;font-size:13px;margin:0">${escapeHtml(copy.footer)}</p>
+        <p style="margin:24px 0 0;font-weight:600;color:#09090b">— ClashAnime Support</p>
+      `,
+    }),
   });
 
   return result.ok ? { ok: true } : { ok: false, error: result.error };
@@ -88,17 +97,23 @@ export async function sendContactReplyToUser(input: {
   replyBody: string;
   originalMessage: string;
 }): Promise<{ ok: true; id: string } | { ok: false; error: string }> {
+  const locale: Locale = containsArabic(input.replyBody) ? "ar" : "en";
+
   return sendResendEmail({
     to: input.to,
     subject: "Re: Your ClashAnime support message",
-    html: `
-      <p style="white-space:pre-line">${escapeHtml(input.replyBody)}</p>
-      <hr />
-      <p style="color:#666;font-size:13px">Your original message:</p>
-      <blockquote style="border-left:3px solid #ccc;padding-left:12px;color:#555;white-space:pre-line">
-        ${escapeHtml(input.originalMessage)}
-      </blockquote>
-      <p>— ClashAnime Support</p>
-    `,
+    html: wrapEmailHtml({
+      locale,
+      title: "ClashAnime Support",
+      bodyHtml: `
+        <p style="margin:0 0 16px;color:#3f3f46;white-space:pre-line">${escapeHtml(input.replyBody)}</p>
+        <hr style="border:none;border-top:1px solid #e4e4e7;margin:24px 0" />
+        <p style="color:#71717a;font-size:13px;margin:0 0 8px">Your original message:</p>
+        <blockquote style="margin:0;padding-${locale === "ar" ? "right" : "left"}:14px;border-${locale === "ar" ? "right" : "left"}:3px solid #d4d4d8;color:#52525b;white-space:pre-line">
+          ${escapeHtml(input.originalMessage)}
+        </blockquote>
+        <p style="margin:24px 0 0;font-weight:600;color:#09090b">— ClashAnime Support</p>
+      `,
+    }),
   });
 }

@@ -21,6 +21,7 @@ type DashboardStats = {
   pendingWithdrawals: number;
   pendingKyc: number;
   openContactMessages: number;
+  welcomeEmailsSent: number;
 };
 
 export function AdminDashboard() {
@@ -52,6 +53,7 @@ export function AdminDashboard() {
         pendingWithdrawalsResult,
         pendingKycResult,
         openContactMessagesResult,
+        welcomeEmailsResult,
       ] = await Promise.all([
         client.from("profiles").select("*", { count: "exact", head: true }),
         client.from("videos").select("*", { count: "exact", head: true }),
@@ -123,6 +125,17 @@ export function AdminDashboard() {
             }
             return { count: result.count, error: false as const };
           }),
+        client
+          .from("transactional_emails")
+          .select("*", { count: "exact", head: true })
+          .eq("email_type", "welcome")
+          .eq("status", "sent")
+          .then((result) => {
+            if (result.error) {
+              return { count: null as number | null, error: true as const };
+            }
+            return { count: result.count, error: false as const };
+          }),
       ]);
 
       const clipChallengesCount =
@@ -140,6 +153,8 @@ export function AdminDashboard() {
       const pendingKycCount = pendingKycResult.error ? 0 : (pendingKycResult.count ?? 0);
       const openContactMessagesCount =
         openContactMessagesResult.error ? 0 : (openContactMessagesResult.count ?? 0);
+      const welcomeEmailsSentCount =
+        welcomeEmailsResult.error ? 0 : (welcomeEmailsResult.count ?? 0);
 
       setStats({
         users: users ?? 0,
@@ -157,6 +172,7 @@ export function AdminDashboard() {
         pendingWithdrawals: pendingWithdrawalsCount,
         pendingKyc: pendingKycCount,
         openContactMessages: openContactMessagesCount,
+        welcomeEmailsSent: welcomeEmailsSentCount,
       });
       setLoading(false);
     }
@@ -174,6 +190,7 @@ export function AdminDashboard() {
     { label: t.admin.stats.pendingWithdrawals, value: stats?.pendingWithdrawals ?? 0, href: "/admin/withdrawals" },
     { label: t.admin.stats.pendingKyc, value: stats?.pendingKyc ?? 0, href: "/admin/kyc" },
     { label: t.admin.stats.openContactMessages, value: stats?.openContactMessages ?? 0, href: "/admin/contact" },
+    { label: t.admin.stats.welcomeEmailsSent, value: stats?.welcomeEmailsSent ?? 0, href: "/admin/emails" },
     { label: t.admin.stats.pendingVerifications, value: stats?.pendingVerifications ?? 0, href: "/admin/users" },
     { label: t.admin.stats.communityPosts, value: stats?.communityPosts ?? 0, href: "/community" },
     { label: t.admin.stats.videos, value: stats?.videos ?? 0, href: "/admin/videos" },

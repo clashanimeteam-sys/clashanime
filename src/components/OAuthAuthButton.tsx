@@ -69,7 +69,7 @@ export function OAuthAuthButton({
   redirectNext = "/profile",
   onError,
 }: OAuthAuthButtonProps) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const [loading, setLoading] = useState(false);
 
   async function handleOAuth() {
@@ -82,7 +82,7 @@ export function OAuthAuthButton({
     setLoading(true);
     onError("");
 
-    const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(redirectNext)}`;
+    const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(redirectNext)}&locale=${locale}`;
 
     const options =
       provider === "google"
