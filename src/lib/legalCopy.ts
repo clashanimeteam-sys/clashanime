@@ -1,4 +1,5 @@
 import type { Locale } from "@/lib/types";
+import { getTermifyPrivacyCopy } from "@/lib/privacyPolicyCopy";
 
 type LegalSection = { heading: string; body: string };
 
@@ -651,7 +652,7 @@ export function getTermsCopy(locale: Locale): LegalPageCopy {
 }
 
 export function getPrivacyCopy(locale: Locale): LegalPageCopy {
-  return pick(locale).privacy;
+  return getTermifyPrivacyCopy(locale);
 }
 
 export function getCommunityCopy(locale: Locale): LegalPageCopy {
