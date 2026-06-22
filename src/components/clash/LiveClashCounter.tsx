@@ -14,27 +14,46 @@ function formatArenaNumber(value: number, locale: string) {
   return value.toLocaleString(locale === "ar" ? "ar-EG" : locale === "ja" ? "ja-JP" : "en-US");
 }
 
-function splitCounterText(template: string, battles: string, fighters: string) {
+function StatPill({
+  value,
+  showSwords = false,
+  pulse = false,
+}: {
+  value: string;
+  showSwords?: boolean;
+  pulse?: boolean;
+}) {
+  return (
+    <span className={`live-clash-pill ${pulse ? "live-clash-pill-flash" : ""}`}>
+      <span className="live-clash-pill-value">{value}</span>
+      {showSwords ? (
+        <span className="live-clash-pill-swords" aria-hidden>
+          ⚔️
+        </span>
+      ) : null}
+    </span>
+  );
+}
+
+function splitCounterText(
+  template: string,
+  battles: string,
+  fighters: string,
+  pulse: boolean,
+) {
   const parts = template.split(/(\{battles\}|\{fighters\})/);
   return parts.map((part, index) => {
     if (part === "{battles}") {
-      return (
-        <span key={`b-${index}`} className="live-clash-stat-group">
-          <span className="live-clash-stat live-clash-stat-target">{battles}</span>
-          <span className="live-clash-swords" aria-hidden>
-            ⚔️
-          </span>
-        </span>
-      );
+      return <StatPill key={`b-${index}`} value={battles} showSwords pulse={pulse} />;
     }
     if (part === "{fighters}") {
-      return (
-        <span key={`f-${index}`} className="live-clash-stat live-clash-stat-target">
-          {fighters}
-        </span>
-      );
+      return <StatPill key={`f-${index}`} value={fighters} pulse={pulse} />;
     }
-    return part;
+    return (
+      <span key={`t-${index}`} className="live-clash-copy">
+        {part}
+      </span>
+    );
   });
 }
 
@@ -81,20 +100,17 @@ export function LiveClashCounter({ initialStats }: LiveClashCounterProps) {
   const fighters = formatArenaNumber(stats.heroesFighting, locale);
 
   return (
-    <div
-      className={`live-clash-counter ${pulse ? "live-clash-counter-pulse" : ""}`}
-      role="status"
-      aria-live="polite"
-      aria-atomic="true"
-    >
-      <span className="live-clash-counter-shimmer" aria-hidden />
-      <div className="live-clash-counter-head">
-        <span className="live-clash-counter-dot" aria-hidden />
-        <span className="live-clash-counter-label">{t.home.liveClashCounterTitle}</span>
+    <div className="live-clash-counter" role="status" aria-live="polite" aria-atomic="true">
+      <div className="live-clash-counter-accent" aria-hidden />
+      <div className="live-clash-counter-inner">
+        <div className="live-clash-counter-head">
+          <span className="live-clash-counter-dot" aria-hidden />
+          <span className="live-clash-counter-label">{t.home.liveClashCounterTitle}</span>
+        </div>
+        <p className="live-clash-counter-line">
+          {splitCounterText(t.home.liveClashCounter, battles, fighters, pulse)}
+        </p>
       </div>
-      <p className="live-clash-counter-text">
-        {splitCounterText(t.home.liveClashCounter, battles, fighters)}
-      </p>
     </div>
   );
 }

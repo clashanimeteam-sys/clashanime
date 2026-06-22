@@ -650,21 +650,12 @@
 /* Live Clash Counter — arena status on homepage */
 .live-clash-counter {
   position: relative;
-  overflow: hidden;
   max-width: min(100%, 30rem);
-  border-radius: 1rem;
-  border: 1px solid rgba(249, 115, 22, 0.32);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 247, 237, 0.96) 0%,
-    rgba(254, 215, 170, 0.62) 48%,
-    rgba(254, 202, 202, 0.5) 100%
-  );
-  padding: 0.75rem 0.9rem;
+  border-radius: 0.85rem;
+  background: #fff7ed;
   box-shadow:
-    0 8px 24px rgba(249, 115, 22, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.55);
-  transition: box-shadow 0.35s ease, transform 0.35s ease;
+    0 4px 18px rgba(154, 52, 18, 0.1),
+    0 0 0 1px rgba(251, 146, 60, 0.22);
 }
 
 @media (min-width: 640px) {
@@ -674,185 +665,150 @@
 }
 
 .dark .live-clash-counter {
-  border-color: rgba(251, 146, 60, 0.34);
-  background: linear-gradient(
-    135deg,
-    rgba(69, 10, 10, 0.78) 0%,
-    rgba(124, 45, 18, 0.58) 52%,
-    rgba(76, 29, 29, 0.45) 100%
-  );
+  background: #1c0a0a;
   box-shadow:
-    0 10px 28px rgba(249, 115, 22, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    0 6px 22px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(251, 146, 60, 0.28);
 }
 
-.live-clash-counter-shimmer {
+.live-clash-counter-accent {
   position: absolute;
-  inset: -50% auto -50% -35%;
-  width: 42%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
-  transform: skewX(-20deg);
-  animation: live-clash-shimmer 3.4s ease-in-out infinite;
-  pointer-events: none;
+  inset-inline-start: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 0.85rem 0 0 0.85rem;
+  background: linear-gradient(180deg, #f97316 0%, #dc2626 100%);
 }
 
-.live-clash-counter-pulse {
-  box-shadow:
-    0 0 0 2px rgba(248, 113, 113, 0.28),
-    0 0 18px rgba(239, 68, 68, 0.22),
-    0 12px 32px rgba(249, 115, 22, 0.2);
-  transform: translateY(-1px);
+.live-clash-counter-inner {
+  padding: 0.7rem 0.85rem 0.75rem 1rem;
 }
 
 .live-clash-counter-head {
-  position: relative;
-  z-index: 1;
   display: flex;
   align-items: center;
-  gap: 0.45rem;
-  margin-bottom: 0.3rem;
+  gap: 0.4rem;
+  margin-bottom: 0.45rem;
 }
 
 .live-clash-counter-dot {
-  width: 0.45rem;
-  height: 0.45rem;
+  width: 0.42rem;
+  height: 0.42rem;
   border-radius: 999px;
-  background: #f97316;
-  box-shadow: 0 0 10px rgba(249, 115, 22, 0.95);
-  animation: live-dot 1.35s ease-in-out infinite;
+  background: #ea580c;
+  box-shadow: 0 0 0 2px rgba(234, 88, 12, 0.25);
+  animation: live-dot 1.4s ease-in-out infinite;
 }
 
 .live-clash-counter-label {
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-weight: 800;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #ea580c;
+  color: #c2410c;
 }
 
 .dark .live-clash-counter-label {
   color: #fdba74;
 }
 
-.live-clash-counter-text {
-  position: relative;
-  z-index: 1;
+.live-clash-counter-line {
   margin: 0;
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   font-weight: 600;
-  line-height: 1.5;
-  color: #c2410c;
+  line-height: 1.65;
+  color: #9a3412;
 }
 
-.dark .live-clash-counter-text {
-  color: #fdba74;
+.dark .live-clash-counter-line {
+  color: #fed7aa;
 }
 
-.live-clash-stat-group {
+.live-clash-copy {
+  color: inherit;
+}
+
+.live-clash-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.12rem;
-  margin-inline: 0.06rem;
+  gap: 0.2rem;
+  margin-inline: 0.12rem;
+  padding: 0.12rem 0.45rem;
+  vertical-align: baseline;
+  border-radius: 0.45rem;
+  background: #ffffff;
+  border: 1.5px solid #ef4444;
+  box-shadow:
+    0 2px 6px rgba(220, 38, 38, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-.live-clash-stat {
+.dark .live-clash-pill {
+  background: #450a0a;
+  border-color: #f87171;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.live-clash-pill-flash {
+  animation: live-clash-pill-pop 0.55s ease-out;
+}
+
+.live-clash-pill-value {
   font-family: var(--font-orbitron), var(--font-geist-sans), sans-serif;
-  font-size: 0.92em;
-  font-weight: 800;
+  font-size: 0.95rem;
+  font-weight: 900;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.01em;
-}
-
-.live-clash-stat-target {
-  color: #fca5a5;
-  text-shadow:
-    0 0 6px rgba(248, 113, 113, 0.95),
-    0 0 14px rgba(239, 68, 68, 0.65),
-    0 0 22px rgba(220, 38, 38, 0.35);
-  animation: live-clash-target-glow 2.4s ease-in-out infinite;
-}
-
-.dark .live-clash-stat-target {
-  color: #fecaca;
-  text-shadow:
-    0 0 8px rgba(248, 113, 113, 0.9),
-    0 0 16px rgba(239, 68, 68, 0.55),
-    0 0 24px rgba(220, 38, 38, 0.35);
-}
-
-.live-clash-swords {
-  font-size: 0.72em;
   line-height: 1;
-  opacity: 0.92;
-  filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.45));
-  animation: live-clash-swords-tilt 2.8s ease-in-out infinite;
+  color: #b91c1c;
+  text-shadow: none;
+  -webkit-text-stroke: 0;
 }
 
-@keyframes live-clash-shimmer {
-  0%,
-  100% {
-    opacity: 0;
-    transform: skewX(-20deg) translateX(-120%);
-  }
-
-  45%,
-  55% {
-    opacity: 0.75;
-  }
-
-  100% {
-    transform: skewX(-20deg) translateX(260%);
-  }
+.dark .live-clash-pill-value {
+  color: #fecaca;
 }
 
-@keyframes live-clash-target-glow {
-  0%,
-  100% {
-    filter: brightness(1);
-    text-shadow:
-      0 0 6px rgba(248, 113, 113, 0.85),
-      0 0 14px rgba(239, 68, 68, 0.55);
-  }
-
-  50% {
-    filter: brightness(1.12);
-    text-shadow:
-      0 0 10px rgba(252, 165, 165, 1),
-      0 0 20px rgba(239, 68, 68, 0.75),
-      0 0 28px rgba(220, 38, 38, 0.45);
-  }
+.live-clash-pill-swords {
+  font-size: 0.78rem;
+  line-height: 1;
 }
 
-@keyframes live-clash-swords-tilt {
-  0%,
-  100% {
-    transform: rotate(-6deg) scale(1);
+@keyframes live-clash-pill-pop {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 2px 6px rgba(220, 38, 38, 0.14);
   }
 
-  50% {
-    transform: rotate(6deg) scale(1.08);
+  40% {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.22), 0 4px 12px rgba(220, 38, 38, 0.22);
+  }
+
+  100% {
+    transform: scale(1);
   }
 }
 
 @media (min-width: 640px) {
-  .live-clash-counter {
-    padding: 0.85rem 1rem;
+  .live-clash-counter-inner {
+    padding: 0.8rem 0.95rem 0.85rem 1.05rem;
   }
 
-  .live-clash-counter-text {
-    font-size: 0.94rem;
+  .live-clash-counter-line {
+    font-size: 0.9rem;
+  }
+
+  .live-clash-pill-value {
+    font-size: 1rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .live-clash-counter-dot,
-  .live-clash-counter-shimmer,
-  .live-clash-stat-target,
-  .live-clash-swords {
+  .live-clash-pill-flash {
     animation: none !important;
-  }
-
-  .live-clash-counter-pulse {
-    transform: none;
   }
 }
