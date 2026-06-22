@@ -1,7 +1,8 @@
 import type { Locale } from "@/lib/types";
 
 const SITE_URL = "https://www.clashanime.com";
-const LOGO_URL = `${SITE_URL}/logo-dark.png`;
+const LOGO_LIGHT_URL = `${SITE_URL}/logo2.png`;
+const LOGO_DARK_URL = `${SITE_URL}/logo.jpg`;
 const BRAND_RED = "#E33124";
 
 function escapeHtml(value: string): string {
@@ -14,6 +15,36 @@ function escapeHtml(value: string): string {
 
 export function getPublicSiteUrl(): string {
   return SITE_URL;
+}
+
+function emailLogoHtml(): string {
+  return `
+    <style>
+      .ca-logo-light { display: block !important; }
+      .ca-logo-dark { display: none !important; }
+      @media (prefers-color-scheme: dark) {
+        .ca-email-shell { background: #09090b !important; }
+        .ca-email-card { background: #18181b !important; border-color: #27272a !important; }
+        .ca-email-header { background: #18181b !important; border-color: #27272a !important; }
+        .ca-email-footer { border-color: #27272a !important; color: #a1a1aa !important; }
+        .ca-logo-light { display: none !important; }
+        .ca-logo-dark { display: block !important; }
+      }
+    </style>
+    <img
+      src="${LOGO_LIGHT_URL}"
+      width="200"
+      alt="ClashAnime"
+      class="ca-logo-light"
+      style="display:block;border:0;max-width:200px;width:200px;height:auto;margin:0 auto"
+    />
+    <img
+      src="${LOGO_DARK_URL}"
+      width="200"
+      alt="ClashAnime"
+      class="ca-logo-dark"
+      style="display:none;border:0;max-width:200px;width:200px;height:auto;margin:0 auto"
+    />`;
 }
 
 export function wrapEmailHtml(input: {
@@ -40,16 +71,16 @@ export function wrapEmailHtml(input: {
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>${escapeHtml(input.title)}</title>
 </head>
-<body style="margin:0;padding:0;background:#f4f4f5;font-family:${fontFamily};color:#18181b;line-height:1.6">
+<body style="margin:0;padding:0;background:#f4f4f5;font-family:${fontFamily};color:#18181b;line-height:1.6" class="ca-email-shell">
   ${preheader}
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f5;padding:24px 12px">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="ca-email-shell" style="background:#f4f4f5;padding:24px 12px">
     <tr>
       <td align="center">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #e4e4e7">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="ca-email-card" style="max-width:600px;background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #e4e4e7">
           <tr>
-            <td align="center" style="padding:28px 24px 20px;background:#ffffff;border-bottom:1px solid #f0f0f0">
+            <td align="center" class="ca-email-header" style="padding:28px 24px 20px;background:#ffffff;border-bottom:1px solid #f0f0f0">
               <a href="${SITE_URL}" style="text-decoration:none">
-                <img src="${LOGO_URL}" width="180" height="auto" alt="ClashAnime" style="display:block;border:0;max-width:180px;height:auto" />
+                ${emailLogoHtml()}
               </a>
             </td>
           </tr>
@@ -59,7 +90,7 @@ export function wrapEmailHtml(input: {
             </td>
           </tr>
           <tr>
-            <td style="padding:18px 28px 28px;border-top:1px solid #f0f0f0;text-align:center;font-size:12px;color:#71717a">
+            <td class="ca-email-footer" style="padding:18px 28px 28px;border-top:1px solid #f0f0f0;text-align:center;font-size:12px;color:#71717a">
               <p style="margin:0 0 8px">© ${new Date().getFullYear()} ClashAnime</p>
               <p style="margin:0">
                 <a href="${SITE_URL}" style="color:${BRAND_RED};text-decoration:none">clashanime.com</a>

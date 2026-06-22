@@ -152,9 +152,9 @@ export function buildWelcomeEmailHtml(locale: Locale): string {
 
 export async function sendWelcomeEmail(input: {
   to: string;
-  locale: Locale;
+  locale?: Locale;
 }): Promise<{ ok: true; id: string; subject: string } | { ok: false; error: string }> {
-  const locale = welcomeCopy[input.locale] ? input.locale : "en";
+  const locale: Locale = "en";
   const copy = welcomeCopy[locale];
 
   const result = await sendResendEmail({

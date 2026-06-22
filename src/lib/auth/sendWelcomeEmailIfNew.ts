@@ -3,11 +3,7 @@ import { createServiceRoleClient } from "@/lib/supabase/admin";
 import type { Locale } from "@/lib/types";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-const LOCALES = new Set<Locale>(["en", "ar", "ja"]);
-
-function normalizeLocale(value: string | null | undefined): Locale {
-  return LOCALES.has(value as Locale) ? (value as Locale) : "en";
-}
+const WELCOME_LOCALE: Locale = "en";
 
 function isNewSignupUser(createdAt: string | undefined): boolean {
   if (!createdAt) return false;
@@ -21,7 +17,6 @@ async function reserveAndSend(
   input: {
     userId: string;
     email: string;
-    locale: Locale;
     allowSendWithoutReserve?: boolean;
     createdAt?: string;
   },
@@ -32,13 +27,13 @@ async function reserveAndSend(
       p_user_id: input.userId,
       p_email_to: input.email,
       p_email_type: "welcome",
-      p_locale: input.locale,
+      p_locale: WELCOME_LOCALE,
     },
   );
 
   if (reserveError) {
     if (input.allowSendWithoutReserve && isNewSignupUser(input.createdAt)) {
-      const result = await sendWelcomeEmail({ to: input.email, locale: input.locale });
+      const result = await sendWelcomeEmail({ to: input.email });
       if (!result.ok) {
         return { sent: false, error: `${reserveError.message}; ${result.error}` };
       }
@@ -51,7 +46,7 @@ async function reserveAndSend(
     return { sent: false, skipped: "already_sent" };
   }
 
-  const result = await sendWelcomeEmail({ to: input.email, locale: input.locale });
+  const result = await sendWelcomeEmail({ to: input.email });
 
   const { error: completeError } = await supabase.rpc("complete_transactional_email", {
     p_id: dispatchId,
@@ -88,7 +83,6 @@ export async function sendWelcomeEmailIfNew(input: {
     return { sent: false, skipped: "no_email" };
   }
 
-  const locale = normalizeLocale(input.locale);
   const serviceRole = createServiceRoleClient();
   const sessionClient = input.supabaseClient ?? null;
 
@@ -96,7 +90,6 @@ export async function sendWelcomeEmailIfNew(input: {
     const result = await reserveAndSend(serviceRole, {
       userId: input.userId,
       email,
-      locale,
       createdAt: input.createdAt,
     });
     if (result.sent || result.skipped === "already_sent" || !result.error) {
@@ -108,14 +101,13 @@ export async function sendWelcomeEmailIfNew(input: {
     return reserveAndSend(sessionClient, {
       userId: input.userId,
       email,
-      locale,
       allowSendWithoutReserve: true,
       createdAt: input.createdAt,
     });
   }
 
   if (isNewSignupUser(input.createdAt)) {
-    const result = await sendWelcomeEmail({ to: email, locale });
+    const result = await sendWelcomeEmail({ to: email });
     if (!result.ok) {
       return { sent: false, error: result.error };
     }
