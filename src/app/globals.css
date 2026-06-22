@@ -592,13 +592,37 @@
   }
 }
 
-/* Elemental sidebar title — stone + fire / lightning (anime arena) */
+/* Elemental sidebar title — CLASH (arena) + ANIME (vivid bubble) */
 .elemental-title-wrap {
   position: relative;
   display: block;
   width: 100%;
-  padding: 0.15rem 0 0.35rem;
+  padding: 0.35rem 0 0.45rem;
   isolation: isolate;
+}
+
+.elemental-glow {
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(14px);
+}
+
+.elemental-glow-clash {
+  top: 8%;
+  left: 10%;
+  width: 72%;
+  height: 2.2rem;
+  background: rgba(251, 146, 60, 0.35);
+}
+
+.elemental-glow-anime {
+  bottom: 0;
+  left: 8%;
+  width: 78%;
+  height: 1.8rem;
+  background: rgba(168, 85, 247, 0.22);
 }
 
 .elemental-title {
@@ -608,24 +632,37 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.14rem;
-  font-size: 1.65rem;
-  font-weight: 900;
+  gap: 0.22rem;
   line-height: 0.95;
-  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 .elemental-row {
   display: inline-flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  gap: 0.04em;
+  gap: 0.05em;
+}
+
+.elemental-row-clash {
+  font-size: 1.55rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+}
+
+.elemental-row-anime {
+  font-size: 1.48rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
 }
 
 .elemental-letter-slot {
   position: relative;
   display: inline-block;
+}
+
+.elemental-letter-slot-hat {
+  padding-top: 0.38em;
 }
 
 .elemental-letter {
@@ -634,182 +671,103 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  paint-order: stroke fill;
-  -webkit-text-stroke: 0.04em rgba(0, 0, 0, 0.55);
 }
 
 .elemental-letter-clash {
   background-image: linear-gradient(
     180deg,
-    #fef9c3 0%,
-    #fbbf24 18%,
-    #f97316 45%,
-    #ef4444 72%,
-    #7f1d1d 100%
+    #fff7ed 0%,
+    #fde68a 16%,
+    #fb923c 48%,
+    #ef4444 78%,
+    #b91c1c 100%
   );
-  text-shadow:
-    0 0.04em 0 #451a03,
-    0 0.08em 0 #7c2d12,
-    0 0.12em 0.14em rgba(0, 0, 0, 0.45);
-  filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.55));
-  animation: elemental-fire-flicker 2.4s ease-in-out infinite;
+  -webkit-text-stroke: 0.035em rgba(69, 26, 3, 0.65);
+  paint-order: stroke fill;
+  filter: drop-shadow(0 2px 4px rgba(180, 83, 9, 0.35));
 }
 
 .elemental-letter-anime {
   background-image: linear-gradient(
     180deg,
-    #e0f2fe 0%,
-    #38bdf8 35%,
-    #2563eb 68%,
-    #1e3a8a 100%
+    var(--anime-top, #fda4af) 0%,
+    var(--anime-bottom, #e11d48) 100%
   );
-  text-shadow:
-    0 0.04em 0 #0c4a6e,
-    0 0.08em 0 #1e3a8a,
-    0 0.12em 0.14em rgba(0, 0, 0, 0.45);
-  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.45));
-  animation: elemental-shock-pulse 2.8s ease-in-out infinite;
+  -webkit-text-stroke: 0.05em #ffffff;
+  paint-order: stroke fill;
+  filter: drop-shadow(0 2px 3px rgba(15, 23, 42, 0.22));
 }
 
-.elemental-slash-slot {
+.elemental-hat-slot {
   position: absolute;
-  left: -0.08em;
-  top: -0.35em;
-  z-index: 0;
+  top: -0.05em;
+  left: 50%;
+  z-index: 2;
+  transform: translateX(-50%);
   pointer-events: none;
-  opacity: 0.92;
 }
 
-.elemental-slash-svg {
-  width: 0.55em;
-  height: 0.65em;
-  animation: elemental-slash-swing 2.6s ease-in-out infinite;
-  filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.8));
+.elemental-hat-svg {
+  width: 0.95em;
+  height: auto;
+  animation: elemental-hat-bob 2.8s ease-in-out infinite;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25));
 }
 
 .elemental-lightning-slot {
   display: inline-flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  width: 0.42em;
-  height: 1em;
-  vertical-align: middle;
-  margin-inline: 0.02em;
+  width: 0.36em;
+  height: 0.92em;
+  margin-inline: 0.03em;
+  vertical-align: bottom;
 }
 
 .elemental-lightning-svg {
   width: 100%;
   height: 100%;
-  animation: elemental-bolt-flash 1.6s ease-in-out infinite;
-  filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.9));
+  animation: elemental-bolt-flash 1.8s ease-in-out infinite;
+  filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.75));
 }
 
-.elemental-ember {
-  position: absolute;
-  width: 0.28rem;
-  height: 0.28rem;
-  border-radius: 999px;
-  background: radial-gradient(circle, #fde047 0%, #f97316 55%, transparent 100%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.elemental-ember-1 {
-  top: 12%;
-  left: 8%;
-  animation: elemental-ember-rise 2.8s ease-out infinite;
-}
-
-.elemental-ember-2 {
-  top: 28%;
-  right: 6%;
-  animation: elemental-ember-rise 3.2s ease-out infinite 0.6s;
-}
-
-.elemental-ember-3 {
-  bottom: 8%;
-  left: 18%;
-  animation: elemental-ember-rise 3s ease-out infinite 1.1s;
-}
-
-@keyframes elemental-fire-flicker {
+@keyframes elemental-hat-bob {
   0%,
   100% {
-    filter: drop-shadow(0 0 5px rgba(249, 115, 22, 0.45));
+    transform: translateX(-50%) rotate(-4deg);
   }
 
   50% {
-    filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.75));
-  }
-}
-
-@keyframes elemental-shock-pulse {
-  0%,
-  100% {
-    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.35));
-  }
-
-  50% {
-    filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.7));
-  }
-}
-
-@keyframes elemental-slash-swing {
-  0%,
-  100% {
-    transform: rotate(-8deg) scale(1);
-  }
-
-  50% {
-    transform: rotate(6deg) scale(1.06);
+    transform: translateX(-50%) rotate(4deg) translateY(-1px);
   }
 }
 
 @keyframes elemental-bolt-flash {
   0%,
   100% {
-    opacity: 0.88;
+    opacity: 0.9;
     transform: scale(1);
   }
 
-  45% {
+  50% {
     opacity: 1;
-    transform: scale(1.08);
-  }
-
-  55% {
-    opacity: 0.75;
-  }
-}
-
-@keyframes elemental-ember-rise {
-  0% {
-    opacity: 0;
-    transform: translateY(0) scale(0.6);
-  }
-
-  25% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateY(-1.2rem) scale(0.2);
+    transform: scale(1.06);
   }
 }
 
 @media (min-width: 1024px) {
-  .elemental-title {
-    font-size: 1.85rem;
+  .elemental-row-clash {
+    font-size: 1.72rem;
+  }
+
+  .elemental-row-anime {
+    font-size: 1.65rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .elemental-letter-clash,
-  .elemental-letter-anime,
-  .elemental-slash-svg,
-  .elemental-lightning-svg,
-  .elemental-ember {
+  .elemental-hat-svg,
+  .elemental-lightning-svg {
     animation: none !important;
   }
 }
