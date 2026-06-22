@@ -1416,7 +1416,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       backgroundListening:
         "Audio keeps playing in the background while you browse videos, community, and your profile.",
       unlockAudio: "Tap here to start audio",
-      audioSourceHint: "If you don't hear sound, press play on the YouTube player below or tap the button above.",
+      audioSourceHint: "If you don't hear sound, tap the unlock button above.",
       playerLoading: "Loading player…",
     },
     legal: {
@@ -2554,7 +2554,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       audioOnlyBadge: "音声のみ",
       backgroundListening: "動画やコミュニティを見ながらバックグラウンド再生が続きます。",
       unlockAudio: "ここをタップして音声を開始",
-      audioSourceHint: "音が出ない場合は下のYouTubeプレイヤーで再生するか、上のボタンを押してください。",
+      audioSourceHint: "音が出ない場合は上のボタンを押してください。",
       playerLoading: "プレイヤーを読み込み中…",
     },
     legal: {
@@ -3684,7 +3684,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       backgroundListening:
         "يستمر الصوت بالتشغيل في الخلفية أثناء تصفح الفيديوهات والمجتمع وملفك الشخصي.",
       unlockAudio: "اضغط هنا لتشغيل الصوت",
-      audioSourceHint: "إذا لم يظهر صوت، اضغط تشغيل على مشغّل YouTube بالأسفل أو الزر أعلاه.",
+      audioSourceHint: "إذا لم يظهر صوت، اضغط زر تفعيل الصوت أعلاه.",
       playerLoading: "جارٍ تحميل المشغّل…",
     },
     legal: {

@@ -126,30 +126,15 @@ function loadYoutubeApi() {
   });
 }
 
-/** Visible YouTube iframe — browsers block audio from hidden/off-screen embeds. */
-export function BeatsLoungeAudioEngine({
-  loungePanelOpen,
-  hasStarted,
-}: {
-  loungePanelOpen: boolean;
-  hasStarted: boolean;
-}) {
-  const visible = loungePanelOpen || hasStarted;
-
+/** YouTube iframe stays in-viewport for browser audio; scaled down so video is not visible. */
+export function BeatsLoungeAudioEngine() {
   return (
     <div
-      className={
-        visible
-          ? loungePanelOpen
-            ? "pointer-events-auto fixed inset-x-0 bottom-16 z-30 mx-auto w-[min(100vw-2rem,420px)] px-4 md:bottom-6 md:start-60 md:end-4 md:mx-0 md:w-[360px]"
-            : "pointer-events-auto fixed bottom-20 start-3 z-40 w-[280px] md:bottom-4 md:start-60"
-          : "pointer-events-none fixed bottom-0 start-0 z-0 h-[180px] w-[320px] overflow-hidden opacity-0"
-      }
+      aria-hidden
+      className="pointer-events-none fixed bottom-0 start-0 z-0 origin-bottom-left scale-[0.01]"
     >
-      <div className="overflow-hidden rounded-xl border-2 border-fuchsia-500/50 bg-black shadow-2xl shadow-black/50">
-        <div className="aspect-video w-full">
-          <div id={BEATS_YOUTUBE_HOST_ID} className="h-full w-full" />
-        </div>
+      <div className="h-[158px] w-[280px] overflow-hidden bg-black">
+        <div id={BEATS_YOUTUBE_HOST_ID} className="h-full w-full" />
       </div>
     </div>
   );
@@ -316,8 +301,8 @@ export function BeatsLoungeProvider({
       const playerVars: Record<string, string | number> = {
         autoplay: 0,
         enablejsapi: 1,
-        controls: 1,
-        disablekb: 0,
+        controls: 0,
+        disablekb: 1,
         fs: 0,
         modestbranding: 1,
         rel: 0,
@@ -614,7 +599,7 @@ export function BeatsLoungeProvider({
   return (
     <BeatsLoungeContext.Provider value={value}>
       {children}
-      <BeatsLoungeAudioEngine loungePanelOpen={loungePanelOpen} hasStarted={hasStarted} />
+      <BeatsLoungeAudioEngine />
     </BeatsLoungeContext.Provider>
   );
 }
