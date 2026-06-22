@@ -11,6 +11,10 @@ import {
 } from "react";
 import { dictionaries } from "@/lib/i18n/dictionaries";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import {
+  formatDateTime as formatDateTimeValue,
+  formatNumber as formatNumberValue,
+} from "@/lib/formatLocale";
 import type { Locale } from "@/lib/types";
 
 const LOCALE_STORAGE_KEY = "clashanime-locale";
@@ -21,6 +25,8 @@ type LocaleContextValue = {
   setLocale: (locale: Locale) => void;
   t: Dictionary;
   dir: "ltr" | "rtl";
+  formatNumber: (value: number) => string;
+  formatDateTime: (value: Date | string | number, options?: Intl.DateTimeFormatOptions) => string;
 };
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
@@ -55,7 +61,7 @@ export function LocaleProvider({ children }: LocaleProviderProps) {
   );
 
   useEffect(() => {
-    document.documentElement.lang = locale;
+    document.documentElement.lang = locale === "ar" ? "ar-u-nu-latn" : locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
   }, [locale]);
 
@@ -70,6 +76,8 @@ export function LocaleProvider({ children }: LocaleProviderProps) {
       setLocale,
       t: dictionaries[locale],
       dir: locale === "ar" ? "rtl" : "ltr",
+      formatNumber: (value: number) => formatNumberValue(value, locale),
+      formatDateTime: (value, options) => formatDateTimeValue(value, locale, options),
     }),
     [locale, setLocale],
   );

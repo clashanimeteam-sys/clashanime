@@ -27,7 +27,7 @@ type ReportRow = {
 };
 
 export function AdminReportsPanel() {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [reports, setReports] = useState<ReportRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -176,7 +176,7 @@ export function AdminReportsPanel() {
                   </p>
                   <p className="mt-1 text-xs text-zinc-500">
                     {t.admin.reportedBy}: @{report.reporter_username ?? t.admin.anonymous} ·{" "}
-                    {new Date(report.created_at).toLocaleString()}
+                    {formatDateTime(report.created_at)}
                   </p>
                   {report.details ? (
                     <div className="mt-2 space-y-1 text-sm text-zinc-300">

@@ -8,7 +8,7 @@ type BountyRewardsGridProps = {
 };
 
 export function BountyRewardsGrid({ currentLevel }: BountyRewardsGridProps) {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
 
   return (
     <div className="mt-5">
@@ -48,8 +48,8 @@ export function BountyRewardsGrid({ currentLevel }: BountyRewardsGridProps) {
               </h4>
               <p className="mt-1 text-xs text-zinc-500">
                 {levelDef.maxPoints
-                  ? `${levelDef.minPoints.toLocaleString()} – ${levelDef.maxPoints.toLocaleString()} ${t.points.pointsLabel}`
-                  : `${levelDef.minPoints.toLocaleString()}+ ${t.points.pointsLabel}`}
+                  ? `${formatNumber(levelDef.minPoints)} – ${formatNumber(levelDef.maxPoints)} ${t.points.pointsLabel}`
+                  : `${formatNumber(levelDef.minPoints)}+ ${t.points.pointsLabel}`}
               </p>
               <ul className="mt-3 space-y-1.5 text-xs text-zinc-600 dark:text-zinc-300">
                 {bounties.map((rewardKey) => (

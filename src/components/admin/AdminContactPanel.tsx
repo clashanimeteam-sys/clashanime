@@ -19,7 +19,7 @@ type ContactRow = {
 };
 
 export function AdminContactPanel() {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [messages, setMessages] = useState<ContactRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -177,7 +177,7 @@ export function AdminContactPanel() {
                 <div className="min-w-0 flex-1">
                   <h2 className="text-base font-semibold text-white">{row.email}</h2>
                   <p className="mt-1 text-xs text-zinc-500">
-                    {new Date(row.created_at).toLocaleString()} · {row.locale}
+                    {formatDateTime(row.created_at)} · {row.locale}
                     {row.username ? ` · @${row.username}` : ""}
                   </p>
                   {row.whatsapp ? (

@@ -53,7 +53,7 @@ const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 export function CommunityPageContent() {
   const router = useRouter();
   const { user, profile, profileLoading } = useAuth();
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   usePageTitle(t.pages.communityTitle);
   const supabase = useMemo(() => createBrowserClient(), []);
   const config = useMemo(() => getSupabaseConfig(), []);
@@ -423,7 +423,7 @@ export function CommunityPageContent() {
                       {post.is_verified ? <VerifiedBadge size="sm" /> : null}
                       <HunterLevelBadge level={post.level} points={post.points} size="sm" showLabel={false} />
                       <span className="text-xs text-zinc-500">
-                        {new Date(post.created_at).toLocaleString()}
+                        {formatDateTime(post.created_at)}
                       </span>
                       {user?.id === post.user_id ? (
                         <button

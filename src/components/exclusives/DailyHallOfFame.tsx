@@ -11,7 +11,7 @@ type DailyHallOfFameProps = {
 };
 
 export function DailyHallOfFame({ leader }: DailyHallOfFameProps) {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
 
   return (
     <section className="overflow-hidden rounded-2xl border border-amber-300/80 bg-gradient-to-br from-amber-50 via-white to-orange-100 p-5 shadow-md shadow-amber-200/40 dark:border-amber-400/25 dark:from-amber-500/10 dark:via-zinc-950/70 dark:to-orange-600/10 dark:shadow-amber-500/10 sm:p-6">
@@ -66,7 +66,7 @@ export function DailyHallOfFame({ leader }: DailyHallOfFameProps) {
           <div className="shrink-0 text-end">
             <HunterLevelBadge level={leader.level} points={leader.pointsToday} size="sm" showLabel={false} />
             <p className="mt-2 text-base font-extrabold text-amber-800 dark:text-amber-200">
-              +{leader.pointsToday.toLocaleString()} {t.exclusives.pointsToday}
+              +{formatNumber(leader.pointsToday)} {t.exclusives.pointsToday}
             </p>
           </div>
         </Link>

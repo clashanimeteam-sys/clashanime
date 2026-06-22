@@ -24,7 +24,7 @@ type CreatePointsWagerModalProps = {
 
 export function CreatePointsWagerModal({ open, onClose, onCreated }: CreatePointsWagerModalProps) {
   const { user, profile, refreshProfile } = useAuth();
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const router = useRouter();
   const supabase = useMemo(() => createBrowserClient(), []);
 
@@ -133,7 +133,7 @@ export function CreatePointsWagerModal({ open, onClose, onCreated }: CreatePoint
           ) : (
             <div className="mt-5 space-y-4">
               <p className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
-                {t.exclusives.yourBalance}: {availablePoints.toLocaleString()} {t.points.pointsLabel}
+                {t.exclusives.yourBalance}: {formatNumber(availablePoints)} {t.points.pointsLabel}
               </p>
 
               <label className="block space-y-2">

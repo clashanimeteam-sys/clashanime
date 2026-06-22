@@ -1,13 +1,20 @@
+import { getIntlLocale } from "@/lib/formatLocale";
+import type { Locale } from "@/lib/types";
+
 export function formatCount(value: number): string {
   if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
   if (value >= 1_000) return `${(value / 1_000).toFixed(1)}K`;
   return String(value);
 }
 
-export function formatRelativeTime(date: string, locale: string): string {
+export function formatRelativeTime(date: string, locale: Locale | string): string {
   const diffMs = Date.now() - new Date(date).getTime();
   const diffMinutes = Math.round(diffMs / (1000 * 60));
-  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
+  const intlLocale =
+    locale === "ar" || locale === "ja" || locale === "en"
+      ? getIntlLocale(locale)
+      : locale;
+  const rtf = new Intl.RelativeTimeFormat(intlLocale, { numeric: "auto" });
 
   if (Math.abs(diffMinutes) < 60) {
     return rtf.format(-diffMinutes, "minute");

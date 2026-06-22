@@ -42,7 +42,7 @@ type NotificationRow = {
 };
 
 export function AdminEmailsPanel() {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [rows, setRows] = useState<EmailRow[]>([]);
   const [deletions, setDeletions] = useState<DeletionRow[]>([]);
@@ -189,7 +189,7 @@ export function AdminEmailsPanel() {
               {rows.map((row) => (
                 <tr key={row.id} className="bg-black/40">
                   <td className="px-4 py-3 text-zinc-300">
-                    {new Date(row.sent_at ?? row.created_at).toLocaleString()}
+                    {formatDateTime(row.sent_at ?? row.created_at)}
                   </td>
                   <td className="px-4 py-3 text-zinc-300">{row.email_to}</td>
                   <td className="px-4 py-3 text-zinc-300">{row.email_type}</td>
@@ -249,7 +249,7 @@ export function AdminEmailsPanel() {
                 {deletions.map((row) => (
                   <tr key={row.id} className="bg-black/40">
                     <td className="px-4 py-3 text-zinc-300">
-                      {new Date(row.deleted_at).toLocaleString()}
+                      {formatDateTime(row.deleted_at)}
                     </td>
                     <td className="px-4 py-3 text-zinc-300">{row.email}</td>
                     <td className="px-4 py-3 text-zinc-300">{row.display_name ?? "—"}</td>
@@ -336,7 +336,7 @@ export function AdminEmailsPanel() {
                 {notifications.map((row) => (
                   <tr key={row.id} className="bg-black/40">
                     <td className="px-4 py-3 text-zinc-300">
-                      {new Date(row.created_at).toLocaleString()}
+                      {formatDateTime(row.created_at)}
                     </td>
                     <td className="px-4 py-3 text-zinc-300">
                       {row.username ? `@${row.username}` : row.user_id.slice(0, 8)}

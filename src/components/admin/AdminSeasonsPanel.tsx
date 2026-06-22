@@ -35,7 +35,7 @@ function fromLocalInputValue(value: string) {
 }
 
 export function AdminSeasonsPanel() {
-  const { t, locale } = useLocale();
+  const { t, locale, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [seasons, setSeasons] = useState<ClashSeasonRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -289,8 +289,8 @@ export function AdminSeasonsPanel() {
           </p>
           <p className="mt-1 text-lg font-bold text-white">{activeSeason.name}</p>
           <p className="mt-2 text-sm text-emerald-100/80">
-            {new Date(activeSeason.starts_at).toLocaleString()} →{" "}
-            {new Date(activeSeason.ends_at).toLocaleString()}
+            {formatDateTime(activeSeason.starts_at)} →{" "}
+            {formatDateTime(activeSeason.ends_at)}
           </p>
           <p className="mt-3 text-sm text-emerald-100">
             {formatPrizeUsd(activeSeason.prize_rank_1_cents, locale)} ·{" "}
@@ -439,8 +439,8 @@ export function AdminSeasonsPanel() {
                   <div>
                     <p className="font-semibold text-white">{season.name}</p>
                     <p className="mt-1 text-xs text-zinc-400">
-                      {new Date(season.starts_at).toLocaleString()} →{" "}
-                      {new Date(season.ends_at).toLocaleString()}
+                      {formatDateTime(season.starts_at)} →{" "}
+                      {formatDateTime(season.ends_at)}
                     </p>
                     <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-amber-300">
                       {t.admin.seasons.statusLabels[season.status]}

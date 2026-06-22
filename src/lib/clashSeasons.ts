@@ -1,3 +1,6 @@
+import type { Locale } from "@/lib/types";
+import { getIntlLocale } from "@/lib/formatLocale";
+
 export type ClashSeason = {
   id: string;
   name: string;
@@ -32,7 +35,10 @@ export function getSeasonPrizes(season: ClashSeason | null | undefined): ClashSe
 }
 
 export function formatPrizeUsd(cents: number, locale: string): string {
-  return new Intl.NumberFormat(locale === "ar" ? "ar-SA" : locale === "ja" ? "ja-JP" : "en-US", {
+  const intlLocale = getIntlLocale(
+    locale === "ja" ? "ja" : locale === "ar" ? "ar" : "en",
+  );
+  return new Intl.NumberFormat(intlLocale, {
     style: "currency",
     currency: "USD",
     minimumFractionDigits: 0,

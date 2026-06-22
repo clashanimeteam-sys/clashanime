@@ -42,7 +42,7 @@ function getTransactionLabel(
 }
 
 export function PointsPanel({ profile, onProfileRefresh, section }: PointsPanelProps) {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const { refreshProfile } = useAuth();
   const supabase = useMemo(() => createBrowserClient(), []);
 
@@ -210,10 +210,10 @@ export function PointsPanel({ profile, onProfileRefresh, section }: PointsPanelP
                   {getTransactionLabel(entry.reason, t.points.transactionReasons)}
                 </p>
                 <p className="text-xs text-zinc-500">
-                  {new Date(entry.created_at).toLocaleString()}
+                  {formatDateTime(entry.created_at)}
                 </p>
               </div>
-              <span className="shrink-0 font-bold text-accent">+{entry.amount.toLocaleString()}</span>
+              <span className="shrink-0 font-bold text-accent">+{formatNumber(entry.amount)}</span>
             </li>
           ))}
         </ul>

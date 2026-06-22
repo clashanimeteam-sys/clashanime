@@ -50,7 +50,7 @@ export function CommentThread({
 }: CommentThreadProps) {
   const { user } = useAuth();
   const { requireSubscription } = useRequireSubscription();
-  const { locale, t } = useLocale();
+  const { locale, t, formatNumber, formatDateTime } = useLocale();
 
   const [expanded, setExpanded] = useState(depth > 0);
   const [liking, setLiking] = useState(false);
@@ -149,7 +149,7 @@ export function CommentThread({
                 <span>{formatRelativeTime(comment.created_at, locale)}</span>
                 {comment.likes_count > 0 ? (
                   <span>
-                    {comment.likes_count.toLocaleString()} {t.video.commentLikes}
+                    {formatNumber(comment.likes_count)} {t.video.commentLikes}
                   </span>
                 ) : null}
                 <button

@@ -25,7 +25,7 @@ type KycSubmission = {
 const STATUS_FILTERS = ["all", "pending", "approved", "rejected"] as const;
 
 export function AdminKycPanel() {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [submissions, setSubmissions] = useState<KycSubmission[]>([]);
   const [statusFilter, setStatusFilter] = useState<(typeof STATUS_FILTERS)[number]>("pending");
@@ -179,7 +179,7 @@ export function AdminKycPanel() {
                     {t.wallet.kycAddressLabel}: {submission.address}
                   </p>
                   <p className="mt-1 text-xs text-zinc-500">
-                    {new Date(submission.created_at).toLocaleString()}
+                    {formatDateTime(submission.created_at)}
                   </p>
                   {submission.admin_notes ? (
                     <p className="mt-2 text-xs text-amber-300">{submission.admin_notes}</p>

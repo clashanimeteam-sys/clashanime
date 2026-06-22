@@ -25,7 +25,7 @@ const STATUS_FILTERS: Array<ModerationStatus | "all"> = [
 
 export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: string }) {
   const { user } = useAuth();
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [videos, setVideos] = useState<AdminVideo[]>([]);
   const [statusFilter, setStatusFilter] = useState<ModerationStatus | "all">(
@@ -220,11 +220,11 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
                   </span>
                 </div>
                 <p className="text-sm text-zinc-400">
-                  @{video.owner_username ?? "unknown"} · {new Date(video.created_at).toLocaleString()}
+                  @{video.owner_username ?? "unknown"} · {formatDateTime(video.created_at)}
                 </p>
                 <p className="text-xs text-zinc-500">
-                  {t.admin.table.views}: {(video.views_count ?? 0).toLocaleString()} ·{" "}
-                  {video.likes_count.toLocaleString()} · {video.comments_count.toLocaleString()}
+                  {t.admin.table.views}: {formatNumber(video.views_count ?? 0)} ·{" "}
+                  {formatNumber(video.likes_count)} · {formatNumber(video.comments_count)}
                 </p>
                 {video.moderation_status === "approved" && globalRanks[video.id] ? (
                   <p className="text-xs text-accent">

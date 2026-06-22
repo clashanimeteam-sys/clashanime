@@ -64,7 +64,7 @@ function PaymentMethodBadge({
 }
 
 export function AdminWithdrawalsPanel() {
-  const { t } = useLocale();
+  const { t, locale, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [withdrawals, setWithdrawals] = useState<AdminWithdrawal[]>([]);
   const [statusFilter, setStatusFilter] = useState<WithdrawalStatus | "all">("pending");
@@ -241,7 +241,7 @@ export function AdminWithdrawalsPanel() {
                     @{withdrawal.username ?? withdrawal.user_id.slice(0, 8)}
                   </p>
                   <p className="mt-1 text-lg font-bold text-amber-300">
-                    {formatUsdFromCents(withdrawal.coin_amount)}
+                    {formatUsdFromCents(withdrawal.coin_amount, locale)}
                   </p>
                   <PaymentMethodBadge
                     method={withdrawal.payment_method}
@@ -249,7 +249,7 @@ export function AdminWithdrawalsPanel() {
                   />
                   {renderPaymentDetails(withdrawal)}
                   <p className="mt-1 text-xs text-zinc-500">
-                    {new Date(withdrawal.created_at).toLocaleString()}
+                    {formatDateTime(withdrawal.created_at)}
                   </p>
                 </div>
 

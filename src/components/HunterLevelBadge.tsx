@@ -22,7 +22,7 @@ export function HunterLevelBadge({
   size = "md",
   showLabel = true,
 }: HunterLevelBadgeProps) {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const resolvedLevel = points != null ? pointsToLevel(points) : (level ?? 1);
   const definition = getLevelDefinition(resolvedLevel);
   const style = LEVEL_STYLES[definition.rank];
@@ -33,7 +33,7 @@ export function HunterLevelBadge({
       <span
         className={`inline-flex items-center justify-center rounded-md border font-black tracking-wider ${sizeClasses[size]} ${style.badge} ${style.glow} ring-1 ${style.ring}`}
         aria-label={`${levelName}, ${t.points.rank} ${definition.rank}`}
-        title={`${levelName} · ${(points ?? 0).toLocaleString()} ${t.points.pointsLabel}`}
+        title={`${levelName} · ${formatNumber(points ?? 0)} ${t.points.pointsLabel}`}
       >
         {definition.rank}
       </span>

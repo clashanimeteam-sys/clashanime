@@ -51,7 +51,7 @@ const PAYMENT_METHOD_OPTIONS: Array<{
 ];
 
 export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanelProps) {
-  const { t, locale } = useLocale();
+  const { t, locale, formatNumber, formatDateTime } = useLocale();
   const { refreshProfile } = useAuth();
   const supabase = useMemo(() => createBrowserClient(), []);
 
@@ -253,7 +253,7 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
               {t.wallet.balanceLabel}
             </p>
             <p className="mt-2 font-display text-4xl font-black">
-              {formatUsdFromCents(balanceCents)}
+              {formatUsdFromCents(balanceCents, locale)}
             </p>
             <p className="mt-1 text-sm text-amber-50/90">ClashCoins</p>
           </div>
@@ -269,13 +269,13 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
           <div className="rounded-xl border border-zinc-200 bg-white/70 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900/50">
             <p className="text-xs text-zinc-500">{t.wallet.minPayoutTitle}</p>
             <p className="mt-1 text-sm font-semibold text-black dark:text-white">
-              {formatUsd(MIN_WITHDRAWAL_USD)}
+              {formatUsd(MIN_WITHDRAWAL_USD, locale)}
             </p>
           </div>
           <div className="rounded-xl border border-zinc-200 bg-white/70 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900/50">
             <p className="text-xs text-zinc-500">{t.wallet.hunterPointsLabel}</p>
             <p className="mt-1 text-sm font-semibold text-black dark:text-white">
-              {totalPoints.toLocaleString()} {t.points.pointsLabel}
+              {formatNumber(totalPoints)} {t.points.pointsLabel}
             </p>
           </div>
         </div>
@@ -543,7 +543,7 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-sm font-semibold text-black dark:text-white">
-                    {formatUsdFromCents(withdrawal.coin_amount)}
+                    {formatUsdFromCents(withdrawal.coin_amount, locale)}
                   </p>
                   <span className="rounded-full bg-zinc-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                     {withdrawalStatusLabel(withdrawal.status)}
@@ -552,7 +552,7 @@ export function ClashWalletPanel({ profile, onProfileRefresh }: ClashWalletPanel
                 <p className="mt-1 flex items-center gap-2 text-xs text-zinc-500">
                   {paymentMethodIcon(withdrawal.payment_method, "h-4 w-4")}
                   {paymentMethodLabel(withdrawal.payment_method)} ·{" "}
-                  {new Date(withdrawal.created_at).toLocaleString()}
+                  {formatDateTime(withdrawal.created_at)}
                 </p>
               </div>
             ))}

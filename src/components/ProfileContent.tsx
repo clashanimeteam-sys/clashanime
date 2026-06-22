@@ -60,7 +60,7 @@ function getInitials(name: string) {
 export function ProfileContent() {
   const router = useRouter();
   const { user, loading: authLoading, refreshProfile, signOut } = useAuth();
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const { section: activeSection } = useProfileSection();
   const supabase = useMemo(() => createBrowserClient(), []);
   const config = useMemo(() => getSupabaseConfig(), []);
@@ -535,7 +535,7 @@ export function ProfileContent() {
                     <div className="mt-2 flex flex-wrap items-center gap-3">
                       <HunterLevelBadge level={profile.level} points={profile.points} size="md" />
                       <span className="text-sm font-semibold text-zinc-600 dark:text-zinc-300">
-                        {(profile.points ?? 0).toLocaleString()} {t.points.pointsLabel}
+                        {formatNumber(profile.points ?? 0)} {t.points.pointsLabel}
                       </span>
                     </div>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">

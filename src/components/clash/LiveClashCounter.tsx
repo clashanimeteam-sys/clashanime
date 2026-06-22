@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { ClashArenaStats } from "@/lib/videos";
+import { formatNumber } from "@/lib/formatLocale";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type LiveClashCounterProps = {
@@ -9,10 +10,6 @@ type LiveClashCounterProps = {
 };
 
 const POLL_MS = 20_000;
-
-function formatArenaNumber(value: number, locale: string) {
-  return value.toLocaleString(locale === "ar" ? "ar-EG" : locale === "ja" ? "ja-JP" : "en-US");
-}
 
 function StatPill({
   value,
@@ -96,8 +93,8 @@ export function LiveClashCounter({ initialStats }: LiveClashCounterProps) {
     };
   }, []);
 
-  const battles = formatArenaNumber(stats.activeBattles, locale);
-  const fighters = formatArenaNumber(stats.heroesFighting, locale);
+  const battles = formatNumber(stats.activeBattles, locale);
+  const fighters = formatNumber(stats.heroesFighting, locale);
 
   return (
     <div className="live-clash-counter" role="status" aria-live="polite" aria-atomic="true">

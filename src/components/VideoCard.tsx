@@ -35,7 +35,7 @@ export function VideoCard({
   clashMode = false,
   feedMode,
 }: VideoCardProps) {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const videoHref = feedMode ? `/video/${video.id}?feed=${feedMode}` : `/video/${video.id}`;
   const thumbnailSrc = enhanceThumbnailUrl(video.thumbnail_url, compact ? 480 : 720);
   const moderationStatus = video.moderation_status;
@@ -138,7 +138,7 @@ export function VideoCard({
               <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
               <circle cx="12" cy="12" r="3" />
             </svg>
-            {(video.views_count ?? 0).toLocaleString()} {compact ? "" : t.video.views}
+            {formatNumber(video.views_count ?? 0)} {compact ? "" : t.video.views}
           </span>
           </div>
         </div>
@@ -185,7 +185,7 @@ export function VideoCard({
 }
 
 function ModerationBadge({ status }: { status: ModerationStatus }) {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const label = getModerationStatusLabel(status, t.moderation);
 
   const styles: Record<ModerationStatus, string> = {

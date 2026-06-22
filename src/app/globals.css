@@ -1432,3 +1432,7 @@
     animation: none !important;
   }
 }
+
+html[lang="ar-u-nu-latn"] {
+  font-variant-numeric: lining-nums tabular-nums;
+}

@@ -22,7 +22,7 @@ type ModerationLogRow = {
 };
 
 export function AdminModerationLogPanel() {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [rows, setRows] = useState<ModerationLogRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -132,7 +132,7 @@ export function AdminModerationLogPanel() {
               {rows.map((row) => (
                 <tr key={row.id} className="border-t border-zinc-800">
                   <td className="px-4 py-3 text-zinc-400">
-                    {new Date(row.created_at).toLocaleString()}
+                    {formatDateTime(row.created_at)}
                   </td>
                   <td className="px-4 py-3 font-medium text-white">{actionLabel(row.action)}</td>
                   <td className="px-4 py-3 text-zinc-300">

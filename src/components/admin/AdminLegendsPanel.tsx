@@ -8,7 +8,7 @@ import { createBrowserClient } from "@/lib/supabase/client";
 import { useLocale } from "@/providers/LocaleProvider";
 
 export function AdminLegendsPanel() {
-  const { t, locale } = useLocale();
+  const { t, locale, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [seasons, setSeasons] = useState<AdminLegendSeason[]>([]);
   const [selectedSeasonId, setSelectedSeasonId] = useState<string | null>(null);
@@ -228,8 +228,8 @@ export function AdminLegendsPanel() {
                   <div>
                     <p className="font-semibold text-white">{season.seasonName}</p>
                     <p className="mt-1 text-xs text-zinc-400">
-                      {new Date(season.seasonStartsAt).toLocaleString()} →{" "}
-                      {new Date(season.seasonEndsAt).toLocaleString()}
+                      {formatDateTime(season.seasonStartsAt)} →{" "}
+                      {formatDateTime(season.seasonEndsAt)}
                     </p>
                     <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-violet-300">
                       {t.admin.seasons.statusLabels[season.seasonStatus]} ·{" "}

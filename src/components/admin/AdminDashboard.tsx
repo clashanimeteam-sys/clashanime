@@ -28,7 +28,7 @@ type DashboardStats = {
   };
 
 export function AdminDashboard() {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -262,7 +262,7 @@ export function AdminDashboard() {
               className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 transition-colors hover:border-accent/40"
             >
               <p className="text-sm text-zinc-400">{card.label}</p>
-              <p className="mt-2 text-3xl font-bold text-white">{card.value.toLocaleString()}</p>
+              <p className="mt-2 text-3xl font-bold text-white">{formatNumber(card.value)}</p>
             </Link>
           ))}
         </div>

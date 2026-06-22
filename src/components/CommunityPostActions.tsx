@@ -30,10 +30,6 @@ type CommunityPostActionsProps = {
   }) => void;
 };
 
-function formatCount(value: number) {
-  return value.toLocaleString();
-}
-
 export function CommunityPostActions({
   postId,
   postPreview,
@@ -47,7 +43,7 @@ export function CommunityPostActions({
 }: CommunityPostActionsProps) {
   const { user } = useAuth();
   const { requireSubscription } = useRequireSubscription();
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
 
   const [reaction, setReaction] = useState<CommunityReaction | null>(null);
@@ -177,7 +173,7 @@ export function CommunityPostActions({
           aria-pressed={reaction === "like"}
           className={`${buttonClass} ${reaction === "like" ? "border-accent bg-accent/10 text-accent" : ""}`}
         >
-          👍 {formatCount(likesCount)}
+          👍 {formatNumber(likesCount)}
         </button>
 
         <button
@@ -187,21 +183,21 @@ export function CommunityPostActions({
           aria-pressed={reaction === "dislike"}
           className={`${buttonClass} ${reaction === "dislike" ? "border-red-400 bg-red-500/10 text-red-500" : ""}`}
         >
-          👎 {formatCount(dislikesCount)}
+          👎 {formatNumber(dislikesCount)}
         </button>
 
         {commentsMode === "page" ? (
           <a href="#comments" onClick={handleCommentsClick} className={buttonClass}>
-            💬 {formatCount(commentsCount)}
+            💬 {formatNumber(commentsCount)}
           </a>
         ) : (
           <Link href={commentsHref} onClick={handleCommentsClick} className={buttonClass}>
-            💬 {formatCount(commentsCount)}
+            💬 {formatNumber(commentsCount)}
           </Link>
         )}
 
         <button type="button" onClick={handleShare} className={buttonClass}>
-          ↗ {formatCount(sharesCount)}
+          ↗ {formatNumber(sharesCount)}
         </button>
 
         <button

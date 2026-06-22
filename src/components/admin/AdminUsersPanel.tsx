@@ -24,7 +24,7 @@ type VerificationRequestRow = {
 
 export function AdminUsersPanel() {
   const { user, profile: currentProfile } = useAuth();
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [users, setUsers] = useState<UserRow[]>([]);
   const [verificationRequests, setVerificationRequests] = useState<VerificationRequestRow[]>([]);
@@ -272,7 +272,7 @@ export function AdminUsersPanel() {
                     <div className="font-medium text-white">{user.display_name ?? user.username}</div>
                     <div className="text-zinc-500">@{user.username}</div>
                   </td>
-                  <td className="px-4 py-3 text-zinc-300">{(user.points ?? 0).toLocaleString()}</td>
+                  <td className="px-4 py-3 text-zinc-300">{formatNumber(user.points ?? 0)}</td>
                   <td className="px-4 py-3 text-zinc-300">{user.level ?? 1}</td>
                   <td className="px-4 py-3">
                     <select

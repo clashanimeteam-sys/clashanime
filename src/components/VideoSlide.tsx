@@ -22,7 +22,7 @@ type VideoSlideProps = {
 };
 
 export function VideoSlide({ video, isActive, showRank = false, onEnded }: VideoSlideProps) {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [viewsCount, setViewsCount] = useState(video.views_count ?? 0);
@@ -132,7 +132,7 @@ export function VideoSlide({ video, isActive, showRank = false, onEnded }: Video
           <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
           <circle cx="12" cy="12" r="3" />
         </svg>
-        {viewsCount.toLocaleString()} {t.video.views}
+        {formatNumber(viewsCount)} {t.video.views}
       </span>
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent px-4 pb-24 pt-16 sm:px-6">

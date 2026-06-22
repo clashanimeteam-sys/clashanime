@@ -19,7 +19,7 @@ type VideoCardChannelProps = {
 };
 
 export function VideoCardChannel({ channel }: VideoCardChannelProps) {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const label = channel.display_name?.trim() || channel.username;
   const followerCount = channel.follower_count ?? 0;
 
@@ -49,7 +49,7 @@ export function VideoCardChannel({ channel }: VideoCardChannelProps) {
           {channel.is_verified ? <VerifiedBadge className="shrink-0" /> : null}
         </span>
         <span className="block text-[10px] font-semibold text-zinc-600 dark:text-zinc-400">
-          {followerCount.toLocaleString()} {t.profile.followers}
+          {formatNumber(followerCount)} {t.profile.followers}
         </span>
       </div>
     </Link>

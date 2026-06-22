@@ -43,7 +43,7 @@ function getInitials(name: string) {
 export function CommunityPostPageContent({ postId }: CommunityPostPageContentProps) {
   const { user } = useAuth();
   const { requireSubscription } = useRequireSubscription();
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   usePageTitle(t.communityFeed.commentsTitle);
   const supabase = useMemo(() => createBrowserClient(), []);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -193,7 +193,7 @@ export function CommunityPostPageContent({ postId }: CommunityPostPageContentPro
               </Link>
               {post.is_verified ? <VerifiedBadge size="sm" /> : null}
               <HunterLevelBadge level={post.level} points={post.points} size="sm" showLabel={false} />
-              <span className="text-xs text-zinc-500">{new Date(post.created_at).toLocaleString()}</span>
+              <span className="text-xs text-zinc-500">{formatDateTime(post.created_at)}</span>
             </div>
 
             {post.body ? (
@@ -228,7 +228,7 @@ export function CommunityPostPageContent({ postId }: CommunityPostPageContentPro
 
       <section id="comments" className="mt-8 scroll-mt-24">
         <p className="text-sm text-zinc-500">
-          {post.comments_count.toLocaleString()} {t.communityFeed.commentsCountLabel}
+          {formatNumber(post.comments_count)} {t.communityFeed.commentsCountLabel}
         </p>
 
         <div className="mt-6">

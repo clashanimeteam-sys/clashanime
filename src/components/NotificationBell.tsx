@@ -20,7 +20,7 @@ type NotificationRow = {
 
 export function NotificationBell() {
   const { user } = useAuth();
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -330,7 +330,7 @@ export function NotificationBell() {
                       </div>
                       <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">{formatted.body}</p>
                       <p className="mt-2 text-[10px] text-zinc-400">
-                        {new Date(row.created_at).toLocaleString()}
+                        {formatDateTime(row.created_at)}
                       </p>
                     </div>
                     {isUnread ? (

@@ -21,7 +21,7 @@ export function FollowButton({
 }: FollowButtonProps) {
   const { requireSubscription } = useRequireSubscription();
   const { user } = useAuth();
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
 
   const [isFollowing, setIsFollowing] = useState(initialFollowing);
@@ -85,18 +85,18 @@ export function FollowButton({
             : t.profile.follow}
       </button>
       <p className="text-sm text-zinc-600 dark:text-zinc-400">
-        {followerCount.toLocaleString()} {t.profile.followers}
+        {formatNumber(followerCount)} {t.profile.followers}
       </p>
     </div>
   );
 }
 
 export function FollowerCount({ count }: { count: number }) {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
 
   return (
     <span className="text-sm text-zinc-600 dark:text-zinc-400">
-      {count.toLocaleString()} {t.profile.followers}
+      {formatNumber(count)} {t.profile.followers}
     </span>
   );
 }

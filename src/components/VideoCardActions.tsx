@@ -33,10 +33,6 @@ type VideoCardActionsProps = {
   compact?: boolean;
 };
 
-function formatRealCount(value: number) {
-  return value.toLocaleString();
-}
-
 export function VideoCardActions({
   videoId,
   title,
@@ -49,7 +45,7 @@ export function VideoCardActions({
 }: VideoCardActionsProps) {
   const { user } = useAuth();
   const { requireSubscription } = useRequireSubscription();
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const { openComments, openReport, syncCommentsSession, commentsVideoId } = useVideoOverlay();
   const supabase = useMemo(() => createBrowserClient(), []);
 
@@ -208,7 +204,7 @@ export function VideoCardActions({
           >
             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
           </svg>
-          {formatRealCount(likesCount)}
+          {formatNumber(likesCount)}
         </button>
 
         <button
@@ -228,7 +224,7 @@ export function VideoCardActions({
           >
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
           </svg>
-          {formatRealCount(commentsCount)}
+          {formatNumber(commentsCount)}
         </button>
 
         <button
@@ -250,7 +246,7 @@ export function VideoCardActions({
             <path d="M16 6l-4-4-4 4" />
             <path d="M12 2v14" />
           </svg>
-          {formatRealCount(sharesCount)}
+          {formatNumber(sharesCount)}
         </button>
 
         <button

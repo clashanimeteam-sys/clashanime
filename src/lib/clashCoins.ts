@@ -1,3 +1,6 @@
+import { getIntlLocale } from "@/lib/formatLocale";
+import type { Locale } from "@/lib/types";
+
 export const POINTS_PER_DOLLAR = 1000;
 export const MIN_CONVERSION_POINTS = 100;
 export const CONVERSION_POINTS_STEP = 100;
@@ -80,8 +83,8 @@ export function usdToCents(usd: number): number {
   return Math.round(usd * CENTS_PER_DOLLAR);
 }
 
-export function formatUsdFromCents(cents: number): string {
-  return new Intl.NumberFormat(undefined, {
+export function formatUsdFromCents(cents: number, locale: Locale = "en"): string {
+  return new Intl.NumberFormat(getIntlLocale(locale), {
     style: "currency",
     currency: "USD",
     minimumFractionDigits: 2,
@@ -89,8 +92,8 @@ export function formatUsdFromCents(cents: number): string {
   }).format(cents / CENTS_PER_DOLLAR);
 }
 
-export function formatUsd(usd: number): string {
-  return new Intl.NumberFormat(undefined, {
+export function formatUsd(usd: number, locale: Locale = "en"): string {
+  return new Intl.NumberFormat(getIntlLocale(locale), {
     style: "currency",
     currency: "USD",
     minimumFractionDigits: 2,
@@ -100,9 +103,9 @@ export function formatUsd(usd: number): string {
 
 export function formatConversionPreviewAmount(usd: number, locale?: string): string {
   if (locale === "ar") {
-    return `${usd.toFixed(2)} US$`;
+    return `${formatUsd(usd, "ar")}`;
   }
-  return formatUsd(usd);
+  return formatUsd(usd, locale === "ja" ? "ja" : "en");
 }
 
 export function isValidConversionAmount(points: number): boolean {

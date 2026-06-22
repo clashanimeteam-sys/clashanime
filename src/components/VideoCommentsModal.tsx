@@ -67,7 +67,7 @@ export function VideoCommentsModal({
   onCommentsCountChange,
 }: VideoCommentsModalProps) {
   const { user } = useAuth();
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const { requireSubscription } = useRequireSubscription();
   const supabase = useMemo(() => createBrowserClient(), []);
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
@@ -387,8 +387,8 @@ export function VideoCommentsModal({
               </button>
 
               <p className="ms-auto text-xs font-semibold text-zinc-500">
-                {likesCount.toLocaleString()} {t.video.like} · {commentsCount.toLocaleString()}{" "}
-                {t.video.comments} · {sharesCount.toLocaleString()} {t.video.share}
+                {formatNumber(likesCount)} {t.video.like} · {formatNumber(commentsCount)}{" "}
+                {t.video.comments} · {formatNumber(sharesCount)} {t.video.share}
               </p>
             </div>
 

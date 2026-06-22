@@ -8,7 +8,7 @@ type RankPositionTrackProps = {
 };
 
 export function RankPositionTrack({ points }: RankPositionTrackProps) {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const computedLevel = pointsToLevel(points);
   const position = getLevelProgress(points);
   const currentStyle = LEVEL_STYLES[position.current.rank];
@@ -71,7 +71,7 @@ export function RankPositionTrack({ points }: RankPositionTrackProps) {
               </p>
             </div>
             <div className="text-start sm:text-end">
-              <p className="text-3xl font-black text-black dark:text-white">{points.toLocaleString()}</p>
+              <p className="text-3xl font-black text-black dark:text-white">{formatNumber(points)}</p>
               <p className="text-xs opacity-80">{t.points.totalPoints}</p>
             </div>
           </div>
@@ -81,8 +81,8 @@ export function RankPositionTrack({ points }: RankPositionTrackProps) {
               <div className="mb-1 flex items-center justify-between text-xs opacity-80">
                 <span>
                   {t.points.pointsInRank
-                    .replace("{current}", position.pointsInRank.toLocaleString())
-                    .replace("{max}", position.rankMax.toLocaleString())}
+                    .replace("{current}", formatNumber(position.pointsInRank))
+                    .replace("{max}", formatNumber(position.rankMax))}
                 </span>
                 <span>{position.tierProgress}%</span>
               </div>
@@ -96,7 +96,7 @@ export function RankPositionTrack({ points }: RankPositionTrackProps) {
                 {position.pointsToNext === 0
                   ? t.points.readyToRankUp.replace("{rank}", t.points.levels[position.next.key])
                   : t.points.pointsToNext
-                      .replace("{count}", position.pointsToNext.toLocaleString())
+                      .replace("{count}", formatNumber(position.pointsToNext))
                       .replace("{rank}", t.points.levels[position.next.key])}
               </p>
             </div>

@@ -22,7 +22,7 @@ type AdminCommunityPost = {
 
 export function AdminCommunityPanel() {
   const { user } = useAuth();
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [posts, setPosts] = useState<AdminCommunityPost[]>([]);
   const [loading, setLoading] = useState(true);
@@ -121,7 +121,7 @@ export function AdminCommunityPanel() {
               <div className="min-w-0 space-y-2">
                 <p className="text-sm text-zinc-200">{post.body || t.admin.imageOnlyPost}</p>
                 <p className="text-xs text-zinc-500">
-                  @{post.owner_username ?? "unknown"} · {new Date(post.created_at).toLocaleString()}
+                  @{post.owner_username ?? "unknown"} · {formatDateTime(post.created_at)}
                 </p>
                 <p className="text-xs text-zinc-500">
                   👍 {post.likes_count} · 👎 {post.dislikes_count} · 💬 {post.comments_count} · ↗{" "}

@@ -25,7 +25,7 @@ type CampaignRow = {
 };
 
 export function AdminBroadcastPanel() {
-  const { t } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const [users, setUsers] = useState<BroadcastUser[]>([]);
   const [campaigns, setCampaigns] = useState<CampaignRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -274,7 +274,7 @@ export function AdminBroadcastPanel() {
                 {campaigns.map((row) => (
                   <tr key={row.id}>
                     <td className="px-4 py-3 text-zinc-300">
-                      {new Date(row.completed_at ?? row.created_at).toLocaleString()}
+                      {formatDateTime(row.completed_at ?? row.created_at)}
                     </td>
                     <td className="px-4 py-3 text-zinc-300">{row.subject}</td>
                     <td className="px-4 py-3 text-zinc-300">
