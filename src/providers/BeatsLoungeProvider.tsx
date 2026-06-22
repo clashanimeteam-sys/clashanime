@@ -11,14 +11,17 @@ import {
   type ReactNode,
 } from "react";
 import type { BeatsTrack } from "@/lib/animeBeatsLounge";
-import { trackArtwork } from "@/lib/animeBeatsLounge";
 import { createBrowserClient } from "@/lib/supabase/client";
+
+export const BEATS_YOUTUBE_HOST_ID = "beats-lounge-youtube-host";
 
 type YoutubePlayer = {
   playVideo: () => void;
   pauseVideo: () => void;
   stopVideo: () => void;
-  loadVideoById: (videoId: string) => void;
+  loadVideoById: (
+    videoId: string | { videoId: string; startSeconds?: number; endSeconds?: number },
+  ) => void;
   setVolume: (volume: number) => void;
   mute: () => void;
   unMute: () => void;
@@ -32,21 +35,24 @@ declare global {
       Player: new (
         elementId: string,
         options: {
-          height?: string;
-          width?: string;
+          height?: string | number;
+          width?: string | number;
           videoId?: string;
           playerVars?: Record<string, string | number>;
           events?: {
-            onReady?: () => void;
-            onStateChange?: (event: { data: number }) => void;
-            onError?: () => void;
+            onReady?: (event: { target: YoutubePlayer }) => void;
+            onStateChange?: (event: { data: number; target: YoutubePlayer }) => void;
+            onError?: (event: { data: number; target: YoutubePlayer }) => void;
           };
         },
       ) => YoutubePlayer;
       PlayerState: {
+        UNSTARTED: number;
         ENDED: number;
         PLAYING: number;
         PAUSED: number;
+        BUFFERING: number;
+        CUED: number;
       };
     };
     onYouTubeIframeAPIReady?: () => void;
@@ -54,7 +60,6 @@ declare global {
 }
 
 const YT_SCRIPT_ID = "youtube-iframe-api";
-const YT_ENDED = 0;
 
 type BeatsLoungeContextValue = {
   playlist: BeatsTrack[];
@@ -65,6 +70,7 @@ type BeatsLoungeContextValue = {
   hasStarted: boolean;
   volume: number;
   muted: boolean;
+  playerError: string | null;
   setPlaylist: (tracks: BeatsTrack[]) => void;
   playTrack: (index: number) => void;
   togglePlay: () => void;
@@ -92,6 +98,10 @@ function loadYoutubeApi() {
   return new Promise<void>((resolve) => {
     const existing = document.getElementById(YT_SCRIPT_ID);
     if (existing) {
+      if (window.YT?.Player) {
+        resolve();
+        return;
+      }
       const prior = window.onYouTubeIframeAPIReady;
       window.onYouTubeIframeAPIReady = () => {
         prior?.();
@@ -109,14 +119,24 @@ function loadYoutubeApi() {
   });
 }
 
+export function BeatsLoungeYoutubeSurface() {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-white/10 bg-black shadow-inner shadow-black/40">
+      <div id={BEATS_YOUTUBE_HOST_ID} className="aspect-video w-full min-h-[180px]" />
+    </div>
+  );
+}
+
 export function BeatsLoungeProvider({
   children,
   initialPlaylist = [],
 }: BeatsLoungeProviderProps) {
   const playerRef = useRef<YoutubePlayer | null>(null);
-  const hostIdRef = useRef(`beats-youtube-${Math.random().toString(36).slice(2)}`);
   const playlistRef = useRef<BeatsTrack[]>(initialPlaylist);
   const currentIndexRef = useRef(0);
+  const pendingAutoplayRef = useRef(false);
+  const volumeRef = useRef(0.55);
+  const mutedRef = useRef(false);
 
   const [playlist, setPlaylistState] = useState<BeatsTrack[]>(initialPlaylist);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -125,9 +145,12 @@ export function BeatsLoungeProvider({
   const [hasStarted, setHasStarted] = useState(false);
   const [volume, setVolumeState] = useState(0.55);
   const [muted, setMuted] = useState(false);
+  const [playerError, setPlayerError] = useState<string | null>(null);
 
   playlistRef.current = playlist;
   currentIndexRef.current = currentIndex;
+  volumeRef.current = volume;
+  mutedRef.current = muted;
 
   const currentTrack = playlist[currentIndex] ?? null;
 
@@ -139,6 +162,24 @@ export function BeatsLoungeProvider({
     else player.unMute();
   }, []);
 
+  const playNext = useCallback(() => {
+    if (playlistRef.current.length === 0) return;
+    const nextIndex = (currentIndexRef.current + 1) % playlistRef.current.length;
+    const track = playlistRef.current[nextIndex];
+    if (!track || !playerRef.current) return;
+
+    setCurrentIndex(nextIndex);
+    currentIndexRef.current = nextIndex;
+    pendingAutoplayRef.current = true;
+    playerRef.current.loadVideoById({ videoId: track.youtubeVideoId, startSeconds: 0 });
+    applyVolume(volumeRef.current, mutedRef.current);
+  }, [applyVolume]);
+
+  const playNextRef = useRef(playNext);
+  playNextRef.current = playNext;
+  const applyVolumeRef = useRef(applyVolume);
+  applyVolumeRef.current = applyVolume;
+
   const loadVideoAtIndex = useCallback(
     (index: number, autoplay: boolean) => {
       const track = playlistRef.current[index];
@@ -146,78 +187,126 @@ export function BeatsLoungeProvider({
 
       setCurrentIndex(index);
       currentIndexRef.current = index;
-      playerRef.current.loadVideoById(track.youtubeVideoId);
-      applyVolume(volume, muted);
+      setPlayerError(null);
+      pendingAutoplayRef.current = autoplay;
+      playerRef.current.loadVideoById({ videoId: track.youtubeVideoId, startSeconds: 0 });
+      applyVolume(volumeRef.current, mutedRef.current);
 
       if (autoplay) {
-        playerRef.current.playVideo();
-        setIsPlaying(true);
-        setHasStarted(true);
+        window.setTimeout(() => {
+          try {
+            playerRef.current?.playVideo();
+          } catch {
+            /* user gesture may be required */
+          }
+        }, 150);
       }
     },
-    [applyVolume, muted, volume],
+    [applyVolume],
   );
-
-  const playNext = useCallback(() => {
-    if (playlistRef.current.length === 0) return;
-    const nextIndex = (currentIndexRef.current + 1) % playlistRef.current.length;
-    loadVideoAtIndex(nextIndex, true);
-  }, [loadVideoAtIndex]);
 
   useEffect(() => {
     let cancelled = false;
+    let retryTimer: number | undefined;
+    let attempts = 0;
 
-    void loadYoutubeApi().then(() => {
+    function mountPlayer() {
       if (cancelled || !window.YT || playerRef.current) return;
 
+      const host = document.getElementById(BEATS_YOUTUBE_HOST_ID);
+      if (!host) {
+        if (attempts < 80) {
+          attempts += 1;
+          retryTimer = window.setTimeout(mountPlayer, 250);
+        }
+        return;
+      }
+
       const firstTrack = playlistRef.current[0];
-      playerRef.current = new window.YT.Player(hostIdRef.current, {
-        height: "0",
-        width: "0",
+      const playerVars: Record<string, string | number> = {
+        autoplay: 0,
+        controls: 1,
+        disablekb: 0,
+        fs: 1,
+        modestbranding: 1,
+        rel: 0,
+        playsinline: 1,
+      };
+      if (typeof window !== "undefined") {
+        playerVars.origin = window.location.origin;
+      }
+
+      playerRef.current = new window.YT.Player(BEATS_YOUTUBE_HOST_ID, {
+        height: "100%",
+        width: "100%",
         videoId: firstTrack?.youtubeVideoId,
-        playerVars: {
-          autoplay: 0,
-          controls: 0,
-          disablekb: 1,
-          fs: 0,
-          modestbranding: 1,
-          rel: 0,
-        },
+        playerVars,
         events: {
-          onReady: () => {
+          onReady: (event) => {
             if (cancelled) return;
+            playerRef.current = event.target;
             setIsReady(true);
-            applyVolume(volume, muted);
+            applyVolumeRef.current(volumeRef.current, mutedRef.current);
+
+            if (firstTrack) {
+              setCurrentIndex(0);
+              currentIndexRef.current = 0;
+            }
           },
           onStateChange: (event) => {
-            if (event.data === YT_ENDED) {
-              playNext();
-            } else if (event.data === window.YT?.PlayerState.PLAYING) {
+            const YT = window.YT;
+            if (!YT) return;
+
+            if (event.data === YT.PlayerState.PLAYING) {
               setIsPlaying(true);
               setHasStarted(true);
-            } else if (event.data === window.YT?.PlayerState.PAUSED) {
+              setPlayerError(null);
+              pendingAutoplayRef.current = false;
+            } else if (event.data === YT.PlayerState.PAUSED) {
               setIsPlaying(false);
+            } else if (event.data === YT.PlayerState.ENDED) {
+              playNextRef.current();
+            } else if (
+              pendingAutoplayRef.current &&
+              (event.data === YT.PlayerState.CUED || event.data === YT.PlayerState.BUFFERING)
+            ) {
+              event.target.playVideo();
             }
           },
           onError: () => {
-            playNext();
+            setPlayerError("playback-error");
+            setIsPlaying(false);
+            pendingAutoplayRef.current = false;
+            playNextRef.current();
           },
         },
       });
+    }
+
+    void loadYoutubeApi().then(() => {
+      if (cancelled) return;
+      mountPlayer();
     });
 
     return () => {
       cancelled = true;
+      if (retryTimer) window.clearTimeout(retryTimer);
       playerRef.current?.destroy();
       playerRef.current = null;
+      setIsReady(false);
     };
-  }, [applyVolume, muted, playNext, volume]);
+  }, []);
+
+  useEffect(() => {
+    applyVolume(volume, muted);
+  }, [applyVolume, volume, muted, isReady]);
 
   const setPlaylist = useCallback((tracks: BeatsTrack[]) => {
     setPlaylistState(tracks);
     playlistRef.current = tracks;
     if (tracks.length === 0) {
       setCurrentIndex(0);
+      currentIndexRef.current = 0;
       return;
     }
     if (currentIndexRef.current >= tracks.length) {
@@ -236,7 +325,8 @@ export function BeatsLoungeProvider({
 
   const togglePlay = useCallback(() => {
     const player = playerRef.current;
-    if (!player || !currentTrack) return;
+    const track = playlistRef.current[currentIndexRef.current];
+    if (!player || !track) return;
 
     if (isPlaying) {
       player.pauseVideo();
@@ -244,10 +334,23 @@ export function BeatsLoungeProvider({
       return;
     }
 
-    player.playVideo();
-    setIsPlaying(true);
-    setHasStarted(true);
-  }, [currentTrack, isPlaying]);
+    setPlayerError(null);
+    pendingAutoplayRef.current = true;
+
+    const state = player.getPlayerState();
+    const YT = window.YT;
+    if (
+      YT &&
+      (state === YT.PlayerState.CUED ||
+        state === YT.PlayerState.PAUSED ||
+        state === YT.PlayerState.ENDED ||
+        state === YT.PlayerState.UNSTARTED)
+    ) {
+      player.playVideo();
+    } else {
+      loadVideoAtIndex(currentIndexRef.current, true);
+    }
+  }, [isPlaying, loadVideoAtIndex]);
 
   const playPrevious = useCallback(() => {
     if (playlistRef.current.length === 0) return;
@@ -260,8 +363,11 @@ export function BeatsLoungeProvider({
     (nextVolume: number) => {
       const clamped = Math.min(Math.max(nextVolume, 0), 1);
       setVolumeState(clamped);
-      setMuted(clamped === 0);
-      applyVolume(clamped, clamped === 0);
+      volumeRef.current = clamped;
+      const nextMuted = clamped === 0;
+      setMuted(nextMuted);
+      mutedRef.current = nextMuted;
+      applyVolume(clamped, nextMuted);
     },
     [applyVolume],
   );
@@ -269,10 +375,11 @@ export function BeatsLoungeProvider({
   const toggleMute = useCallback(() => {
     setMuted((prev) => {
       const next = !prev;
-      applyVolume(volume, next);
+      mutedRef.current = next;
+      applyVolume(volumeRef.current, next);
       return next;
     });
-  }, [applyVolume, volume]);
+  }, [applyVolume]);
 
   const refreshVote = useCallback((trackId: string, voteCount: number, userHasVoted: boolean) => {
     setPlaylistState((prev) =>
@@ -333,6 +440,7 @@ export function BeatsLoungeProvider({
       hasStarted,
       volume,
       muted,
+      playerError,
       setPlaylist,
       playTrack,
       togglePlay,
@@ -351,6 +459,7 @@ export function BeatsLoungeProvider({
       hasStarted,
       volume,
       muted,
+      playerError,
       setPlaylist,
       playTrack,
       togglePlay,
@@ -362,14 +471,7 @@ export function BeatsLoungeProvider({
     ],
   );
 
-  return (
-    <BeatsLoungeContext.Provider value={value}>
-      <div className="pointer-events-none fixed -left-[9999px] top-0 h-0 w-0 overflow-hidden opacity-0">
-        <div id={hostIdRef.current} />
-      </div>
-      {children}
-    </BeatsLoungeContext.Provider>
-  );
+  return <BeatsLoungeContext.Provider value={value}>{children}</BeatsLoungeContext.Provider>;
 }
 
 export function useBeatsLounge() {
@@ -378,8 +480,4 @@ export function useBeatsLounge() {
     throw new Error("useBeatsLounge must be used within BeatsLoungeProvider");
   }
   return context;
-}
-
-export function useBeatsLoungeArtwork(track: BeatsTrack | null) {
-  return track ? trackArtwork(track) : null;
 }

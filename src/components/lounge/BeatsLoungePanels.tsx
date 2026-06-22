@@ -15,6 +15,7 @@ import { useLocale } from "@/providers/LocaleProvider";
 
 type BeatsPlaylistListProps = {
   onVote?: () => void;
+  onPlayTrack?: (index: number) => void;
 };
 
 function LoungeField({
@@ -37,7 +38,7 @@ function LoungeField({
 const fieldClass =
   "w-full rounded-xl border border-white/12 bg-zinc-950/70 px-3.5 py-2.5 text-sm text-white placeholder:text-zinc-500 shadow-inner shadow-black/20 outline-none transition focus:border-fuchsia-400/50 focus:ring-2 focus:ring-fuchsia-500/20";
 
-export function BeatsPlaylistList({ onVote }: BeatsPlaylistListProps) {
+export function BeatsPlaylistList({ onVote, onPlayTrack }: BeatsPlaylistListProps) {
   const { t } = useLocale();
   const { user } = useAuth();
   const supabase = createBrowserClient();
@@ -97,7 +98,7 @@ export function BeatsPlaylistList({ onVote }: BeatsPlaylistListProps) {
 
             <button
               type="button"
-              onClick={() => playTrack(index)}
+              onClick={() => (onPlayTrack ? onPlayTrack(index) : playTrack(index))}
               className="relative h-14 w-20 shrink-0 overflow-hidden rounded-xl ring-1 ring-white/10 transition group-hover:ring-fuchsia-400/40"
             >
               <Image
@@ -115,7 +116,11 @@ export function BeatsPlaylistList({ onVote }: BeatsPlaylistListProps) {
               ) : null}
             </button>
 
-            <button type="button" onClick={() => playTrack(index)} className="min-w-0 flex-1 text-start">
+            <button
+              type="button"
+              onClick={() => (onPlayTrack ? onPlayTrack(index) : playTrack(index))}
+              className="min-w-0 flex-1 text-start"
+            >
               <p className="truncate text-sm font-bold text-white">{track.title}</p>
               <p className="truncate text-xs text-zinc-300">{track.artist}</p>
               {track.animeTitle ? (

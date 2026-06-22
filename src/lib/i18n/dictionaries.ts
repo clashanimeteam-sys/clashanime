@@ -282,6 +282,7 @@ export type Dictionary = {
     errorArtistRequired: string;
     errorYoutubeRequired: string;
     errorYoutubeInvalid: string;
+    playbackError: string;
   };
   legal: {
     reportTitle: string;
@@ -1392,6 +1393,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       errorArtistRequired: "Enter the artist name.",
       errorYoutubeRequired: "Paste a YouTube link or video ID.",
       errorYoutubeInvalid: "That YouTube link does not look valid.",
+      playbackError:
+        "This track could not play (embedding may be blocked). Skipping to the next track — try another song or use the player below.",
     },
     legal: {
       reportTitle: "Report Content",
@@ -2517,6 +2520,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       errorArtistRequired: "アーティスト名を入力してください。",
       errorYoutubeRequired: "YouTubeリンクまたはIDを入力してください。",
       errorYoutubeInvalid: "YouTubeリンクが正しくありません。",
+      playbackError:
+        "この曲は再生できません（埋め込みが制限されている可能性があります）。次の曲へスキップします。",
     },
     legal: {
       reportTitle: "コンテンツを報告",
@@ -3633,6 +3638,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       errorArtistRequired: "أدخل اسم الفنان.",
       errorYoutubeRequired: "الصق رابط YouTube أو معرف الفيديو.",
       errorYoutubeInvalid: "رابط YouTube غير صالح.",
+      playbackError:
+        "تعذّر تشغيل هذا المقطع (قد يكون التضمين محظوراً). سننتقل للمقطع التالي — جرّب أغنية أخرى أو استخدم المشغّل بالأسفل.",
     },
     legal: {
       reportTitle: "تقرير المحتوى",

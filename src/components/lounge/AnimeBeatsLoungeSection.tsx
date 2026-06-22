@@ -7,7 +7,7 @@ import { AnimeRadioVisualizer } from "@/components/radio/AnimeRadioVisualizer";
 import { BeatsPlaylistList, BeatsTrackSubmitForm } from "@/components/lounge/BeatsLoungePanels";
 import { trackArtwork, type BeatsTrack } from "@/lib/animeBeatsLounge";
 import { useAnimeRadio } from "@/providers/AnimeRadioProvider";
-import { useBeatsLounge } from "@/providers/BeatsLoungeProvider";
+import { BeatsLoungeYoutubeSurface, useBeatsLounge } from "@/providers/BeatsLoungeProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type AnimeBeatsLoungeSectionProps = {
@@ -22,6 +22,7 @@ export function AnimeBeatsLoungeSection({ initialPlaylist }: AnimeBeatsLoungeSec
     currentTrack,
     isPlaying,
     isReady,
+    playerError,
     setPlaylist,
     togglePlay,
     playNext,
@@ -38,6 +39,20 @@ export function AnimeBeatsLoungeSection({ initialPlaylist }: AnimeBeatsLoungeSec
   }, [initialPlaylist, setPlaylist]);
 
   function startPlayback(index = 0) {
+    pauseRadio({ byUser: false });
+    playTrack(index);
+  }
+
+  function handlePlayToggle() {
+    pauseRadio({ byUser: false });
+    if (currentTrack) {
+      togglePlay();
+    } else {
+      startPlayback(0);
+    }
+  }
+
+  function handlePlayTrack(index: number) {
     pauseRadio({ byUser: false });
     playTrack(index);
   }
@@ -105,7 +120,7 @@ export function AnimeBeatsLoungeSection({ initialPlaylist }: AnimeBeatsLoungeSec
               <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5 lg:justify-start">
                 <button
                   type="button"
-                  onClick={() => (currentTrack ? void togglePlay() : startPlayback(0))}
+                  onClick={handlePlayToggle}
                   disabled={!isReady || playlist.length === 0}
                   className="inline-flex h-11 min-w-32 items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-500 to-violet-600 px-6 text-sm font-bold text-white shadow-lg shadow-fuchsia-500/30 disabled:opacity-50"
                 >
@@ -113,7 +128,10 @@ export function AnimeBeatsLoungeSection({ initialPlaylist }: AnimeBeatsLoungeSec
                 </button>
                 <button
                   type="button"
-                  onClick={playPrevious}
+                  onClick={() => {
+                    pauseRadio({ byUser: false });
+                    playPrevious();
+                  }}
                   disabled={playlist.length === 0}
                   className="rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm text-white backdrop-blur-sm"
                 >
@@ -121,7 +139,10 @@ export function AnimeBeatsLoungeSection({ initialPlaylist }: AnimeBeatsLoungeSec
                 </button>
                 <button
                   type="button"
-                  onClick={playNext}
+                  onClick={() => {
+                    pauseRadio({ byUser: false });
+                    playNext();
+                  }}
                   disabled={playlist.length === 0}
                   className="rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm text-white backdrop-blur-sm"
                 >
@@ -150,7 +171,17 @@ export function AnimeBeatsLoungeSection({ initialPlaylist }: AnimeBeatsLoungeSec
               </label>
 
               <p className="mt-4 text-xs text-zinc-500">{t.lounge.keepListening}</p>
+
+              {playerError ? (
+                <p className="mt-3 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-sm text-amber-200">
+                  {t.lounge.playbackError}
+                </p>
+              ) : null}
             </div>
+          </div>
+
+          <div className="mt-6">
+            <BeatsLoungeYoutubeSurface />
           </div>
         </div>
       </section>
@@ -161,7 +192,7 @@ export function AnimeBeatsLoungeSection({ initialPlaylist }: AnimeBeatsLoungeSec
             {t.lounge.playlistTitle}
           </h3>
           <div className="mt-4">
-            <BeatsPlaylistList />
+            <BeatsPlaylistList onPlayTrack={handlePlayTrack} />
           </div>
         </section>
 
