@@ -1,5 +1,6 @@
 import type { Locale } from "@/lib/types";
 import { getTermifyPrivacyCopy } from "@/lib/privacyPolicyCopy";
+import { getCombinedTermsCopy } from "@/lib/termsOfUseCopy";
 
 type LegalSection = { heading: string; body: string };
 
@@ -648,7 +649,7 @@ function pick(locale: Locale): LegalBundle {
 }
 
 export function getTermsCopy(locale: Locale): LegalPageCopy {
-  return pick(locale).terms;
+  return getCombinedTermsCopy(locale);
 }
 
 export function getPrivacyCopy(locale: Locale): LegalPageCopy {
