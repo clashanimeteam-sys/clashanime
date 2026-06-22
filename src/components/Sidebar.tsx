@@ -146,7 +146,7 @@ export function Sidebar() {
 
   return (
     <aside className="sticky top-0 flex min-h-screen w-56 shrink-0 flex-col border-e border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black lg:w-60">
-      <div className="border-b border-zinc-200 p-4 dark:border-zinc-800">
+      <div className="border-b border-zinc-200 px-2 py-4 dark:border-zinc-800 sm:px-3">
         <Link href="/" className="flex justify-center">
           <BrandLogo priority />
         </Link>
