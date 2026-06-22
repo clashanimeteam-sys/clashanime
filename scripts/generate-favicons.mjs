@@ -102,52 +102,9 @@ for (const [path, resize] of outputs) {
   await (resize ? sharp(icon).resize(resize, resize) : sharp(icon)).toFile(path);
 }
 
-async function brightenForDarkTabs(buf) {
-  const { data, info } = await sharp(buf).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
-  for (let i = 0; i < data.length; i += 4) {
-    const a = data[i + 3];
-    if (a === 0) continue;
-
-    let r = data[i];
-    let g = data[i + 1];
-    let b = data[i + 2];
-    const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-    const isRed = r > g + 35 && r > b + 35;
-
-    if (isRed) {
-      r = Math.min(255, r * 1.06 + 8);
-      g = Math.max(0, g * 0.95);
-      b = Math.max(0, b * 0.95);
-    } else if (lum < 150) {
-      const lift = (150 - lum) * 0.95;
-      r = Math.min(255, r + lift);
-      g = Math.min(255, g + lift);
-      b = Math.min(255, b + lift * 1.05);
-    }
-
-    data[i] = Math.round(r);
-    data[i + 1] = Math.round(g);
-    data[i + 2] = Math.round(b);
-  }
-
-  return sharp(data, {
-    raw: { width: info.width, height: info.height, channels: info.channels },
-  }).png();
-}
-
-const darkIcon = await brightenForDarkTabs(icon);
-await darkIcon.toFile("public/icon-dark-512.png");
-
-await sharp("public/icon-dark-512.png").resize(180, 180).toFile("public/icon-dark-180.png");
-await sharp("public/icon-dark-512.png").resize(32, 32).toFile("public/icon-dark-32.png");
-
 execSync(
   "magick public/icon-512.png -define icon:auto-resize=64,48,32,16 public/favicon.ico",
   { stdio: "inherit" },
 );
-execSync(
-  "magick public/icon-dark-512.png -define icon:auto-resize=64,48,32,16 public/favicon-dark.ico",
-  { stdio: "inherit" },
-);
 
-console.log("Favicons generated from public/logo2.png");
+console.log("Favicons generated from public/logo2.png (original colors)");
