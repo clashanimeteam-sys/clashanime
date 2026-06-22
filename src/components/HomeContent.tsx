@@ -1,5 +1,6 @@
 "use client";
 
+import { ClashLiveBadge } from "@/components/clash/ClashLiveBadge";
 import { ClashPrizeBanner } from "@/components/clash/ClashPrizeBanner";
 import { ClashVideosBackdrop } from "@/components/clash/ClashVideosBackdrop";
 import { SeasonCountdown } from "@/components/clash/SeasonCountdown";
@@ -42,16 +43,12 @@ export function HomeContent({ videos, activeSeason }: HomeContentProps) {
   return (
     <div className="relative overflow-hidden">
       <div
-        className={`relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 ${activeSeason ? "pt-36 sm:pt-8" : ""}`}
+        className={`relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 ${activeSeason ? "pt-36 sm:pt-8" : "pt-10 sm:pt-8"}`}
       >
+        <ClashLiveBadge />
         {activeSeason ? <SeasonCountdown season={activeSeason} /> : null}
 
         <section className="mb-8">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-orange-700 backdrop-blur-sm dark:text-orange-300">
-            <span className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.9)]" />
-            {t.home.clashLive}
-          </div>
-
           <SiteTitle
             primary={t.home.titlePrimary}
             secondary={t.home.titleSecondary}
