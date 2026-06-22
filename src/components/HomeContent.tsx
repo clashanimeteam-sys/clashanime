@@ -3,7 +3,6 @@
 import { ClashPrizeBanner } from "@/components/clash/ClashPrizeBanner";
 import { ClashVideosBackdrop } from "@/components/clash/ClashVideosBackdrop";
 import { SeasonCountdown } from "@/components/clash/SeasonCountdown";
-import { SiteTitle } from "@/components/SiteTitle";
 import { VideoCard } from "@/components/VideoCard";
 import type { ClashSeason } from "@/lib/clashSeasons";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -47,11 +46,7 @@ export function HomeContent({ videos, activeSeason }: HomeContentProps) {
         {activeSeason ? <SeasonCountdown season={activeSeason} /> : null}
 
         <section className="mb-8">
-          <SiteTitle
-            primary={t.home.titlePrimary}
-            secondary={t.home.titleSecondary}
-          />
-          <p className="mt-3 max-w-2xl text-sm text-zinc-700 sm:text-base dark:text-zinc-300">
+          <p className="max-w-2xl text-sm text-zinc-700 sm:text-base dark:text-zinc-300">
             {t.home.subtitle}
           </p>
         </section>

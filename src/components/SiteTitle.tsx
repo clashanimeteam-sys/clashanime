@@ -10,6 +10,7 @@ const doodleFont = Fredoka({
 type SiteTitleProps = {
   primary: string;
   secondary: string;
+  variant?: "hero" | "sidebar";
 };
 
 /** Google Doodle-style palette — warm clash + classic multi-color anime word */
@@ -75,12 +76,14 @@ function DoodleLetter({
   );
 }
 
-export function SiteTitle({ primary, secondary }: SiteTitleProps) {
+export function SiteTitle({ primary, secondary, variant = "hero" }: SiteTitleProps) {
   const primaryChars = [...primary.toUpperCase()];
   const secondaryChars = [...secondary.toUpperCase()];
+  const wrapClass =
+    variant === "sidebar" ? "doodle-logo-wrap doodle-logo-wrap-sidebar" : "doodle-logo-wrap";
 
   return (
-    <div className={`doodle-logo-wrap ${doodleFont.className}`}>
+    <div className={`${wrapClass} ${doodleFont.className}`}>
       <div className="doodle-logo-shadow" aria-hidden />
       <h1 className="doodle-logo" aria-label={`${primary} ${secondary}`}>
         <span className="doodle-word doodle-word-clash">

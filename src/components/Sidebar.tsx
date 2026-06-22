@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
+import { SiteTitle } from "@/components/SiteTitle";
 import { LocaleFlags } from "@/components/LocaleFlags";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { isStaff } from "@/lib/admin";
@@ -152,17 +153,14 @@ export function Sidebar() {
 
         <Link
           href="/"
-          className="group mt-4 block text-center"
+          className="group mt-4 flex justify-center"
           aria-label={`${t.home.titlePrimary}${t.home.titleSecondary}`}
         >
-          <p className="font-display text-xl font-black uppercase leading-none tracking-[0.16em] sm:text-[1.35rem]">
-            <span className="animate-[prize-shimmer_4s_linear_infinite] bg-gradient-to-br from-brand via-red-600 to-orange-500 bg-[length:200%_100%] bg-clip-text text-transparent drop-shadow-[0_2px_10px_rgba(179,27,27,0.4)] transition-transform group-hover:scale-[1.03]">
-              {t.home.titlePrimary}
-            </span>
-            <span className="text-black transition-colors group-hover:text-zinc-700 dark:text-white dark:group-hover:text-zinc-200">
-              {t.home.titleSecondary}
-            </span>
-          </p>
+          <SiteTitle
+            primary={t.home.titlePrimary}
+            secondary={t.home.titleSecondary}
+            variant="sidebar"
+          />
         </Link>
       </div>
 
