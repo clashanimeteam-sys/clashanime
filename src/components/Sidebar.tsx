@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
-import { ClashLiveBadge } from "@/components/clash/ClashLiveBadge";
 import { LocaleFlags } from "@/components/LocaleFlags";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { isStaff } from "@/lib/admin";
@@ -165,10 +164,6 @@ export function Sidebar() {
             </span>
           </p>
         </Link>
-
-        <div className="mt-3 flex justify-center">
-          <ClashLiveBadge />
-        </div>
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 p-3" aria-label="Main navigation">
