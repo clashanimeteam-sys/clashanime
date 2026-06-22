@@ -132,6 +132,9 @@ export type Dictionary = {
     musicBody: string;
     emptyVideos: string;
     emptyExclusives: string;
+    videosSearchPlaceholder: string;
+    videosSearchResults: string;
+    emptyVideoSearch: string;
   };
   exclusives: {
     dailyHallBadge: string;
@@ -988,6 +991,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "Start the player below and keep listening as you explore videos, community posts, and your channel.",
       emptyVideos: "No approved videos yet.",
       emptyExclusives: "No exclusive clips from verified creators yet.",
+      videosSearchPlaceholder: "Search anime...",
+      videosSearchResults: "{count} videos found",
+      emptyVideoSearch: 'No videos found for "{query}".',
     },
     exclusives: {
       dailyHallBadge: "Daily Hall of Fame",
@@ -1866,6 +1872,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       musicBody: "下のプレイヤーを開始して、動画やコミュニティを見ながら聴き続けられます。",
       emptyVideos: "承認済みの動画はまだありません。",
       emptyExclusives: "認証済みクリエイターの限定クリップはまだありません。",
+      videosSearchPlaceholder: "アニメを検索...",
+      videosSearchResults: "{count} 件の動画",
+      emptyVideoSearch: "「{query}」に一致する動画はありません。",
     },
     exclusives: {
       dailyHallBadge: "デイリー殿堂",
@@ -2737,6 +2746,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       musicBody: "شغّل المشغّل أدناه واستمر بالاستماع أثناء مشاهدة الفيديوهات والمجتمع وقناتك.",
       emptyVideos: "لا توجد فيدioهات معتمدة بعد.",
       emptyExclusives: "لا توجد مقاطع حصرية من قنوات موثّقة بعد.",
+      videosSearchPlaceholder: "ابحث عن أنمي...",
+      videosSearchResults: "تم العثور على {count} فيديو",
+      emptyVideoSearch: 'لا توجد فيديوهات لـ "{query}".',
     },
     exclusives: {
       dailyHallBadge: "لوحة الشرف اليومية",

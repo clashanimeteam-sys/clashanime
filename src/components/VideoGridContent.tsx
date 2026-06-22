@@ -10,6 +10,7 @@ type VideoGridContentProps = {
   videos: Video[];
   emptyMessage: string;
   showRank?: boolean;
+  headerExtra?: React.ReactNode;
 };
 
 export function VideoGridContent({
@@ -18,6 +19,7 @@ export function VideoGridContent({
   videos,
   emptyMessage,
   showRank = false,
+  headerExtra,
 }: VideoGridContentProps) {
   const { t } = useLocale();
 
@@ -30,6 +32,7 @@ export function VideoGridContent({
             {subtitle}
           </p>
         ) : null}
+        {headerExtra ? <div className="mt-5">{headerExtra}</div> : null}
       </section>
 
       {videos.length === 0 ? (

@@ -120,7 +120,7 @@ async function attachChannels(
 }
 
 const APPROVED_VIDEO_SELECT =
-  "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, user_id";
+  "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, user_id, hashtags";
 
 async function fetchApprovedVideos(): Promise<Video[]> {
   const supabase = await createServerClient();
