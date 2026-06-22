@@ -16,6 +16,7 @@ const informationLinks = [
   { key: "privacy" as const, href: "/privacy" },
   { key: "cookies" as const, href: "/cookies" },
   { key: "disclaimer" as const, href: "/disclaimer" },
+  { key: "eula" as const, href: "/eula" },
   { key: "terms" as const, href: "/terms" },
   { key: "communityGuidelines" as const, href: "/community-guidelines" },
   { key: "dmca" as const, href: "/dmca" },

@@ -14,6 +14,7 @@ const RELATED_LINKS = [
   { href: "/privacy", key: "privacy" as const },
   { href: "/cookies", key: "cookies" as const },
   { href: "/disclaimer", key: "disclaimer" as const },
+  { href: "/eula", key: "eula" as const },
   { href: "/terms", key: "terms" as const },
   { href: "/community-guidelines", key: "communityGuidelines" as const },
   { href: "/dmca", key: "dmca" as const },
@@ -69,7 +70,8 @@ export function LegalDocument({ title, updated, intro, sections }: LegalDocument
       </div>
 
       <p className="mt-10 border-t border-zinc-200 pt-6 text-xs text-zinc-500 dark:border-zinc-800">
-        {t.footer.privacy} · {t.footer.cookies} · {t.footer.disclaimer} · {t.footer.terms} ·{" "}
+        {t.footer.privacy} · {t.footer.cookies} · {t.footer.disclaimer} · {t.footer.eula} ·{" "}
+        {t.footer.terms} ·{" "}
         {t.footer.communityGuidelines} ·{" "}
         {t.footer.dmca} · {t.footer.reportContent}
       </p>

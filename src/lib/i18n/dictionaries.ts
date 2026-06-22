@@ -116,6 +116,7 @@ export type Dictionary = {
     privacy: string;
     cookies: string;
     disclaimer: string;
+    eula: string;
     terms: string;
     communityGuidelines: string;
     dmca: string;
@@ -974,6 +975,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       privacy: "Privacy Policy",
       cookies: "Cookie Policy",
       disclaimer: "Disclaimer",
+      eula: "EULA",
       terms: "Terms of Use",
       communityGuidelines: "Community Guidelines",
       dmca: "DMCA",
@@ -1858,6 +1860,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       privacy: "プライバシーポリシー",
       cookies: "クッキーポリシー",
       disclaimer: "免責事項",
+      eula: "EULA",
       terms: "利用規約",
       communityGuidelines: "コミュニティガイドライン",
       dmca: "DMCA",
@@ -2734,6 +2737,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       privacy: "سياسة الخصوصية",
       cookies: "سياسة الكوكيز",
       disclaimer: "إخلاء المسؤولية",
+      eula: "اتفاقية الترخيص الإلكتروني",
       terms: "شروط الاستخدام",
       communityGuidelines: "إرشادات المجتمع",
       dmca: "DMCA",
