@@ -68,10 +68,12 @@ type BeatsLoungeContextValue = {
   isPlaying: boolean;
   isReady: boolean;
   hasStarted: boolean;
+  loungePanelOpen: boolean;
   volume: number;
   muted: boolean;
   playerError: string | null;
   setPlaylist: (tracks: BeatsTrack[]) => void;
+  setLoungePanelOpen: (open: boolean) => void;
   playTrack: (index: number) => void;
   togglePlay: () => void;
   playNext: () => void;
@@ -119,10 +121,14 @@ function loadYoutubeApi() {
   });
 }
 
-export function BeatsLoungeYoutubeSurface() {
+/** Hidden YouTube iframe host — audio-only, persists across page navigation. */
+export function BeatsLoungeAudioEngine() {
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-black shadow-inner shadow-black/40">
-      <div id={BEATS_YOUTUBE_HOST_ID} className="aspect-video w-full min-h-[180px]" />
+    <div
+      aria-hidden
+      className="pointer-events-none fixed -start-[9999px] top-0 h-[240px] w-[320px] overflow-hidden opacity-0"
+    >
+      <div id={BEATS_YOUTUBE_HOST_ID} className="h-full w-full" />
     </div>
   );
 }
@@ -146,6 +152,7 @@ export function BeatsLoungeProvider({
   const [volume, setVolumeState] = useState(0.55);
   const [muted, setMuted] = useState(false);
   const [playerError, setPlayerError] = useState<string | null>(null);
+  const [loungePanelOpen, setLoungePanelOpen] = useState(false);
 
   playlistRef.current = playlist;
   currentIndexRef.current = currentIndex;
@@ -225,12 +232,13 @@ export function BeatsLoungeProvider({
       const firstTrack = playlistRef.current[0];
       const playerVars: Record<string, string | number> = {
         autoplay: 0,
-        controls: 1,
-        disablekb: 0,
-        fs: 1,
+        controls: 0,
+        disablekb: 1,
+        fs: 0,
         modestbranding: 1,
         rel: 0,
         playsinline: 1,
+        iv_load_policy: 3,
       };
       if (typeof window !== "undefined") {
         playerVars.origin = window.location.origin;
@@ -438,10 +446,12 @@ export function BeatsLoungeProvider({
       isPlaying,
       isReady,
       hasStarted,
+      loungePanelOpen,
       volume,
       muted,
       playerError,
       setPlaylist,
+      setLoungePanelOpen,
       playTrack,
       togglePlay,
       playNext,
@@ -457,6 +467,7 @@ export function BeatsLoungeProvider({
       isPlaying,
       isReady,
       hasStarted,
+      loungePanelOpen,
       volume,
       muted,
       playerError,
@@ -471,7 +482,12 @@ export function BeatsLoungeProvider({
     ],
   );
 
-  return <BeatsLoungeContext.Provider value={value}>{children}</BeatsLoungeContext.Provider>;
+  return (
+    <BeatsLoungeContext.Provider value={value}>
+      {children}
+      <BeatsLoungeAudioEngine />
+    </BeatsLoungeContext.Provider>
+  );
 }
 
 export function useBeatsLounge() {

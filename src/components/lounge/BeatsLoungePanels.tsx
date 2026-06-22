@@ -27,7 +27,7 @@ function LoungeField({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.14em] text-fuchsia-200/90">
+      <span className="mb-1.5 block text-xs font-bold uppercase tracking-[0.14em] text-fuchsia-300">
         {label}
       </span>
       {children}
@@ -36,7 +36,7 @@ function LoungeField({
 }
 
 const fieldClass =
-  "w-full rounded-xl border border-white/12 bg-zinc-950/70 px-3.5 py-2.5 text-sm text-white placeholder:text-zinc-500 shadow-inner shadow-black/20 outline-none transition focus:border-fuchsia-400/50 focus:ring-2 focus:ring-fuchsia-500/20";
+  "w-full rounded-xl border-2 border-zinc-600 bg-zinc-950 px-3.5 py-2.5 text-sm text-white placeholder:text-zinc-400 shadow-inner shadow-black/20 outline-none transition focus:border-fuchsia-400 focus:ring-2 focus:ring-fuchsia-500/25";
 
 export function BeatsPlaylistList({ onVote, onPlayTrack }: BeatsPlaylistListProps) {
   const { t } = useLocale();
@@ -86,10 +86,10 @@ export function BeatsPlaylistList({ onVote, onPlayTrack }: BeatsPlaylistListProp
         return (
           <div
             key={track.id}
-            className={`group flex items-center gap-3 rounded-2xl border p-3 transition-all ${
+            className={`group flex items-center gap-3 rounded-2xl border-2 p-3 transition-all ${
               active
-                ? "border-fuchsia-400/55 bg-gradient-to-r from-fuchsia-500/15 via-fuchsia-500/5 to-transparent shadow-lg shadow-fuchsia-500/10"
-                : "border-white/10 bg-zinc-950/55 hover:border-fuchsia-300/25 hover:bg-zinc-950/75"
+                ? "border-fuchsia-400 bg-gradient-to-r from-fuchsia-500/25 via-fuchsia-500/10 to-transparent shadow-lg shadow-fuchsia-500/15"
+                : "border-zinc-600 bg-zinc-950 hover:border-fuchsia-400/50 hover:bg-zinc-900"
             }`}
           >
             <span className="w-6 shrink-0 text-center text-xs font-bold text-zinc-500">
@@ -121,10 +121,16 @@ export function BeatsPlaylistList({ onVote, onPlayTrack }: BeatsPlaylistListProp
               onClick={() => (onPlayTrack ? onPlayTrack(index) : playTrack(index))}
               className="min-w-0 flex-1 text-start"
             >
-              <p className="truncate text-sm font-bold text-white">{track.title}</p>
-              <p className="truncate text-xs text-zinc-300">{track.artist}</p>
+              <p dir="auto" className="truncate text-sm font-bold text-white">
+                {track.title}
+              </p>
+              <p dir="auto" className="truncate text-xs text-zinc-300">
+                {track.artist}
+              </p>
               {track.animeTitle ? (
-                <p className="truncate text-[11px] text-fuchsia-200/85">{track.animeTitle}</p>
+                <p dir="auto" className="truncate text-[11px] font-medium text-fuchsia-300">
+                  {track.animeTitle}
+                </p>
               ) : null}
             </button>
 
@@ -228,13 +234,13 @@ export function BeatsTrackSubmitForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="overflow-hidden rounded-2xl border border-fuchsia-300/20 bg-gradient-to-br from-fuchsia-950/30 via-zinc-950/80 to-violet-950/25 p-5 shadow-xl shadow-fuchsia-950/20"
+      className="overflow-hidden rounded-2xl border-2 border-zinc-700 bg-zinc-900 p-5 shadow-xl"
     >
       <div className="mb-4">
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-300">
           {t.lounge.submitTitle}
         </p>
-        <p className="mt-2 text-sm leading-relaxed text-zinc-400">{t.lounge.submitDesc}</p>
+        <p className="mt-2 text-sm leading-relaxed text-zinc-300">{t.lounge.submitDesc}</p>
       </div>
 
       <div className="space-y-3">

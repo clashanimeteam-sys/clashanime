@@ -283,6 +283,8 @@ export type Dictionary = {
     errorYoutubeRequired: string;
     errorYoutubeInvalid: string;
     playbackError: string;
+    audioOnlyBadge: string;
+    backgroundListening: string;
   };
   legal: {
     reportTitle: string;
@@ -1394,7 +1396,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       errorYoutubeRequired: "Paste a YouTube link or video ID.",
       errorYoutubeInvalid: "That YouTube link does not look valid.",
       playbackError:
-        "This track could not play (embedding may be blocked). Skipping to the next track — try another song or use the player below.",
+        "This track could not play (embedding may be blocked). Skipping to the next track — try another song.",
+      audioOnlyBadge: "Audio only",
+      backgroundListening:
+        "Audio keeps playing in the background while you browse videos, community, and your profile.",
     },
     legal: {
       reportTitle: "Report Content",
@@ -2522,6 +2527,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       errorYoutubeInvalid: "YouTubeリンクが正しくありません。",
       playbackError:
         "この曲は再生できません（埋め込みが制限されている可能性があります）。次の曲へスキップします。",
+      audioOnlyBadge: "音声のみ",
+      backgroundListening: "動画やコミュニティを見ながらバックグラウンド再生が続きます。",
     },
     legal: {
       reportTitle: "コンテンツを報告",
@@ -3639,7 +3646,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       errorYoutubeRequired: "الصق رابط YouTube أو معرف الفيديو.",
       errorYoutubeInvalid: "رابط YouTube غير صالح.",
       playbackError:
-        "تعذّر تشغيل هذا المقطع (قد يكون التضمين محظوراً). سننتقل للمقطع التالي — جرّب أغنية أخرى أو استخدم المشغّل بالأسفل.",
+        "تعذّر تشغيل هذا المقطع (قد يكون التضمين محظوراً). سننتقل للمقطع التالي — جرّب أغنية أخرى.",
+      audioOnlyBadge: "صوت فقط",
+      backgroundListening:
+        "يستمر الصوت بالتشغيل في الخلفية أثناء تصفح الفيديوهات والمجتمع وملفك الشخصي.",
     },
     legal: {
       reportTitle: "تقرير المحتوى",
