@@ -37,23 +37,46 @@ export function NotificationBell() {
 
     setLoading(true);
 
-    const [notificationsResult, prefsResult] = await Promise.all([
+    const prefsPromise = supabase
+      .from("user_notification_preferences")
+      .select("in_app_enabled")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    const [prefsResult, primaryResult] = await Promise.all([
+      prefsPromise,
       supabase
         .from("user_notifications")
         .select("id, type, title, body, link, read_at, created_at, metadata")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false })
         .limit(50),
-      supabase
-        .from("user_notification_preferences")
-        .select("in_app_enabled")
-        .eq("user_id", user.id)
-        .maybeSingle(),
     ]);
 
-    if (!notificationsResult.error) {
-      setRows(notificationsResult.data ?? []);
+    let nextRows: NotificationRow[] = [];
+
+    if (!primaryResult.error && primaryResult.data) {
+      nextRows = primaryResult.data as NotificationRow[];
+    } else if (
+      primaryResult.error &&
+      /metadata|column|schema cache/i.test(primaryResult.error.message)
+    ) {
+      const fallbackResult = await supabase
+        .from("user_notifications")
+        .select("id, type, title, body, link, read_at, created_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(50);
+
+      if (!fallbackResult.error) {
+        nextRows = (fallbackResult.data ?? []).map((row) => ({
+          ...row,
+          metadata: null,
+        }));
+      }
     }
+
+    setRows(nextRows);
 
     if (!prefsResult.error) {
       setEnabled(prefsResult.data?.in_app_enabled ?? true);

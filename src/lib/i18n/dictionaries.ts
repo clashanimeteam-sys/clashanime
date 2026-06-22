@@ -382,6 +382,8 @@ export type Dictionary = {
   };
   profile: {
     loading: string;
+    loadFailed: string;
+    retry: string;
     customize: string;
     saveChanges: string;
     unsavedChanges: string;
@@ -1528,6 +1530,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     profile: {
       loading: "Loading your channel...",
+      loadFailed: "Could not load your channel.",
+      retry: "Try again",
       customize: "Customize channel",
       saveChanges: "Save changes",
       unsavedChanges: "You have unsaved changes.",
@@ -2703,6 +2707,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     profile: {
       loading: "チャンネルを読み込み中...",
+      loadFailed: "チャンネルを読み込めませんでした。",
+      retry: "再試行",
       customize: "チャンネルを編集",
       saveChanges: "変更を保存",
       unsavedChanges: "未保存の変更があります。",
@@ -3874,6 +3880,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     profile: {
       loading: "جارٍ تحميل قناتك...",
+      loadFailed: "تعذّر تحميل قناتك.",
+      retry: "إعادة المحاولة",
       customize: "تخصيص القناة",
       saveChanges: "حفظ التغييرات",
       unsavedChanges: "لديك تغييرات غير محفوظة.",

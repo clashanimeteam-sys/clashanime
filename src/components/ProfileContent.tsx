@@ -2,15 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FollowerCount } from "@/components/FollowButton";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
-import { ClashWalletPanel } from "@/components/ClashWalletPanel";
 import { DeleteAccountSection } from "@/components/DeleteAccountSection";
 import { MentionHashtagTextarea } from "@/components/MentionHashtagTextarea";
-import { NotificationBell } from "@/components/NotificationBell";
-import { PointsPanel } from "@/components/PointsPanel";
 import { VideoCard } from "@/components/VideoCard";
 import { profileToVideoChannel } from "@/components/VideoCardChannel";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
@@ -36,6 +34,16 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 import { useProfileSection } from "@/providers/ProfileSectionProvider";
 import type { Profile, Video } from "@/lib/types";
+
+const PointsPanel = dynamic(
+  () => import("@/components/PointsPanel").then((mod) => mod.PointsPanel),
+  { ssr: false },
+);
+
+const ClashWalletPanel = dynamic(
+  () => import("@/components/ClashWalletPanel").then((mod) => mod.ClashWalletPanel),
+  { ssr: false },
+);
 
 function settingsBoxClassName(extra = "") {
   return `rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950 ${extra}`.trim();
@@ -432,6 +440,22 @@ export function ProfileContent() {
   }
 
   if (!profile || !user) {
+    if (error) {
+      return (
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <p className="text-sm text-red-500" role="alert">
+            {error || t.profile.loadFailed}
+          </p>
+          <button
+            type="button"
+            onClick={() => void loadProfile()}
+            className="mt-4 rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white dark:bg-white dark:text-black"
+          >
+            {t.profile.retry}
+          </button>
+        </div>
+      );
+    }
     return null;
   }
 
@@ -533,7 +557,6 @@ export function ProfileContent() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2 pt-12 sm:pt-14">
-                  <NotificationBell />
                   <Link
                     href="/upload"
                     className="rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-black"
