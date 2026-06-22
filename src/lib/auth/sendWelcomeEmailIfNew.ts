@@ -1,6 +1,7 @@
 import { sendWelcomeEmail } from "@/lib/email/welcomeEmail";
 import { createServiceRoleClient } from "@/lib/supabase/admin";
 import type { Locale } from "@/lib/types";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 const LOCALES = new Set<Locale>(["en", "ar", "ja"]);
 
@@ -8,34 +9,41 @@ function normalizeLocale(value: string | null | undefined): Locale {
   return LOCALES.has(value as Locale) ? (value as Locale) : "en";
 }
 
-export async function sendWelcomeEmailIfNew(input: {
-  userId: string;
-  email: string | null | undefined;
-  locale?: string | null;
-}): Promise<{ sent: boolean; skipped?: string; error?: string; emailId?: string }> {
-  const email = input.email?.trim().toLowerCase();
-  if (!email) {
-    return { sent: false, skipped: "no_email" };
-  }
+function isNewSignupUser(createdAt: string | undefined): boolean {
+  if (!createdAt) return false;
+  const createdMs = new Date(createdAt).getTime();
+  if (Number.isNaN(createdMs)) return false;
+  return Date.now() - createdMs < 15 * 60 * 1000;
+}
 
-  const supabase = createServiceRoleClient();
-  if (!supabase) {
-    return { sent: false, error: "Service role not configured" };
-  }
-
-  const locale = normalizeLocale(input.locale);
-
+async function reserveAndSend(
+  supabase: SupabaseClient,
+  input: {
+    userId: string;
+    email: string;
+    locale: Locale;
+    allowSendWithoutReserve?: boolean;
+    createdAt?: string;
+  },
+): Promise<{ sent: boolean; skipped?: string; error?: string; emailId?: string }> {
   const { data: dispatchId, error: reserveError } = await supabase.rpc(
     "reserve_transactional_email",
     {
       p_user_id: input.userId,
-      p_email_to: email,
+      p_email_to: input.email,
       p_email_type: "welcome",
-      p_locale: locale,
+      p_locale: input.locale,
     },
   );
 
   if (reserveError) {
+    if (input.allowSendWithoutReserve && isNewSignupUser(input.createdAt)) {
+      const result = await sendWelcomeEmail({ to: input.email, locale: input.locale });
+      if (!result.ok) {
+        return { sent: false, error: `${reserveError.message}; ${result.error}` };
+      }
+      return { sent: true, emailId: result.id };
+    }
     return { sent: false, error: reserveError.message };
   }
 
@@ -43,7 +51,7 @@ export async function sendWelcomeEmailIfNew(input: {
     return { sent: false, skipped: "already_sent" };
   }
 
-  const result = await sendWelcomeEmail({ to: email, locale });
+  const result = await sendWelcomeEmail({ to: input.email, locale: input.locale });
 
   const { error: completeError } = await supabase.rpc("complete_transactional_email", {
     p_id: dispatchId,
@@ -66,4 +74,58 @@ export async function sendWelcomeEmailIfNew(input: {
   }
 
   return { sent: true, emailId: result.id };
+}
+
+export async function sendWelcomeEmailIfNew(input: {
+  userId: string;
+  email: string | null | undefined;
+  locale?: string | null;
+  supabaseClient?: SupabaseClient | null;
+  createdAt?: string;
+}): Promise<{ sent: boolean; skipped?: string; error?: string; emailId?: string }> {
+  const email = input.email?.trim().toLowerCase();
+  if (!email) {
+    return { sent: false, skipped: "no_email" };
+  }
+
+  const locale = normalizeLocale(input.locale);
+  const serviceRole = createServiceRoleClient();
+  const sessionClient = input.supabaseClient ?? null;
+
+  if (serviceRole) {
+    const result = await reserveAndSend(serviceRole, {
+      userId: input.userId,
+      email,
+      locale,
+      createdAt: input.createdAt,
+    });
+    if (result.sent || result.skipped === "already_sent" || !result.error) {
+      return result;
+    }
+  }
+
+  if (sessionClient) {
+    return reserveAndSend(sessionClient, {
+      userId: input.userId,
+      email,
+      locale,
+      allowSendWithoutReserve: true,
+      createdAt: input.createdAt,
+    });
+  }
+
+  if (isNewSignupUser(input.createdAt)) {
+    const result = await sendWelcomeEmail({ to: email, locale });
+    if (!result.ok) {
+      return { sent: false, error: result.error };
+    }
+    return { sent: true, emailId: result.id };
+  }
+
+  return {
+    sent: false,
+    error: serviceRole
+      ? "Could not reserve welcome email dispatch"
+      : "Supabase client not available for welcome email",
+  };
 }

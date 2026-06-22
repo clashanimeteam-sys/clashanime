@@ -47,11 +47,17 @@ export async function GET(request: Request) {
   }
 
   if (data.user?.id) {
-    void sendWelcomeEmailIfNew({
+    const welcomeResult = await sendWelcomeEmailIfNew({
       userId: data.user.id,
       email: data.user.email,
       locale,
+      supabaseClient: supabase,
+      createdAt: data.user.created_at,
     });
+
+    if (!welcomeResult.sent && welcomeResult.error) {
+      console.error("[welcome-email]", welcomeResult.error);
+    }
   }
 
   const response = NextResponse.redirect(`${origin}${next}`);

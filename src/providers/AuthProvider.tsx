@@ -13,6 +13,7 @@ import {
 import type { Session, User } from "@supabase/supabase-js";
 import { createBrowserClient } from "@/lib/supabase/client";
 import type { Profile } from "@/lib/types";
+import { useLocale } from "@/providers/LocaleProvider";
 
 type AuthContextValue = {
   user: User | null;
@@ -32,11 +33,29 @@ type AuthProviderProps = {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const supabase = useMemo(() => createBrowserClient(), []);
+  const { locale } = useLocale();
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(Boolean(supabase));
   const [profileLoading, setProfileLoading] = useState(false);
   const profileUserIdRef = useRef<string | null>(null);
+  const welcomeEmailRequestedRef = useRef<string | null>(null);
+
+  const requestWelcomeEmail = useCallback(
+    (userId: string) => {
+      if (welcomeEmailRequestedRef.current === userId) return;
+      welcomeEmailRequestedRef.current = userId;
+
+      void fetch("/api/auth/welcome-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ locale }),
+      }).catch(() => {
+        welcomeEmailRequestedRef.current = null;
+      });
+    },
+    [locale],
+  );
 
   const refreshProfile = useCallback(async (options?: { silent?: boolean }) => {
     const userId = session?.user?.id;
@@ -79,13 +98,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (event === "TOKEN_REFRESHED") return;
       setSession(nextSession);
       setLoading(false);
+
+      if (
+        nextSession?.user?.id &&
+        (event === "SIGNED_IN" || event === "INITIAL_SESSION")
+      ) {
+        requestWelcomeEmail(nextSession.user.id);
+      }
     });
 
     return () => {
       active = false;
       subscription.unsubscribe();
     };
-  }, [supabase]);
+  }, [supabase, requestWelcomeEmail]);
 
   useEffect(() => {
     const userId = session?.user?.id;
