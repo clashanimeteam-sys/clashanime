@@ -83,7 +83,7 @@ export function AnimeReleaseClashPageContent({ clash, videos }: AnimeReleaseClas
                     clash.matchTags.map((tag) => `#${tag}`).join(" "),
                   )}
                 </p>
-                <MatchTagUsageBadges tags={clash.matchTags} />
+                <MatchTagUsageBadges tags={clash.matchTags} title={title} />
               </div>
             ) : null}
           </div>

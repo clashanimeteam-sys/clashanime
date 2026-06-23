@@ -140,7 +140,7 @@ function ActiveClashCard({ clash }: { clash: AnimeReleaseClash }) {
           </p>
           <AnimeSynopsisBlock synopsis={clash} variant="compact" />
           {clash.matchTags.length > 0 ? (
-            <MatchTagUsageBadges tags={clash.matchTags} className="mt-3" />
+            <MatchTagUsageBadges tags={clash.matchTags} title={title} className="mt-3" />
           ) : null}
         </div>
 

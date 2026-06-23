@@ -34,12 +34,18 @@ export type UploadClashContext = {
   matchTags: string[];
 };
 
+import { CLASHANIME_HASHTAG } from "@/lib/animeTracker";
+
 type UploadVideoFormProps = {
   clashContext?: UploadClashContext | null;
 };
 
 function mergeRequiredHashtags(input: string, requiredTags: string[]): string[] {
-  const merged = [...requiredTags.map((tag) => tag.toLowerCase()), ...parseHashtags(input)];
+  const merged = [
+    CLASHANIME_HASHTAG,
+    ...requiredTags.map((tag) => tag.toLowerCase()),
+    ...parseHashtags(input),
+  ];
   return [...new Set(merged)].slice(0, 12);
 }
 
@@ -226,7 +232,7 @@ export function UploadVideoForm({ clashContext = null }: UploadVideoFormProps) {
 
     const tags = clashContext?.matchTags.length
       ? mergeRequiredHashtags(hashtags, clashContext.matchTags)
-      : parseHashtags(hashtags);
+      : mergeRequiredHashtags(hashtags, []);
 
     const { error: insertError } = await supabase.from("videos").insert({
       title: title.trim(),

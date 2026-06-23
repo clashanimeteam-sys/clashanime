@@ -161,6 +161,8 @@ export type Dictionary = {
     clashSubtitle: string;
     uploadClip: string;
     matchTagsHint: string;
+    copyHashtag: string;
+    copyHashtagDone: string;
     leaderboardTitle: string;
     noClipsYet: string;
     bannerBadge: string;
@@ -1370,6 +1372,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashSubtitle: "Upload clips tagged with this anime and battle for the top spot while the trend is hot.",
       uploadClip: "Upload your clip",
       matchTagsHint: "Use hashtags like {tags} on your upload to join this clash.",
+      copyHashtag: "Copy",
+      copyHashtagDone: "Copied",
       leaderboardTitle: "Best clips right now",
       noClipsYet: "No clips yet. Be the first to drop a scene from this release.",
       bannerBadge: "Trending release",
@@ -2632,6 +2636,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashSubtitle: "この作品のハッシュタグ付きクリップをアップロードして、トレンド中に頂点を目指そう。",
       uploadClip: "クリップをアップロード",
       matchTagsHint: "アップロード時に {tags} などのタグを付けて参加。",
+      copyHashtag: "コピー",
+      copyHashtagDone: "コピー済み",
       leaderboardTitle: "現在のベストクリップ",
       noClipsYet: "まだクリップがありません。最初のシーンを投稿しよう。",
       bannerBadge: "話題の新作",
@@ -3881,6 +3887,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashSubtitle: "ارفع مقاطعك بوسم هذا الأنمي وتنافس على المركز الأول مع الترند العالمي.",
       uploadClip: "ارفع مقطعك",
       matchTagsHint: "استخدم وسوماً مثل {tags} في رفعك للانضمام لهذا النزال.",
+      copyHashtag: "نسخ",
+      copyHashtagDone: "تم النسخ",
       leaderboardTitle: "أفضل المقاطع الآن",
       noClipsYet: "لا مقاطع بعد. كن أول من ينشر مشهدًا من هذا الإصدار.",
       bannerBadge: "إصدار رائج",

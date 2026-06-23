@@ -126,15 +126,68 @@ export function slugifyAnimeTag(value: string): string {
     .replace(/[^a-z0-9]+/g, "");
 }
 
-export function buildMatchTagsFromTitle(title: string, extra: string[] = []): string[] {
-  const tags = new Set<string>();
-  const slug = slugifyAnimeTag(title);
-  if (slug) tags.add(slug);
+export const CLASHANIME_HASHTAG = "clashanime";
+
+const MAX_HASHTAG_LENGTH = 24;
+const MAX_HASHTAG_COUNT = 6;
+
+const TAG_STOP_WORDS = new Set([
+  "the",
+  "and",
+  "with",
+  "from",
+  "season",
+  "final",
+  "part",
+  "arc",
+  "movie",
+  "ova",
+]);
+
+function addShortTag(tags: Set<string>, value: string) {
+  const normalized = slugifyAnimeTag(value);
+  if (!normalized || normalized.length > MAX_HASHTAG_LENGTH) return;
+  tags.add(normalized);
+}
+
+export function buildShortMatchTags(title: string, extra: string[] = []): string[] {
+  const tags = new Set<string>([CLASHANIME_HASHTAG]);
+
   for (const tag of extra) {
-    const normalized = slugifyAnimeTag(tag);
-    if (normalized) tags.add(normalized);
+    addShortTag(tags, tag);
   }
-  return [...tags];
+
+  const compactSlug = slugifyAnimeTag(title);
+  if (compactSlug.length > 0 && compactSlug.length <= MAX_HASHTAG_LENGTH) {
+    tags.add(compactSlug);
+  }
+
+  const words =
+    title
+      .toLowerCase()
+      .match(/[a-z0-9]{3,}/g)
+      ?.filter((word) => !TAG_STOP_WORDS.has(word)) ?? [];
+
+  if (words[0]) addShortTag(tags, words[0]);
+  if (words[1]) addShortTag(tags, `${words[0]}${words[1]}`.slice(0, MAX_HASHTAG_LENGTH));
+
+  const acronym = words
+    .map((word) => word[0])
+    .join("")
+    .slice(0, 12);
+  if (acronym.length >= 3) addShortTag(tags, acronym);
+
+  return [...tags].slice(0, MAX_HASHTAG_COUNT);
+}
+
+export function normalizeMatchTagsForDisplay(tags: string[], title?: string): string[] {
+  const merged = buildShortMatchTags(title ?? "", tags);
+  const clashFirst = [CLASHANIME_HASHTAG, ...merged.filter((tag) => tag !== CLASHANIME_HASHTAG)];
+  return [...new Set(clashFirst)].slice(0, MAX_HASHTAG_COUNT);
+}
+
+export function buildMatchTagsFromTitle(title: string, extra: string[] = []): string[] {
+  return buildShortMatchTags(title, extra);
 }
 
 export function buildClashUploadHref(clashId: string): string {

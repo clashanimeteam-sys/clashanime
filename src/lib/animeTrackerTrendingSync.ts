@@ -1,3 +1,4 @@
+import { buildShortMatchTags } from "@/lib/animeTracker";
 import { fetchJikanAnimeDetail } from "@/lib/jikan";
 import { createServiceRoleClient } from "@/lib/supabase/admin";
 
@@ -15,7 +16,7 @@ export async function syncTrendingSpotlightToDatabase() {
 
   const { data: seeds, error: seedsError } = await serviceRole
     .from("anime_trending_spotlight")
-    .select("id, rank, mal_id")
+    .select("id, rank, mal_id, short_tags")
     .eq("active", true)
     .order("rank", { ascending: true });
 
@@ -36,6 +37,11 @@ export async function syncTrendingSpotlightToDatabase() {
         continue;
       }
 
+      const matchTags =
+        Array.isArray(seed.short_tags) && seed.short_tags.length > 0
+          ? seed.short_tags
+          : buildShortMatchTags(detail.title, detail.matchTags);
+
       const { data: releaseId, error: upsertError } = await serviceRole.rpc(
         "upsert_anime_release_from_trending_sync",
         {
@@ -44,7 +50,7 @@ export async function syncTrendingSpotlightToDatabase() {
           p_title_ja: detail.titleJapanese,
           p_poster_url: detail.posterUrl,
           p_synopsis_en: detail.synopsis,
-          p_match_tags: detail.matchTags,
+          p_match_tags: matchTags,
           p_mal_score: detail.score,
           p_episodes_total: detail.episodes,
           p_broadcast_label: detail.broadcastLabel,

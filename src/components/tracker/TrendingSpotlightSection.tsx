@@ -121,7 +121,7 @@ function TrendingSpotlightCardView({ card }: { card: TrendingSpotlightCard }) {
                   matchTags.slice(0, 4).map((tag) => `#${tag}`).join(" "),
                 )}
               </p>
-              <MatchTagUsageBadges tags={matchTags} />
+              <MatchTagUsageBadges tags={matchTags} title={title} />
             </div>
           ) : null}
         </div>

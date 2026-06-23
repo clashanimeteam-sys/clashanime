@@ -38,6 +38,8 @@ export async function runAnimeTrackerFullSync(): Promise<AnimeTrackerFullSyncRes
     syncTrendingSpotlightToDatabase(),
   ]);
 
+  await serviceRole.rpc("refresh_short_anime_match_tags");
+
   const { data: syncedAt, error } = await serviceRole.rpc("record_anime_tracker_sync", {
     p_schedule_synced: schedule.synced,
     p_schedule_errors: schedule.syncErrors,

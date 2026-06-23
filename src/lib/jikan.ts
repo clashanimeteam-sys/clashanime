@@ -73,19 +73,7 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function slugify(value: string): string {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, "");
-}
-
-function buildMatchTags(row: JikanAnimeRow): string[] {
-  const tags = new Set<string>();
-  for (const value of [row.title_english, row.title, row.title_japanese]) {
-    if (!value) continue;
-    const slug = slugify(value);
-    if (slug) tags.add(slug);
-  }
-  return [...tags];
-}
+import { buildShortMatchTags } from "@/lib/animeTracker";
 
 function pickTitle(row: JikanAnimeRow): string {
   return row.title_english?.trim() || row.title?.trim() || row.title_japanese?.trim() || "Unknown";
@@ -150,7 +138,11 @@ function mapRow(row: JikanAnimeRow, releaseDate: string): JikanAnimeEntry {
     broadcastLabel: row.broadcast?.string ?? null,
     status: row.status,
     episodeNumber: estimateEpisode(row, releaseDate),
-    matchTags: buildMatchTags(row),
+    matchTags: buildShortMatchTags(pickTitle(row), [
+      row.title_english ?? "",
+      row.title ?? "",
+      row.title_japanese ?? "",
+    ].filter(Boolean)),
     malUrl: row.url,
   };
 }
@@ -285,18 +277,11 @@ function mapJikanDetail(row: NonNullable<JikanAnimeDetailResponse["data"]>): Jik
     episodes: row.episodes ?? null,
     status: row.status ?? null,
     broadcastLabel: row.broadcast?.string ?? null,
-    matchTags: buildMatchTags({
-      mal_id: malId,
-      title: row.title ?? title,
-      title_english: row.title_english ?? null,
-      title_japanese: row.title_japanese ?? null,
-      url: row.url ?? "",
-      score: row.score ?? null,
-      rank: null,
-      genres: [],
-      status: row.status ?? "",
-      episodes: row.episodes ?? null,
-    }),
+    matchTags: buildShortMatchTags(title, [
+      row.title_english ?? "",
+      row.title ?? "",
+      row.title_japanese ?? "",
+    ].filter(Boolean)),
     malUrl: row.url ?? `https://myanimelist.net/anime/${malId}`,
   };
 }
