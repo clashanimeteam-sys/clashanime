@@ -2,6 +2,7 @@
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { createBrowserClient } from "@/lib/supabase/client";
+import { notifyAdminReviewCountsChanged } from "@/lib/adminReviewCounts";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type TrackRow = {
@@ -99,6 +100,7 @@ export function AdminBeatsLoungePanel() {
     if (reviewError) setError(reviewError.message);
     else {
       setMessage(status === "approved" ? t.admin.beatsLounge.approved : t.admin.beatsLounge.rejected);
+      notifyAdminReviewCountsChanged();
       await loadTracks();
     }
   }

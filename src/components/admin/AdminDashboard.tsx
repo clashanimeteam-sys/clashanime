@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { AdminNavBadge } from "@/components/admin/AdminNavBadge";
 import { createBrowserClient } from "@/lib/supabase/client";
+import { useAdminReviewCountsContext } from "@/providers/AdminReviewCountsProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type DashboardStats = {
@@ -29,6 +31,7 @@ type DashboardStats = {
 
 export function AdminDashboard() {
   const { t, formatNumber, formatDateTime } = useLocale();
+  const { counts } = useAdminReviewCountsContext();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -229,18 +232,43 @@ export function AdminDashboard() {
     { label: t.admin.stats.clipChallenges, value: stats?.clipChallenges ?? 0, href: "/exclusives" },
     { label: t.admin.stats.pointsWagerDuels, value: stats?.pointsWagerDuels ?? 0, href: "/exclusives" },
     { label: t.admin.stats.pendingWagerInvites, value: stats?.pendingWagerInvites ?? 0, href: "/exclusives" },
-    { label: t.admin.stats.pendingWithdrawals, value: stats?.pendingWithdrawals ?? 0, href: "/admin/withdrawals" },
-    { label: t.admin.stats.pendingKyc, value: stats?.pendingKyc ?? 0, href: "/admin/kyc" },
-    { label: t.admin.stats.openContactMessages, value: stats?.openContactMessages ?? 0, href: "/admin/contact" },
+    {
+      label: t.admin.stats.pendingWithdrawals,
+      value: counts.pendingWithdrawals,
+      href: "/admin/withdrawals",
+      review: true,
+    },
+    { label: t.admin.stats.pendingKyc, value: counts.pendingKyc, href: "/admin/kyc", review: true },
+    {
+      label: t.admin.stats.openContactMessages,
+      value: counts.openContactMessages,
+      href: "/admin/contact",
+      review: true,
+    },
     { label: t.admin.stats.welcomeEmailsSent, value: stats?.welcomeEmailsSent ?? 0, href: "/admin/emails" },
     { label: t.admin.stats.accountDeletions, value: stats?.accountDeletions ?? 0, href: "/admin/emails" },
     { label: t.admin.stats.inAppNotifications, value: stats?.inAppNotifications ?? 0, href: "/admin/emails" },
     { label: t.admin.stats.legendWinners, value: stats?.legendWinners ?? 0, href: "/admin/legends" },
-    { label: t.admin.stats.pendingVerifications, value: stats?.pendingVerifications ?? 0, href: "/admin/users" },
+    {
+      label: t.admin.stats.pendingVerifications,
+      value: counts.pendingVerifications,
+      href: "/admin/users",
+      review: true,
+    },
     { label: t.admin.stats.communityPosts, value: stats?.communityPosts ?? 0, href: "/community" },
     { label: t.admin.stats.videos, value: stats?.videos ?? 0, href: "/admin/videos" },
-    { label: t.admin.stats.reviewQueue, value: stats?.reviewVideos ?? 0, href: "/admin/videos?status=review" },
-    { label: t.admin.stats.openReports, value: stats?.openReports ?? 0, href: "/admin/reports" },
+    {
+      label: t.admin.stats.reviewQueue,
+      value: counts.reviewVideos,
+      href: "/admin/videos?status=review",
+      review: true,
+    },
+    {
+      label: t.admin.stats.openReports,
+      value: counts.openReports,
+      href: "/admin/reports",
+      review: true,
+    },
     { label: t.admin.stats.bannedUsers, value: stats?.bannedUsers ?? 0, href: "/admin/users?filter=banned" },
   ];
 
@@ -259,9 +287,16 @@ export function AdminDashboard() {
             <Link
               key={card.label}
               href={card.href}
-              className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 transition-colors hover:border-accent/40"
+              className={`rounded-2xl border p-5 transition-colors hover:border-accent/40 ${
+                card.review && card.value > 0
+                  ? "border-red-500/40 bg-red-500/5"
+                  : "border-zinc-800 bg-zinc-900/60"
+              }`}
             >
-              <p className="text-sm text-zinc-400">{card.label}</p>
+              <div className="flex items-start justify-between gap-2">
+                <p className="text-sm text-zinc-400">{card.label}</p>
+                {card.review ? <AdminNavBadge count={card.value} /> : null}
+              </div>
               <p className="mt-2 text-3xl font-bold text-white">{formatNumber(card.value)}</p>
             </Link>
           ))}
@@ -273,11 +308,13 @@ export function AdminDashboard() {
           title={t.admin.quickActions.reviewVideos}
           description={t.admin.quickActions.reviewVideosDesc}
           href="/admin/videos?status=review"
+          badge={counts.reviewVideos}
         />
         <QuickLink
           title={t.admin.quickActions.handleReports}
           description={t.admin.quickActions.handleReportsDesc}
           href="/admin/reports"
+          badge={counts.openReports}
         />
         <QuickLink
           title={t.admin.quickActions.manageUsers}
@@ -328,16 +365,19 @@ export function AdminDashboard() {
           title={t.admin.quickActions.reviewKyc}
           description={t.admin.quickActions.reviewKycDesc}
           href="/admin/kyc"
+          badge={counts.pendingKyc}
         />
         <QuickLink
           title={t.admin.quickActions.reviewContact}
           description={t.admin.quickActions.reviewContactDesc}
           href="/admin/contact"
+          badge={counts.openContactMessages}
         />
         <QuickLink
           title={t.admin.quickActions.reviewWithdrawals}
           description={t.admin.quickActions.reviewWithdrawalsDesc}
           href="/admin/withdrawals"
+          badge={counts.pendingWithdrawals}
         />
       </div>
     </div>
@@ -348,17 +388,24 @@ function QuickLink({
   title,
   description,
   href,
+  badge = 0,
 }: {
   title: string;
   description: string;
   href: string;
+  badge?: number;
 }) {
   return (
     <Link
       href={href}
-      className="rounded-2xl border border-zinc-800 bg-black p-5 transition-colors hover:border-zinc-700"
+      className={`rounded-2xl border p-5 transition-colors hover:border-zinc-700 ${
+        badge > 0 ? "border-red-500/40 bg-red-500/5" : "border-zinc-800 bg-black"
+      }`}
     >
-      <h2 className="text-lg font-semibold text-white">{title}</h2>
+      <div className="flex items-start justify-between gap-2">
+        <h2 className="text-lg font-semibold text-white">{title}</h2>
+        <AdminNavBadge count={badge} />
+      </div>
       <p className="mt-2 text-sm text-zinc-400">{description}</p>
     </Link>
   );

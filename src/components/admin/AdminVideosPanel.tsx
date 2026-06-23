@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { getModerationStatusLabel } from "@/lib/moderation";
 import { logModerationAction, moderationActionFromStatus } from "@/lib/moderationLog";
+import { notifyAdminReviewCountsChanged } from "@/lib/adminReviewCounts";
 import { isInClashTop } from "@/lib/videoRanking";
 import { createBrowserClient } from "@/lib/supabase/client";
 import type { ModerationStatus, Video } from "@/lib/types";
@@ -135,6 +136,7 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
     });
 
     setMessage(t.admin.saved);
+    notifyAdminReviewCountsChanged();
     await loadVideos();
   }
 

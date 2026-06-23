@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createBrowserClient } from "@/lib/supabase/client";
+import { notifyAdminReviewCountsChanged } from "@/lib/adminReviewCounts";
 import { useLocale } from "@/providers/LocaleProvider";
 
 function extractOriginalSource(details: string | null | undefined): string | null {
@@ -132,6 +133,7 @@ export function AdminReportsPanel() {
     }
 
     setMessage(t.admin.saved);
+    notifyAdminReviewCountsChanged();
     await loadReports();
   }
 

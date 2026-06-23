@@ -12,6 +12,7 @@ import {
   UsdtIcon,
 } from "@/components/wallet/PaymentMethodIcons";
 import { createBrowserClient } from "@/lib/supabase/client";
+import { notifyAdminReviewCountsChanged } from "@/lib/adminReviewCounts";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type AdminWithdrawal = {
@@ -144,6 +145,7 @@ export function AdminWithdrawalsPanel() {
     }
 
     setMessage(t.admin.saved);
+    notifyAdminReviewCountsChanged();
     await loadWithdrawals();
   }
 

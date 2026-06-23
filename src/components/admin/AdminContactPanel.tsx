@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createBrowserClient } from "@/lib/supabase/client";
+import { notifyAdminReviewCountsChanged } from "@/lib/adminReviewCounts";
 import type { ContactMessageStatus } from "@/lib/contactMessages";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -106,6 +107,7 @@ export function AdminContactPanel() {
     }
 
     setMessage(t.admin.saved);
+    notifyAdminReviewCountsChanged();
     await loadMessages();
   }
 
@@ -135,6 +137,7 @@ export function AdminContactPanel() {
       }
 
       setMessage(t.admin.contactReplySent);
+      notifyAdminReviewCountsChanged();
       await loadMessages();
     } catch {
       setError(t.admin.contactReplyFailed);

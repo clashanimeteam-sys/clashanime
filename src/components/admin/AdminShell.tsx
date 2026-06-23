@@ -4,13 +4,16 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { BrandLogo } from "@/components/BrandLogo";
+import { AdminNavBadge } from "@/components/admin/AdminNavBadge";
 import { PageBackLink } from "@/components/PageBackLink";
 import { isAdmin, isStaff } from "@/lib/admin";
+import type { AdminNavKey } from "@/lib/adminReviewCounts";
+import { AdminReviewCountsProvider, useAdminReviewCountsContext } from "@/providers/AdminReviewCountsProvider";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
 const navItems: Array<{
-  key: "dashboard" | "users" | "videos" | "community" | "stickers" | "reports" | "moderationLog" | "withdrawals" | "kyc" | "seasons" | "legends" | "beatsLounge" | "animeTracker" | "contact" | "emails" | "broadcast" | "settings";
+  key: AdminNavKey;
   href: string;
   adminOnly?: boolean;
 }> = [
@@ -112,6 +115,45 @@ export function AdminShell({ children }: AdminShellProps) {
   const showDashboardBack = pathname !== "/admin";
 
   return (
+    <AdminReviewCountsProvider enabled={allowed}>
+      <AdminShellLayout
+        adminUser={adminUser}
+        pathname={pathname}
+        profile={profile}
+        showDashboardBack={showDashboardBack}
+        signOut={signOut}
+      >
+        {children}
+      </AdminShellLayout>
+    </AdminReviewCountsProvider>
+  );
+}
+
+type AdminShellLayoutProps = {
+  children: React.ReactNode;
+  adminUser: boolean;
+  pathname: string;
+  profile: ReturnType<typeof useAuth>["profile"];
+  showDashboardBack: boolean;
+  signOut: () => Promise<void>;
+};
+
+function AdminShellLayout({
+  children,
+  adminUser,
+  pathname,
+  profile,
+  showDashboardBack,
+  signOut,
+}: AdminShellLayoutProps) {
+  const { t } = useLocale();
+  const { getCountForNav, refresh } = useAdminReviewCountsContext();
+
+  useEffect(() => {
+    void refresh();
+  }, [pathname, refresh]);
+
+  return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
       <div className="flex min-h-screen">
         <aside className="hidden w-64 shrink-0 border-e border-zinc-800 bg-black lg:flex lg:flex-col">
@@ -132,18 +174,20 @@ export function AdminShell({ children }: AdminShellProps) {
                   item.href === "/admin"
                     ? pathname === "/admin"
                     : pathname.startsWith(item.href);
+                const reviewCount = getCountForNav(item.key);
 
                 return (
                   <Link
                     key={item.key}
                     href={item.href}
-                    className={`rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                    className={`flex items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                       active
                         ? "bg-accent/15 text-accent"
                         : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
                     }`}
                   >
-                    {t.admin.nav[item.key]}
+                    <span>{t.admin.nav[item.key]}</span>
+                    <AdminNavBadge count={reviewCount} />
                   </Link>
                 );
               })}
@@ -170,24 +214,31 @@ export function AdminShell({ children }: AdminShellProps) {
           <header className="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-800 bg-black px-4 py-4 sm:px-6">
             <div>
               <p className="text-xs uppercase tracking-[0.18em] text-zinc-500">{t.admin.panelTitle}</p>
-              <p className="text-sm text-zinc-300">
-                {profile?.display_name ?? profile?.username} ·{" "}
-                {profile?.role === "admin" ? t.admin.roles.admin : t.admin.roles.moderator}
+              <p className="flex items-center gap-2 text-sm text-zinc-300">
+                <span>
+                  {profile?.display_name ?? profile?.username} ·{" "}
+                  {profile?.role === "admin" ? t.admin.roles.admin : t.admin.roles.moderator}
+                </span>
+                <AdminNavBadge count={getCountForNav("dashboard")} />
               </p>
             </div>
 
             <nav className="flex flex-wrap gap-2 lg:hidden">
               {navItems
                 .filter((item) => !item.adminOnly || adminUser)
-                .map((item) => (
-                  <Link
-                    key={item.key}
-                    href={item.href}
-                    className="rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-300"
-                  >
-                    {t.admin.nav[item.key]}
-                  </Link>
-                ))}
+                .map((item) => {
+                  const reviewCount = getCountForNav(item.key);
+                  return (
+                    <Link
+                      key={item.key}
+                      href={item.href}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-300"
+                    >
+                      <span>{t.admin.nav[item.key]}</span>
+                      <AdminNavBadge count={reviewCount} />
+                    </Link>
+                  );
+                })}
             </nav>
 
             <Link

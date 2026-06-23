@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { canManageUsers, type UserRole } from "@/lib/admin";
 import { logModerationAction } from "@/lib/moderationLog";
+import { notifyAdminReviewCountsChanged } from "@/lib/adminReviewCounts";
 import { createBrowserClient } from "@/lib/supabase/client";
 import type { Profile } from "@/lib/types";
 import { useAuth } from "@/providers/AuthProvider";
@@ -138,6 +139,7 @@ export function AdminUsersPanel() {
     }
 
     setMessage(t.admin.saved);
+    notifyAdminReviewCountsChanged();
     await loadUsers();
   }
 
@@ -180,6 +182,7 @@ export function AdminUsersPanel() {
     }
 
     setMessage(t.admin.saved);
+    notifyAdminReviewCountsChanged();
     await loadUsers();
   }
 

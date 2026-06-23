@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createBrowserClient } from "@/lib/supabase/client";
+import { notifyAdminReviewCountsChanged } from "@/lib/adminReviewCounts";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type KycSubmission = {
@@ -102,6 +103,7 @@ export function AdminKycPanel() {
     }
 
     setMessage(t.admin.saved);
+    notifyAdminReviewCountsChanged();
     await loadSubmissions();
   }
 
