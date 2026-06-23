@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { AdminNavBadge } from "@/components/admin/AdminNavBadge";
+import { AdminTopHashtags } from "@/components/admin/AdminTopHashtags";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useAdminReviewCountsContext } from "@/providers/AdminReviewCountsProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -302,6 +303,8 @@ export function AdminDashboard() {
           ))}
         </div>
       )}
+
+      <AdminTopHashtags />
 
       <div className="grid gap-4 lg:grid-cols-2">
         <QuickLink

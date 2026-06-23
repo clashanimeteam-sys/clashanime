@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CommentThread, updateCommentInTree } from "@/components/CommentThread";
+import { HashtagLinks } from "@/components/HashtagLinks";
 import { ComposerMediaButtons } from "@/components/ComposerMediaButtons";
 import { MentionHashtagTextarea } from "@/components/MentionHashtagTextarea";
 import { ModalPortal } from "@/components/ModalPortal";
@@ -286,9 +287,11 @@ export function VideoCommentsModal({
                 {title}
               </p>
               {hashtags && hashtags.length > 0 ? (
-                <p className="mt-2 text-sm font-semibold text-zinc-500">
-                  {hashtags.map((tag) => `#${tag}`).join(" ")}
-                </p>
+                <HashtagLinks
+                  tags={hashtags}
+                  className="mt-2 text-sm font-semibold text-zinc-500"
+                  linkClassName="text-zinc-500 transition-colors hover:text-orange-500 hover:underline dark:text-zinc-400 dark:hover:text-orange-300"
+                />
               ) : null}
             </div>
 

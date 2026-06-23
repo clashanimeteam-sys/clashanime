@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { buildHashtagPath } from "@/lib/hashtagUrls";
 import { searchHashtags } from "@/lib/hashtagSearch";
 import { parseHashtags } from "@/lib/upload";
 import { createBrowserClient } from "@/lib/supabase/client";
@@ -47,14 +49,25 @@ export function HashtagUsageHints({ value }: HashtagUsageHintsProps) {
 
   return (
     <div className="mt-2 flex flex-wrap gap-2">
-      {tags.map((tag) => (
-        <span
-          key={tag}
-          className="rounded-full border border-zinc-300 px-2.5 py-1 text-xs text-zinc-600 dark:border-zinc-700 dark:text-zinc-300"
-        >
-          #{tag} · {t.upload.hashtagUsageCount.replace("{count}", formatNumber(counts[tag] ?? 0))}
-        </span>
-      ))}
+      {tags.map((tag) => {
+        const count = counts[tag] ?? 0;
+        const className =
+          "rounded-full border border-zinc-300 px-2.5 py-1 text-xs text-zinc-600 dark:border-zinc-700 dark:text-zinc-300";
+
+        return count > 0 ? (
+          <Link
+            key={tag}
+            href={buildHashtagPath(tag)}
+            className={`${className} transition hover:border-orange-400 hover:text-orange-600 dark:hover:text-orange-300`}
+          >
+            #{tag} · {t.upload.hashtagUsageCount.replace("{count}", formatNumber(count))}
+          </Link>
+        ) : (
+          <span key={tag} className={className}>
+            #{tag} · {t.upload.hashtagUsageCount.replace("{count}", formatNumber(count))}
+          </span>
+        );
+      })}
     </div>
   );
 }

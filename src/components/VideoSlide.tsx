@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ChallengeClipButton } from "@/components/duel/ChallengeClipButton";
+import { HashtagLinks } from "@/components/HashtagLinks";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { VideoCardChannel } from "@/components/VideoCardChannel";
 import { VideoRankBadge } from "@/components/VideoRankBadge";
@@ -171,9 +172,11 @@ export function VideoSlide({ video, isActive, showRank = false, onEnded }: Video
           ) : null}
 
           {video.hashtags && video.hashtags.length > 0 ? (
-            <p className="text-sm font-semibold text-zinc-300">
-              {video.hashtags.map((tag) => `#${tag}`).join(" ")}
-            </p>
+            <HashtagLinks
+              tags={video.hashtags}
+              className="text-sm font-semibold text-zinc-300"
+              linkClassName="text-zinc-300 transition-colors hover:text-orange-300 hover:underline"
+            />
           ) : null}
         </div>
       </div>

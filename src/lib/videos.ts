@@ -68,7 +68,7 @@ const MOCK_VIDEOS: Video[] = [
   },
 ];
 
-async function attachChannels(
+export async function attachVideoChannels(
   supabase: NonNullable<Awaited<ReturnType<typeof createServerClient>>>,
   videos: Array<Omit<Video, "trending_score" | "channel"> & { user_id?: string | null }>,
 ): Promise<Video[]> {
@@ -140,7 +140,7 @@ async function fetchApprovedVideos(): Promise<Video[]> {
     return assignGlobalRanks(MOCK_VIDEOS);
   }
 
-  const withChannels = await attachChannels(supabase, data);
+  const withChannels = await attachVideoChannels(supabase, data);
   return assignGlobalRanks(withChannels);
 }
 
@@ -288,7 +288,7 @@ export async function getVerifiedCreatorVideos(limit = 24): Promise<Video[]> {
     return [];
   }
 
-  return attachChannels(supabase, data);
+  return attachVideoChannels(supabase, data);
 }
 
 export async function getVideoById(id: string): Promise<Video | null> {
@@ -310,7 +310,7 @@ export async function getVideoById(id: string): Promise<Video | null> {
     return null;
   }
 
-  const [video] = await attachChannels(supabase, [data]);
+  const [video] = await attachVideoChannels(supabase, [data]);
   const ranked = await fetchApprovedVideos();
   const match = ranked.find((entry) => entry.id === id);
   return match ? { ...video, global_rank: match.global_rank, trending_score: match.trending_score } : video;

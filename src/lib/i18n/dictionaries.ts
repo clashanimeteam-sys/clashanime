@@ -149,6 +149,11 @@ export type Dictionary = {
     videosSearchResults: string;
     emptyVideoSearch: string;
   };
+  hashtag: {
+    statsLine: string;
+    emptyVideos: string;
+    allTab: string;
+  };
   animeTracker: {
     badge: string;
     todayTitle: string;
@@ -1140,6 +1145,12 @@ export type Dictionary = {
       seoAnimeCount: string;
       seoKeywordCount: string;
     };
+    hashtags: {
+      title: string;
+      subtitle: string;
+      viewPage: string;
+      empty: string;
+    };
     roles: {
       user: string;
       moderator: string;
@@ -1367,6 +1378,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       videosSearchPlaceholder: "Search anime...",
       videosSearchResults: "{count} videos found",
       emptyVideoSearch: 'No videos found for "{query}".',
+    },
+    hashtag: {
+      statsLine: "{videos} videos · {channels} channels",
+      emptyVideos: 'No approved videos tagged "#{tag}" yet.',
+      allTab: "All",
     },
     animeTracker: {
       badge: "New release radar",
@@ -2416,6 +2432,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
         seoAnimeCount: "{count} anime titles from Jikan/DB feed search metadata (EN/AR/JA).",
         seoKeywordCount: "{count} unique keywords active across public pages.",
       },
+      hashtags: {
+        title: "Top hashtags",
+        subtitle: "Most used tags across approved videos. Each tag has a public landing page.",
+        viewPage: "Open page",
+        empty: "No hashtags in use yet.",
+      },
       roles: {
         user: "User",
         moderator: "Moderator",
@@ -2639,6 +2661,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       videosSearchPlaceholder: "アニメを検索...",
       videosSearchResults: "{count} 件の動画",
       emptyVideoSearch: "「{query}」に一致する動画はありません。",
+    },
+    hashtag: {
+      statsLine: "{videos} 本の動画 · {channels} チャンネル",
+      emptyVideos: "「#{tag}」タグの承認済み動画はまだありません。",
+      allTab: "すべて",
     },
     animeTracker: {
       badge: "新作レーダー",
@@ -3675,6 +3702,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
         seoAnimeCount: "Jikan/DBの {count} 件のアニメタイトルが検索メタデータに反映（英/阿/日）。",
         seoKeywordCount: "公開ページで {count} 件のユニークキーワードが有効。",
       },
+      hashtags: {
+        title: "人気ハッシュタグ",
+        subtitle: "承認済み動画で最も使われているタグ。各タグに公開ランディングページがあります。",
+        viewPage: "ページを開く",
+        empty: "使用中のハッシュタグはまだありません。",
+      },
       roles: {
         user: "ユーザー",
         moderator: "モデレーター",
@@ -3898,6 +3931,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       videosSearchPlaceholder: "ابحث عن أنمي...",
       videosSearchResults: "تم العثور على {count} فيديو",
       emptyVideoSearch: 'لا توجد فيديوهات لـ "{query}".',
+    },
+    hashtag: {
+      statsLine: "{videos} فيديو · {channels} قناة",
+      emptyVideos: 'لا توجد فيديوهات معتمدة بوسم "#{tag}" بعد.',
+      allTab: "الكل",
     },
     animeTracker: {
       badge: "رادار الإصدارات",
@@ -4937,6 +4975,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
         seoTitle: "كلمات SEO لجوجل",
         seoAnimeCount: "{count} عنوان أنمي من Jikan/قاعدة البيانات يغذّي بيانات البحث (عربي/إنجليزي/ياباني).",
         seoKeywordCount: "{count} كلمة مفتاحية فريدة نشطة على الصفحات العامة.",
+      },
+      hashtags: {
+        title: "أبرز الهاشتاغات",
+        subtitle: "الوسوم الأكثر استخداماً في الفيديوهات المعتمدة. لكل وسم صفحة عامة خاصة.",
+        viewPage: "فتح الصفحة",
+        empty: "لا توجد هاشتاغات مستخدمة بعد.",
       },
       roles: {
         user: "مستخدم",

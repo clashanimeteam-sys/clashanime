@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { buildHashtagPath } from "@/lib/hashtagUrls";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { CLASHANIME_HASHTAG, normalizeMatchTagsForDisplay } from "@/lib/animeTracker";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -94,7 +96,12 @@ export function MatchTagUsageBadges({
                 : "border-zinc-300 bg-white text-zinc-600 dark:border-zinc-700 dark:bg-zinc-900/60 dark:text-zinc-300"
             }`}
           >
-            <span>#{tag}</span>
+            <Link
+              href={buildHashtagPath(tag)}
+              className="font-semibold transition hover:text-orange-600 dark:hover:text-orange-200"
+            >
+              #{tag}
+            </Link>
             <span className="text-[10px] opacity-70">
               · {t.upload.hashtagUsageCount.replace("{count}", formatNumber(counts[tag] ?? 0))}
             </span>

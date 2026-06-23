@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { normalizeHashtagSlug } from "@/lib/hashtagUrls";
 
 export type HashtagSuggestion = {
   tag: string;
@@ -6,7 +7,7 @@ export type HashtagSuggestion = {
 };
 
 export function normalizeHashtagQuery(raw: string) {
-  return raw.trim().replace(/^#+/, "").toLowerCase();
+  return normalizeHashtagSlug(raw);
 }
 
 export async function searchHashtags(
@@ -16,7 +17,7 @@ export async function searchHashtags(
 ): Promise<HashtagSuggestion[]> {
   if (!supabase) return [];
 
-  const query = normalizeHashtagQuery(rawQuery);
+  const query = normalizeHashtagSlug(rawQuery);
 
   const { data, error } = await supabase.rpc("search_hashtags", {
     p_query: query,

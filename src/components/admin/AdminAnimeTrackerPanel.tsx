@@ -1,6 +1,8 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { AdminTopHashtags } from "@/components/admin/AdminTopHashtags";
+import { HashtagLinks } from "@/components/HashtagLinks";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { buildMatchTagsFromTitle } from "@/lib/animeTracker";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -313,6 +315,8 @@ export function AdminAnimeTrackerPanel({
         </div>
       </div>
 
+      <AdminTopHashtags />
+
       {message ? <p className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 px-4 py-3 text-sm text-emerald-200">{message}</p> : null}
       {error ? <p className="rounded-xl border border-red-500/30 bg-red-950/20 px-4 py-3 text-sm text-red-200">{error}</p> : null}
 
@@ -399,7 +403,11 @@ export function AdminAnimeTrackerPanel({
                       </p>
                     ) : null}
                     {release.match_tags?.length ? (
-                      <p className="mt-2 text-xs text-violet-300">{release.match_tags.map((tag) => `#${tag}`).join(" ")}</p>
+                      <HashtagLinks
+                        tags={release.match_tags}
+                        className="mt-2 block text-xs text-violet-300"
+                        linkClassName="text-violet-300 transition hover:text-orange-200 hover:underline"
+                      />
                     ) : null}
                   </div>
                   <div className="flex flex-wrap gap-2">

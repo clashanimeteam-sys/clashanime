@@ -16,6 +16,8 @@ function staticEntries(now: Date): MetadataRoute.Sitemap {
   }));
 }
 
+const MAX_HASHTAG_URLS = 100;
+
 export async function buildSitemapEntries(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const entries: MetadataRoute.Sitemap = [...staticEntries(now)];
@@ -66,6 +68,16 @@ export async function buildSitemapEntries(): Promise<MetadataRoute.Sitemap> {
     for (const profile of profiles ?? []) {
       if (!profile.username?.trim()) continue;
       addEntry(`/channel/${encodeURIComponent(profile.username.trim())}`, profile.updated_at, 0.5);
+    }
+
+    const { data: hashtagRows } = await supabase.rpc("list_top_hashtags", {
+      p_limit: MAX_HASHTAG_URLS,
+    });
+
+    for (const row of hashtagRows ?? []) {
+      const tag = (row as { tag?: string }).tag?.trim();
+      if (!tag) continue;
+      addEntry(`/hashtag/${encodeURIComponent(tag)}`, null, 0.75);
     }
   }
 

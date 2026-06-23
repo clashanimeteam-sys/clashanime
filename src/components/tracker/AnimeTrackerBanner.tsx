@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { HashtagLinks } from "@/components/HashtagLinks";
 import type { AnimeReleaseClash } from "@/lib/animeTracker";
 import { localizedAnimeTitle } from "@/lib/animeTracker";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -53,11 +54,6 @@ export function AnimeTrackerBanner({ clashes }: AnimeTrackerBannerProps) {
             <p className="mt-2 font-sans text-lg font-bold leading-snug text-white sm:text-xl">
               {t.animeTracker.bannerTitle.replace("{title}", title)}
             </p>
-            {clash.matchTags.length > 0 ? (
-              <p className="mt-2 text-xs font-medium text-zinc-400">
-                {clash.matchTags.slice(0, 4).map((tag) => `#${tag}`).join(" ")}
-              </p>
-            ) : null}
           </div>
 
           <span className="shrink-0 rounded-full bg-orange-500 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-orange-900/30 transition group-hover:bg-orange-400">
@@ -65,6 +61,13 @@ export function AnimeTrackerBanner({ clashes }: AnimeTrackerBannerProps) {
           </span>
         </div>
       </Link>
+      {clash.matchTags.length > 0 ? (
+        <HashtagLinks
+          tags={clash.matchTags.slice(0, 4)}
+          className="mt-2 px-4 text-xs font-medium text-zinc-500 sm:px-0 dark:text-zinc-400"
+          linkClassName="text-zinc-500 transition-colors hover:text-orange-400 hover:underline dark:text-zinc-400"
+        />
+      ) : null}
     </section>
   );
 }
