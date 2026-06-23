@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { VideoCard } from "@/components/VideoCard";
 import type { AnimeReleaseClashDetail } from "@/lib/animeTracker";
-import { localizedAnimeTitle } from "@/lib/animeTracker";
+import { buildClashUploadHref, localizedAnimeTitle } from "@/lib/animeTracker";
 import type { Video } from "@/lib/types";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
@@ -59,7 +59,7 @@ export function AnimeReleaseClashPageContent({ clash, videos }: AnimeReleaseClas
                 {t.animeTracker.clipCount.replace("{count}", formatNumber(clash.clipCount))}
               </span>
               <Link
-                href="/upload"
+                href={buildClashUploadHref(clash.clashId)}
                 className="rounded-full bg-white px-4 py-2 text-xs font-bold uppercase tracking-wide text-orange-700"
               >
                 {t.animeTracker.uploadClip}
@@ -95,7 +95,7 @@ export function AnimeReleaseClashPageContent({ clash, videos }: AnimeReleaseClas
           <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-8 text-center">
             <p className="text-sm text-zinc-400">{t.animeTracker.noClipsYet}</p>
             <Link
-              href="/upload"
+              href={buildClashUploadHref(clash.clashId)}
               className="mt-4 inline-flex rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-white"
             >
               {t.animeTracker.uploadClip}

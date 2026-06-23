@@ -69,7 +69,7 @@ export function MentionHashtagTextarea({
   inputRef,
   id,
 }: MentionHashtagTextareaProps) {
-  const { t } = useLocale();
+  const { t, formatNumber } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const localRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
   const fieldRef = inputRef ?? localRef;
@@ -80,7 +80,7 @@ export function MentionHashtagTextarea({
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeToken, setActiveToken] = useState<ActiveToken | null>(null);
   const [mentionSuggestions, setMentionSuggestions] = useState<ProfileUsernameSuggestion[]>([]);
-  const [hashtagSuggestions, setHashtagSuggestions] = useState<Array<{ tag: string }>>([]);
+  const [hashtagSuggestions, setHashtagSuggestions] = useState<Array<{ tag: string; usage_count: number }>>([]);
   const [dropdownPosition, setDropdownPosition] = useState<{
     top: number;
     left: number;
@@ -103,7 +103,7 @@ export function MentionHashtagTextarea({
       : hashtagSuggestions.map((row) => ({
           key: row.tag,
           label: `#${row.tag}`,
-          sublabel: null as string | null,
+          sublabel: t.upload.hashtagUsageCount.replace("{count}", formatNumber(Number(row.usage_count ?? 0))),
           avatar_url: null as string | null,
           insertValue: `#${row.tag} `,
         }));

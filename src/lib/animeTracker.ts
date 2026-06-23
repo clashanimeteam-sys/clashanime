@@ -74,3 +74,7 @@ export function buildMatchTagsFromTitle(title: string, extra: string[] = []): st
   }
   return [...tags];
 }
+
+export function buildClashUploadHref(clashId: string): string {
+  return `/upload?clash=${encodeURIComponent(clashId)}`;
+}

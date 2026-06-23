@@ -1,33 +1,39 @@
-"use client";
+import { Suspense } from "react";
+import { UploadVideoForm, type UploadClashContext } from "@/components/UploadVideoForm";
+import { getAnimeReleaseClashDetail } from "@/lib/animeTracker.server";
+import { UploadPageGate } from "@/components/upload/UploadPageGate";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { UploadVideoForm } from "@/components/UploadVideoForm";
-import { useAuth } from "@/providers/AuthProvider";
-import { useLocale } from "@/providers/LocaleProvider";
+export const dynamic = "force-dynamic";
 
-export default function UploadPage() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const { t } = useLocale();
+type UploadPageProps = {
+  searchParams: Promise<{ clash?: string }>;
+};
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.replace("/login?next=%2Fupload");
+async function UploadPageInner({ clashId }: { clashId?: string }) {
+  let clashContext: UploadClashContext | null = null;
+
+  if (clashId) {
+    const clash = await getAnimeReleaseClashDetail(clashId);
+    if (clash) {
+      clashContext = {
+        clashId: clash.clashId,
+        animeTitle: clash.animeTitle,
+        matchTags: clash.matchTags,
+      };
     }
-  }, [loading, user, router]);
-
-  if (loading) {
-    return (
-      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">{t.upload.loading}</p>
-      </div>
-    );
   }
 
-  if (!user) {
-    return null;
-  }
+  return <UploadVideoForm clashContext={clashContext} />;
+}
 
-  return <UploadVideoForm />;
+export default async function UploadPage({ searchParams }: UploadPageProps) {
+  const { clash: clashId } = await searchParams;
+
+  return (
+    <UploadPageGate>
+      <Suspense fallback={null}>
+        <UploadPageInner clashId={clashId} />
+      </Suspense>
+    </UploadPageGate>
+  );
 }

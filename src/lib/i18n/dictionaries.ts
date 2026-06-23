@@ -744,6 +744,9 @@ export type Dictionary = {
     uploadsDisabled: string;
     accountBanned: string;
     levelRequired: string;
+    clashUploadTitle: string;
+    clashUploadHint: string;
+    hashtagUsageCount: string;
   };
   moderation: {
     duplicateFile: string;
@@ -1989,6 +1992,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       uploadsDisabled: "Video uploads are temporarily disabled.",
       accountBanned: "Your account is suspended and cannot upload videos.",
       levelRequired: "Reach Challenger rank (1000+ points) to upload videos.",
+      clashUploadTitle: "Uploading for {anime} release clash",
+      clashUploadHint: "These hashtags are added automatically: {tags}",
+      hashtagUsageCount: "{count} videos",
     },
     moderation: {
       duplicateFile:
@@ -3225,6 +3231,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       uploadsDisabled: "動画アップロードは一時的に停止されています。",
       accountBanned: "アカウントが停止されているため、アップロードできません。",
       levelRequired: "Challengerランク（1000pt以上）でアップロードできます。",
+      clashUploadTitle: "{anime} のリリースクラッシュ用アップロード",
+      clashUploadHint: "次のハッシュタグが自動で追加されます: {tags}",
+      hashtagUsageCount: "{count} 本の動画",
     },
     moderation: {
       duplicateFile:
@@ -4462,6 +4471,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       uploadsDisabled: "رفع الفيديوهات متوقف مؤقتاً.",
       accountBanned: "حسابك موقوف ولا يمكنك رفع الفيديوهات.",
       levelRequired: "تحتاج رتبة منافس (1000+ نقطة) لرفع الفيديوهات.",
+      clashUploadTitle: "رفع مقطع لنزال {anime}",
+      clashUploadHint: "تُضاف هذه الوسوم تلقائياً: {tags}",
+      hashtagUsageCount: "{count} فيديو",
     },
     moderation: {
       duplicateFile:

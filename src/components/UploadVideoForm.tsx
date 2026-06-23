@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { MentionHashtagTextarea } from "@/components/MentionHashtagTextarea";
+import { HashtagUsageHints } from "@/components/upload/HashtagUsageHints";
 import { computeContentFingerprints } from "@/lib/contentFingerprint";
 import { analyzeContentAuthenticity } from "@/lib/contentHeuristics";
 import {
@@ -17,6 +18,7 @@ import {
   getPublicStorageUrl,
   getVideoDuration,
   parseHashtags,
+  formatHashtags,
   uploadToStorageWithFallback,
 } from "@/lib/upload";
 import { canUploadVideos } from "@/lib/points";
@@ -26,7 +28,22 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
 
-export function UploadVideoForm() {
+export type UploadClashContext = {
+  clashId: string;
+  animeTitle: string;
+  matchTags: string[];
+};
+
+type UploadVideoFormProps = {
+  clashContext?: UploadClashContext | null;
+};
+
+function mergeRequiredHashtags(input: string, requiredTags: string[]): string[] {
+  const merged = [...requiredTags.map((tag) => tag.toLowerCase()), ...parseHashtags(input)];
+  return [...new Set(merged)].slice(0, 12);
+}
+
+export function UploadVideoForm({ clashContext = null }: UploadVideoFormProps) {
   const router = useRouter();
   const { user, profile } = useAuth();
   const { t } = useLocale();
@@ -49,6 +66,14 @@ export function UploadVideoForm() {
     if (!supabase) return;
     fetchPublicSiteFlags(supabase).then((flags) => setUploadsAllowed(flags.allowUploads));
   }, [supabase]);
+
+  useEffect(() => {
+    if (!clashContext?.matchTags.length) return;
+    setHashtags((current) => {
+      if (current.trim()) return current;
+      return formatHashtags(clashContext.matchTags.slice(0, 3));
+    });
+  }, [clashContext]);
 
   async function handleVideoChange(file: File | undefined) {
     if (!file) return;
@@ -199,7 +224,9 @@ export function UploadVideoForm() {
       return;
     }
 
-    const tags = parseHashtags(hashtags);
+    const tags = clashContext?.matchTags.length
+      ? mergeRequiredHashtags(hashtags, clashContext.matchTags)
+      : parseHashtags(hashtags);
 
     const { error: insertError } = await supabase.from("videos").insert({
       title: title.trim(),
@@ -229,11 +256,14 @@ export function UploadVideoForm() {
 
     if (scan.status === "review" || scan.status === "pending") {
       setSuccessMessage(t.upload.reviewPending);
-      window.setTimeout(() => router.push("/profile"), 1800);
+      window.setTimeout(
+        () => router.push(clashContext ? `/tracker/clash/${clashContext.clashId}` : "/profile"),
+        1800,
+      );
       return;
     }
 
-    router.push("/profile");
+    router.push(clashContext ? `/tracker/clash/${clashContext.clashId}` : "/profile");
   }
 
   async function removeUploadedMedia(
@@ -285,6 +315,19 @@ export function UploadVideoForm() {
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-5 px-4 py-4 sm:px-6">
+      {clashContext ? (
+        <div className="rounded-2xl border border-orange-500/30 bg-orange-950/20 px-4 py-3 text-sm text-orange-100">
+          <p className="font-semibold text-white">
+            {t.upload.clashUploadTitle.replace("{anime}", clashContext.animeTitle)}
+          </p>
+          <p className="mt-1 text-orange-100/90">
+            {t.upload.clashUploadHint.replace(
+              "{tags}",
+              clashContext.matchTags.slice(0, 3).map((tag) => `#${tag}`).join(" "),
+            )}
+          </p>
+        </div>
+      ) : null}
       <div>
         <p className="text-sm text-zinc-600 dark:text-zinc-400">{t.upload.subtitle}</p>
         <p className="mt-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300">
@@ -360,6 +403,7 @@ export function UploadVideoForm() {
           placeholder={t.upload.hashtagsPlaceholder}
           className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-black dark:text-white"
         />
+        <HashtagUsageHints value={hashtags} />
       </label>
 
       {error && (
