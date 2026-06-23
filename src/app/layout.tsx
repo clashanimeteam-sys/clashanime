@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
 import { Cairo, Geist, Geist_Mono, Orbitron, Plus_Jakarta_Sans } from "next/font/google";
 import { Providers } from "@/components/Providers";
+import { buildRootLayoutMetadata } from "@/lib/seoMetadata";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -32,51 +32,7 @@ const cairo = Cairo({
   weight: ["500", "600", "700", "800"],
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Clash Anime",
-    template: "%s | Clash Anime",
-  },
-  description:
-    "Watch anime duels ranked in real time. Like, comment, and climb the trending grid on ClashAnime.com.",
-  metadataBase: new URL("https://www.clashanime.com"),
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  alternates: {
-    canonical: "/",
-  },
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/logo2.png", type: "image/png", sizes: "1024x1024" },
-      { url: "/icon-32.png", type: "image/png", sizes: "32x32" },
-    ],
-    apple: [{ url: "/logo2.png", sizes: "1024x1024", type: "image/png" }],
-  },
-  openGraph: {
-    title: "Clash Anime",
-    description:
-      "Anime clips ranked by community engagement. Share videos and climb the grid on ClashAnime.com.",
-    siteName: "Clash Anime",
-    type: "website",
-    images: [{ url: "/logo2.png", width: 1024, height: 1024, alt: "Clash Anime" }],
-  },
-  twitter: {
-    card: "summary",
-    title: "Clash Anime",
-    description:
-      "Anime clips ranked by community engagement. Share videos and climb the grid on ClashAnime.com.",
-    images: ["/logo2.png"],
-  },
-};
+export const metadata = buildRootLayoutMetadata();
 
 export default function RootLayout({
   children,

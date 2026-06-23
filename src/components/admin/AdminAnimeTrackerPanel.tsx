@@ -41,7 +41,15 @@ type TrendingSpotlightRow = {
   mal_score: number | null;
 };
 
-export function AdminAnimeTrackerPanel() {
+type AdminAnimeTrackerPanelProps = {
+  seoAnimeCount?: number;
+  seoKeywordCount?: number;
+};
+
+export function AdminAnimeTrackerPanel({
+  seoAnimeCount = 0,
+  seoKeywordCount = 0,
+}: AdminAnimeTrackerPanelProps) {
   const { t, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [releases, setReleases] = useState<ReleaseRow[]>([]);
@@ -257,6 +265,17 @@ export function AdminAnimeTrackerPanel() {
               {t.admin.animeTracker.lastAutoSyncLabel}:{" "}
               {formatDateTime(lastSyncedAt, { dateStyle: "medium", timeStyle: "short" })}
             </p>
+          ) : null}
+          {seoAnimeCount > 0 ? (
+            <div className="mt-4 rounded-xl border border-sky-500/30 bg-sky-500/10 px-4 py-3">
+              <p className="text-sm font-semibold text-sky-200">{t.admin.animeTracker.seoTitle}</p>
+              <p className="mt-1 text-xs text-sky-100/90">
+                {t.admin.animeTracker.seoAnimeCount.replace("{count}", String(seoAnimeCount))}
+              </p>
+              <p className="mt-1 text-xs text-sky-100/90">
+                {t.admin.animeTracker.seoKeywordCount.replace("{count}", String(seoKeywordCount))}
+              </p>
+            </div>
           ) : null}
         </div>
         <div className="flex flex-wrap gap-2">

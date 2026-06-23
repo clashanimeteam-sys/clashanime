@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { AboutPageContent } from "@/components/AboutPageContent";
+import { getAnimeSeoCatalog } from "@/lib/animeTracker.server";
+import { buildPageMetadata } from "@/lib/seoMetadata";
 
-export const metadata: Metadata = {
-  title: "About Us",
-  description:
-    "Learn about ClashAnime — the global anime duel platform built for real-time competition, community, and ClashCoins.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const catalog = await getAnimeSeoCatalog();
+  return buildPageMetadata("about", { dbAnime: catalog });
+}
 
 export default function AboutPage() {
   return <AboutPageContent />;

@@ -292,6 +292,65 @@ export async function getTrendingSpotlightCards(): Promise<TrendingSpotlightCard
   return (data as TrendingSpotlightRow[]).map(mapTrendingSpotlight);
 }
 
+export type AnimeSeoCatalogEntry = {
+  en: string;
+  ar?: string;
+  ja?: string;
+  malId?: number;
+};
+
+export async function getAnimeSeoCatalog(): Promise<AnimeSeoCatalogEntry[]> {
+  const supabase = await createServerClient();
+  if (!supabase) return [];
+
+  const [trending, releases] = await Promise.all([
+    supabase.rpc("get_trending_spotlight_cards"),
+    supabase
+      .from("anime_releases")
+      .select("title, title_ar, title_ja, mal_id")
+      .order("release_date", { ascending: false })
+      .limit(200),
+  ]);
+
+  const byKey = new Map<string, AnimeSeoCatalogEntry>();
+
+  const upsert = (entry: AnimeSeoCatalogEntry) => {
+    const key = entry.en.trim().toLowerCase();
+    if (!key) return;
+    const existing = byKey.get(key);
+    if (!existing) {
+      byKey.set(key, entry);
+      return;
+    }
+    byKey.set(key, {
+      en: existing.en || entry.en,
+      ar: existing.ar || entry.ar,
+      ja: existing.ja || entry.ja,
+      malId: existing.malId ?? entry.malId,
+    });
+  };
+
+  for (const row of (trending.data ?? []) as TrendingSpotlightRow[]) {
+    upsert({
+      en: row.anime_title ?? row.seed_title_en ?? "",
+      ar: row.title_ar ?? row.seed_title_ar ?? undefined,
+      ja: row.title_ja ?? row.seed_title_ja ?? undefined,
+      malId: row.mal_id,
+    });
+  }
+
+  for (const row of releases.data ?? []) {
+    upsert({
+      en: row.title,
+      ar: row.title_ar ?? undefined,
+      ja: row.title_ja ?? undefined,
+      malId: row.mal_id ?? undefined,
+    });
+  }
+
+  return [...byKey.values()].filter((entry) => entry.en.trim());
+}
+
 export async function getAnimeReleaseClashDetail(
   clashId: string,
 ): Promise<AnimeReleaseClashDetail | null> {

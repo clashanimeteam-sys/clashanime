@@ -1136,6 +1136,9 @@ export type Dictionary = {
       deleteConfirm: string;
       created: string;
       clashOpened: string;
+      seoTitle: string;
+      seoAnimeCount: string;
+      seoKeywordCount: string;
     };
     roles: {
       user: string;
@@ -2409,6 +2412,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         deleteConfirm: "Delete this release from the tracker?",
         created: "Release added.",
         clashOpened: "Release clash opened.",
+        seoTitle: "Google SEO keywords",
+        seoAnimeCount: "{count} anime titles from Jikan/DB feed search metadata (EN/AR/JA).",
+        seoKeywordCount: "{count} unique keywords active across public pages.",
       },
       roles: {
         user: "User",
@@ -3665,6 +3671,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         deleteConfirm: "このリリースを削除しますか？",
         created: "リリースを追加しました。",
         clashOpened: "リリースクラッシュを開始しました。",
+        seoTitle: "Google SEOキーワード",
+        seoAnimeCount: "Jikan/DBの {count} 件のアニメタイトルが検索メタデータに反映（英/阿/日）。",
+        seoKeywordCount: "公開ページで {count} 件のユニークキーワードが有効。",
       },
       roles: {
         user: "ユーザー",
@@ -4925,6 +4934,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         deleteConfirm: "حذف هذا الإصدار من الرادار؟",
         created: "تمت إضافة الإصدار.",
         clashOpened: "تم فتح نزال الإصدار.",
+        seoTitle: "كلمات SEO لجوجل",
+        seoAnimeCount: "{count} عنوان أنمي من Jikan/قاعدة البيانات يغذّي بيانات البحث (عربي/إنجليزي/ياباني).",
+        seoKeywordCount: "{count} كلمة مفتاحية فريدة نشطة على الصفحات العامة.",
       },
       roles: {
         user: "مستخدم",

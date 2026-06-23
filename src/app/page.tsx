@@ -1,10 +1,22 @@
+import type { Metadata } from "next";
 import { HomeContent } from "@/components/HomeContent";
-import { getActiveAnimeReleaseClashes } from "@/lib/animeTracker.server";
+import { JsonLd } from "@/components/JsonLd";
+import {
+  buildOrganizationJsonLd,
+  buildPageMetadata,
+  buildWebSiteJsonLd,
+} from "@/lib/seoMetadata";
+import { getActiveAnimeReleaseClashes, getAnimeSeoCatalog } from "@/lib/animeTracker.server";
 import { getActiveClashSeason } from "@/lib/clashSeasons.server";
 import { getHallOfLegends } from "@/lib/hallOfLegends";
 import { getClashArenaStats, getClashVideos } from "@/lib/videos";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const catalog = await getAnimeSeoCatalog();
+  return buildPageMetadata("home", { dbAnime: catalog });
+}
 
 export default async function Home() {
   const [videos, activeSeason, arenaStats, legendSeasons, activeReleaseClashes] = await Promise.all([
@@ -16,12 +28,15 @@ export default async function Home() {
   ]);
 
   return (
-    <HomeContent
-      videos={videos}
-      activeSeason={activeSeason}
-      arenaStats={arenaStats}
-      legendSeasons={legendSeasons}
-      activeReleaseClashes={activeReleaseClashes}
-    />
+    <>
+      <JsonLd data={[buildWebSiteJsonLd(), buildOrganizationJsonLd()]} />
+      <HomeContent
+        videos={videos}
+        activeSeason={activeSeason}
+        arenaStats={arenaStats}
+        legendSeasons={legendSeasons}
+        activeReleaseClashes={activeReleaseClashes}
+      />
+    </>
   );
 }
