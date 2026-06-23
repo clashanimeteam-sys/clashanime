@@ -6,6 +6,7 @@ import type { AnimeReleaseClash } from "@/lib/animeTracker";
 import { localizedAnimeTitle } from "@/lib/animeTracker";
 import type { JikanAnimeEntry } from "@/lib/jikan";
 import { AnimeSynopsisBlock } from "@/components/tracker/AnimeSynopsisBlock";
+import { TrendingSpotlightSection } from "@/components/tracker/TrendingSpotlightSection";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
 
@@ -276,6 +277,8 @@ export function AnimeTrackerPageContent({
           </div>
         </div>
       </header>
+
+      <TrendingSpotlightSection />
 
       {activeClashes.length > 0 ? (
         <section className="mb-12">
