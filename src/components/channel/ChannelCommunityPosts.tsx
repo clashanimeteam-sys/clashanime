@@ -21,14 +21,27 @@ export type ChannelCommunityPost = {
 
 type ChannelCommunityPostsProps = {
   posts: ChannelCommunityPost[];
+  showPostNow?: boolean;
 };
 
-export function ChannelCommunityPosts({ posts }: ChannelCommunityPostsProps) {
+export function ChannelCommunityPosts({ posts, showPostNow = false }: ChannelCommunityPostsProps) {
   const { t, formatDateTime } = useLocale();
   const [activeReportPost, setActiveReportPost] = useState<ChannelCommunityPost | null>(null);
 
   if (posts.length === 0) {
-    return <p className="mt-5 text-sm text-zinc-600 dark:text-zinc-400">{t.profile.noChannelPosts}</p>;
+    return (
+      <div className="mt-5 space-y-4">
+        <p className="text-sm text-zinc-600 dark:text-zinc-400">{t.profile.noChannelPosts}</p>
+        {showPostNow ? (
+          <Link
+            href="/community"
+            className="inline-flex rounded-xl border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-black transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white dark:hover:bg-zinc-900"
+          >
+            {t.profile.postNowToCommunity}
+          </Link>
+        ) : null}
+      </div>
+    );
   }
 
   return (

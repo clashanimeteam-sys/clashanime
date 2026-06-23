@@ -457,6 +457,7 @@ export type Dictionary = {
     channelStats: string;
     noChannelVideos: string;
     noChannelPosts: string;
+    postNowToCommunity: string;
     viewCommunityPost: string;
     channelPreviewTitle: string;
     channelPreviewDesc: string;
@@ -1752,7 +1753,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelAbout: "About",
       channelStats: "{followers} followers · {videos} videos · {posts} posts",
       noChannelVideos: "This channel has no videos yet.",
-      noChannelPosts: "This channel has no community posts yet.",
+      noChannelPosts: "No anime community posts yet.",
+      postNowToCommunity: "Post now",
       viewCommunityPost: "View post",
       channelPreviewTitle: "Your channel",
       channelPreviewDesc: "This is how visitors see your public channel page.",
@@ -3080,7 +3082,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelAbout: "概要",
       channelStats: "{followers} フォロワー · {videos} 本の動画 · {posts} 件の投稿",
       noChannelVideos: "このチャンネルにはまだ動画がありません。",
-      noChannelPosts: "このチャンネルにはまだコミュニティ投稿がありません。",
+      noChannelPosts: "アニメコミュニティの投稿はまだありません。",
+      postNowToCommunity: "今すぐ投稿",
       viewCommunityPost: "投稿を見る",
       channelPreviewTitle: "あなたのチャンネル",
       channelPreviewDesc: "訪問者に公開されるチャンネルページのプレビューです。",
@@ -4404,7 +4407,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelAbout: "نبذة",
       channelStats: "{followers} متابع · {videos} فيديو · {posts} منشور",
       noChannelVideos: "لا توجد فيديوهات في هذه القناة بعد.",
-      noChannelPosts: "لا توجد منشورات في مجتمع الأنمي من هذا المستخدم بعد.",
+      noChannelPosts: "لا توجد منشورات في مجتمع الأنمي بعد.",
+      postNowToCommunity: "انشر الآن",
       viewCommunityPost: "عرض المنشور",
       channelPreviewTitle: "قناتك",
       channelPreviewDesc: "هكذا يرى الزوار صفحة قناتك العامة.",

@@ -83,7 +83,7 @@ export function ProfileChannelPreview({
           </div>
         )
       ) : activeTab === "community" ? (
-        <ChannelCommunityPosts posts={communityPosts} />
+        <ChannelCommunityPosts posts={communityPosts} showPostNow />
       ) : (
         <ChannelAboutSection
           profile={profile}
