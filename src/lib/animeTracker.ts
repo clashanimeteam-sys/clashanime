@@ -2,6 +2,12 @@ import type { JikanAnimeEntry } from "@/lib/jikan";
 
 export type AnimeReleaseStatus = "scheduled" | "released" | "cancelled";
 
+export type AnimeSynopsis = {
+  synopsisEn: string | null;
+  synopsisAr: string | null;
+  synopsisJa: string | null;
+};
+
 export type AnimeRelease = {
   id: string;
   title: string;
@@ -17,7 +23,7 @@ export type AnimeRelease = {
   clashStatus: string | null;
   clashOpensAt: string | null;
   malId: number | null;
-};
+} & AnimeSynopsis;
 
 export type AnimeReleaseUpcoming = {
   id: string;
@@ -29,7 +35,7 @@ export type AnimeReleaseUpcoming = {
   episodeNumber: number;
   posterUrl: string | null;
   status: AnimeReleaseStatus;
-};
+} & AnimeSynopsis;
 
 export type AnimeReleaseClash = {
   clashId: string;
@@ -44,7 +50,7 @@ export type AnimeReleaseClash = {
   opensAt: string;
   closesAt: string | null;
   clipCount: number;
-};
+} & AnimeSynopsis;
 
 export type AnimeReleaseClashDetail = AnimeReleaseClash & {
   clashStatus: string;
@@ -57,6 +63,27 @@ export function localizedAnimeTitle(
   if (locale === "ar" && release.titleAr) return release.titleAr;
   if (locale === "ja" && release.titleJa) return release.titleJa;
   return release.title;
+}
+
+export function localizedAnimeSynopsis(
+  release: AnimeSynopsis,
+  locale: "en" | "ja" | "ar",
+): string | null {
+  if (locale === "ar" && release.synopsisAr?.trim()) return release.synopsisAr.trim();
+  if (locale === "ja" && release.synopsisJa?.trim()) return release.synopsisJa.trim();
+  if (release.synopsisEn?.trim()) return release.synopsisEn.trim();
+  return release.synopsisJa?.trim() || release.synopsisAr?.trim() || null;
+}
+
+export function animeSynopsisEntries(release: AnimeSynopsis): Array<{
+  locale: "en" | "ar" | "ja";
+  text: string;
+}> {
+  const entries: Array<{ locale: "en" | "ar" | "ja"; text: string }> = [];
+  if (release.synopsisEn?.trim()) entries.push({ locale: "en", text: release.synopsisEn.trim() });
+  if (release.synopsisAr?.trim()) entries.push({ locale: "ar", text: release.synopsisAr.trim() });
+  if (release.synopsisJa?.trim()) entries.push({ locale: "ja", text: release.synopsisJa.trim() });
+  return entries;
 }
 
 export function slugifyAnimeTag(value: string): string {
@@ -103,6 +130,9 @@ export function releaseToTrackerEntry(
     matchTags: release.matchTags,
     malUrl: release.malId ? `https://myanimelist.net/anime/${release.malId}` : "",
     clashId: release.clashId,
+    synopsisEn: release.synopsisEn,
+    synopsisAr: release.synopsisAr,
+    synopsisJa: release.synopsisJa,
   };
 }
 
@@ -123,5 +153,8 @@ export function upcomingToTrackerEntry(release: AnimeReleaseUpcoming): JikanAnim
     episodeNumber: release.episodeNumber,
     matchTags: [],
     malUrl: "",
+    synopsisEn: release.synopsisEn,
+    synopsisAr: release.synopsisAr,
+    synopsisJa: release.synopsisJa,
   };
 }

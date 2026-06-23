@@ -16,6 +16,9 @@ type ReleaseRow = {
   episode_number: number;
   poster_url: string | null;
   match_tags: string[];
+  synopsis_en: string | null;
+  synopsis_ar: string | null;
+  synopsis_ja: string | null;
   status: "scheduled" | "released" | "cancelled";
   source: string;
   clash_id: string | null;
@@ -40,6 +43,9 @@ export function AdminAnimeTrackerPanel() {
   const [episodeNumber, setEpisodeNumber] = useState("1");
   const [posterUrl, setPosterUrl] = useState("");
   const [matchTags, setMatchTags] = useState("");
+  const [synopsisEn, setSynopsisEn] = useState("");
+  const [synopsisAr, setSynopsisAr] = useState("");
+  const [synopsisJa, setSynopsisJa] = useState("");
   const [openClash, setOpenClash] = useState(false);
 
   const loadReleases = useCallback(async () => {
@@ -86,6 +92,9 @@ export function AdminAnimeTrackerPanel() {
       p_episode_number: Number(episodeNumber) || 1,
       p_poster_url: posterUrl.trim() || null,
       p_match_tags: tags.length ? tags : buildMatchTagsFromTitle(title.trim()),
+      p_synopsis_en: synopsisEn.trim() || null,
+      p_synopsis_ar: synopsisAr.trim() || null,
+      p_synopsis_ja: synopsisJa.trim() || null,
       p_open_clash: openClash,
     });
 
@@ -103,6 +112,9 @@ export function AdminAnimeTrackerPanel() {
     setEpisodeNumber("1");
     setPosterUrl("");
     setMatchTags("");
+    setSynopsisEn("");
+    setSynopsisAr("");
+    setSynopsisJa("");
     setOpenClash(false);
     setMessage(t.admin.animeTracker.created);
     await loadReleases();
@@ -214,6 +226,9 @@ export function AdminAnimeTrackerPanel() {
           <input value={episodeNumber} onChange={(e) => setEpisodeNumber(e.target.value)} placeholder={t.admin.animeTracker.episodeLabel} className="rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm" />
           <input value={posterUrl} onChange={(e) => setPosterUrl(e.target.value)} placeholder={t.admin.animeTracker.posterLabel} className="rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm" />
           <input value={matchTags} onChange={(e) => setMatchTags(e.target.value)} placeholder={t.admin.animeTracker.tagsLabel} className="rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm sm:col-span-2" />
+          <textarea value={synopsisEn} onChange={(e) => setSynopsisEn(e.target.value)} placeholder={t.admin.animeTracker.synopsisEnLabel} rows={3} className="rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm sm:col-span-2" />
+          <textarea value={synopsisAr} onChange={(e) => setSynopsisAr(e.target.value)} placeholder={t.admin.animeTracker.synopsisArLabel} rows={3} className="rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm sm:col-span-2" />
+          <textarea value={synopsisJa} onChange={(e) => setSynopsisJa(e.target.value)} placeholder={t.admin.animeTracker.synopsisJaLabel} rows={3} className="rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm sm:col-span-2" />
         </div>
         <label className="mt-4 flex items-center gap-2 text-sm text-zinc-300">
           <input type="checkbox" checked={openClash} onChange={(e) => setOpenClash(e.target.checked)} />

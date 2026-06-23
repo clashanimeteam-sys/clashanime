@@ -19,13 +19,16 @@ type ReleaseRow = {
   episode_number: number;
   poster_url: string | null;
   match_tags: string[] | null;
+  synopsis_en: string | null;
+  synopsis_ar: string | null;
+  synopsis_ja: string | null;
   status: AnimeRelease["status"];
   clash_id: string | null;
   clash_status: string | null;
   clash_opens_at: string | null;
 };
 
-type UpcomingRow = Omit<ReleaseRow, "match_tags" | "clash_id" | "clash_status" | "clash_opens_at">;
+type UpcomingRow = Omit<ReleaseRow, "match_tags" | "clash_id" | "clash_status" | "clash_opens_at" | "mal_id">;
 
 type ClashRow = {
   clash_id: string;
@@ -36,12 +39,27 @@ type ClashRow = {
   title_ja: string | null;
   episode_number: number;
   poster_url: string | null;
+  synopsis_en: string | null;
+  synopsis_ar: string | null;
+  synopsis_ja: string | null;
   match_tags: string[] | null;
   opens_at: string;
   closes_at: string | null;
   clip_count: number;
   clash_status?: string;
 };
+
+function mapSynopsis(row: {
+  synopsis_en?: string | null;
+  synopsis_ar?: string | null;
+  synopsis_ja?: string | null;
+}) {
+  return {
+    synopsisEn: row.synopsis_en ?? null,
+    synopsisAr: row.synopsis_ar ?? null,
+    synopsisJa: row.synopsis_ja ?? null,
+  };
+}
 
 function mapRelease(row: ReleaseRow): AnimeRelease {
   return {
@@ -59,6 +77,7 @@ function mapRelease(row: ReleaseRow): AnimeRelease {
     clashStatus: row.clash_status,
     clashOpensAt: row.clash_opens_at,
     malId: row.mal_id,
+    ...mapSynopsis(row),
   };
 }
 
@@ -73,6 +92,7 @@ function mapUpcoming(row: UpcomingRow): AnimeReleaseUpcoming {
     episodeNumber: Number(row.episode_number),
     posterUrl: row.poster_url,
     status: row.status,
+    ...mapSynopsis(row),
   };
 }
 
@@ -90,6 +110,7 @@ function mapClash(row: ClashRow): AnimeReleaseClash {
     opensAt: row.opens_at,
     closesAt: row.closes_at,
     clipCount: Number(row.clip_count),
+    ...mapSynopsis(row),
   };
 }
 

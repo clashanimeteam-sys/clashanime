@@ -31,6 +31,9 @@ export type JikanAnimeEntry = {
   episodeNumber: number;
   matchTags: string[];
   malUrl: string;
+  synopsisEn?: string | null;
+  synopsisAr?: string | null;
+  synopsisJa?: string | null;
 };
 
 type JikanAnimeRow = {
@@ -231,4 +234,43 @@ export async function fetchJikanAiringSchedule(daysAhead = 7): Promise<JikanAnim
     fetchJikanUpcomingSchedule(daysAhead),
   ]);
   return [...today, ...upcoming];
+}
+
+type JikanAnimeDetailResponse = {
+  data?: { synopsis?: string | null };
+};
+
+const SYNOPSIS_FETCH_DELAY_MS = 350;
+
+export async function fetchJikanAnimeSynopsis(malId: number): Promise<string | null> {
+  if (!malId) return null;
+
+  const response = await fetch(`${JIKAN_API}/anime/${malId}`, {
+    headers: { Accept: "application/json" },
+    next: { revalidate: 86400 },
+  });
+
+  if (response.status === 429) {
+    await sleep(1200);
+    return fetchJikanAnimeSynopsis(malId);
+  }
+
+  if (!response.ok) return null;
+
+  const payload = (await response.json()) as JikanAnimeDetailResponse;
+  const synopsis = payload.data?.synopsis?.trim();
+  return synopsis || null;
+}
+
+export async function fetchJikanSynopsisMap(malIds: number[]): Promise<Map<number, string>> {
+  const map = new Map<number, string>();
+  const uniqueIds = [...new Set(malIds.filter((id) => id > 0))];
+
+  for (const malId of uniqueIds) {
+    const synopsis = await fetchJikanAnimeSynopsis(malId);
+    if (synopsis) map.set(malId, synopsis);
+    await sleep(SYNOPSIS_FETCH_DELAY_MS);
+  }
+
+  return map;
 }

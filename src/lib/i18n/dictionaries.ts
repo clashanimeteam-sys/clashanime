@@ -166,7 +166,7 @@ export type Dictionary = {
     bannerBadge: string;
     bannerTitle: string;
     jikanSource: string;
-    jikanAttribution: string;
+    storyTitle: string;
     scoreLabel: string;
     rankLabel: string;
     malLink: string;
@@ -1103,6 +1103,9 @@ export type Dictionary = {
       titleLabel: string;
       titleArLabel: string;
       titleJaLabel: string;
+      synopsisEnLabel: string;
+      synopsisArLabel: string;
+      synopsisJaLabel: string;
       episodeLabel: string;
       posterLabel: string;
       tagsLabel: string;
@@ -1362,7 +1365,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bannerBadge: "Trending release",
       bannerTitle: "{title} just dropped — join the release clash",
       jikanSource: "MAL",
-      jikanAttribution: "Schedule data via Jikan API (MyAnimeList).",
+      storyTitle: "Story",
       scoreLabel: "Score {score}",
       rankLabel: "Rank #{rank}",
       malLink: "View on MyAnimeList →",
@@ -2356,6 +2359,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         titleLabel: "Anime title",
         titleArLabel: "Arabic title (optional)",
         titleJaLabel: "Japanese title (optional)",
+        synopsisEnLabel: "Story in English (optional)",
+        synopsisArLabel: "Story in Arabic (optional)",
+        synopsisJaLabel: "Story in Japanese (optional)",
         episodeLabel: "Episode number",
         posterLabel: "Poster URL (optional)",
         tagsLabel: "Match hashtags (comma separated, optional)",
@@ -2611,7 +2617,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bannerBadge: "話題の新作",
       bannerTitle: "{title} が公開 — リリースクラッシュに参加",
       jikanSource: "MAL",
-      jikanAttribution: "放送データ: Jikan API（MyAnimeList）",
+      storyTitle: "あらすじ",
       scoreLabel: "スコア {score}",
       rankLabel: "ランク #{rank}",
       malLink: "MyAnimeListで見る →",
@@ -3592,6 +3598,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         titleLabel: "アニメタイトル",
         titleArLabel: "アラビア語タイトル（任意）",
         titleJaLabel: "日本語タイトル（任意）",
+        synopsisEnLabel: "英語のあらすじ（任意）",
+        synopsisArLabel: "アラビア語のあらすじ（任意）",
+        synopsisJaLabel: "日本語のあらすじ（任意）",
         episodeLabel: "話数",
         posterLabel: "ポスターURL（任意）",
         tagsLabel: "一致ハッシュタグ（カンマ区切り、任意）",
@@ -3847,7 +3856,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bannerBadge: "إصدار رائج",
       bannerTitle: "نزل {title} — انضم لنزال الإصدار",
       jikanSource: "MAL",
-      jikanAttribution: "بيانات الجدول عبر Jikan API (MyAnimeList).",
+      storyTitle: "القصة",
       scoreLabel: "التقييم {score}",
       rankLabel: "الترتيب #{rank}",
       malLink: "عرض على MyAnimeList ←",
@@ -4832,6 +4841,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         titleLabel: "عنوان الأنمي",
         titleArLabel: "العنوان بالعربية (اختياري)",
         titleJaLabel: "العنوان باليابانية (اختياري)",
+        synopsisEnLabel: "القصة بالإنجليزية (اختياري)",
+        synopsisArLabel: "القصة بالعربية (اختياري)",
+        synopsisJaLabel: "القصة باليابانية (اختياري)",
         episodeLabel: "رقم الحلقة",
         posterLabel: "رابط الملصق (اختياري)",
         tagsLabel: "وسوم المطابقة (مفصولة بفاصلة، اختياري)",

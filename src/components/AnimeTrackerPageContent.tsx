@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { AnimeReleaseClash } from "@/lib/animeTracker";
 import { localizedAnimeTitle } from "@/lib/animeTracker";
 import type { JikanAnimeEntry } from "@/lib/jikan";
+import { AnimeSynopsisBlock } from "@/components/tracker/AnimeSynopsisBlock";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
 
@@ -134,6 +135,7 @@ function ActiveClashCard({ clash }: { clash: AnimeReleaseClash }) {
           <p className="mt-3 text-base font-medium text-orange-700 dark:text-orange-300">
             {t.animeTracker.clipCount.replace("{count}", formatNumber(clash.clipCount))}
           </p>
+          <AnimeSynopsisBlock synopsis={clash} variant="compact" />
         </div>
 
         <span className="inline-flex w-fit rounded-full bg-gradient-to-r from-orange-500 to-red-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-orange-500/30 transition group-hover:brightness-110">
@@ -173,6 +175,8 @@ function ReleaseCard({
         <h3 className="mt-3 text-lg font-bold leading-snug text-zinc-900 dark:text-white sm:text-xl">
           {title}
         </h3>
+
+        <AnimeSynopsisBlock synopsis={release} variant="compact" />
 
         <p className="mt-2 text-sm font-medium text-zinc-600 dark:text-zinc-300">
           {release.broadcastLabel ??
@@ -257,9 +261,6 @@ export function AnimeTrackerPageContent({
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-zinc-700 dark:text-zinc-200 sm:text-lg">
             {t.pages.animeTrackerSubtitle}
-          </p>
-          <p className="mt-3 text-sm font-medium text-zinc-500 dark:text-zinc-400">
-            {t.animeTracker.jikanAttribution}
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3">

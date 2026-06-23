@@ -5,6 +5,7 @@ import Link from "next/link";
 import { VideoCard } from "@/components/VideoCard";
 import type { AnimeReleaseClashDetail } from "@/lib/animeTracker";
 import { buildClashUploadHref, localizedAnimeTitle } from "@/lib/animeTracker";
+import { AnimeSynopsisBlock } from "@/components/tracker/AnimeSynopsisBlock";
 import type { Video } from "@/lib/types";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
@@ -61,6 +62,7 @@ export function AnimeReleaseClashPageContent({ clash, videos }: AnimeReleaseClas
             <p className="mt-4 max-w-xl text-base leading-relaxed text-zinc-700 dark:text-orange-100">
               {t.animeTracker.clashSubtitle}
             </p>
+            <AnimeSynopsisBlock synopsis={clash} variant="full" />
             <div className="mt-5 flex flex-wrap items-center gap-3">
               <span className="rounded-xl border border-orange-200 bg-white px-4 py-2 text-sm font-bold text-orange-800 dark:border-orange-500/40 dark:bg-zinc-900/60 dark:text-orange-200">
                 {t.animeTracker.clipCount.replace("{count}", formatNumber(clash.clipCount))}
