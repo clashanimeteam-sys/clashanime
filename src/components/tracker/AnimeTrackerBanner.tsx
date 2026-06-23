@@ -2,18 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { SeasonCountdown } from "@/components/clash/SeasonCountdown";
-import type { ClashSeason } from "@/lib/clashSeasons";
 import type { AnimeReleaseClash } from "@/lib/animeTracker";
 import { localizedAnimeTitle } from "@/lib/animeTracker";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type AnimeTrackerBannerProps = {
   clashes: AnimeReleaseClash[];
-  activeSeason?: ClashSeason | null;
 };
 
-export function AnimeTrackerBanner({ clashes, activeSeason = null }: AnimeTrackerBannerProps) {
+export function AnimeTrackerBanner({ clashes }: AnimeTrackerBannerProps) {
   const { t, locale } = useLocale();
 
   if (!clashes.length) return null;
@@ -29,18 +26,10 @@ export function AnimeTrackerBanner({ clashes, activeSeason = null }: AnimeTracke
   );
 
   return (
-    <section className="relative mb-2 sm:mb-4">
-      {activeSeason ? (
-        <div className="relative z-20 mb-3 flex justify-end sm:absolute sm:end-0 sm:top-0 sm:mb-0 sm:-translate-y-[38%]">
-          <SeasonCountdown season={activeSeason} />
-        </div>
-      ) : null}
-
+    <section className="mb-2 sm:mb-4">
       <Link
         href={`/tracker/clash/${clash.clashId}`}
-        className={`group relative block overflow-hidden rounded-2xl border border-zinc-700/90 bg-zinc-900 shadow-[0_12px_40px_rgba(0,0,0,0.25)] ring-1 ring-white/5 transition hover:border-orange-500/40 hover:shadow-orange-500/10 ${
-          activeSeason ? "mt-0 sm:mt-16 sm:pt-2" : ""
-        }`}
+        className="group relative block overflow-hidden rounded-2xl border border-zinc-700/90 bg-zinc-900 shadow-[0_12px_40px_rgba(0,0,0,0.25)] ring-1 ring-white/5 transition hover:border-orange-500/40 hover:shadow-orange-500/10"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-violet-950/40 via-zinc-900 to-orange-950/30" aria-hidden />
         {clash.posterUrl ? (
