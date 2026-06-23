@@ -40,6 +40,19 @@ export const metadata: Metadata = {
   description:
     "Watch anime duels ranked in real time. Like, comment, and climb the trending grid on ClashAnime.com.",
   metadataBase: new URL("https://www.clashanime.com"),
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },

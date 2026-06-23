@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { Video } from "@/lib/types";
+import { SITE_URL } from "@/lib/siteSeo";
 
-const SITE_URL = "https://www.clashanime.com";
 const SITE_NAME = "Clash Anime";
 
 function absoluteUrl(url: string): string {
@@ -55,6 +55,10 @@ export function buildVideoShareMetadata(video: Video): Metadata {
   return {
     title,
     description,
+    robots: {
+      index: true,
+      follow: true,
+    },
     alternates: {
       canonical: pageUrl,
     },
