@@ -64,7 +64,7 @@ export function DailyHallOfFame({ leader }: DailyHallOfFameProps) {
           </div>
 
           <div className="shrink-0 text-end">
-            <HunterLevelBadge level={leader.level} points={leader.pointsToday} size="sm" showLabel={false} />
+            <HunterLevelBadge level={leader.level} points={leader.pointsToday} size="sm" />
             <p className="mt-2 text-base font-extrabold text-amber-800 dark:text-amber-200">
               +{formatNumber(leader.pointsToday)} {t.exclusives.pointsToday}
             </p>

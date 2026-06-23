@@ -421,7 +421,7 @@ export function CommunityPageContent() {
                         {label}
                       </Link>
                       {post.is_verified ? <VerifiedBadge size="sm" /> : null}
-                      <HunterLevelBadge level={post.level} points={post.points} size="sm" showLabel={false} />
+                      <HunterLevelBadge level={post.level} points={post.points} size="sm" />
                       <span className="text-xs text-zinc-500">
                         {formatDateTime(post.created_at)}
                       </span>

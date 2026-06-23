@@ -1,6 +1,7 @@
 "use client";
 
-import { getLevelProgress, LEVELS, LEVEL_STYLES, pointsToLevel } from "@/lib/points";
+import { RankLetter } from "@/components/RankLetter";
+import { getLevelProgress, LEVELS, pointsToLevel } from "@/lib/points";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type RankPositionTrackProps = {
@@ -8,10 +9,9 @@ type RankPositionTrackProps = {
 };
 
 export function RankPositionTrack({ points }: RankPositionTrackProps) {
-  const { t, formatNumber, formatDateTime } = useLocale();
+  const { t, formatNumber } = useLocale();
   const computedLevel = pointsToLevel(points);
   const position = getLevelProgress(points);
-  const currentStyle = LEVEL_STYLES[position.current.rank];
 
   return (
     <div className="rounded-2xl border border-zinc-200 bg-white/95 p-5 dark:border-zinc-800 dark:bg-black/85">
@@ -22,30 +22,18 @@ export function RankPositionTrack({ points }: RankPositionTrackProps) {
 
         <div className="mt-4 flex items-end justify-center gap-3 sm:gap-5">
           {LEVELS.map((levelDef) => {
-            const style = LEVEL_STYLES[levelDef.rank];
             const isCurrent = levelDef.level === computedLevel;
             const isPast = levelDef.level < computedLevel;
 
             return (
               <div key={levelDef.level} className="flex flex-col items-center gap-2">
-                <div
-                  className={`flex h-14 w-14 items-center justify-center rounded-xl border text-lg font-black sm:h-16 sm:w-16 ${
-                    isCurrent
-                      ? `${style.badge} ${style.glow} scale-110 ring-2 ${style.ring}`
-                      : isPast
-                        ? `${style.badge} opacity-80`
-                        : "border-zinc-200 bg-zinc-100 text-zinc-400 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-600"
-                  }`}
-                >
-                  {levelDef.rank}
-                </div>
-                <p
-                  className={`max-w-[4.5rem] text-[10px] font-bold leading-tight sm:text-xs ${
-                    isCurrent ? "text-accent" : "text-zinc-500"
-                  }`}
-                >
-                  {t.points.levels[levelDef.key]}
-                </p>
+                <RankLetter
+                  rank={levelDef.rank}
+                  size="xl"
+                  active={isCurrent || isPast}
+                  muted={!isCurrent && !isPast}
+                  className={isCurrent ? "scale-110" : ""}
+                />
                 {isCurrent ? (
                   <span className="rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-bold text-accent">
                     {t.points.youAreHere}
@@ -58,27 +46,27 @@ export function RankPositionTrack({ points }: RankPositionTrackProps) {
           })}
         </div>
 
-        <div className={`mt-5 w-full max-w-xl rounded-xl border p-4 ${currentStyle.badge}`}>
+        <div className="mt-5 w-full max-w-xl rounded-xl border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-950/80">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="text-start">
-              <p className="text-sm font-bold text-black dark:text-white">
-                {t.points.rank} {position.current.rank} · {t.points.levels[position.current.key]}
-              </p>
-              <p className="mt-1 text-xs opacity-80">
-                {t.points.globalRankPosition
-                  .replace("{current}", String(computedLevel))
-                  .replace("{total}", String(LEVELS.length))}
-              </p>
+            <div className="flex items-center gap-3 text-start">
+              <RankLetter rank={position.current.rank} size="lg" />
+              <div>
+                <p className="text-xs opacity-80">
+                  {t.points.globalRankPosition
+                    .replace("{current}", String(computedLevel))
+                    .replace("{total}", String(LEVELS.length))}
+                </p>
+              </div>
             </div>
             <div className="text-start sm:text-end">
               <p className="text-3xl font-black text-black dark:text-white">{formatNumber(points)}</p>
-              <p className="text-xs opacity-80">{t.points.totalPoints}</p>
+              <p className="text-xs text-zinc-500">{t.points.totalPoints}</p>
             </div>
           </div>
 
           {position.next ? (
             <div className="mt-4">
-              <div className="mb-1 flex items-center justify-between text-xs opacity-80">
+              <div className="mb-1 flex items-center justify-between text-xs text-zinc-500">
                 <span>
                   {t.points.pointsInRank
                     .replace("{current}", formatNumber(position.pointsInRank))
@@ -92,28 +80,25 @@ export function RankPositionTrack({ points }: RankPositionTrackProps) {
                   style={{ width: `${position.tierProgress}%` }}
                 />
               </div>
-              <p className="mt-2 text-xs opacity-80">
+              <p className="mt-2 text-xs text-zinc-500">
                 {position.pointsToNext === 0
-                  ? t.points.readyToRankUp.replace("{rank}", t.points.levels[position.next.key])
+                  ? t.points.readyToRankUp.replace("{rank}", position.next.rank)
                   : t.points.pointsToNext
                       .replace("{count}", formatNumber(position.pointsToNext))
-                      .replace("{rank}", t.points.levels[position.next.key])}
+                      .replace("{rank}", position.next.rank)}
               </p>
             </div>
           ) : (
             <p className="mt-4 text-xs font-semibold text-amber-500">{t.points.maxLevelReached}</p>
           )}
         </div>
-
       </div>
     </div>
   );
 }
 
 export function getNextRankLabel(
-  nextLevelKey: ReturnType<typeof getLevelProgress>["nextLevelKey"],
-  t: { points: { levels: Record<string, string> } },
+  nextRank: ReturnType<typeof getLevelProgress>["nextRank"],
 ) {
-  if (!nextLevelKey) return null;
-  return t.points.levels[nextLevelKey];
+  return nextRank;
 }

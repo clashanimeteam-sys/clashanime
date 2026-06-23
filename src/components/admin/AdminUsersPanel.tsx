@@ -3,7 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { RankLetter } from "@/components/RankLetter";
 import { canManageUsers, type UserRole } from "@/lib/admin";
+import { getLevelDefinition } from "@/lib/points";
 import { logModerationAction } from "@/lib/moderationLog";
 import { notifyAdminReviewCountsChanged } from "@/lib/adminReviewCounts";
 import { createBrowserClient } from "@/lib/supabase/client";
@@ -304,7 +306,9 @@ export function AdminUsersPanel() {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-zinc-300">{formatNumber(user.points ?? 0)}</td>
-                  <td className="px-4 py-3 text-zinc-300">{user.level ?? 1}</td>
+                  <td className="px-4 py-3">
+                    <RankLetter rank={getLevelDefinition(user.level ?? 1).rank} size="sm" />
+                  </td>
                   <td className="px-4 py-3">
                     <select
                       value={user.role ?? "user"}
