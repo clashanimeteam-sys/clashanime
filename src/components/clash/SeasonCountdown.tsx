@@ -2,14 +2,22 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { formatSeasonCountdown, getSeasonRemainingMs, type ClashSeason } from "@/lib/clashSeasons";
+import { getIntlLocale } from "@/lib/formatLocale";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type SeasonCountdownProps = {
   season: ClashSeason;
 };
 
+function formatCountdownUnit(value: number, minDigits: number, locale: "en" | "ar" | "ja") {
+  return new Intl.NumberFormat(getIntlLocale(locale), {
+    minimumIntegerDigits: minDigits,
+    useGrouping: false,
+  }).format(value);
+}
+
 export function SeasonCountdown({ season }: SeasonCountdownProps) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const endsAtMs = useMemo(() => new Date(season.ends_at).getTime(), [season.ends_at]);
   const [remainingMs, setRemainingMs] = useState(() => getSeasonRemainingMs(season.ends_at));
 
@@ -26,42 +34,43 @@ export function SeasonCountdown({ season }: SeasonCountdownProps) {
   const { days, hours, minutes, seconds } = formatSeasonCountdown(remainingMs);
   const ended = remainingMs <= 0;
 
+  const units = [
+    { value: days, label: t.home.seasonDays, digits: days >= 100 ? 3 : 2 },
+    { value: hours, label: t.home.seasonHours, digits: 2 },
+    { value: minutes, label: t.home.seasonMinutes, digits: 2 },
+    { value: seconds, label: t.home.seasonSeconds, digits: 2 },
+  ] as const;
+
   return (
-    <div className="absolute end-0 top-0 z-20 w-full max-w-[17rem] sm:max-w-xs">
-      <div className="overflow-hidden rounded-2xl border border-amber-400/35 bg-black/55 shadow-[0_12px_40px_rgba(0,0,0,0.35)] backdrop-blur-md">
-        <div className="border-b border-amber-400/20 bg-gradient-to-r from-amber-500/15 to-orange-500/10 px-3 py-2">
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-amber-300">
+    <div className="absolute end-0 top-0 z-20 w-full max-w-[19rem] sm:max-w-[20rem]">
+      <div className="overflow-hidden rounded-2xl border border-zinc-700/80 bg-zinc-950/92 shadow-[0_16px_48px_rgba(0,0,0,0.45)] ring-1 ring-white/5 backdrop-blur-md">
+        <div className="border-b border-zinc-800/90 px-4 py-3">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-400">
             {t.home.seasonCountdownLabel}
           </p>
-          <p className="truncate text-xs font-semibold text-amber-50">{season.name}</p>
+          <p className="mt-1 truncate text-sm font-semibold text-white">{season.name}</p>
         </div>
 
-        <div className="grid grid-cols-4 gap-1 px-2 py-2.5" dir="ltr">
-          {[
-            { value: days, label: t.home.seasonDays },
-            { value: hours, label: t.home.seasonHours },
-            { value: minutes, label: t.home.seasonMinutes },
-            { value: seconds, label: t.home.seasonSeconds },
-          ].map((unit) => (
-            <div
-              key={unit.label}
-              className="rounded-xl border border-amber-400/15 bg-zinc-950/70 px-1 py-1.5 text-center"
-            >
-              <p className="font-display text-lg font-black leading-none text-amber-200 sm:text-xl">
-                {String(unit.value).padStart(2, "0")}
-              </p>
-              <p className="mt-1 text-[9px] font-semibold uppercase tracking-wide text-amber-400/80">
+        <div className="grid grid-cols-4 divide-x divide-zinc-800/90 px-1 py-3 sm:py-3.5" dir="ltr">
+          {units.map((unit) => (
+            <div key={unit.label} className="flex flex-col items-center justify-center gap-1.5 px-1">
+              <span className="font-sans text-[1.65rem] font-bold leading-none tabular-nums tracking-tight text-white sm:text-[1.85rem]">
+                {formatCountdownUnit(unit.value, unit.digits, locale)}
+              </span>
+              <span className="text-[10px] font-medium leading-none text-zinc-500 sm:text-[11px]">
                 {unit.label}
-              </p>
+              </span>
             </div>
           ))}
         </div>
 
         {ended ? (
-          <p className="px-3 pb-2 text-center text-[11px] font-semibold text-orange-300">
+          <p className="border-t border-zinc-800/90 px-4 py-2 text-center text-xs font-medium text-amber-300/90">
             {t.home.seasonEnded}
           </p>
-        ) : null}
+        ) : (
+          <div className="h-0.5 bg-gradient-to-r from-transparent via-accent/70 to-transparent" aria-hidden />
+        )}
       </div>
     </div>
   );
