@@ -32,6 +32,8 @@ export function HomeContent({
   activeReleaseClashes,
 }: HomeContentProps) {
   const { t } = useLocale();
+  const hasReleaseBanner = activeReleaseClashes.length > 0;
+  const showTopCountdown = Boolean(activeSeason) && !hasReleaseBanner;
 
   const podiumVideos = PODIUM_ORDER.map((rank) =>
     videos.find((video) => video.global_rank === rank),
@@ -55,16 +57,15 @@ export function HomeContent({
 
   return (
     <div className="relative overflow-hidden">
-      <div
-        className={`relative z-10 mx-auto max-w-7xl px-4 py-4 sm:px-6 ${activeSeason ? "pt-36 sm:pt-4" : ""}`}
-      >
-        {activeSeason ? <SeasonCountdown season={activeSeason} /> : null}
-
-        <section className="mb-8">
-          <LiveClashCounter initialStats={arenaStats} />
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-4 sm:px-6">
+        <section className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          {showTopCountdown && activeSeason ? (
+            <SeasonCountdown season={activeSeason} className="shrink-0" />
+          ) : null}
+          <div className={showTopCountdown ? "min-w-0 flex-1 lg:max-w-xl" : "w-full"}>
+            <LiveClashCounter initialStats={arenaStats} />
+          </div>
         </section>
-
-        <AnimeTrackerBanner clashes={activeReleaseClashes} />
 
         <ClashPrizeBanner activeSeason={activeSeason} />
 
@@ -114,6 +115,12 @@ export function HomeContent({
             ) : null}
           </div>
         </div>
+
+        {hasReleaseBanner ? (
+          <div className="mt-8 sm:mt-10">
+            <AnimeTrackerBanner clashes={activeReleaseClashes} activeSeason={activeSeason} />
+          </div>
+        ) : null}
       </div>
     </div>
   );

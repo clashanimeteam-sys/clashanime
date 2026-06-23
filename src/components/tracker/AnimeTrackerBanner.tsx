@@ -1,15 +1,19 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
+import { SeasonCountdown } from "@/components/clash/SeasonCountdown";
+import type { ClashSeason } from "@/lib/clashSeasons";
 import type { AnimeReleaseClash } from "@/lib/animeTracker";
 import { localizedAnimeTitle } from "@/lib/animeTracker";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type AnimeTrackerBannerProps = {
   clashes: AnimeReleaseClash[];
+  activeSeason?: ClashSeason | null;
 };
 
-export function AnimeTrackerBanner({ clashes }: AnimeTrackerBannerProps) {
+export function AnimeTrackerBanner({ clashes, activeSeason = null }: AnimeTrackerBannerProps) {
   const { t, locale } = useLocale();
 
   if (!clashes.length) return null;
@@ -25,21 +29,49 @@ export function AnimeTrackerBanner({ clashes }: AnimeTrackerBannerProps) {
   );
 
   return (
-    <section className="mb-8">
+    <section className="relative mb-2 pt-2 sm:mb-4">
+      {activeSeason ? (
+        <div className="relative z-20 mb-3 flex justify-start sm:absolute sm:start-0 sm:top-0 sm:mb-0 sm:-translate-y-[38%]">
+          <SeasonCountdown season={activeSeason} />
+        </div>
+      ) : null}
+
       <Link
         href={`/tracker/clash/${clash.clashId}`}
-        className="group block overflow-hidden rounded-2xl border border-violet-500/30 bg-gradient-to-r from-violet-950/50 via-fuchsia-950/30 to-orange-950/40 p-4 transition hover:border-violet-400/50 sm:p-5"
+        className={`group relative block overflow-hidden rounded-2xl border border-zinc-700/90 bg-zinc-900 shadow-[0_12px_40px_rgba(0,0,0,0.25)] ring-1 ring-white/5 transition hover:border-orange-500/40 hover:shadow-orange-500/10 ${
+          activeSeason ? "mt-0 sm:mt-16 sm:pt-2" : ""
+        }`}
       >
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-violet-300">
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-950/40 via-zinc-900 to-orange-950/30" aria-hidden />
+        {clash.posterUrl ? (
+          <div className="pointer-events-none absolute -end-6 top-1/2 h-32 w-24 -translate-y-1/2 opacity-20 blur-sm sm:end-4 sm:h-40 sm:w-28 sm:opacity-30 sm:blur-0">
+            <Image
+              src={clash.posterUrl}
+              alt=""
+              width={112}
+              height={160}
+              className="h-full w-full rounded-lg object-cover"
+              unoptimized
+            />
+          </div>
+        ) : null}
+
+        <div className="relative flex flex-wrap items-center justify-between gap-4 px-4 py-5 sm:px-6 sm:py-6">
+          <div className="min-w-0 flex-1 pe-2">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-orange-300/90">
               {t.animeTracker.bannerBadge}
             </p>
-            <p className="mt-1 text-base font-bold text-white sm:text-lg">
+            <p className="mt-2 font-sans text-lg font-bold leading-snug text-white sm:text-xl">
               {t.animeTracker.bannerTitle.replace("{title}", title)}
             </p>
+            {clash.matchTags.length > 0 ? (
+              <p className="mt-2 text-xs font-medium text-zinc-400">
+                {clash.matchTags.slice(0, 4).map((tag) => `#${tag}`).join(" ")}
+              </p>
+            ) : null}
           </div>
-          <span className="rounded-full bg-orange-500 px-4 py-2 text-xs font-bold uppercase tracking-wide text-white shadow-md shadow-orange-500/30">
+
+          <span className="shrink-0 rounded-full bg-orange-500 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-orange-900/30 transition group-hover:bg-orange-400">
             {t.animeTracker.enterClash}
           </span>
         </div>
