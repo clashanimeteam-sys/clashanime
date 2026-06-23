@@ -33,7 +33,6 @@ export function HomeContent({
 }: HomeContentProps) {
   const { t } = useLocale();
   const hasReleaseBanner = activeReleaseClashes.length > 0;
-  const showTopCountdown = Boolean(activeSeason) && !hasReleaseBanner;
 
   const podiumVideos = PODIUM_ORDER.map((rank) =>
     videos.find((video) => video.global_rank === rank),
@@ -65,18 +64,17 @@ export function HomeContent({
                 <SeasonCountdown season={activeSeason} className="shrink-0" />
               </div>
             ) : null}
+            <LiveClashCounter initialStats={arenaStats} />
             <AnimeTrackerBanner clashes={activeReleaseClashes} />
           </div>
-        ) : null}
-
-        <section className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-          {showTopCountdown && activeSeason ? (
-            <SeasonCountdown season={activeSeason} className="shrink-0" />
-          ) : null}
-          <div className={showTopCountdown ? "min-w-0 flex-1 lg:max-w-xl" : "w-full"}>
-            <LiveClashCounter initialStats={arenaStats} />
-          </div>
-        </section>
+        ) : (
+          <section className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            {activeSeason ? <SeasonCountdown season={activeSeason} className="shrink-0" /> : null}
+            <div className={activeSeason ? "min-w-0 flex-1 lg:max-w-xl" : "w-full"}>
+              <LiveClashCounter initialStats={arenaStats} />
+            </div>
+          </section>
+        )}
 
         <ClashPrizeBanner activeSeason={activeSeason} />
 
