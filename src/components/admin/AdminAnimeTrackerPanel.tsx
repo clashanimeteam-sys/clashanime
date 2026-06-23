@@ -26,10 +26,26 @@ type ReleaseRow = {
   created_at: string;
 };
 
+type TrendingSpotlightRow = {
+  id: string;
+  rank: number;
+  mal_id: number;
+  editorial_en: string | null;
+  editorial_ar: string | null;
+  editorial_ja: string | null;
+  release_id: string | null;
+  clash_id: string | null;
+  active: boolean;
+  synced_at: string | null;
+  anime_title: string | null;
+  mal_score: number | null;
+};
+
 export function AdminAnimeTrackerPanel() {
   const { t, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [releases, setReleases] = useState<ReleaseRow[]>([]);
+  const [trendingRows, setTrendingRows] = useState<TrendingSpotlightRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [syncing, setSyncing] = useState(false);
@@ -51,12 +67,20 @@ export function AdminAnimeTrackerPanel() {
   const loadReleases = useCallback(async () => {
     if (!supabase) return;
     setLoading(true);
-    const { data, error: listError } = await supabase.rpc("list_anime_releases_admin");
+    const [{ data, error: listError }, { data: trendingData, error: trendingError }] = await Promise.all([
+      supabase.rpc("list_anime_releases_admin"),
+      supabase.rpc("list_trending_spotlight_admin"),
+    ]);
     if (listError) {
       setError(listError.message);
       setReleases([]);
     } else {
       setReleases((data as ReleaseRow[]) ?? []);
+    }
+    if (trendingError) {
+      setTrendingRows([]);
+    } else {
+      setTrendingRows((trendingData as TrendingSpotlightRow[]) ?? []);
     }
     setLoading(false);
   }, [supabase]);
@@ -129,8 +153,8 @@ export function AdminAnimeTrackerPanel() {
       const response = await fetch("/api/admin/anime-tracker/sync", { method: "POST" });
       const payload = (await response.json()) as {
         error?: string;
-        synced?: number;
-        clashesOpened?: number;
+        schedule?: { synced?: number; clashesOpened?: number };
+        trending?: { synced?: number; total?: number };
       };
 
       if (!response.ok) {
@@ -140,12 +164,45 @@ export function AdminAnimeTrackerPanel() {
 
       setMessage(
         t.admin.animeTracker.syncSuccess
-          .replace("{synced}", String(payload.synced ?? 0))
-          .replace("{opened}", String(payload.clashesOpened ?? 0)),
+          .replace("{scheduleSynced}", String(payload.schedule?.synced ?? 0))
+          .replace("{scheduleOpened}", String(payload.schedule?.clashesOpened ?? 0))
+          .replace("{trendingSynced}", String(payload.trending?.synced ?? 0))
+          .replace("{trendingTotal}", String(payload.trending?.total ?? 0)),
       );
       await loadReleases();
     } catch {
       setError(t.admin.animeTracker.syncFailed);
+    } finally {
+      setSyncing(false);
+    }
+  }
+
+  async function handleTrendingSync() {
+    setSyncing(true);
+    setMessage(null);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/admin/anime-tracker/sync-trending", { method: "POST" });
+      const payload = (await response.json()) as {
+        error?: string;
+        synced?: number;
+        total?: number;
+      };
+
+      if (!response.ok) {
+        setError(payload.error ?? t.admin.animeTracker.syncTrendingFailed);
+        return;
+      }
+
+      setMessage(
+        t.admin.animeTracker.syncTrendingSuccess
+          .replace("{synced}", String(payload.synced ?? 0))
+          .replace("{total}", String(payload.total ?? 0)),
+      );
+      await loadReleases();
+    } catch {
+      setError(t.admin.animeTracker.syncTrendingFailed);
     } finally {
       setSyncing(false);
     }
@@ -188,14 +245,24 @@ export function AdminAnimeTrackerPanel() {
           <h1 className="text-2xl font-bold text-white">{t.admin.animeTracker.title}</h1>
           <p className="mt-2 text-sm text-zinc-400">{t.admin.animeTracker.subtitle}</p>
         </div>
-        <button
-          type="button"
-          onClick={() => void handleSync()}
-          disabled={syncing || saving}
-          className="rounded-full bg-violet-600 px-5 py-2.5 text-sm font-bold text-white disabled:opacity-60"
-        >
-          {syncing ? t.admin.animeTracker.syncing : t.admin.animeTracker.syncButton}
-        </button>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => void handleSync()}
+            disabled={syncing || saving}
+            className="rounded-full bg-violet-600 px-5 py-2.5 text-sm font-bold text-white disabled:opacity-60"
+          >
+            {syncing ? t.admin.animeTracker.syncing : t.admin.animeTracker.syncButton}
+          </button>
+          <button
+            type="button"
+            onClick={() => void handleTrendingSync()}
+            disabled={syncing || saving}
+            className="rounded-full bg-amber-600 px-5 py-2.5 text-sm font-bold text-white disabled:opacity-60"
+          >
+            {syncing ? t.admin.animeTracker.syncing : t.admin.animeTracker.syncTrendingButton}
+          </button>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
@@ -238,6 +305,44 @@ export function AdminAnimeTrackerPanel() {
           {t.admin.animeTracker.addButton}
         </button>
       </form>
+
+      <div className="rounded-2xl border border-amber-500/30 bg-amber-950/10 p-5">
+        <h2 className="text-lg font-semibold text-white">{t.admin.animeTracker.trendingListTitle}</h2>
+        {loading ? (
+          <p className="mt-4 text-sm text-zinc-400">{t.admin.loading}</p>
+        ) : (
+          <div className="mt-4 space-y-3">
+            {trendingRows.map((row) => (
+              <div key={row.id} className="rounded-xl border border-amber-500/20 bg-zinc-950/60 p-4">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <p className="font-semibold text-white">
+                      #{row.rank} · {row.anime_title ?? `MAL ${row.mal_id}`}
+                    </p>
+                    <p className="mt-1 text-xs text-zinc-400">
+                      MAL {row.mal_id}
+                      {row.mal_score ? ` · score ${row.mal_score}` : ""}
+                      {row.synced_at
+                        ? ` · ${formatDateTime(row.synced_at, { dateStyle: "medium", timeStyle: "short" })}`
+                        : " · not synced"}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {row.clash_id ? (
+                      <a
+                        href={`/tracker/clash/${row.clash_id}`}
+                        className="rounded-full border border-orange-500/40 px-3 py-1.5 text-xs font-bold text-orange-200"
+                      >
+                        {t.admin.animeTracker.viewClash}
+                      </a>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5">
         <h2 className="text-lg font-semibold text-white">{t.admin.animeTracker.listTitle}</h2>

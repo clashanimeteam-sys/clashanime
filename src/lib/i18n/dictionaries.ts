@@ -167,6 +167,10 @@ export type Dictionary = {
     bannerTitle: string;
     jikanSource: string;
     storyTitle: string;
+    trendingSpotlightTitle: string;
+    trendingClashBadge: string;
+    episodesTotalLabel: string;
+    trendingSyncPending: string;
     scoreLabel: string;
     rankLabel: string;
     malLink: string;
@@ -1096,9 +1100,13 @@ export type Dictionary = {
       upcomingCount: string;
       activeClashes: string;
       syncButton: string;
+      syncTrendingButton: string;
       syncing: string;
       syncSuccess: string;
+      syncTrendingSuccess: string;
       syncFailed: string;
+      syncTrendingFailed: string;
+      trendingListTitle: string;
       addTitle: string;
       titleLabel: string;
       titleArLabel: string;
@@ -1366,6 +1374,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bannerTitle: "{title} just dropped — join the release clash",
       jikanSource: "MAL",
       storyTitle: "Story",
+      trendingSpotlightTitle: "10 anime dominating trends and the arena right now",
+      trendingClashBadge: "Trending clash",
+      episodesTotalLabel: "{count} episodes",
+      trendingSyncPending: "Sync trending spotlight from admin to load posters, scores, and clashes.",
       scoreLabel: "Score {score}",
       rankLabel: "Rank #{rank}",
       malLink: "View on MyAnimeList →",
@@ -2351,10 +2363,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         todayCount: "Releases today",
         upcomingCount: "Upcoming (14 days)",
         activeClashes: "Active release clashes",
-        syncButton: "Sync Jikan + process clashes",
+        syncButton: "Sync Jikan + trending",
+        syncTrendingButton: "Sync trending spotlight only",
         syncing: "Syncing…",
-        syncSuccess: "Synced {synced} releases. Opened {opened} clashes.",
+        syncSuccess: "Schedule: {scheduleSynced} synced, {scheduleOpened} clashes opened. Trending: {trendingSynced}/{trendingTotal} synced.",
+        syncTrendingSuccess: "Trending spotlight: {synced}/{total} synced from Jikan.",
         syncFailed: "Jikan sync failed.",
+        syncTrendingFailed: "Trending spotlight sync failed.",
+        trendingListTitle: "Trending spotlight (top 10)",
         addTitle: "Add release manually",
         titleLabel: "Anime title",
         titleArLabel: "Arabic title (optional)",
@@ -2618,6 +2634,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bannerTitle: "{title} が公開 — リリースクラッシュに参加",
       jikanSource: "MAL",
       storyTitle: "あらすじ",
+      trendingSpotlightTitle: "今、トレンドとアリーナを席巻しているアニメ10選",
+      trendingClashBadge: "トレンドクラッシュ",
+      episodesTotalLabel: "全{count}話",
+      trendingSyncPending: "管理画面からトレンドスポットライトを同期すると、ポスター・評価・クラッシュが表示されます。",
       scoreLabel: "スコア {score}",
       rankLabel: "ランク #{rank}",
       malLink: "MyAnimeListで見る →",
@@ -3590,10 +3610,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         todayCount: "本日の放送",
         upcomingCount: "近日（14日）",
         activeClashes: "開催中のクラッシュ",
-        syncButton: "Jikan同期 + クラッシュ処理",
+        syncButton: "Jikan + トレンド同期",
+        syncTrendingButton: "トレンドスポットライトのみ同期",
         syncing: "同期中…",
-        syncSuccess: "{synced} 件同期。{opened} 件のクラッシュを開始。",
+        syncSuccess: "スケジュール: {scheduleSynced} 件同期、{scheduleOpened} クラッシュ開始。トレンド: {trendingSynced}/{trendingTotal} 件同期。",
+        syncTrendingSuccess: "トレンドスポットライト: Jikanから {synced}/{total} 件同期。",
         syncFailed: "Jikan同期に失敗しました。",
+        syncTrendingFailed: "トレンドスポットライトの同期に失敗しました。",
+        trendingListTitle: "トレンドスポットライト（トップ10）",
         addTitle: "手動で追加",
         titleLabel: "アニメタイトル",
         titleArLabel: "アラビア語タイトル（任意）",
@@ -3857,6 +3881,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bannerTitle: "نزل {title} — انضم لنزال الإصدار",
       jikanSource: "MAL",
       storyTitle: "القصة",
+      trendingSpotlightTitle: "10 أنميات تتصدر الترند والساحة حالياً",
+      trendingClashBadge: "نزال ترند",
+      episodesTotalLabel: "{count} حلقة",
+      trendingSyncPending: "زامِن قائمة الترند من لوحة الإدارة لتحميل الصور والتقييمات والنزالات.",
       scoreLabel: "التقييم {score}",
       rankLabel: "الترتيب #{rank}",
       malLink: "عرض على MyAnimeList ←",
@@ -4833,10 +4861,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         todayCount: "إصدارات اليوم",
         upcomingCount: "قريباً (14 يوم)",
         activeClashes: "نزالات نشطة",
-        syncButton: "مزامنة Jikan + معالجة النزالات",
+        syncButton: "مزامنة Jikan + الترند",
+        syncTrendingButton: "مزامنة قائمة الترند فقط",
         syncing: "جاري المزامنة…",
-        syncSuccess: "تمت مزامنة {synced} إصدار. فُتح {opened} نزال.",
+        syncSuccess: "الجدول: {scheduleSynced} إصدار، {scheduleOpened} نزال. الترند: {trendingSynced}/{trendingTotal} متزامن.",
+        syncTrendingSuccess: "قائمة الترند: {synced}/{total} متزامن من Jikan.",
         syncFailed: "فشلت مزامنة Jikan.",
+        syncTrendingFailed: "فشلت مزامنة قائمة الترند.",
+        trendingListTitle: "قائمة الترند (أفضل 10)",
         addTitle: "إضافة إصدار يدوياً",
         titleLabel: "عنوان الأنمي",
         titleArLabel: "العنوان بالعربية (اختياري)",

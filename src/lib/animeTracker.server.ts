@@ -5,6 +5,7 @@ import type {
   AnimeReleaseClash,
   AnimeReleaseClashDetail,
   AnimeReleaseUpcoming,
+  TrendingSpotlightCard,
 } from "@/lib/animeTracker";
 import type { Video, VideoChannel } from "@/lib/types";
 
@@ -220,6 +221,66 @@ export async function getActiveAnimeReleaseClashes(): Promise<AnimeReleaseClash[
   if (error || !data) return [];
 
   return (data as ClashRow[]).map(mapClash);
+}
+
+type TrendingSpotlightRow = {
+  rank: number;
+  editorial_en: string | null;
+  editorial_ar: string | null;
+  editorial_ja: string | null;
+  release_id: string | null;
+  clash_id: string | null;
+  anime_title: string | null;
+  title_ar: string | null;
+  title_ja: string | null;
+  episode_number: number | null;
+  episodes_total: number | null;
+  poster_url: string | null;
+  synopsis_en: string | null;
+  synopsis_ar: string | null;
+  synopsis_ja: string | null;
+  mal_score: number | null;
+  broadcast_label: string | null;
+  airing_status: string | null;
+  match_tags: string[] | null;
+  opens_at: string | null;
+  closes_at: string | null;
+  clip_count: number | null;
+};
+
+function mapTrendingSpotlight(row: TrendingSpotlightRow): TrendingSpotlightCard {
+  return {
+    rank: Number(row.rank),
+    editorialEn: row.editorial_en,
+    editorialAr: row.editorial_ar,
+    editorialJa: row.editorial_ja,
+    releaseId: row.release_id,
+    clashId: row.clash_id,
+    animeTitle: row.anime_title ?? "",
+    titleAr: row.title_ar,
+    titleJa: row.title_ja,
+    episodeNumber: Number(row.episode_number ?? 1),
+    episodesTotal: row.episodes_total === null ? null : Number(row.episodes_total),
+    posterUrl: row.poster_url,
+    malScore: row.mal_score === null ? null : Number(row.mal_score),
+    broadcastLabel: row.broadcast_label,
+    airingStatus: row.airing_status,
+    matchTags: row.match_tags ?? [],
+    opensAt: row.opens_at,
+    closesAt: row.closes_at,
+    clipCount: Number(row.clip_count ?? 0),
+    ...mapSynopsis(row),
+  };
+}
+
+export async function getTrendingSpotlightCards(): Promise<TrendingSpotlightCard[]> {
+  const supabase = await createServerClient();
+  if (!supabase) return [];
+
+  const { data, error } = await supabase.rpc("get_trending_spotlight_cards");
+  if (error || !data) return [];
+
+  return (data as TrendingSpotlightRow[]).map(mapTrendingSpotlight);
 }
 
 export async function getAnimeReleaseClashDetail(

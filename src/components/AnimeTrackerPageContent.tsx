@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import type { AnimeReleaseClash } from "@/lib/animeTracker";
+import type { AnimeReleaseClash, TrendingSpotlightCard } from "@/lib/animeTracker";
 import { localizedAnimeTitle } from "@/lib/animeTracker";
 import type { JikanAnimeEntry } from "@/lib/jikan";
 import { AnimeSynopsisBlock } from "@/components/tracker/AnimeSynopsisBlock";
@@ -18,6 +18,7 @@ type AnimeTrackerPageContentProps = {
   todayReleases: JikanTrackerEntry[];
   upcomingReleases: JikanAnimeEntry[];
   activeClashes: AnimeReleaseClash[];
+  trendingSpotlight: TrendingSpotlightCard[];
 };
 
 function SectionHeading({
@@ -243,6 +244,7 @@ export function AnimeTrackerPageContent({
   todayReleases,
   upcomingReleases,
   activeClashes,
+  trendingSpotlight,
 }: AnimeTrackerPageContentProps) {
   const { t, formatNumber } = useLocale();
   usePageTitle(t.pages.animeTrackerTitle);
@@ -278,7 +280,7 @@ export function AnimeTrackerPageContent({
         </div>
       </header>
 
-      <TrendingSpotlightSection />
+      <TrendingSpotlightSection cards={trendingSpotlight} />
 
       {activeClashes.length > 0 ? (
         <section className="mb-12">

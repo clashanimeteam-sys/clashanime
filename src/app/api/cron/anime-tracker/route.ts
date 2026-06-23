@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { syncJikanReleasesToDatabase } from "@/lib/animeTrackerSync";
+import { syncTrendingSpotlightToDatabase } from "@/lib/animeTrackerTrendingSync";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
+export const maxDuration = 120;
 
 function authorizeCron(request: Request): boolean {
   const secret = process.env.CRON_SECRET?.trim();
@@ -17,8 +18,11 @@ export async function GET(request: Request) {
   }
 
   try {
-    const result = await syncJikanReleasesToDatabase();
-    return NextResponse.json({ ok: true, source: "jikan", ...result });
+    const [schedule, trending] = await Promise.all([
+      syncJikanReleasesToDatabase(),
+      syncTrendingSpotlightToDatabase(),
+    ]);
+    return NextResponse.json({ ok: true, schedule, trending });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Jikan sync failed" },

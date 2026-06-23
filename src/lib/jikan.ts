@@ -237,12 +237,71 @@ export async function fetchJikanAiringSchedule(daysAhead = 7): Promise<JikanAnim
 }
 
 type JikanAnimeDetailResponse = {
-  data?: { synopsis?: string | null };
+  data?: {
+    mal_id?: number;
+    url?: string;
+    title?: string;
+    title_english?: string | null;
+    title_japanese?: string | null;
+    synopsis?: string | null;
+    score?: number | null;
+    episodes?: number | null;
+    status?: string | null;
+    broadcast?: { string?: string | null };
+    images?: {
+      jpg?: { large_image_url?: string | null; image_url?: string | null };
+    };
+  };
+};
+
+export type JikanAnimeDetail = {
+  malId: number;
+  title: string;
+  titleEnglish: string | null;
+  titleJapanese: string | null;
+  posterUrl: string | null;
+  synopsis: string | null;
+  score: number | null;
+  episodes: number | null;
+  status: string | null;
+  broadcastLabel: string | null;
+  matchTags: string[];
+  malUrl: string;
 };
 
 const SYNOPSIS_FETCH_DELAY_MS = 350;
 
-export async function fetchJikanAnimeSynopsis(malId: number): Promise<string | null> {
+function mapJikanDetail(row: NonNullable<JikanAnimeDetailResponse["data"]>): JikanAnimeDetail {
+  const malId = row.mal_id ?? 0;
+  const title = row.title_english?.trim() || row.title?.trim() || row.title_japanese?.trim() || "Unknown";
+  return {
+    malId,
+    title,
+    titleEnglish: row.title_english ?? null,
+    titleJapanese: row.title_japanese ?? null,
+    posterUrl: row.images?.jpg?.large_image_url ?? row.images?.jpg?.image_url ?? null,
+    synopsis: row.synopsis?.trim() || null,
+    score: row.score ?? null,
+    episodes: row.episodes ?? null,
+    status: row.status ?? null,
+    broadcastLabel: row.broadcast?.string ?? null,
+    matchTags: buildMatchTags({
+      mal_id: malId,
+      title: row.title ?? title,
+      title_english: row.title_english ?? null,
+      title_japanese: row.title_japanese ?? null,
+      url: row.url ?? "",
+      score: row.score ?? null,
+      rank: null,
+      genres: [],
+      status: row.status ?? "",
+      episodes: row.episodes ?? null,
+    }),
+    malUrl: row.url ?? `https://myanimelist.net/anime/${malId}`,
+  };
+}
+
+export async function fetchJikanAnimeDetail(malId: number): Promise<JikanAnimeDetail | null> {
   if (!malId) return null;
 
   const response = await fetch(`${JIKAN_API}/anime/${malId}`, {
@@ -252,14 +311,19 @@ export async function fetchJikanAnimeSynopsis(malId: number): Promise<string | n
 
   if (response.status === 429) {
     await sleep(1200);
-    return fetchJikanAnimeSynopsis(malId);
+    return fetchJikanAnimeDetail(malId);
   }
 
   if (!response.ok) return null;
 
   const payload = (await response.json()) as JikanAnimeDetailResponse;
-  const synopsis = payload.data?.synopsis?.trim();
-  return synopsis || null;
+  if (!payload.data?.mal_id) return null;
+  return mapJikanDetail(payload.data);
+}
+
+export async function fetchJikanAnimeSynopsis(malId: number): Promise<string | null> {
+  const detail = await fetchJikanAnimeDetail(malId);
+  return detail?.synopsis ?? null;
 }
 
 export async function fetchJikanSynopsisMap(malIds: number[]): Promise<Map<number, string>> {

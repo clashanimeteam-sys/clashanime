@@ -56,6 +56,28 @@ export type AnimeReleaseClashDetail = AnimeReleaseClash & {
   clashStatus: string;
 };
 
+export type TrendingSpotlightCard = {
+  rank: number;
+  editorialEn: string | null;
+  editorialAr: string | null;
+  editorialJa: string | null;
+  releaseId: string | null;
+  clashId: string | null;
+  animeTitle: string;
+  titleAr: string | null;
+  titleJa: string | null;
+  episodeNumber: number;
+  episodesTotal: number | null;
+  posterUrl: string | null;
+  malScore: number | null;
+  broadcastLabel: string | null;
+  airingStatus: string | null;
+  matchTags: string[];
+  opensAt: string | null;
+  closesAt: string | null;
+  clipCount: number;
+} & AnimeSynopsis;
+
 export function localizedAnimeTitle(
   release: Pick<AnimeRelease, "title" | "titleAr" | "titleJa">,
   locale: "en" | "ja" | "ar",
@@ -73,6 +95,15 @@ export function localizedAnimeSynopsis(
   if (locale === "ja" && release.synopsisJa?.trim()) return release.synopsisJa.trim();
   if (release.synopsisEn?.trim()) return release.synopsisEn.trim();
   return release.synopsisJa?.trim() || release.synopsisAr?.trim() || null;
+}
+
+export function localizedTrendingEditorial(
+  card: Pick<TrendingSpotlightCard, "editorialEn" | "editorialAr" | "editorialJa">,
+  locale: "en" | "ja" | "ar",
+): string | null {
+  if (locale === "ar" && card.editorialAr?.trim()) return card.editorialAr.trim();
+  if (locale === "ja" && card.editorialJa?.trim()) return card.editorialJa.trim();
+  return card.editorialEn?.trim() || card.editorialJa?.trim() || card.editorialAr?.trim() || null;
 }
 
 export function animeSynopsisEntries(release: AnimeSynopsis): Array<{
