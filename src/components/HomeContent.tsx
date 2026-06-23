@@ -24,6 +24,27 @@ type HomeContentProps = {
 
 const PODIUM_ORDER = [1, 2, 3] as const;
 
+function HomeHeroTop({
+  activeSeason,
+  arenaStats,
+}: {
+  activeSeason: ClashSeason | null;
+  arenaStats: ClashArenaStats;
+}) {
+  return (
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+      <div className="-ms-4 self-start sm:-ms-6">
+        <LiveClashCounter initialStats={arenaStats} />
+      </div>
+      {activeSeason ? (
+        <div className="self-end sm:self-auto">
+          <SeasonCountdown season={activeSeason} className="shrink-0" />
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 export function HomeContent({
   videos,
   activeSeason,
@@ -56,23 +77,15 @@ export function HomeContent({
 
   return (
     <div className="relative overflow-hidden">
-      <div className="relative z-10 mx-auto max-w-7xl px-4 py-4 sm:px-6">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-4 pt-1 sm:px-6">
         {hasReleaseBanner ? (
           <div className="mb-8 flex flex-col gap-4">
-            {activeSeason ? (
-              <div className="flex justify-end">
-                <SeasonCountdown season={activeSeason} className="shrink-0" />
-              </div>
-            ) : null}
-            <LiveClashCounter initialStats={arenaStats} />
+            <HomeHeroTop activeSeason={activeSeason} arenaStats={arenaStats} />
             <AnimeTrackerBanner clashes={activeReleaseClashes} />
           </div>
         ) : (
-          <section className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-            {activeSeason ? <SeasonCountdown season={activeSeason} className="shrink-0" /> : null}
-            <div className={activeSeason ? "min-w-0 flex-1 lg:max-w-xl" : "w-full"}>
-              <LiveClashCounter initialStats={arenaStats} />
-            </div>
+          <section className="mb-8">
+            <HomeHeroTop activeSeason={activeSeason} arenaStats={arenaStats} />
           </section>
         )}
 

@@ -1272,16 +1272,11 @@
   position: relative;
   max-width: min(100%, 30rem);
   border-radius: 0.85rem;
+  border-start-start-radius: 0;
   background: #fff7ed;
   box-shadow:
     0 4px 18px rgba(154, 52, 18, 0.1),
     0 0 0 1px rgba(251, 146, 60, 0.22);
-}
-
-@media (min-width: 640px) {
-  .live-clash-counter {
-    max-width: min(30rem, calc(100% - 19.5rem));
-  }
 }
 
 .dark .live-clash-counter {
