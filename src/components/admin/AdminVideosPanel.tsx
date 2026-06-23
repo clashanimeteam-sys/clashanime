@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { AdminVideoOwnerEvents } from "@/components/admin/AdminVideoOwnerEvents";
 import { getModerationStatusLabel } from "@/lib/moderation";
 import { logModerationAction, moderationActionFromStatus } from "@/lib/moderationLog";
 import { notifyAdminReviewCountsChanged } from "@/lib/adminReviewCounts";
@@ -311,6 +312,8 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
           {error}
         </p>
       )}
+
+      <AdminVideoOwnerEvents />
     </div>
   );
 }

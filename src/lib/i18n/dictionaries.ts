@@ -469,6 +469,17 @@ export type Dictionary = {
     deleteAccountFailed: string;
     deleteAccountWordMismatch: string;
     deleteAccountConfirmRequired: string;
+    editVideo: string;
+    deleteVideo: string;
+    saveVideo: string;
+    savingVideo: string;
+    deletingVideo: string;
+    cancelEdit: string;
+    confirmDeleteVideo: string;
+    videoUpdated: string;
+    videoDeleted: string;
+    videoSaveFailed: string;
+    videoDeleteFailed: string;
   };
   notifications: {
     bellLabel: string;
@@ -1151,6 +1162,14 @@ export type Dictionary = {
       viewPage: string;
       empty: string;
     };
+    videoOwnerEvents: {
+      title: string;
+      subtitle: string;
+      empty: string;
+      updated: string;
+      deleted: string;
+      viewVideo: string;
+    };
     roles: {
       user: string;
       moderator: string;
@@ -1716,6 +1735,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
       deleteAccountFailed: "Could not delete your account. Please try again or contact support.",
       deleteAccountWordMismatch: "Confirmation word does not match.",
       deleteAccountConfirmRequired: "Please check the confirmation box first.",
+      editVideo: "Edit video",
+      deleteVideo: "Delete",
+      saveVideo: "Save video",
+      savingVideo: "Saving...",
+      deletingVideo: "Deleting...",
+      cancelEdit: "Cancel",
+      confirmDeleteVideo: "Delete this video permanently? This cannot be undone.",
+      videoUpdated: "Video updated.",
+      videoDeleted: "Video deleted.",
+      videoSaveFailed: "Could not save video changes.",
+      videoDeleteFailed: "Could not delete this video.",
     },
     notifications: {
       bellLabel: "Notifications",
@@ -2438,6 +2468,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         viewPage: "Open page",
         empty: "No hashtags in use yet.",
       },
+      videoOwnerEvents: {
+        title: "Creator video changes",
+        subtitle: "Recent edits and deletions from channel owners in Your Videos.",
+        empty: "No owner video changes yet.",
+        updated: "Updated",
+        deleted: "Deleted",
+        viewVideo: "View video",
+      },
       roles: {
         user: "User",
         moderator: "Moderator",
@@ -2992,6 +3030,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
       deleteAccountFailed: "アカウントを削除できませんでした。もう一度お試しください。",
       deleteAccountWordMismatch: "確認ワードが一致しません。",
       deleteAccountConfirmRequired: "まず確認チェックボックスをオンにしてください。",
+      editVideo: "動画を編集",
+      deleteVideo: "削除",
+      saveVideo: "保存",
+      savingVideo: "保存中...",
+      deletingVideo: "削除中...",
+      cancelEdit: "キャンセル",
+      confirmDeleteVideo: "この動画を完全に削除しますか？元に戻せません。",
+      videoUpdated: "動画を更新しました。",
+      videoDeleted: "動画を削除しました。",
+      videoSaveFailed: "動画の保存に失敗しました。",
+      videoDeleteFailed: "動画の削除に失敗しました。",
     },
     notifications: {
       bellLabel: "通知",
@@ -3708,6 +3757,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         viewPage: "ページを開く",
         empty: "使用中のハッシュタグはまだありません。",
       },
+      videoOwnerEvents: {
+        title: "クリエイターの動画変更",
+        subtitle: "「あなたの動画」からの最近の編集・削除。",
+        empty: "クリエイターによる変更はまだありません。",
+        updated: "更新",
+        deleted: "削除",
+        viewVideo: "動画を見る",
+      },
       roles: {
         user: "ユーザー",
         moderator: "モデレーター",
@@ -4265,6 +4322,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
       deleteAccountFailed: "تعذّر حذف الحساب. حاول مجدداً أو تواصل مع الدعم.",
       deleteAccountWordMismatch: "كلمة التأكيد غير صحيحة.",
       deleteAccountConfirmRequired: "يرجى تفعيل مربع التأكيد أولاً.",
+      editVideo: "تعديل الفيديو",
+      deleteVideo: "حذف",
+      saveVideo: "حفظ الفيديو",
+      savingVideo: "جاري الحفظ...",
+      deletingVideo: "جاري الحذف...",
+      cancelEdit: "إلغاء",
+      confirmDeleteVideo: "حذف هذا الفيديو نهائياً؟ لا يمكن التراجع.",
+      videoUpdated: "تم تحديث الفيديو.",
+      videoDeleted: "تم حذف الفيديو.",
+      videoSaveFailed: "تعذّر حفظ تعديلات الفيديو.",
+      videoDeleteFailed: "تعذّر حذف هذا الفيديو.",
     },
     notifications: {
       bellLabel: "الإشعارات",
@@ -4981,6 +5049,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         subtitle: "الوسوم الأكثر استخداماً في الفيديوهات المعتمدة. لكل وسم صفحة عامة خاصة.",
         viewPage: "فتح الصفحة",
         empty: "لا توجد هاشتاغات مستخدمة بعد.",
+      },
+      videoOwnerEvents: {
+        title: "تغييرات فيديوهات القنوات",
+        subtitle: "آخر عمليات التعديل والحذف من قسم «فيديوهاتك».",
+        empty: "لا توجد تغييرات من أصحاب القنوات بعد.",
+        updated: "تعديل",
+        deleted: "حذف",
+        viewVideo: "عرض الفيديو",
       },
       roles: {
         user: "مستخدم",

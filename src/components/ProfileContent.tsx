@@ -9,6 +9,7 @@ import { FollowerCount } from "@/components/FollowButton";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { DeleteAccountSection } from "@/components/DeleteAccountSection";
 import { MentionHashtagTextarea } from "@/components/MentionHashtagTextarea";
+import { OwnVideoCard } from "@/components/profile/OwnVideoCard";
 import { VideoCard } from "@/components/VideoCard";
 import { profileToVideoChannel } from "@/components/VideoCardChannel";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
@@ -728,11 +729,23 @@ export function ProfileContent() {
           ) : (
             <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {videos.map((video, index) => (
-                <VideoCard
+                <OwnVideoCard
                   key={video.id}
                   video={video}
                   rank={index + 1}
-                  showModerationStatus
+                  onUpdated={(updated) => {
+                    setVideos((current) =>
+                      current.map((entry) => (entry.id === updated.id ? updated : entry)),
+                    );
+                    setMessage(t.profile.videoUpdated);
+                    setError(null);
+                  }}
+                  onDeleted={(videoId) => {
+                    setVideos((current) => current.filter((entry) => entry.id !== videoId));
+                    setVideoCount((count) => Math.max(0, count - 1));
+                    setMessage(t.profile.videoDeleted);
+                    setError(null);
+                  }}
                 />
               ))}
             </div>
