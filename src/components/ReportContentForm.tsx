@@ -16,12 +16,14 @@ import { useLocale } from "@/providers/LocaleProvider";
 
 type ReportContentFormProps = {
   initialVideoId?: string;
+  initialDetails?: string;
   lockVideoId?: boolean;
   onSuccess?: () => void;
 };
 
 export function ReportContentForm({
   initialVideoId = "",
+  initialDetails = "",
   lockVideoId = false,
   onSuccess,
 }: ReportContentFormProps) {
@@ -32,12 +34,18 @@ export function ReportContentForm({
   const [videoId, setVideoId] = useState(initialVideoId);
   const [reason, setReason] = useState<ReportReason>("reupload");
   const [originalSourceUrl, setOriginalSourceUrl] = useState("");
-  const [details, setDetails] = useState("");
+  const [details, setDetails] = useState(initialDetails);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const needsOriginalLink = requiresOriginalSource(reason);
+
+  useEffect(() => {
+    if (initialDetails) {
+      setDetails(initialDetails);
+    }
+  }, [initialDetails]);
 
   useEffect(() => {
     if (initialVideoId) {

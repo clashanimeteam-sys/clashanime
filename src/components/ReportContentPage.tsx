@@ -12,6 +12,7 @@ function ReportContentPageInner() {
   const { t } = useLocale();
   usePageTitle(t.legal.reportTitle);
   const videoParam = searchParams.get("video") ?? "";
+  const detailsParam = searchParams.get("details") ?? "";
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6 sm:px-6">
@@ -21,7 +22,11 @@ function ReportContentPageInner() {
       </p>
 
       <div className="mt-8">
-        <ReportContentForm initialVideoId={videoParam} lockVideoId={Boolean(videoParam)} />
+        <ReportContentForm
+          initialVideoId={videoParam}
+          initialDetails={detailsParam}
+          lockVideoId={Boolean(videoParam)}
+        />
       </div>
 
       <p className="mt-8 text-xs text-zinc-500">{t.legal.reportDmcaHint}</p>

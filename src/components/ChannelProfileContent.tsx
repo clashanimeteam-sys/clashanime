@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { ChannelAboutSection } from "@/components/channel/ChannelAboutSection";
 import { ChannelCommunityPosts, type ChannelCommunityPost } from "@/components/channel/ChannelCommunityPosts";
 import { ChannelContentTabs, type ChannelTab } from "@/components/channel/ChannelContentTabs";
 import { ChannelHero } from "@/components/channel/ChannelHero";
@@ -29,6 +30,7 @@ export function ChannelProfileContent({ username }: ChannelProfileContentProps) 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [videos, setVideos] = useState<Video[]>([]);
   const [communityPosts, setCommunityPosts] = useState<ChannelCommunityPost[]>([]);
+  const [totalViews, setTotalViews] = useState(0);
   const [followerCount, setFollowerCount] = useState(0);
   const [isFollowing, setIsFollowing] = useState(false);
   const [activeTab, setActiveTab] = useState<ChannelTab>("videos");
@@ -108,6 +110,9 @@ export function ChannelProfileContent({ username }: ChannelProfileContentProps) 
       })),
     );
     setCommunityPosts((postData ?? []) as ChannelCommunityPost[]);
+    setTotalViews(
+      (videoData ?? []).reduce((sum, video) => sum + (video.views_count ?? 0), 0),
+    );
     setLoading(false);
   }, [supabase, username, user, router, t.profile.channelNotFound]);
 
@@ -171,8 +176,17 @@ export function ChannelProfileContent({ username }: ChannelProfileContentProps) 
               ))}
             </div>
           )
-        ) : (
+        ) : activeTab === "community" ? (
           <ChannelCommunityPosts posts={communityPosts} />
+        ) : (
+          <ChannelAboutSection
+            profile={profile}
+            stats={{
+              followerCount,
+              videoCount: videos.length,
+              totalViews,
+            }}
+          />
         )}
       </section>
 

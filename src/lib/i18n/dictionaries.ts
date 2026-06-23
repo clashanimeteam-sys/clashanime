@@ -424,6 +424,7 @@ export type Dictionary = {
     signupsDisabled: string;
     signupLegalBefore: string;
     signupLegalAnd: string;
+    signupCountryHint: string;
   };
   profile: {
     loading: string;
@@ -461,6 +462,23 @@ export type Dictionary = {
     channelPreviewDesc: string;
     editChannelSettings: string;
     viewPublicChannel: string;
+    channelAboutTab: string;
+    channelMoreInfo: string;
+    channelJoinedDate: string;
+    channelFollowersStat: string;
+    channelVideosStat: string;
+    channelViewsStat: string;
+    shareChannel: string;
+    reportUser: string;
+    reportUserHint: string;
+    channelLinkCopied: string;
+    channelShareFailed: string;
+    profileCountry: string;
+    profileYoutubeChannel: string;
+    profileYoutubePlaceholder: string;
+    profileCountryRequired: string;
+    completeProfileTitle: string;
+    completeProfileDesc: string;
     manageChannel: string;
     verifiedBadge: string;
     displayNameCooldown: string;
@@ -1701,6 +1719,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       signupsDisabled: "New sign-ups are currently disabled.",
       signupLegalBefore: "By creating an account, you agree to our",
       signupLegalAnd: "and",
+      signupCountryHint: "Your country appears on your public channel About tab.",
     },
     profile: {
       loading: "Loading your channel...",
@@ -1738,6 +1757,23 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelPreviewDesc: "This is how visitors see your public channel page.",
       editChannelSettings: "Edit channel settings",
       viewPublicChannel: "View public channel",
+      channelAboutTab: "About",
+      channelMoreInfo: "More information",
+      channelJoinedDate: "Joined: {date}",
+      channelFollowersStat: "{count} followers",
+      channelVideosStat: "{count} videos",
+      channelViewsStat: "{count} views",
+      shareChannel: "Share channel",
+      reportUser: "Report user",
+      reportUserHint: "Report user channel",
+      channelLinkCopied: "Channel link copied.",
+      channelShareFailed: "Could not share the channel.",
+      profileCountry: "Country",
+      profileYoutubeChannel: "YouTube channel link",
+      profileYoutubePlaceholder: "https://youtube.com/@yourchannel",
+      profileCountryRequired: "Please select your country.",
+      completeProfileTitle: "Complete your profile",
+      completeProfileDesc: "Choose your country so it appears on your public channel.",
       manageChannel: "Manage your channel",
       verifiedBadge: "Verified channel",
       displayNameCooldown: "You can change your channel name again in {days} day(s).",
@@ -3010,6 +3046,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       signupsDisabled: "現在、新規登録は停止されています。",
       signupLegalBefore: "アカウント作成により、次に同意したものとみなされます：",
       signupLegalAnd: "および",
+      signupCountryHint: "国は公開チャンネルの「概要」タブに表示されます。",
     },
     profile: {
       loading: "チャンネルを読み込み中...",
@@ -3047,6 +3084,23 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelPreviewDesc: "訪問者に公開されるチャンネルページのプレビューです。",
       editChannelSettings: "チャンネル設定を編集",
       viewPublicChannel: "公開チャンネルを見る",
+      channelAboutTab: "概要",
+      channelMoreInfo: "詳細情報",
+      channelJoinedDate: "参加日: {date}",
+      channelFollowersStat: "{count} フォロワー",
+      channelVideosStat: "{count} 本の動画",
+      channelViewsStat: "{count} 回視聴",
+      shareChannel: "チャンネルを共有",
+      reportUser: "ユーザーを報告",
+      reportUserHint: "チャンネルを報告",
+      channelLinkCopied: "チャンネルリンクをコピーしました。",
+      channelShareFailed: "チャンネルを共有できませんでした。",
+      profileCountry: "国",
+      profileYoutubeChannel: "YouTube チャンネルリンク",
+      profileYoutubePlaceholder: "https://youtube.com/@yourchannel",
+      profileCountryRequired: "国を選択してください。",
+      completeProfileTitle: "プロフィールを完成させる",
+      completeProfileDesc: "公開チャンネルに表示する国を選択してください。",
       manageChannel: "チャンネルを管理",
       verifiedBadge: "認証済みチャンネル",
       displayNameCooldown: "チャンネル名はあと {days} 日で変更できます。",
@@ -4315,6 +4369,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       signupsDisabled: "التسجيلات الجديدة متوقفة حالياً.",
       signupLegalBefore: "بإنشاء حساب، فإنك توافق على",
       signupLegalAnd: "و",
+      signupCountryHint: "يظهر بلدك في تبويب «حول» في قناتك العامة.",
     },
     profile: {
       loading: "جارٍ تحميل قناتك...",
@@ -4352,6 +4407,23 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelPreviewDesc: "هكذا يرى الزوار صفحة قناتك العامة.",
       editChannelSettings: "تعديل إعدادات القناة",
       viewPublicChannel: "عرض القناة العامة",
+      channelAboutTab: "حول",
+      channelMoreInfo: "مزيد من المعلومات",
+      channelJoinedDate: "تاريخ الانضمام: {date}",
+      channelFollowersStat: "{count} متابع",
+      channelVideosStat: "{count} فيديو",
+      channelViewsStat: "{count} مشاهدة",
+      shareChannel: "مشاركة القناة",
+      reportUser: "الإبلاغ عن المستخدم",
+      reportUserHint: "الإبلاغ عن قناة المستخدم",
+      channelLinkCopied: "تم نسخ رابط القناة.",
+      channelShareFailed: "تعذّرت مشاركة القناة.",
+      profileCountry: "البلد",
+      profileYoutubeChannel: "رابط قناة YouTube",
+      profileYoutubePlaceholder: "https://youtube.com/@yourchannel",
+      profileCountryRequired: "يرجى اختيار بلدك.",
+      completeProfileTitle: "أكمل ملفك الشخصي",
+      completeProfileDesc: "اختر بلدك ليظهر في قناتك العامة.",
       manageChannel: "إدارة قناتك",
       verifiedBadge: "قناة موثّقة",
       displayNameCooldown: "يمكنك تغيير اسم القناة بعد {days} يوماً.",

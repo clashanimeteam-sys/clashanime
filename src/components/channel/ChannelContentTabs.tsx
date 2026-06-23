@@ -2,7 +2,7 @@
 
 import { useLocale } from "@/providers/LocaleProvider";
 
-export type ChannelTab = "videos" | "community";
+export type ChannelTab = "videos" | "community" | "about";
 
 type ChannelContentTabsProps = {
   activeTab: ChannelTab;
@@ -19,9 +19,10 @@ export function ChannelContentTabs({
 }: ChannelContentTabsProps) {
   const { t, formatNumber } = useLocale();
 
-  const tabs: { id: ChannelTab; label: string; count: number }[] = [
+  const tabs: { id: ChannelTab; label: string; count?: number }[] = [
     { id: "videos", label: t.profile.channelVideos, count: videoCount },
     { id: "community", label: t.profile.channelCommunity, count: communityPostCount },
+    { id: "about", label: t.profile.channelAboutTab },
   ];
 
   return (
@@ -41,15 +42,17 @@ export function ChannelContentTabs({
               }`}
             >
               {tab.label}
-              <span
-                className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-                  isActive
-                    ? "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
-                    : "bg-zinc-50 text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400"
-                }`}
-              >
-                {formatNumber(tab.count)}
-              </span>
+              {typeof tab.count === "number" ? (
+                <span
+                  className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                    isActive
+                      ? "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
+                      : "bg-zinc-50 text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400"
+                  }`}
+                >
+                  {formatNumber(tab.count)}
+                </span>
+              ) : null}
             </button>
           );
         })}

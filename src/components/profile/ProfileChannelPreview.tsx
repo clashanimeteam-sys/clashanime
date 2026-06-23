@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { ChannelAboutSection } from "@/components/channel/ChannelAboutSection";
 import { ChannelCommunityPosts, type ChannelCommunityPost } from "@/components/channel/ChannelCommunityPosts";
 import { ChannelContentTabs, type ChannelTab } from "@/components/channel/ChannelContentTabs";
 import { ChannelHero } from "@/components/channel/ChannelHero";
@@ -28,6 +29,7 @@ export function ProfileChannelPreview({
 }: ProfileChannelPreviewProps) {
   const { t } = useLocale();
   const [activeTab, setActiveTab] = useState<ChannelTab>("videos");
+  const totalViews = videos.reduce((sum, video) => sum + (video.views_count ?? 0), 0);
 
   return (
     <div className="space-y-5">
@@ -81,8 +83,18 @@ export function ProfileChannelPreview({
             ))}
           </div>
         )
-      ) : (
+      ) : activeTab === "community" ? (
         <ChannelCommunityPosts posts={communityPosts} />
+      ) : (
+        <ChannelAboutSection
+          profile={profile}
+          stats={{
+            followerCount,
+            videoCount: videos.length,
+            totalViews,
+          }}
+          showReportAction={false}
+        />
       )}
     </div>
   );

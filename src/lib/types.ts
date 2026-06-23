@@ -9,6 +9,9 @@ export type Profile = {
   avatar_url: string | null;
   banner_url: string | null;
   bio: string | null;
+  country_code?: string | null;
+  country_name?: string | null;
+  youtube_url?: string | null;
   role?: UserRole;
   is_banned?: boolean;
   is_verified?: boolean;

@@ -8,6 +8,7 @@ type EmailAuthFormProps = {
   mode: "login" | "signup";
   disabled?: boolean;
   redirectNext?: string;
+  className?: string;
   onError: (message: string) => void;
   onSuccess: (message: string) => void;
 };
@@ -16,6 +17,7 @@ export function EmailAuthForm({
   mode,
   disabled = false,
   redirectNext = "/profile",
+  className = "mt-8",
   onError,
   onSuccess,
 }: EmailAuthFormProps) {
@@ -62,7 +64,7 @@ export function EmailAuthForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-8 space-y-3">
+    <form onSubmit={handleSubmit} className={`${className} space-y-3`}>
       <input
         type="email"
         name="email"

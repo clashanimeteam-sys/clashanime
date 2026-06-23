@@ -7,18 +7,21 @@ import { AuthProviderButtons } from "@/components/AuthProviderButtons";
 import { AuthSettingsBar } from "@/components/AuthSettingsBar";
 import { AuthShellHeader } from "@/components/AuthShellHeader";
 import { EmailAuthForm } from "@/components/EmailAuthForm";
+import { KYC_COUNTRIES, DEFAULT_KYC_COUNTRY, getKycCountryLabel } from "@/lib/kycCountries";
+import { setSignupCountryCookie } from "@/lib/signupCountry";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { fetchPublicSiteFlags } from "@/lib/siteSettings";
 import { useLocale } from "@/providers/LocaleProvider";
 
 export function AuthPage({ mode }: { mode: "login" | "signup" }) {
   const searchParams = useSearchParams();
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const isLogin = mode === "login";
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [signupsAllowed, setSignupsAllowed] = useState(true);
+  const [countryCode, setCountryCode] = useState(DEFAULT_KYC_COUNTRY.code);
 
   const nextPath = searchParams.get("next") ?? "/profile";
   const safeNext = nextPath.startsWith("/") && !nextPath.startsWith("//") ? nextPath : "/profile";
@@ -27,6 +30,11 @@ export function AuthPage({ mode }: { mode: "login" | "signup" }) {
     if (!supabase) return;
     fetchPublicSiteFlags(supabase).then((flags) => setSignupsAllowed(flags.allowSignups));
   }, [supabase]);
+
+  useEffect(() => {
+    if (isLogin) return;
+    setSignupCountryCookie(countryCode);
+  }, [isLogin, countryCode]);
 
   const signupBlocked = !isLogin && !signupsAllowed;
 
@@ -39,6 +47,27 @@ export function AuthPage({ mode }: { mode: "login" | "signup" }) {
             {isLogin ? t.auth.loginTitle : t.auth.signupTitle}
           </h1>
 
+          {!isLogin ? (
+            <label className="mt-8 block">
+              <span className="mb-1 block text-sm font-medium text-black dark:text-white">
+                {t.profile.profileCountry}
+              </span>
+              <select
+                value={countryCode}
+                onChange={(event) => setCountryCode(event.target.value)}
+                disabled={signupBlocked}
+                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-black outline-none focus:border-zinc-500 disabled:opacity-60 dark:border-zinc-700 dark:bg-black dark:text-white"
+              >
+                {KYC_COUNTRIES.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {country.flag} {getKycCountryLabel(country, locale)}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-2 text-xs text-zinc-500">{t.auth.signupCountryHint}</p>
+            </label>
+          ) : null}
+
           <EmailAuthForm
             mode={mode}
             disabled={signupBlocked}
@@ -48,6 +77,7 @@ export function AuthPage({ mode }: { mode: "login" | "signup" }) {
               setError(null);
               setSuccess(message);
             }}
+            className={isLogin ? "mt-8" : "mt-4"}
           />
 
           <div className="my-6 border-t border-zinc-200 dark:border-zinc-800" />

@@ -11,7 +11,9 @@ import { DeleteAccountSection } from "@/components/DeleteAccountSection";
 import { MentionHashtagTextarea } from "@/components/MentionHashtagTextarea";
 import { OwnVideoCard } from "@/components/profile/OwnVideoCard";
 import { ProfileChannelPreview } from "@/components/profile/ProfileChannelPreview";
+import { ProfileCountrySetupModal } from "@/components/profile/ProfileCountrySetupModal";
 import type { ChannelCommunityPost } from "@/components/channel/ChannelCommunityPosts";
+import { KYC_COUNTRIES, DEFAULT_KYC_COUNTRY, getKycCountryByCode, getKycCountryLabel } from "@/lib/kycCountries";
 import { VideoCard } from "@/components/VideoCard";
 import { profileToVideoChannel } from "@/components/VideoCardChannel";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
@@ -63,7 +65,7 @@ function getInitials(name: string) {
 export function ProfileContent() {
   const router = useRouter();
   const { user, loading: authLoading, refreshProfile, signOut } = useAuth();
-  const { t, formatNumber, formatDateTime } = useLocale();
+  const { t, formatNumber, formatDateTime, locale } = useLocale();
   const { section: activeSection, setSection } = useProfileSection();
   const supabase = useMemo(() => createBrowserClient(), []);
   const config = useMemo(() => getSupabaseConfig(), []);
@@ -75,6 +77,9 @@ export function ProfileContent() {
   const [displayName, setDisplayName] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
+  const [countryCode, setCountryCode] = useState(DEFAULT_KYC_COUNTRY.code);
+  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [showCountrySetup, setShowCountrySetup] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
@@ -94,16 +99,23 @@ export function ProfileContent() {
   const usernameChanged =
     profile !== null && normalizeUsernameInput(username) !== profile.username;
   const bioChanged = profile !== null && bio.trim() !== (profile.bio ?? "");
+  const countryChanged =
+    profile !== null && countryCode !== (profile.country_code ?? DEFAULT_KYC_COUNTRY.code);
+  const youtubeChanged = profile !== null && youtubeUrl.trim() !== (profile.youtube_url ?? "");
 
   const previewProfile = useMemo(() => {
     if (!profile) return null;
+    const country = getKycCountryByCode(countryCode);
     return {
       ...profile,
       display_name: displayName.trim() || profile.username,
       username: normalizeUsernameInput(username) || profile.username,
       bio: bio.trim(),
+      country_code: countryCode,
+      country_name: country ? getKycCountryLabel(country, locale) : profile.country_name,
+      youtube_url: youtubeUrl.trim() || null,
     };
-  }, [profile, displayName, username, bio]);
+  }, [profile, displayName, username, bio, countryCode, youtubeUrl, locale]);
 
   const approvedChannelVideos = useMemo(
     () => videos.filter((video) => video.moderation_status === "approved"),
@@ -114,7 +126,9 @@ export function ProfileContent() {
     profile !== null &&
     ((displayNameChanged && canChangeDisplayName) ||
       (usernameChanged && canChangeUsername) ||
-      bioChanged);
+      bioChanged ||
+      countryChanged ||
+      youtubeChanged);
 
   const userId = user?.id;
 
@@ -198,6 +212,9 @@ export function ProfileContent() {
       setDisplayName(profileData.display_name ?? profileData.username);
       setUsername(profileData.username);
       setBio(profileData.bio ?? "");
+      setCountryCode(profileData.country_code ?? DEFAULT_KYC_COUNTRY.code);
+      setYoutubeUrl(profileData.youtube_url ?? "");
+      setShowCountrySetup(!profileData.country_code);
     }
     if (profileData.display_name_changed_at) {
       rememberDisplayNameChange(profileData.id, profileData.display_name_changed_at);
@@ -310,6 +327,8 @@ export function ProfileContent() {
     const nextDisplayName = displayName.trim() || profile.username;
     const nextBio = bio.trim();
     const nextUsername = normalizeUsernameInput(username) || profile.username;
+    const nextCountry = getKycCountryByCode(countryCode) ?? DEFAULT_KYC_COUNTRY;
+    const nextYoutube = youtubeUrl.trim();
     const nameChanged = nextDisplayName !== (profile.display_name ?? profile.username);
     const handleChanged = nextUsername !== profile.username;
 
@@ -346,6 +365,9 @@ export function ProfileContent() {
       p_bio: nextBio,
       p_display_name: nextDisplayName,
       p_username: handleChanged ? nextUsername : null,
+      p_country_code: nextCountry.code,
+      p_country_name: getKycCountryLabel(nextCountry, locale),
+      p_youtube_url: nextYoutube,
     });
 
     if (!rpcResult.error && rpcResult.data) {
@@ -449,6 +471,9 @@ export function ProfileContent() {
     setDisplayName(savedProfile.display_name ?? savedProfile.username);
     setUsername(savedProfile.username);
     setBio(savedProfile.bio ?? "");
+    setCountryCode(savedProfile.country_code ?? DEFAULT_KYC_COUNTRY.code);
+    setYoutubeUrl(savedProfile.youtube_url ?? "");
+    setShowCountrySetup(!savedProfile.country_code);
     setSaving(false);
     setMessage(t.profile.saved);
     await refreshProfile({ silent: true });
@@ -675,6 +700,39 @@ export function ProfileContent() {
                 <p className="mt-2 text-xs text-zinc-500">{t.profile.usernameCooldownDays}</p>
               )}
             </label>
+            <label className="block">
+              <span className="mb-1 block text-sm font-medium text-black dark:text-white">
+                {t.profile.profileCountry}
+              </span>
+              <select
+                value={countryCode}
+                onChange={(event) => {
+                  setCountryCode(event.target.value);
+                  setMessage(null);
+                }}
+                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-black dark:text-white"
+              >
+                {KYC_COUNTRIES.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {country.flag} {getKycCountryLabel(country, locale)}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="block sm:col-span-2">
+              <span className="mb-1 block text-sm font-medium text-black dark:text-white">
+                {t.profile.profileYoutubeChannel}
+              </span>
+              <input
+                value={youtubeUrl}
+                onChange={(event) => {
+                  setYoutubeUrl(event.target.value);
+                  setMessage(null);
+                }}
+                placeholder={t.profile.profileYoutubePlaceholder}
+                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-black dark:text-white"
+              />
+            </label>
             <label className="block sm:col-span-2">
               <span className="mb-1 block text-sm font-medium text-black dark:text-white">
                 {t.profile.bio}
@@ -822,6 +880,15 @@ export function ProfileContent() {
           {error}
         </p>
       )}
+
+      <ProfileCountrySetupModal
+        open={showCountrySetup}
+        onComplete={() => {
+          setShowCountrySetup(false);
+          void loadProfile({ silent: true });
+          void refreshProfile({ silent: true });
+        }}
+      />
     </div>
   );
 }

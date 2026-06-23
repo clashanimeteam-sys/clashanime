@@ -1,7 +1,9 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { sendWelcomeEmailIfNew } from "@/lib/auth/sendWelcomeEmailIfNew";
+import { getKycCountryByCode, getKycCountryLabel } from "@/lib/kycCountries";
 import { REFERRAL_COOKIE } from "@/lib/points";
+import { SIGNUP_COUNTRY_COOKIE } from "@/lib/signupCountry";
 import { createServerClient } from "@/lib/supabase/server";
 import type { Locale } from "@/lib/types";
 
@@ -58,12 +60,27 @@ export async function GET(request: Request) {
     if (!welcomeResult.sent && welcomeResult.error) {
       console.error("[welcome-email]", welcomeResult.error);
     }
+
+    const signupCountryCode = cookieStore.get(SIGNUP_COUNTRY_COOKIE)?.value;
+    if (signupCountryCode) {
+      const country = getKycCountryByCode(signupCountryCode);
+      if (country) {
+        await supabase.rpc("set_profile_country", {
+          p_country_code: country.code,
+          p_country_name: getKycCountryLabel(country, locale),
+        });
+      }
+    }
   }
 
   const response = NextResponse.redirect(`${origin}${next}`);
 
   if (referrerUsername) {
     response.cookies.delete(REFERRAL_COOKIE);
+  }
+
+  if (cookieStore.get(SIGNUP_COUNTRY_COOKIE)?.value) {
+    response.cookies.delete(SIGNUP_COUNTRY_COOKIE);
   }
 
   return response;
