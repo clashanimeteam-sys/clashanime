@@ -5,6 +5,10 @@ export type Dictionary = {
     name: string;
     tagline: string;
   };
+  common: {
+    back: string;
+    backToHome: string;
+  };
   nav: {
     clash: string;
     videos: string;
@@ -752,6 +756,7 @@ export type Dictionary = {
     levelRequired: string;
     clashUploadTitle: string;
     clashUploadHint: string;
+    backToClash: string;
     hashtagUsageCount: string;
   };
   moderation: {
@@ -1209,6 +1214,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
     brand: {
       name: "ClashAnime",
       tagline: "Duel System",
+    },
+    common: {
+      back: "Back",
+      backToHome: "Back to home",
     },
     nav: {
       clash: "Clash",
@@ -2015,6 +2024,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       levelRequired: "Reach Challenger rank (1000+ points) to upload videos.",
       clashUploadTitle: "Uploading for {anime} release clash",
       clashUploadHint: "These hashtags are added automatically: {tags}",
+      backToClash: "Back to clash",
       hashtagUsageCount: "{count} videos",
     },
     moderation: {
@@ -2475,6 +2485,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
     brand: {
       name: "ClashAnime",
       tagline: "デュエルシステム",
+    },
+    common: {
+      back: "戻る",
+      backToHome: "ホームに戻る",
     },
     nav: {
       clash: "クラッシュ",
@@ -3269,6 +3283,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       levelRequired: "Challengerランク（1000pt以上）でアップロードできます。",
       clashUploadTitle: "{anime} のリリースクラッシュ用アップロード",
       clashUploadHint: "次のハッシュタグが自動で追加されます: {tags}",
+      backToClash: "クラッシュに戻る",
       hashtagUsageCount: "{count} 本の動画",
     },
     moderation: {
@@ -3726,6 +3741,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
     brand: {
       name: "ClashAnime",
       tagline: "نظام النزالات",
+    },
+    common: {
+      back: "رجوع",
+      backToHome: "العودة للرئيسية",
     },
     nav: {
       clash: "النزالات",
@@ -4524,6 +4543,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       levelRequired: "تحتاج رتبة منافس (1000+ نقطة) لرفع الفيديوهات.",
       clashUploadTitle: "رفع مقطع لنزال {anime}",
       clashUploadHint: "تُضاف هذه الوسوم تلقائياً: {tags}",
+      backToClash: "العودة للنزال",
       hashtagUsageCount: "{count} فيديو",
     },
     moderation: {

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { BrandMark } from "@/components/BrandMark";
+import { PageBackLink } from "@/components/PageBackLink";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type AuthShellHeaderProps = {
@@ -13,7 +14,10 @@ export function AuthShellHeader({ mode }: AuthShellHeaderProps) {
 
   return (
     <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3 dark:border-zinc-800 sm:px-6">
-      <BrandMark />
+      <div className="flex min-w-0 items-center gap-3">
+        <PageBackLink href="/" label={t.common.backToHome} className="shrink-0 text-zinc-700 dark:text-zinc-300" />
+        <BrandMark />
+      </div>
       {mode === "login" ? (
         <Link
           href="/signup"

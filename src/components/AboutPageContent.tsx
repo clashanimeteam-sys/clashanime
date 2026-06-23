@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { PageBackLink } from "@/components/PageBackLink";
 import { BrandLogo } from "@/components/BrandLogo";
 import { getAboutCopy, type AboutIcon } from "@/lib/aboutCopy";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -105,7 +106,7 @@ function AboutIconBadge({ icon }: { icon: AboutIcon }) {
 }
 
 export function AboutPageContent() {
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
   const copy = getAboutCopy(locale);
   usePageTitle(copy.title);
 
@@ -117,6 +118,7 @@ export function AboutPageContent() {
       />
 
       <div className="relative mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
+        <PageBackLink href="/" label={t.common.backToHome} className="mb-6" />
         <div className="flex flex-col items-center text-center">
           <BrandLogo className="h-16 w-16" />
           <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-brand">

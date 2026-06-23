@@ -7,6 +7,7 @@ import {
   CLASHANIME_HASHTAG,
   normalizeMatchTagsForDisplay,
 } from "@/lib/animeTracker";
+import { PageBackLink } from "@/components/PageBackLink";
 import { MentionHashtagTextarea } from "@/components/MentionHashtagTextarea";
 import { HashtagUsageHints } from "@/components/upload/HashtagUsageHints";
 import { computeContentFingerprints } from "@/lib/contentFingerprint";
@@ -322,6 +323,11 @@ export function UploadVideoForm({ clashContext = null }: UploadVideoFormProps) {
   if (profile && !uploadUnlocked) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-6 sm:px-6">
+        <PageBackLink
+          href={clashContext ? `/tracker/clash/${clashContext.clashId}` : "/videos"}
+          label={clashContext ? t.upload.backToClash : t.nav.videos}
+          className="mb-4"
+        />
         <p className="rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
           {t.upload.levelRequired}
         </p>
@@ -331,6 +337,11 @@ export function UploadVideoForm({ clashContext = null }: UploadVideoFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-5 px-4 py-4 sm:px-6">
+      <PageBackLink
+        href={clashContext ? `/tracker/clash/${clashContext.clashId}` : "/videos"}
+        label={clashContext ? t.upload.backToClash : t.nav.videos}
+        className="mb-1"
+      />
       {clashContext ? (
         <div className="rounded-2xl border border-[#E2B49A] bg-[#C9B5A8] px-5 py-4 text-white shadow-sm">
           <p className="font-display text-base font-bold leading-snug text-white sm:text-lg">

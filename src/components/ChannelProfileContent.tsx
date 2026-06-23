@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { FollowButton } from "@/components/FollowButton";
+import { PageBackLink } from "@/components/PageBackLink";
 import { VideoCard } from "@/components/VideoCard";
 import { profileToVideoChannel } from "@/components/VideoCardChannel";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
@@ -129,6 +130,7 @@ export function ChannelProfileContent({ username }: ChannelProfileContentProps) 
 
   return (
     <div className="mx-auto max-w-6xl bg-white px-4 pb-10 dark:bg-black sm:px-6">
+      <PageBackLink href="/videos" label={t.nav.videos} className="mb-4 pt-4" />
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950">
         <div className="flex min-w-0 items-center gap-3">
           <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-900">

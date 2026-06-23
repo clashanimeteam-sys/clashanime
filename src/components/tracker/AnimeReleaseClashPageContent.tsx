@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { PageBackLink } from "@/components/PageBackLink";
 import { VideoCard } from "@/components/VideoCard";
 import type { AnimeReleaseClashDetail } from "@/lib/animeTracker";
 import { buildClashUploadHref, localizedAnimeTitle } from "@/lib/animeTracker";
@@ -31,12 +32,7 @@ export function AnimeReleaseClashPageContent({ clash, videos }: AnimeReleaseClas
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
-      <Link
-        href="/tracker"
-        className="inline-flex text-sm font-semibold text-violet-700 underline-offset-2 hover:underline dark:text-violet-300"
-      >
-        ← {t.animeTracker.backToTracker}
-      </Link>
+      <PageBackLink href="/tracker" label={t.animeTracker.backToTracker} className="mt-5" />
 
       <header className="mt-5 overflow-hidden rounded-3xl border border-orange-200 bg-gradient-to-br from-orange-50 via-white to-amber-50 p-6 shadow-lg dark:border-orange-500/30 dark:from-orange-950/50 dark:via-zinc-950 dark:to-red-950/30 sm:p-8">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start">

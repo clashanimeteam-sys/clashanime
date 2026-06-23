@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { BackArrowIcon } from "@/components/PageBackLink";
 import { VideoSlide } from "@/components/VideoSlide";
 import { CLASH_TOP_COUNT } from "@/lib/videoRanking";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -170,20 +171,11 @@ export function VideoPageContent({ video, feed, feedMode }: VideoPageContentProp
       <button
         type="button"
         onClick={handleClose}
-        aria-label={t.auth.close}
-        className="absolute start-4 top-4 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-sm transition-colors hover:bg-black/80"
+        aria-label={t.common.back}
+        className="absolute start-4 top-4 z-30 flex h-10 items-center justify-center gap-1 rounded-full bg-black/60 px-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-black/80"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className="h-5 w-5"
-          aria-hidden
-        >
-          <path d="M18 6L6 18M6 6l12 12" />
-        </svg>
+        <BackArrowIcon />
+        <span className="hidden sm:inline">{t.common.back}</span>
       </button>
 
       {showSwipeHint && videos.length > 1 ? (

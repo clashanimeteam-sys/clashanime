@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { PageBackLink } from "@/components/PageBackLink";
 import { CommentThread, updateCommentInTree } from "@/components/CommentThread";
 import { CommunityPostActions } from "@/components/CommunityPostActions";
 import { CommunityReportModal } from "@/components/CommunityReportModal";
@@ -149,9 +150,7 @@ export function CommunityPostPageContent({ postId }: CommunityPostPageContentPro
   if (!post) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-        <Link href="/community" className="text-sm font-semibold text-accent hover:underline">
-          ← {t.communityFeed.backToCommunity}
-        </Link>
+        <PageBackLink href="/community" label={t.communityFeed.backToCommunity} />
         <p className="mt-6 text-sm text-zinc-500">{t.communityFeed.postNotFound}</p>
       </div>
     );
@@ -165,12 +164,7 @@ export function CommunityPostPageContent({ postId }: CommunityPostPageContentPro
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-      <Link
-        href="/community"
-        className="inline-flex items-center gap-1 text-sm font-semibold text-accent hover:underline"
-      >
-        ← {t.communityFeed.backToCommunity}
-      </Link>
+      <PageBackLink href="/community" label={t.communityFeed.backToCommunity} />
 
       <article className="mt-6 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-black">
         <div className="flex items-start gap-3">

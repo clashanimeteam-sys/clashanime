@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { PageBackLink } from "@/components/PageBackLink";
 import { DuelArenaContent } from "@/components/duel/DuelArenaContent";
 import { AcceptPointsWagerInline } from "@/components/exclusives/AcceptPointsWagerInline";
 import {
@@ -71,6 +72,7 @@ export function PointsWagerDuelContent({ duel }: PointsWagerDuelContentProps) {
   if (duel.status === "pending") {
     return (
       <div className="mx-auto max-w-3xl px-4 py-4 sm:px-6">
+        <PageBackLink href="/exclusives" label={t.exclusives.backToExclusives} className="mb-4" />
         <p className="text-sm font-bold uppercase tracking-wide text-amber-600 dark:text-amber-300">
           {t.exclusives.pointsWagerBadge}
         </p>
@@ -101,10 +103,6 @@ export function PointsWagerDuelContent({ duel }: PointsWagerDuelContentProps) {
         )}
 
         {error ? <p className="mt-4 text-sm font-semibold text-red-600">{error}</p> : null}
-
-        <Link href="/exclusives" className="mt-6 inline-flex text-sm font-semibold text-accent hover:underline">
-          {t.exclusives.backToExclusives}
-        </Link>
       </div>
     );
   }
@@ -112,14 +110,12 @@ export function PointsWagerDuelContent({ duel }: PointsWagerDuelContentProps) {
   if (duel.status === "completed" || duel.status === "cancelled") {
     return (
       <div className="mx-auto max-w-3xl px-4 py-10 text-center sm:px-6">
+        <PageBackLink href="/exclusives" label={t.exclusives.backToExclusives} className="mb-6" />
         {duel.winner_id ? (
           <p className="text-sm text-zinc-600 dark:text-zinc-400">
             {t.exclusives.wagerWinnerPot.replace("{pot}", String(pot))}
           </p>
         ) : null}
-        <Link href="/exclusives" className="mt-6 inline-flex text-sm font-semibold text-accent hover:underline">
-          {t.exclusives.backToExclusives}
-        </Link>
       </div>
     );
   }

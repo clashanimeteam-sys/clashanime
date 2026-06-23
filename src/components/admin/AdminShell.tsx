@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { BrandLogo } from "@/components/BrandLogo";
+import { PageBackLink } from "@/components/PageBackLink";
 import { isAdmin, isStaff } from "@/lib/admin";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -86,6 +87,7 @@ export function AdminShell({ children }: AdminShellProps) {
   }
 
   const adminUser = isAdmin(profile);
+  const showDashboardBack = pathname !== "/admin";
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
@@ -174,7 +176,16 @@ export function AdminShell({ children }: AdminShellProps) {
             </Link>
           </header>
 
-          <main className="flex-1 px-4 py-6 sm:px-6">{children}</main>
+          <main className="flex-1 px-4 py-6 sm:px-6">
+            {showDashboardBack ? (
+              <PageBackLink
+                href="/admin"
+                label={t.admin.nav.dashboard}
+                className="mb-5 text-accent hover:text-accent"
+              />
+            ) : null}
+            {children}
+          </main>
         </div>
       </div>
     </div>

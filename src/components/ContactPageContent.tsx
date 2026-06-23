@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
+import { PageBackLink } from "@/components/PageBackLink";
 import { BrandLogo } from "@/components/BrandLogo";
 import { getAboutCopy } from "@/lib/aboutCopy";
 import { useAuth } from "@/providers/AuthProvider";
@@ -149,6 +150,7 @@ export function ContactPageContent() {
       />
 
       <div className="relative mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
+        <PageBackLink href="/" label={t.common.backToHome} className="mb-6" />
         <div className="max-w-2xl">
           <p className="text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
             {t.contact.pageSubtitle}

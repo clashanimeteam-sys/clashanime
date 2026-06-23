@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { PageBackLink } from "@/components/PageBackLink";
 import { DuelArenaContent } from "@/components/duel/DuelArenaContent";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
@@ -17,12 +17,10 @@ export function RandomDuelContent({ pair }: RandomDuelContentProps) {
   if (!pair) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-10 text-center sm:px-6">
+        <PageBackLink href="/exclusives" label={t.exclusives.backToExclusives} className="mb-6" />
         <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
           {t.exclusives.noDuelVideos}
         </p>
-        <Link href="/exclusives" className="mt-6 inline-flex text-sm font-semibold text-accent hover:underline">
-          {t.exclusives.backToExclusives}
-        </Link>
       </div>
     );
   }

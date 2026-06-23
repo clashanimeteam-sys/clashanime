@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { PageBackLink } from "@/components/PageBackLink";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
@@ -83,6 +84,11 @@ export function DuelArenaContent({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6">
+      <PageBackLink
+        href={backHref}
+        label={backLabel ?? t.exclusives.backToExclusives}
+        className="mb-4"
+      />
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-sm font-bold uppercase tracking-wide text-accent">{badge}</p>
@@ -90,15 +96,7 @@ export function DuelArenaContent({
             {description}
           </p>
         </div>
-        <div className="flex flex-wrap gap-2">
-          {actions}
-          <Link
-            href={backHref}
-            className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-700 transition-colors hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:text-white"
-          >
-            {backLabel ?? t.exclusives.backToExclusives}
-          </Link>
-        </div>
+        {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
       </div>
 
       <div className="grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-center">
