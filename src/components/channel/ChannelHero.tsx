@@ -19,16 +19,24 @@ type ChannelHeroProps = {
   profile: Profile;
   followerCount: number;
   videoCount: number;
+  communityPostCount?: number;
   actions?: ReactNode;
 };
 
-export function ChannelHero({ profile, followerCount, videoCount, actions }: ChannelHeroProps) {
+export function ChannelHero({
+  profile,
+  followerCount,
+  videoCount,
+  communityPostCount = 0,
+  actions,
+}: ChannelHeroProps) {
   const { t, formatNumber } = useLocale();
   const displayName = profile.display_name ?? profile.username;
 
   const statsLine = t.profile.channelStats
     .replace("{followers}", formatNumber(followerCount))
-    .replace("{videos}", formatNumber(videoCount));
+    .replace("{videos}", formatNumber(videoCount))
+    .replace("{posts}", formatNumber(communityPostCount));
 
   return (
     <header className="overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">

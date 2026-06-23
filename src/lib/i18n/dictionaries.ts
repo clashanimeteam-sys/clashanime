@@ -450,9 +450,12 @@ export type Dictionary = {
     loadingChannel: string;
     channelNotFound: string;
     channelVideos: string;
+    channelCommunity: string;
     channelAbout: string;
     channelStats: string;
     noChannelVideos: string;
+    noChannelPosts: string;
+    viewCommunityPost: string;
     manageChannel: string;
     verifiedBadge: string;
     displayNameCooldown: string;
@@ -1228,6 +1231,7 @@ export type Dictionary = {
       user: string;
       role: string;
       videos: string;
+      communityPosts: string;
       status: string;
       actions: string;
       views: string;
@@ -1718,9 +1722,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       loadingChannel: "Loading channel...",
       channelNotFound: "Channel not found.",
       channelVideos: "Videos",
+      channelCommunity: "Anime Community",
       channelAbout: "About",
-      channelStats: "{followers} followers · {videos} videos",
+      channelStats: "{followers} followers · {videos} videos · {posts} posts",
       noChannelVideos: "This channel has no videos yet.",
+      noChannelPosts: "This channel has no community posts yet.",
+      viewCommunityPost: "View post",
       manageChannel: "Manage your channel",
       verifiedBadge: "Verified channel",
       displayNameCooldown: "You can change your channel name again in {days} day(s).",
@@ -2538,6 +2545,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         user: "User",
         role: "Role",
         videos: "Videos",
+        communityPosts: "Community",
         status: "Status",
         actions: "Actions",
         views: "Views",
@@ -3018,9 +3026,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       loadingChannel: "チャンネルを読み込み中...",
       channelNotFound: "チャンネルが見つかりません。",
       channelVideos: "動画",
+      channelCommunity: "アニメコミュニティ",
       channelAbout: "概要",
-      channelStats: "{followers} フォロワー · {videos} 本の動画",
+      channelStats: "{followers} フォロワー · {videos} 本の動画 · {posts} 件の投稿",
       noChannelVideos: "このチャンネルにはまだ動画がありません。",
+      noChannelPosts: "このチャンネルにはまだコミュニティ投稿がありません。",
+      viewCommunityPost: "投稿を見る",
       manageChannel: "チャンネルを管理",
       verifiedBadge: "認証済みチャンネル",
       displayNameCooldown: "チャンネル名はあと {days} 日で変更できます。",
@@ -3831,6 +3842,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         user: "ユーザー",
         role: "ロール",
         videos: "動画",
+        communityPosts: "コミュニティ",
         status: "状態",
         actions: "操作",
         views: "視聴",
@@ -4314,9 +4326,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       loadingChannel: "جارٍ تحميل القناة...",
       channelNotFound: "القناة غير موجودة.",
       channelVideos: "الفيديوهات",
+      channelCommunity: "مجتمع الأنمي",
       channelAbout: "نبذة",
-      channelStats: "{followers} متابع · {videos} فيديو",
+      channelStats: "{followers} متابع · {videos} فيديو · {posts} منشور",
       noChannelVideos: "لا توجد فيديوهات في هذه القناة بعد.",
+      noChannelPosts: "لا توجد منشورات في مجتمع الأنمي من هذا المستخدم بعد.",
+      viewCommunityPost: "عرض المنشور",
       manageChannel: "إدارة قناتك",
       verifiedBadge: "قناة موثّقة",
       displayNameCooldown: "يمكنك تغيير اسم القناة بعد {days} يوماً.",
@@ -5128,6 +5143,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         user: "المستخدم",
         role: "الدور",
         videos: "الفيديوهات",
+        communityPosts: "المجتمع",
         status: "الحالة",
         actions: "إجراءات",
         views: "المشاهدات",

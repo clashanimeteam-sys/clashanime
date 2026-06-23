@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { ChannelCommunityPosts, type ChannelCommunityPost } from "@/components/channel/ChannelCommunityPosts";
+import { ChannelContentTabs, type ChannelTab } from "@/components/channel/ChannelContentTabs";
 import { ChannelHero } from "@/components/channel/ChannelHero";
 import { FollowButton } from "@/components/FollowButton";
 import { PageBackLink } from "@/components/PageBackLink";
@@ -26,8 +28,10 @@ export function ChannelProfileContent({ username }: ChannelProfileContentProps) 
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [videos, setVideos] = useState<Video[]>([]);
+  const [communityPosts, setCommunityPosts] = useState<ChannelCommunityPost[]>([]);
   const [followerCount, setFollowerCount] = useState(0);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [activeTab, setActiveTab] = useState<ChannelTab>("videos");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -59,7 +63,7 @@ export function ChannelProfileContent({ username }: ChannelProfileContentProps) 
       return;
     }
 
-    const [{ count }, { data: videoData }] = await Promise.all([
+    const [{ count }, { data: videoData }, { data: postData }] = await Promise.all([
       supabase
         .from("channel_follows")
         .select("*", { count: "exact", head: true })
@@ -71,6 +75,13 @@ export function ChannelProfileContent({ username }: ChannelProfileContentProps) 
         )
         .eq("user_id", profileData.id)
         .eq("moderation_status", "approved")
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("community_posts")
+        .select(
+          "id, body, image_url, created_at, likes_count, dislikes_count, comments_count, shares_count",
+        )
+        .eq("user_id", profileData.id)
         .order("created_at", { ascending: false }),
     ]);
 
@@ -96,6 +107,7 @@ export function ChannelProfileContent({ username }: ChannelProfileContentProps) 
         channel: profileToVideoChannel(profileData, count ?? 0),
       })),
     );
+    setCommunityPosts((postData ?? []) as ChannelCommunityPost[]);
     setLoading(false);
   }, [supabase, username, user, router, t.profile.channelNotFound]);
 
@@ -130,6 +142,7 @@ export function ChannelProfileContent({ username }: ChannelProfileContentProps) 
         profile={profile}
         followerCount={followerCount}
         videoCount={videos.length}
+        communityPostCount={communityPosts.length}
         actions={
           <FollowButton
             channelId={profile.id}
@@ -141,20 +154,25 @@ export function ChannelProfileContent({ username }: ChannelProfileContentProps) 
       />
 
       <section className="mt-8">
-        <div className="border-b border-zinc-200 dark:border-zinc-800">
-          <span className="inline-block border-b-2 border-black px-1 pb-3 text-sm font-bold text-black dark:border-white dark:text-white">
-            {t.profile.channelVideos}
-          </span>
-        </div>
+        <ChannelContentTabs
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          videoCount={videos.length}
+          communityPostCount={communityPosts.length}
+        />
 
-        {videos.length === 0 ? (
-          <p className="mt-5 text-sm text-zinc-600 dark:text-zinc-400">{t.profile.noChannelVideos}</p>
+        {activeTab === "videos" ? (
+          videos.length === 0 ? (
+            <p className="mt-5 text-sm text-zinc-600 dark:text-zinc-400">{t.profile.noChannelVideos}</p>
+          ) : (
+            <div className="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+              {videos.map((video, index) => (
+                <VideoCard key={video.id} video={video} rank={index + 1} compact feedMode="catalog" />
+              ))}
+            </div>
+          )
         ) : (
-          <div className="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
-            {videos.map((video, index) => (
-              <VideoCard key={video.id} video={video} rank={index + 1} compact feedMode="catalog" />
-            ))}
-          </div>
+          <ChannelCommunityPosts posts={communityPosts} />
         )}
       </section>
 

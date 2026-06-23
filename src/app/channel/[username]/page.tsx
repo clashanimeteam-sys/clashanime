@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: ChannelPageProps): Promise<Me
   const title = `${displayName} (@${channel.profile.username}) — Clash Anime Channel`;
   const description =
     channel.profile.bio?.trim() ||
-    `Watch ${channel.videoCount} anime clips from ${displayName} on Clash Anime. ${channel.followerCount} followers — قناة انمي — アニメチャンネル.`;
+    `Watch ${channel.videoCount} anime clips from ${displayName} on Clash Anime. ${channel.communityPostCount} community posts — ${channel.followerCount} followers — قناة انمي — アニメチャンネル.`;
   const path = `/channel/${encodeURIComponent(channel.profile.username)}`;
 
   return buildPageMetadata("videos", {

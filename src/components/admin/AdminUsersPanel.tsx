@@ -15,6 +15,7 @@ import { useLocale } from "@/providers/LocaleProvider";
 
 type UserRow = Profile & {
   video_count?: number;
+  community_post_count?: number;
 };
 
 type VerificationRequestRow = {
@@ -60,20 +61,33 @@ export function AdminUsersPanel() {
     const rows = data ?? [];
     const counts = await Promise.all(
       rows.map(async (row) => {
-        const { count } = await supabase
-          .from("videos")
-          .select("*", { count: "exact", head: true })
-          .eq("user_id", row.id);
-        return { id: row.id, count: count ?? 0 };
+        const [{ count: videoCount }, { count: communityPostCount }] = await Promise.all([
+          supabase.from("videos").select("*", { count: "exact", head: true }).eq("user_id", row.id),
+          supabase
+            .from("community_posts")
+            .select("*", { count: "exact", head: true })
+            .eq("user_id", row.id),
+        ]);
+        return {
+          id: row.id,
+          videoCount: videoCount ?? 0,
+          communityPostCount: communityPostCount ?? 0,
+        };
       }),
     );
 
-    const countMap = new Map(counts.map((entry) => [entry.id, entry.count]));
+    const countMap = new Map(
+      counts.map((entry) => [
+        entry.id,
+        { videoCount: entry.videoCount, communityPostCount: entry.communityPostCount },
+      ]),
+    );
 
     setUsers(
       rows.map((row) => ({
         ...row,
-        video_count: countMap.get(row.id) ?? 0,
+        video_count: countMap.get(row.id)?.videoCount ?? 0,
+        community_post_count: countMap.get(row.id)?.communityPostCount ?? 0,
       })),
     );
 
@@ -267,6 +281,7 @@ export function AdminUsersPanel() {
                 <th className="px-4 py-3 text-start">{t.admin.level}</th>
                 <th className="px-4 py-3 text-start">{t.admin.table.role}</th>
                 <th className="px-4 py-3 text-start">{t.admin.table.videos}</th>
+                <th className="px-4 py-3 text-start">{t.admin.table.communityPosts}</th>
                 <th className="px-4 py-3 text-start">{t.admin.table.status}</th>
                 <th className="px-4 py-3 text-start">{t.admin.table.actions}</th>
               </tr>
@@ -324,6 +339,7 @@ export function AdminUsersPanel() {
                     </select>
                   </td>
                   <td className="px-4 py-3 text-zinc-300">{user.video_count ?? 0}</td>
+                  <td className="px-4 py-3 text-zinc-300">{user.community_post_count ?? 0}</td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-2">
                       {user.is_banned ? (
