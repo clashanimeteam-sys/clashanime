@@ -3,6 +3,10 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import {
+  CLASHANIME_HASHTAG,
+  normalizeMatchTagsForDisplay,
+} from "@/lib/animeTracker";
 import { MentionHashtagTextarea } from "@/components/MentionHashtagTextarea";
 import { HashtagUsageHints } from "@/components/upload/HashtagUsageHints";
 import { computeContentFingerprints } from "@/lib/contentFingerprint";
@@ -33,8 +37,6 @@ export type UploadClashContext = {
   animeTitle: string;
   matchTags: string[];
 };
-
-import { CLASHANIME_HASHTAG } from "@/lib/animeTracker";
 
 type UploadVideoFormProps = {
   clashContext?: UploadClashContext | null;
@@ -73,13 +75,21 @@ export function UploadVideoForm({ clashContext = null }: UploadVideoFormProps) {
     fetchPublicSiteFlags(supabase).then((flags) => setUploadsAllowed(flags.allowUploads));
   }, [supabase]);
 
+  const clashTags = useMemo(
+    () =>
+      clashContext
+        ? normalizeMatchTagsForDisplay(clashContext.matchTags, clashContext.animeTitle)
+        : [],
+    [clashContext],
+  );
+
   useEffect(() => {
-    if (!clashContext?.matchTags.length) return;
+    if (!clashTags.length) return;
     setHashtags((current) => {
       if (current.trim()) return current;
-      return formatHashtags(clashContext.matchTags.slice(0, 3));
+      return formatHashtags(clashTags);
     });
-  }, [clashContext]);
+  }, [clashTags]);
 
   async function handleVideoChange(file: File | undefined) {
     if (!file) return;
@@ -230,8 +240,8 @@ export function UploadVideoForm({ clashContext = null }: UploadVideoFormProps) {
       return;
     }
 
-    const tags = clashContext?.matchTags.length
-      ? mergeRequiredHashtags(hashtags, clashContext.matchTags)
+    const tags = clashTags.length
+      ? mergeRequiredHashtags(hashtags, clashTags)
       : mergeRequiredHashtags(hashtags, []);
 
     const { error: insertError } = await supabase.from("videos").insert({
@@ -329,7 +339,7 @@ export function UploadVideoForm({ clashContext = null }: UploadVideoFormProps) {
           <p className="mt-1 text-orange-100/90">
             {t.upload.clashUploadHint.replace(
               "{tags}",
-              clashContext.matchTags.slice(0, 3).map((tag) => `#${tag}`).join(" "),
+              clashTags.map((tag) => `#${tag}`).join(" "),
             )}
           </p>
         </div>

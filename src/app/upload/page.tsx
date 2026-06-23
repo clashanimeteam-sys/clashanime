@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { normalizeMatchTagsForDisplay } from "@/lib/animeTracker";
 import { UploadVideoForm, type UploadClashContext } from "@/components/UploadVideoForm";
 import { getAnimeReleaseClashDetail } from "@/lib/animeTracker.server";
 import { UploadPageGate } from "@/components/upload/UploadPageGate";
@@ -18,7 +19,7 @@ async function UploadPageInner({ clashId }: { clashId?: string }) {
       clashContext = {
         clashId: clash.clashId,
         animeTitle: clash.animeTitle,
-        matchTags: clash.matchTags,
+        matchTags: normalizeMatchTagsForDisplay(clash.matchTags, clash.animeTitle),
       };
     }
   }

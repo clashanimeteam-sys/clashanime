@@ -129,9 +129,20 @@ export function formatNotificationText(
       }
       case "anime_release_clash": {
         const anime = metaString(metadata, "anime_title") || "A new anime";
+        const hashtagHint =
+          metaString(metadata, "hashtag_hint") ||
+          (Array.isArray(metadata.match_tags)
+            ? (metadata.match_tags as string[])
+                .slice(0, 4)
+                .map((tag) => `#${String(tag).replace(/^#+/, "")}`)
+                .join(" ")
+            : "#clashanime");
         return {
           title: typeField(types, "anime_release_clash", "title", row.title),
-          body: applyTemplate(typeField(types, "anime_release_clash", "body", row.body), { anime }),
+          body: applyTemplate(typeField(types, "anime_release_clash", "body", row.body), {
+            anime,
+            hashtags: hashtagHint,
+          }),
           typeLabel,
         };
       }

@@ -1721,7 +1721,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         anime_release_clash: {
           label: "Release clash",
           title: "New release clash",
-          body: "{anime} just dropped. Submit your best clip!",
+          body: "{anime} just dropped. Use {hashtags} and submit your best clip!",
         },
         video_like: {
           label: "Like",
@@ -2978,7 +2978,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         anime_release_clash: {
           label: "リリースクラッシュ",
           title: "新リリースクラッシュ",
-          body: "{anime} が公開されました。ベストクリップを投稿！",
+          body: "{anime} が公開されました。{hashtags} を付けてベストクリップを投稿！",
         },
         video_like: {
           label: "いいね",
@@ -4232,7 +4232,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         anime_release_clash: {
           label: "نزال إصدار",
           title: "نزال إصدار جديد",
-          body: "نزل {anime}. ارفع أفضل لقطتك!",
+          body: "نزل {anime}. استخدم {hashtags} وارفع أفضل لقطتك!",
         },
         video_like: {
           label: "إعجاب",

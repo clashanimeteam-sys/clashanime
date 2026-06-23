@@ -1,5 +1,6 @@
 import { getJstDateParts } from "@/lib/jikan";
 import { createServerClient } from "@/lib/supabase/server";
+import { normalizeMatchTagsForDisplay } from "@/lib/animeTracker";
 import type {
   AnimeRelease,
   AnimeReleaseClash,
@@ -72,7 +73,7 @@ function mapRelease(row: ReleaseRow): AnimeRelease {
     airsAt: row.airs_at,
     episodeNumber: Number(row.episode_number),
     posterUrl: row.poster_url,
-    matchTags: row.match_tags ?? [],
+    matchTags: normalizeMatchTagsForDisplay(row.match_tags ?? [], row.title),
     status: row.status,
     clashId: row.clash_id,
     clashStatus: row.clash_status,
@@ -107,7 +108,7 @@ function mapClash(row: ClashRow): AnimeReleaseClash {
     titleJa: row.title_ja,
     episodeNumber: Number(row.episode_number),
     posterUrl: row.poster_url,
-    matchTags: row.match_tags ?? [],
+    matchTags: normalizeMatchTagsForDisplay(row.match_tags ?? [], row.anime_title),
     opensAt: row.opens_at,
     closesAt: row.closes_at,
     clipCount: Number(row.clip_count),
@@ -270,7 +271,10 @@ function mapTrendingSpotlight(row: TrendingSpotlightRow): TrendingSpotlightCard 
     malScore: row.mal_score === null ? null : Number(row.mal_score),
     broadcastLabel: row.broadcast_label,
     airingStatus: row.airing_status,
-    matchTags: row.match_tags ?? [],
+    matchTags: normalizeMatchTagsForDisplay(
+      row.match_tags ?? [],
+      row.anime_title ?? row.seed_title_en ?? "",
+    ),
     opensAt: row.opens_at,
     closesAt: row.closes_at,
     clipCount: Number(row.clip_count ?? 0),
