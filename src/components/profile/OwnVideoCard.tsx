@@ -67,10 +67,10 @@ export function OwnVideoCard({ video, rank, onUpdated, onDeleted }: OwnVideoCard
   }
 
   return (
-    <div className="flex flex-col">
-      <VideoCard video={video} rank={rank} showModerationStatus />
+    <div className="flex min-w-0 flex-col">
+      <VideoCard video={video} rank={rank} showModerationStatus compact />
 
-      <div className="mt-2 flex flex-wrap gap-2">
+      <div className="mt-1.5 grid grid-cols-2 gap-1">
         <button
           type="button"
           onClick={() => {
@@ -78,7 +78,7 @@ export function OwnVideoCard({ video, rank, onUpdated, onDeleted }: OwnVideoCard
             setEditing(true);
           }}
           disabled={deleting}
-          className="flex-1 rounded-full border border-zinc-300 px-3 py-2 text-xs font-semibold text-zinc-800 transition hover:border-zinc-400 hover:bg-zinc-50 disabled:opacity-60 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-900"
+          className="rounded-lg border border-zinc-300 px-2 py-1 text-[10px] font-semibold text-zinc-800 transition hover:border-zinc-400 hover:bg-zinc-50 disabled:opacity-60 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-900"
         >
           {t.profile.editVideo}
         </button>
@@ -86,7 +86,7 @@ export function OwnVideoCard({ video, rank, onUpdated, onDeleted }: OwnVideoCard
           type="button"
           onClick={() => void handleDelete()}
           disabled={deleting || saving}
-          className="flex-1 rounded-full border border-red-300 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50 disabled:opacity-60 dark:border-red-900/50 dark:text-red-400 dark:hover:bg-red-950/30"
+          className="rounded-lg border border-red-300 px-2 py-1 text-[10px] font-semibold text-red-600 transition hover:bg-red-50 disabled:opacity-60 dark:border-red-900/50 dark:text-red-400 dark:hover:bg-red-950/30"
         >
           {deleting ? t.profile.deletingVideo : t.profile.deleteVideo}
         </button>
