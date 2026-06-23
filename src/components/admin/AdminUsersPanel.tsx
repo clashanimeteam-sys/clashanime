@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { canManageUsers, type UserRole } from "@/lib/admin";
@@ -272,8 +273,35 @@ export function AdminUsersPanel() {
               {filtered.map((user) => (
                 <tr key={user.id} className="border-t border-zinc-800">
                   <td className="px-4 py-3">
-                    <div className="font-medium text-white">{user.display_name ?? user.username}</div>
-                    <div className="text-zinc-500">@{user.username}</div>
+                    <div className="flex items-center gap-3">
+                      <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-zinc-800">
+                        {user.avatar_url ? (
+                          <Image
+                            src={user.avatar_url}
+                            alt=""
+                            fill
+                            className="object-cover"
+                            unoptimized
+                          />
+                        ) : null}
+                      </div>
+                      <div>
+                        <div className="font-medium text-white">{user.display_name ?? user.username}</div>
+                        <div className="text-zinc-500">@{user.username}</div>
+                        <div className="mt-1 flex flex-wrap gap-1">
+                          {user.banner_url ? (
+                            <span className="rounded-full bg-violet-500/15 px-2 py-0.5 text-[10px] font-semibold text-violet-300">
+                              {t.admin.channelHasCover}
+                            </span>
+                          ) : null}
+                          {user.bio?.trim() ? (
+                            <span className="rounded-full bg-sky-500/15 px-2 py-0.5 text-[10px] font-semibold text-sky-300">
+                              {t.admin.channelHasBio}
+                            </span>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
                   </td>
                   <td className="px-4 py-3 text-zinc-300">{formatNumber(user.points ?? 0)}</td>
                   <td className="px-4 py-3 text-zinc-300">{user.level ?? 1}</td>

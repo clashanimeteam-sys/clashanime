@@ -450,6 +450,8 @@ export type Dictionary = {
     loadingChannel: string;
     channelNotFound: string;
     channelVideos: string;
+    channelAbout: string;
+    channelStats: string;
     noChannelVideos: string;
     manageChannel: string;
     verifiedBadge: string;
@@ -836,6 +838,8 @@ export type Dictionary = {
     approveVerification: string;
     rejectVerification: string;
     viewChannel: string;
+    channelHasCover: string;
+    channelHasBio: string;
     suspicionScore: string;
     globalRank: string;
     inClashTop: string;
@@ -1714,6 +1718,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       loadingChannel: "Loading channel...",
       channelNotFound: "Channel not found.",
       channelVideos: "Videos",
+      channelAbout: "About",
+      channelStats: "{followers} followers · {videos} videos",
       noChannelVideos: "This channel has no videos yet.",
       manageChannel: "Manage your channel",
       verifiedBadge: "Verified channel",
@@ -2142,6 +2148,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       approveVerification: "Approve verification",
       rejectVerification: "Reject verification",
       viewChannel: "View channel",
+      channelHasCover: "Cover",
+      channelHasBio: "Bio",
       suspicionScore: "Suspicion score",
       globalRank: "Global rank",
       inClashTop: "In Clash top 12",
@@ -3010,6 +3018,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       loadingChannel: "チャンネルを読み込み中...",
       channelNotFound: "チャンネルが見つかりません。",
       channelVideos: "動画",
+      channelAbout: "概要",
+      channelStats: "{followers} フォロワー · {videos} 本の動画",
       noChannelVideos: "このチャンネルにはまだ動画がありません。",
       manageChannel: "チャンネルを管理",
       verifiedBadge: "認証済みチャンネル",
@@ -3434,6 +3444,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       approveVerification: "認証を承認",
       rejectVerification: "認証を却下",
       viewChannel: "チャンネルを見る",
+      channelHasCover: "カバー",
+      channelHasBio: "概要",
       suspicionScore: "疑わしさスコア",
       globalRank: "世界ランク",
       inClashTop: "クラッシュ上位12",
@@ -4302,6 +4314,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       loadingChannel: "جارٍ تحميل القناة...",
       channelNotFound: "القناة غير موجودة.",
       channelVideos: "الفيديوهات",
+      channelAbout: "نبذة",
+      channelStats: "{followers} متابع · {videos} فيديو",
       noChannelVideos: "لا توجد فيديوهات في هذه القناة بعد.",
       manageChannel: "إدارة قناتك",
       verifiedBadge: "قناة موثّقة",
@@ -4727,6 +4741,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       approveVerification: "قبول التوثيق",
       rejectVerification: "رفض التوثيق",
       viewChannel: "عرض القناة",
+      channelHasCover: "غلاف",
+      channelHasBio: "نبذة",
       suspicionScore: "درجة الاشتباه",
       globalRank: "المركز العالمي",
       inClashTop: "في النزالات (أفضل 12)",
