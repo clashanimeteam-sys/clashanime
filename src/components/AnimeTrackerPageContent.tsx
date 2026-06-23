@@ -106,14 +106,16 @@ function ReleaseCard({
         ) : showClashLink ? (
           <p className="mt-3 text-xs text-zinc-400">{t.animeTracker.scheduledHint}</p>
         ) : null}
-        <a
-          href={release.malUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-3 inline-block text-xs text-violet-300 hover:text-violet-200"
-        >
-          {t.animeTracker.malLink}
-        </a>
+        {release.malUrl ? (
+          <a
+            href={release.malUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 inline-block text-xs text-violet-300 hover:text-violet-200"
+          >
+            {t.animeTracker.malLink}
+          </a>
+        ) : null}
       </div>
     </article>
   );
@@ -195,7 +197,11 @@ export function AnimeTrackerPageContent({
         {todayReleases.length > 0 ? (
           <div className="grid gap-4">
             {todayReleases.map((release) => (
-              <ReleaseCard key={`${release.malId}-${release.releaseDate}`} release={release} showClashLink />
+              <ReleaseCard
+                key={`${release.malId || release.title}-${release.releaseDate}`}
+                release={release}
+                showClashLink
+              />
             ))}
           </div>
         ) : (
@@ -212,7 +218,10 @@ export function AnimeTrackerPageContent({
         {upcomingReleases.length > 0 ? (
           <div className="grid gap-4 sm:grid-cols-2">
             {upcomingReleases.map((release) => (
-              <ReleaseCard key={`${release.malId}-${release.releaseDate}`} release={release} />
+              <ReleaseCard
+                key={`${release.malId || release.title}-${release.releaseDate}`}
+                release={release}
+              />
             ))}
           </div>
         ) : (

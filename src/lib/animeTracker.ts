@@ -1,3 +1,5 @@
+import type { JikanAnimeEntry } from "@/lib/jikan";
+
 export type AnimeReleaseStatus = "scheduled" | "released" | "cancelled";
 
 export type AnimeRelease = {
@@ -14,6 +16,7 @@ export type AnimeRelease = {
   clashId: string | null;
   clashStatus: string | null;
   clashOpensAt: string | null;
+  malId: number | null;
 };
 
 export type AnimeReleaseUpcoming = {
@@ -77,4 +80,48 @@ export function buildMatchTagsFromTitle(title: string, extra: string[] = []): st
 
 export function buildClashUploadHref(clashId: string): string {
   return `/upload?clash=${encodeURIComponent(clashId)}`;
+}
+
+/** Map cached Supabase release row to tracker card data (fast page load). */
+export function releaseToTrackerEntry(
+  release: AnimeRelease,
+): JikanAnimeEntry & { clashId?: string | null } {
+  return {
+    malId: release.malId ?? 0,
+    title: release.title,
+    titleEnglish: release.title,
+    titleJapanese: release.titleJa,
+    posterUrl: release.posterUrl,
+    score: null,
+    rank: null,
+    genres: [],
+    releaseDate: release.releaseDate,
+    airsAt: release.airsAt,
+    broadcastLabel: null,
+    status: release.status,
+    episodeNumber: release.episodeNumber,
+    matchTags: release.matchTags,
+    malUrl: release.malId ? `https://myanimelist.net/anime/${release.malId}` : "",
+    clashId: release.clashId,
+  };
+}
+
+export function upcomingToTrackerEntry(release: AnimeReleaseUpcoming): JikanAnimeEntry {
+  return {
+    malId: 0,
+    title: release.title,
+    titleEnglish: release.title,
+    titleJapanese: release.titleJa,
+    posterUrl: release.posterUrl,
+    score: null,
+    rank: null,
+    genres: [],
+    releaseDate: release.releaseDate,
+    airsAt: release.airsAt,
+    broadcastLabel: null,
+    status: release.status,
+    episodeNumber: release.episodeNumber,
+    matchTags: [],
+    malUrl: "",
+  };
 }

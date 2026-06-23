@@ -1,33 +1,28 @@
 import { AnimeTrackerPageContent } from "@/components/AnimeTrackerPageContent";
-import { syncJikanReleasesToDatabase } from "@/lib/animeTrackerSync";
-import { getActiveAnimeReleaseClashes, getTodayClashLinksByMalId } from "@/lib/animeTracker.server";
-import { fetchJikanTodaySchedule, fetchJikanUpcomingSchedule } from "@/lib/jikan";
+import {
+  releaseToTrackerEntry,
+  upcomingToTrackerEntry,
+} from "@/lib/animeTracker";
+import {
+  getActiveAnimeReleaseClashes,
+  getAnimeTrackerToday,
+  getAnimeTrackerUpcoming,
+} from "@/lib/animeTracker.server";
 
-export const dynamic = "force-dynamic";
-export const maxDuration = 60;
+/** Cache tracker page for 2 minutes; Jikan sync runs via cron/admin only. */
+export const revalidate = 120;
 
 export default async function TrackerPage() {
   const [todayReleases, upcomingReleases, activeClashes] = await Promise.all([
-    fetchJikanTodaySchedule(),
-    fetchJikanUpcomingSchedule(14),
+    getAnimeTrackerToday(),
+    getAnimeTrackerUpcoming(14),
     getActiveAnimeReleaseClashes(),
   ]);
 
-  try {
-    await syncJikanReleasesToDatabase([...todayReleases, ...upcomingReleases]);
-  } catch {
-    // Page still renders live Jikan data if sync fails.
-  }
-
-  const clashLinks = await getTodayClashLinksByMalId();
-
   return (
     <AnimeTrackerPageContent
-      todayReleases={todayReleases.map((release) => ({
-        ...release,
-        clashId: clashLinks.get(release.malId) ?? null,
-      }))}
-      upcomingReleases={upcomingReleases}
+      todayReleases={todayReleases.map(releaseToTrackerEntry)}
+      upcomingReleases={upcomingReleases.map(upcomingToTrackerEntry)}
       activeClashes={activeClashes}
     />
   );

@@ -1,5 +1,7 @@
 const JIKAN_API = "https://api.jikan.moe/v4";
 const JST = "Asia/Tokyo";
+const MAX_SCHEDULE_PAGES = 1;
+const WEEKDAY_FETCH_DELAY_MS = 350;
 
 const WEEKDAYS = [
   "sunday",
@@ -174,12 +176,12 @@ export async function fetchJikanWeekdaySchedule(weekday: JikanWeekday): Promise<
   let page = 1;
   let hasNext = true;
 
-  while (hasNext && page <= 5) {
+  while (hasNext && page <= MAX_SCHEDULE_PAGES) {
     const payload = await fetchJikanSchedulePage(weekday, page);
     rows.push(...(payload.data ?? []));
     hasNext = Boolean(payload.pagination?.has_next_page);
     page += 1;
-    if (hasNext) await sleep(400);
+    if (hasNext) await sleep(WEEKDAY_FETCH_DELAY_MS);
   }
 
   return rows;
@@ -191,20 +193,26 @@ export async function fetchJikanTodaySchedule(): Promise<JikanAnimeEntry[]> {
   return rows.map((row) => mapRow(row, date));
 }
 
-export async function fetchJikanUpcomingSchedule(daysAhead = 14): Promise<JikanAnimeEntry[]> {
+export async function fetchJikanUpcomingSchedule(daysAhead = 7): Promise<JikanAnimeEntry[]> {
   const { date: today } = getJstDateParts();
+  const weekdaysNeeded = new Set<JikanWeekday>();
+
+  for (let offset = 1; offset <= daysAhead; offset += 1) {
+    weekdaysNeeded.add(weekdayFromIsoDate(addDaysToIsoDate(today, offset)));
+  }
+
   const weekdayCache = new Map<JikanWeekday, JikanAnimeRow[]>();
+  for (const weekday of weekdaysNeeded) {
+    weekdayCache.set(weekday, await fetchJikanWeekdaySchedule(weekday));
+    await sleep(WEEKDAY_FETCH_DELAY_MS);
+  }
+
   const entries: JikanAnimeEntry[] = [];
   const seen = new Set<string>();
 
   for (let offset = 1; offset <= daysAhead; offset += 1) {
     const releaseDate = addDaysToIsoDate(today, offset);
     const weekday = weekdayFromIsoDate(releaseDate);
-
-    if (!weekdayCache.has(weekday)) {
-      weekdayCache.set(weekday, await fetchJikanWeekdaySchedule(weekday));
-      await sleep(400);
-    }
 
     for (const row of weekdayCache.get(weekday) ?? []) {
       const key = `${row.mal_id}:${releaseDate}`;
@@ -217,7 +225,7 @@ export async function fetchJikanUpcomingSchedule(daysAhead = 14): Promise<JikanA
   return entries.sort((a, b) => a.releaseDate.localeCompare(b.releaseDate));
 }
 
-export async function fetchJikanAiringSchedule(daysAhead = 14): Promise<JikanAnimeEntry[]> {
+export async function fetchJikanAiringSchedule(daysAhead = 7): Promise<JikanAnimeEntry[]> {
   const [today, upcoming] = await Promise.all([
     fetchJikanTodaySchedule(),
     fetchJikanUpcomingSchedule(daysAhead),

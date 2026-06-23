@@ -13,6 +13,7 @@ type ReleaseRow = {
   title: string;
   title_ar: string | null;
   title_ja: string | null;
+  mal_id: number | null;
   release_date: string;
   airs_at: string | null;
   episode_number: number;
@@ -57,6 +58,7 @@ function mapRelease(row: ReleaseRow): AnimeRelease {
     clashId: row.clash_id,
     clashStatus: row.clash_status,
     clashOpensAt: row.clash_opens_at,
+    malId: row.mal_id,
   };
 }
 
