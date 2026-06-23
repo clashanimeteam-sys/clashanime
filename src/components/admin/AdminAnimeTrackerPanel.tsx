@@ -46,6 +46,7 @@ export function AdminAnimeTrackerPanel() {
   const supabase = useMemo(() => createBrowserClient(), []);
   const [releases, setReleases] = useState<ReleaseRow[]>([]);
   const [trendingRows, setTrendingRows] = useState<TrendingSpotlightRow[]>([]);
+  const [lastSyncedAt, setLastSyncedAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [syncing, setSyncing] = useState(false);
@@ -67,9 +68,11 @@ export function AdminAnimeTrackerPanel() {
   const loadReleases = useCallback(async () => {
     if (!supabase) return;
     setLoading(true);
-    const [{ data, error: listError }, { data: trendingData, error: trendingError }] = await Promise.all([
+    const [{ data, error: listError }, { data: trendingData, error: trendingError }, { data: syncMeta }] =
+      await Promise.all([
       supabase.rpc("list_anime_releases_admin"),
       supabase.rpc("list_trending_spotlight_admin"),
+      supabase.rpc("get_anime_tracker_sync_meta"),
     ]);
     if (listError) {
       setError(listError.message);
@@ -82,6 +85,8 @@ export function AdminAnimeTrackerPanel() {
     } else {
       setTrendingRows((trendingData as TrendingSpotlightRow[]) ?? []);
     }
+    const metaRow = (syncMeta as Array<{ last_synced_at: string }> | null)?.[0];
+    setLastSyncedAt(metaRow?.last_synced_at ?? null);
     setLoading(false);
   }, [supabase]);
 
@@ -155,6 +160,7 @@ export function AdminAnimeTrackerPanel() {
         error?: string;
         schedule?: { synced?: number; clashesOpened?: number };
         trending?: { synced?: number; total?: number };
+        syncedAt?: string;
       };
 
       if (!response.ok) {
@@ -169,6 +175,7 @@ export function AdminAnimeTrackerPanel() {
           .replace("{trendingSynced}", String(payload.trending?.synced ?? 0))
           .replace("{trendingTotal}", String(payload.trending?.total ?? 0)),
       );
+      if (payload.syncedAt) setLastSyncedAt(payload.syncedAt);
       await loadReleases();
     } catch {
       setError(t.admin.animeTracker.syncFailed);
@@ -244,6 +251,13 @@ export function AdminAnimeTrackerPanel() {
         <div>
           <h1 className="text-2xl font-bold text-white">{t.admin.animeTracker.title}</h1>
           <p className="mt-2 text-sm text-zinc-400">{t.admin.animeTracker.subtitle}</p>
+          <p className="mt-2 text-xs text-zinc-500">{t.admin.animeTracker.autoSyncHint}</p>
+          {lastSyncedAt ? (
+            <p className="mt-2 text-xs font-medium text-emerald-300">
+              {t.admin.animeTracker.lastAutoSyncLabel}:{" "}
+              {formatDateTime(lastSyncedAt, { dateStyle: "medium", timeStyle: "short" })}
+            </p>
+          ) : null}
         </div>
         <div className="flex flex-wrap gap-2">
           <button

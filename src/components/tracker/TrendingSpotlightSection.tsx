@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AnimeSynopsisBlock } from "@/components/tracker/AnimeSynopsisBlock";
+import { MatchTagUsageBadges } from "@/components/tracker/MatchTagUsageBadges";
 import type { TrendingSpotlightCard } from "@/lib/animeTracker";
 import {
   buildClashUploadHref,
@@ -113,12 +114,15 @@ function TrendingSpotlightCardView({ card }: { card: TrendingSpotlightCard }) {
           </div>
 
           {matchTags.length > 0 ? (
-            <p className="mt-4 rounded-xl border border-dashed border-zinc-300 bg-zinc-50 px-4 py-3 text-sm font-medium text-zinc-600 dark:border-zinc-700 dark:bg-zinc-900/50 dark:text-zinc-300">
-              {t.animeTracker.matchTagsHint.replace(
-                "{tags}",
-                matchTags.slice(0, 4).map((tag) => `#${tag}`).join(" "),
-              )}
-            </p>
+            <div className="mt-4 space-y-3 rounded-xl border border-dashed border-zinc-300 bg-zinc-50 px-4 py-3 dark:border-zinc-700 dark:bg-zinc-900/50">
+              <p className="text-sm font-medium text-zinc-600 dark:text-zinc-300">
+                {t.animeTracker.matchTagsHint.replace(
+                  "{tags}",
+                  matchTags.slice(0, 4).map((tag) => `#${tag}`).join(" "),
+                )}
+              </p>
+              <MatchTagUsageBadges tags={matchTags} />
+            </div>
           ) : null}
         </div>
       </div>

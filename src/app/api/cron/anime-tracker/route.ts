@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { syncJikanReleasesToDatabase } from "@/lib/animeTrackerSync";
-import { syncTrendingSpotlightToDatabase } from "@/lib/animeTrackerTrendingSync";
+import { runAnimeTrackerFullSync } from "@/lib/animeTrackerAutoSync";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 120;
@@ -18,14 +17,11 @@ export async function GET(request: Request) {
   }
 
   try {
-    const [schedule, trending] = await Promise.all([
-      syncJikanReleasesToDatabase(),
-      syncTrendingSpotlightToDatabase(),
-    ]);
-    return NextResponse.json({ ok: true, schedule, trending });
+    const result = await runAnimeTrackerFullSync();
+    return NextResponse.json({ ok: true, ...result });
   } catch (error) {
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Jikan sync failed" },
+      { error: error instanceof Error ? error.message : "Anime tracker sync failed" },
       { status: 500 },
     );
   }

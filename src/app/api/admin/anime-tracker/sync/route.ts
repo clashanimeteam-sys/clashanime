@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { syncJikanReleasesToDatabase } from "@/lib/animeTrackerSync";
-import { syncTrendingSpotlightToDatabase } from "@/lib/animeTrackerTrendingSync";
+import { runAnimeTrackerFullSync } from "@/lib/animeTrackerAutoSync";
 import { getStaffUser } from "@/lib/adminAuth";
 import { createServerClient } from "@/lib/supabase/server";
 
@@ -19,11 +18,8 @@ export async function POST() {
   }
 
   try {
-    const [schedule, trending] = await Promise.all([
-      syncJikanReleasesToDatabase(),
-      syncTrendingSpotlightToDatabase(),
-    ]);
-    return NextResponse.json({ ok: true, schedule, trending });
+    const result = await runAnimeTrackerFullSync();
+    return NextResponse.json({ ok: true, ...result });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Jikan sync failed" },

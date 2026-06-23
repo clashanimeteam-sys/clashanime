@@ -2,14 +2,14 @@ name: Anime Tracker sync
 
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "*/30 * * * *"
   workflow_dispatch:
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Sync AniList and open release clashes
+      - name: Sync Jikan schedule, trending spotlight, and release clashes
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
           SITE_URL: ${{ vars.SITE_URL || 'https://clashanime.com' }}

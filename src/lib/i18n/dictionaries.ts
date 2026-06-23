@@ -1107,6 +1107,8 @@ export type Dictionary = {
       syncFailed: string;
       syncTrendingFailed: string;
       trendingListTitle: string;
+      lastAutoSyncLabel: string;
+      autoSyncHint: string;
       addTitle: string;
       titleLabel: string;
       titleArLabel: string;
@@ -2371,6 +2373,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         syncFailed: "Jikan sync failed.",
         syncTrendingFailed: "Trending spotlight sync failed.",
         trendingListTitle: "Trending spotlight (top 10)",
+        lastAutoSyncLabel: "Last auto sync",
+        autoSyncHint: "Schedule, trending, today, and upcoming refresh automatically every 30 minutes via cron, and in the background when the tracker page is opened.",
         addTitle: "Add release manually",
         titleLabel: "Anime title",
         titleArLabel: "Arabic title (optional)",
@@ -3618,6 +3622,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         syncFailed: "Jikan同期に失敗しました。",
         syncTrendingFailed: "トレンドスポットライトの同期に失敗しました。",
         trendingListTitle: "トレンドスポットライト（トップ10）",
+        lastAutoSyncLabel: "最終自動同期",
+        autoSyncHint: "スケジュール・トレンド・本日・近日分は30分ごとのcronと、レーダー表示時のバックグラウンド同期で自動更新されます。",
         addTitle: "手動で追加",
         titleLabel: "アニメタイトル",
         titleArLabel: "アラビア語タイトル（任意）",
@@ -4869,6 +4875,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         syncFailed: "فشلت مزامنة Jikan.",
         syncTrendingFailed: "فشلت مزامنة قائمة الترند.",
         trendingListTitle: "قائمة الترند (أفضل 10)",
+        lastAutoSyncLabel: "آخر مزامنة تلقائية",
+        autoSyncHint: "يُحدَّث الجدول والترند ويُعرض اليوم وقريباً تلقائياً كل 30 دقيقة عبر cron، وفي الخلفية عند فتح صفحة الرادار.",
         addTitle: "إضافة إصدار يدوياً",
         titleLabel: "عنوان الأنمي",
         titleArLabel: "العنوان بالعربية (اختياري)",

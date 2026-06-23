@@ -6,6 +6,7 @@ import { VideoCard } from "@/components/VideoCard";
 import type { AnimeReleaseClashDetail } from "@/lib/animeTracker";
 import { buildClashUploadHref, localizedAnimeTitle } from "@/lib/animeTracker";
 import { AnimeSynopsisBlock } from "@/components/tracker/AnimeSynopsisBlock";
+import { MatchTagUsageBadges } from "@/components/tracker/MatchTagUsageBadges";
 import type { Video } from "@/lib/types";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
@@ -75,12 +76,15 @@ export function AnimeReleaseClashPageContent({ clash, videos }: AnimeReleaseClas
               </Link>
             </div>
             {clash.matchTags.length > 0 ? (
-              <p className="mt-4 rounded-xl border border-dashed border-zinc-300 bg-zinc-50 px-4 py-3 text-sm font-medium text-zinc-600 dark:border-zinc-700 dark:bg-zinc-900/50 dark:text-zinc-300">
-                {t.animeTracker.matchTagsHint.replace(
-                  "{tags}",
-                  clash.matchTags.map((tag) => `#${tag}`).join(" "),
-                )}
-              </p>
+              <div className="mt-4 space-y-3 rounded-xl border border-dashed border-zinc-300 bg-zinc-50 px-4 py-3 dark:border-zinc-700 dark:bg-zinc-900/50">
+                <p className="text-sm font-medium text-zinc-600 dark:text-zinc-300">
+                  {t.animeTracker.matchTagsHint.replace(
+                    "{tags}",
+                    clash.matchTags.map((tag) => `#${tag}`).join(" "),
+                  )}
+                </p>
+                <MatchTagUsageBadges tags={clash.matchTags} />
+              </div>
             ) : null}
           </div>
         </div>

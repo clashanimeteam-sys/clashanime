@@ -10,7 +10,7 @@ export async function syncJikanReleasesToDatabase(entries?: JikanAnimeEntry[]) {
     throw new Error("Service role not configured");
   }
 
-  const schedule = entries ?? (await fetchJikanAiringSchedule(7));
+  const schedule = entries ?? (await fetchJikanAiringSchedule(14));
   const synopsisMap = await fetchJikanSynopsisMap(schedule.map((entry) => entry.malId));
   let synced = 0;
   let syncErrors = 0;

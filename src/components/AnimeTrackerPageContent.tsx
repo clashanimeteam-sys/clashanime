@@ -6,6 +6,7 @@ import type { AnimeReleaseClash, TrendingSpotlightCard } from "@/lib/animeTracke
 import { localizedAnimeTitle } from "@/lib/animeTracker";
 import type { JikanAnimeEntry } from "@/lib/jikan";
 import { AnimeSynopsisBlock } from "@/components/tracker/AnimeSynopsisBlock";
+import { MatchTagUsageBadges } from "@/components/tracker/MatchTagUsageBadges";
 import { TrendingSpotlightSection } from "@/components/tracker/TrendingSpotlightSection";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
@@ -138,6 +139,9 @@ function ActiveClashCard({ clash }: { clash: AnimeReleaseClash }) {
             {t.animeTracker.clipCount.replace("{count}", formatNumber(clash.clipCount))}
           </p>
           <AnimeSynopsisBlock synopsis={clash} variant="compact" />
+          {clash.matchTags.length > 0 ? (
+            <MatchTagUsageBadges tags={clash.matchTags} className="mt-3" />
+          ) : null}
         </div>
 
         <span className="inline-flex w-fit rounded-full bg-gradient-to-r from-orange-500 to-red-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-orange-500/30 transition group-hover:brightness-110">
