@@ -58,6 +58,7 @@ export type AnimeReleaseClashDetail = AnimeReleaseClash & {
 
 export type TrendingSpotlightCard = {
   rank: number;
+  malId: number;
   editorialEn: string | null;
   editorialAr: string | null;
   editorialJa: string | null;

@@ -225,9 +225,13 @@ export async function getActiveAnimeReleaseClashes(): Promise<AnimeReleaseClash[
 
 type TrendingSpotlightRow = {
   rank: number;
+  mal_id: number;
   editorial_en: string | null;
   editorial_ar: string | null;
   editorial_ja: string | null;
+  seed_title_en: string | null;
+  seed_title_ar: string | null;
+  seed_title_ja: string | null;
   release_id: string | null;
   clash_id: string | null;
   anime_title: string | null;
@@ -251,14 +255,15 @@ type TrendingSpotlightRow = {
 function mapTrendingSpotlight(row: TrendingSpotlightRow): TrendingSpotlightCard {
   return {
     rank: Number(row.rank),
+    malId: Number(row.mal_id),
     editorialEn: row.editorial_en,
     editorialAr: row.editorial_ar,
     editorialJa: row.editorial_ja,
     releaseId: row.release_id,
     clashId: row.clash_id,
-    animeTitle: row.anime_title ?? "",
-    titleAr: row.title_ar,
-    titleJa: row.title_ja,
+    animeTitle: row.anime_title ?? row.seed_title_en ?? "",
+    titleAr: row.title_ar ?? row.seed_title_ar,
+    titleJa: row.title_ja ?? row.seed_title_ja,
     episodeNumber: Number(row.episode_number ?? 1),
     episodesTotal: row.episodes_total === null ? null : Number(row.episodes_total),
     posterUrl: row.poster_url,
