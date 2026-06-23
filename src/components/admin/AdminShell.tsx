@@ -40,11 +40,11 @@ type AdminShellProps = {
 export function AdminShell({ children }: AdminShellProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, profile, loading, profileLoading, signOut } = useAuth();
+  const { user, profile, loading, profileReady, signOut } = useAuth();
   const { t } = useLocale();
 
-  const bootstrapping = loading || (Boolean(user) && profileLoading);
-  const allowed = Boolean(user && isStaff(profile));
+  const bootstrapping = loading || (Boolean(user) && !profileReady);
+  const allowed = Boolean(user && profileReady && isStaff(profile));
 
   useEffect(() => {
     if (bootstrapping) return;
@@ -58,6 +58,28 @@ export function AdminShell({ children }: AdminShellProps) {
       router.replace("/?admin_denied=1");
     }
   }, [bootstrapping, user, profile, router, pathname]);
+
+  useEffect(() => {
+    if (!allowed || !pathname.startsWith("/admin")) return;
+    sessionStorage.setItem("admin:last-path", pathname);
+  }, [allowed, pathname]);
+
+  useEffect(() => {
+    if (!allowed) return;
+
+    const handlePopState = () => {
+      window.setTimeout(() => {
+        const path = window.location.pathname;
+        if (!path.startsWith("/admin")) {
+          const lastAdminPath = sessionStorage.getItem("admin:last-path") || "/admin";
+          router.replace(lastAdminPath);
+        }
+      }, 0);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [allowed, router]);
 
   if (bootstrapping) {
     return (

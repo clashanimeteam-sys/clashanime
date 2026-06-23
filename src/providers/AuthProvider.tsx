@@ -21,6 +21,7 @@ type AuthContextValue = {
   profile: Profile | null;
   loading: boolean;
   profileLoading: boolean;
+  profileReady: boolean;
   refreshProfile: (options?: { silent?: boolean }) => Promise<void>;
   signOut: () => Promise<void>;
 };
@@ -38,6 +39,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(Boolean(supabase));
   const [profileLoading, setProfileLoading] = useState(false);
+  const [profileReady, setProfileReady] = useState(!supabase);
   const profileUserIdRef = useRef<string | null>(null);
   const welcomeEmailRequestedRef = useRef<string | null>(null);
 
@@ -117,6 +119,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const userId = session?.user?.id;
     if (!userId) {
       setProfile(null);
+      setProfileLoading(false);
+      setProfileReady(true);
       profileUserIdRef.current = null;
       return;
     }
@@ -124,7 +128,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (profileUserIdRef.current === userId) return;
 
     profileUserIdRef.current = userId;
-    void refreshProfile();
+    setProfileReady(false);
+    setProfileLoading(true);
+    void refreshProfile({ silent: true }).finally(() => {
+      setProfileReady(true);
+    });
   }, [session?.user?.id, refreshProfile]);
 
   const signOut = useCallback(async () => {
@@ -132,6 +140,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     await supabase.auth.signOut();
     setSession(null);
     setProfile(null);
+    setProfileReady(true);
     profileUserIdRef.current = null;
   }, [supabase]);
 
@@ -142,10 +151,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
       profile,
       loading,
       profileLoading,
+      profileReady,
       refreshProfile,
       signOut,
     }),
-    [session, profile, loading, profileLoading, refreshProfile, signOut],
+    [session, profile, loading, profileLoading, profileReady, refreshProfile, signOut],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
