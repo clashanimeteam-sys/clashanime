@@ -3,10 +3,10 @@ import type { LevelDefinition } from "@/lib/points";
 export type RankLetterSize = "sm" | "md" | "lg" | "xl";
 
 const sizeClasses: Record<RankLetterSize, string> = {
-  sm: "h-6 w-6 rounded-md text-[10px]",
-  md: "h-8 w-8 rounded-lg text-xs",
-  lg: "h-10 w-10 rounded-lg text-sm",
-  xl: "h-14 w-14 rounded-xl text-xl",
+  sm: "h-6 w-6 rounded-md text-[11px]",
+  md: "h-8 w-8 rounded-lg text-sm",
+  lg: "h-10 w-10 rounded-lg text-base",
+  xl: "h-14 w-14 rounded-xl text-2xl",
 };
 
 const rankDesign: Record<LevelDefinition["rank"], string> = {
