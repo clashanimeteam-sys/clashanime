@@ -332,11 +332,11 @@ export function UploadVideoForm({ clashContext = null }: UploadVideoFormProps) {
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-5 px-4 py-4 sm:px-6">
       {clashContext ? (
-        <div className="rounded-2xl border border-orange-500/30 bg-orange-950/20 px-4 py-3 text-sm text-orange-100">
-          <p className="font-semibold text-white">
+        <div className="rounded-2xl border border-[#E2B49A] bg-[#C9B5A8] px-5 py-4 text-white shadow-sm">
+          <p className="font-display text-base font-bold leading-snug text-white sm:text-lg">
             {t.upload.clashUploadTitle.replace("{anime}", clashContext.animeTitle)}
           </p>
-          <p className="mt-1 text-orange-100/90">
+          <p className="mt-2 text-sm font-medium leading-relaxed text-white/95">
             {t.upload.clashUploadHint.replace(
               "{tags}",
               clashTags.map((tag) => `#${tag}`).join(" "),
@@ -345,8 +345,7 @@ export function UploadVideoForm({ clashContext = null }: UploadVideoFormProps) {
         </div>
       ) : null}
       <div>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">{t.upload.subtitle}</p>
-        <p className="mt-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300">
+        <p className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300">
           {t.upload.originalOnly}
         </p>
       </div>
