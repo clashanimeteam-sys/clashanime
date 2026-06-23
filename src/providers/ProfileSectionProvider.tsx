@@ -13,6 +13,7 @@ import {
 
 export type ProfileSection =
   | "settings"
+  | "channel"
   | "my-videos"
   | "hunter-system"
   | "bounty-log"
@@ -21,6 +22,7 @@ export type ProfileSection =
 
 export function parseProfileSection(hash: string): ProfileSection {
   if (
+    hash === "channel" ||
     hash === "my-videos" ||
     hash === "hunter-system" ||
     hash === "bounty-log" ||

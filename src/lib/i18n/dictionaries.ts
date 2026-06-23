@@ -20,6 +20,7 @@ export type Dictionary = {
     bountyRewards: string;
     inviteFriends: string;
     channelSettings: string;
+    channel: string;
     myVideos: string;
     settings: string;
     clashWallet: string;
@@ -456,6 +457,10 @@ export type Dictionary = {
     noChannelVideos: string;
     noChannelPosts: string;
     viewCommunityPost: string;
+    channelPreviewTitle: string;
+    channelPreviewDesc: string;
+    editChannelSettings: string;
+    viewPublicChannel: string;
     manageChannel: string;
     verifiedBadge: string;
     displayNameCooldown: string;
@@ -1271,6 +1276,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bountyRewards: "Latest bounty rewards",
       inviteFriends: "Invite friends",
       channelSettings: "Channel settings",
+      channel: "Channel",
       myVideos: "Your videos",
       settings: "Settings",
       clashWallet: "ClashCoins wallet",
@@ -1728,6 +1734,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       noChannelVideos: "This channel has no videos yet.",
       noChannelPosts: "This channel has no community posts yet.",
       viewCommunityPost: "View post",
+      channelPreviewTitle: "Your channel",
+      channelPreviewDesc: "This is how visitors see your public channel page.",
+      editChannelSettings: "Edit channel settings",
+      viewPublicChannel: "View public channel",
       manageChannel: "Manage your channel",
       verifiedBadge: "Verified channel",
       displayNameCooldown: "You can change your channel name again in {days} day(s).",
@@ -2583,6 +2593,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bountyRewards: "最新の報酬",
       inviteFriends: "友達を招待",
       channelSettings: "チャンネル設定",
+      channel: "チャンネル",
       myVideos: "あなたの動画",
       settings: "設定",
       clashWallet: "ClashCoinsウォレット",
@@ -3032,6 +3043,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       noChannelVideos: "このチャンネルにはまだ動画がありません。",
       noChannelPosts: "このチャンネルにはまだコミュニティ投稿がありません。",
       viewCommunityPost: "投稿を見る",
+      channelPreviewTitle: "あなたのチャンネル",
+      channelPreviewDesc: "訪問者に公開されるチャンネルページのプレビューです。",
+      editChannelSettings: "チャンネル設定を編集",
+      viewPublicChannel: "公開チャンネルを見る",
       manageChannel: "チャンネルを管理",
       verifiedBadge: "認証済みチャンネル",
       displayNameCooldown: "チャンネル名はあと {days} 日で変更できます。",
@@ -3880,6 +3895,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bountyRewards: "آخر مكافآت الجوائز",
       inviteFriends: "ادعُ أصدقاءك",
       channelSettings: "إعدادات القناة",
+      channel: "القناة",
       myVideos: "فيديوهاتك",
       settings: "الإعدادات",
       clashWallet: "محفظة ClashCoins",
@@ -4332,6 +4348,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       noChannelVideos: "لا توجد فيديوهات في هذه القناة بعد.",
       noChannelPosts: "لا توجد منشورات في مجتمع الأنمي من هذا المستخدم بعد.",
       viewCommunityPost: "عرض المنشور",
+      channelPreviewTitle: "قناتك",
+      channelPreviewDesc: "هكذا يرى الزوار صفحة قناتك العامة.",
+      editChannelSettings: "تعديل إعدادات القناة",
+      viewPublicChannel: "عرض القناة العامة",
       manageChannel: "إدارة قناتك",
       verifiedBadge: "قناة موثّقة",
       displayNameCooldown: "يمكنك تغيير اسم القناة بعد {days} يوماً.",

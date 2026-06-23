@@ -10,6 +10,8 @@ import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { DeleteAccountSection } from "@/components/DeleteAccountSection";
 import { MentionHashtagTextarea } from "@/components/MentionHashtagTextarea";
 import { OwnVideoCard } from "@/components/profile/OwnVideoCard";
+import { ProfileChannelPreview } from "@/components/profile/ProfileChannelPreview";
+import type { ChannelCommunityPost } from "@/components/channel/ChannelCommunityPosts";
 import { VideoCard } from "@/components/VideoCard";
 import { profileToVideoChannel } from "@/components/VideoCardChannel";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
@@ -62,12 +64,13 @@ export function ProfileContent() {
   const router = useRouter();
   const { user, loading: authLoading, refreshProfile, signOut } = useAuth();
   const { t, formatNumber, formatDateTime } = useLocale();
-  const { section: activeSection } = useProfileSection();
+  const { section: activeSection, setSection } = useProfileSection();
   const supabase = useMemo(() => createBrowserClient(), []);
   const config = useMemo(() => getSupabaseConfig(), []);
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [videos, setVideos] = useState<Video[]>([]);
+  const [communityPosts, setCommunityPosts] = useState<ChannelCommunityPost[]>([]);
   const [videoCount, setVideoCount] = useState(0);
   const [displayName, setDisplayName] = useState("");
   const [username, setUsername] = useState("");
@@ -91,6 +94,21 @@ export function ProfileContent() {
   const usernameChanged =
     profile !== null && normalizeUsernameInput(username) !== profile.username;
   const bioChanged = profile !== null && bio.trim() !== (profile.bio ?? "");
+
+  const previewProfile = useMemo(() => {
+    if (!profile) return null;
+    return {
+      ...profile,
+      display_name: displayName.trim() || profile.username,
+      username: normalizeUsernameInput(username) || profile.username,
+      bio: bio.trim(),
+    };
+  }, [profile, displayName, username, bio]);
+
+  const approvedChannelVideos = useMemo(
+    () => videos.filter((video) => video.moderation_status === "approved"),
+    [videos],
+  );
 
   const hasChanges =
     profile !== null &&
@@ -147,7 +165,8 @@ export function ProfileContent() {
       return;
     }
 
-    const [{ count: followers }, { count: videosTotal }, { data: videoData }] = await Promise.all([
+    const [{ count: followers }, { count: videosTotal }, { data: videoData }, { data: postData }] =
+      await Promise.all([
       supabase
         .from("channel_follows")
         .select("*", { count: "exact", head: true })
@@ -160,6 +179,13 @@ export function ProfileContent() {
         .from("videos")
         .select(
           "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, hashtags, duration_seconds, user_id, moderation_status, rejection_reason",
+        )
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("community_posts")
+        .select(
+          "id, body, image_url, created_at, likes_count, dislikes_count, comments_count, shares_count",
         )
         .eq("user_id", userId)
         .order("created_at", { ascending: false }),
@@ -183,6 +209,7 @@ export function ProfileContent() {
         channel: profileToVideoChannel(profileData, followers ?? 0),
       })),
     );
+    setCommunityPosts((postData ?? []) as ChannelCommunityPost[]);
     setLoading(false);
   }, [supabase, userId]);
 
@@ -463,7 +490,7 @@ export function ProfileContent() {
   return (
     <div
       className={`mx-auto bg-white px-4 pb-10 dark:bg-black sm:px-6 ${
-        activeSection === "my-videos" ? "max-w-[1920px]" : "max-w-6xl"
+        activeSection === "my-videos" || activeSection === "channel" ? "max-w-[1920px]" : "max-w-6xl"
       }`}
     >
       {activeSection === "settings" ? (
@@ -680,6 +707,21 @@ export function ProfileContent() {
             </div>
           </form>
 
+          {previewProfile ? (
+            <section id="channel-preview" className={`${settingsBoxClassName("mt-6")}`}>
+              <ProfileChannelPreview
+                profile={previewProfile}
+                followerCount={followerCount}
+                videos={approvedChannelVideos}
+                communityPosts={communityPosts}
+                onEditSettings={() => {
+                  document.getElementById("settings")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                showEditBar
+              />
+            </section>
+          ) : null}
+
           <div className={`${settingsBoxClassName("mt-6")}`}>
             <button
               type="button"
@@ -692,6 +734,19 @@ export function ProfileContent() {
 
           <DeleteAccountSection />
         </>
+      ) : null}
+
+      {activeSection === "channel" && previewProfile ? (
+        <section id="channel" className={settingsBoxClassName()}>
+          <ProfileChannelPreview
+            profile={previewProfile}
+            followerCount={followerCount}
+            videos={approvedChannelVideos}
+            communityPosts={communityPosts}
+            onEditSettings={() => setSection("settings")}
+            showEditBar
+          />
+        </section>
       ) : null}
 
       {activeSection === "hunter-system" ? (

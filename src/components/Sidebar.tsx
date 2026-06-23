@@ -22,11 +22,12 @@ const mainNavItems = [
 ];
 
 const profileNavItems: {
-  key: "channelSettings" | "myVideos" | "hunterSystem" | "bountyRewards" | "clashWallet" | "inviteFriends";
+  key: "channelSettings" | "channel" | "myVideos" | "hunterSystem" | "bountyRewards" | "clashWallet" | "inviteFriends";
   section: ProfileSection;
   icon: string;
 }[] = [
   { key: "channelSettings", section: "settings", icon: "settings" },
+  { key: "channel", section: "channel", icon: "channel" },
   { key: "myVideos", section: "my-videos", icon: "video" },
   { key: "hunterSystem", section: "hunter-system", icon: "trophy" },
   { key: "bountyRewards", section: "bounty-log", icon: "coins" },
@@ -130,6 +131,15 @@ function NavIcon({ icon }: { icon: string }) {
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
         <circle cx="12" cy="12" r="3" />
         <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+      </svg>
+    );
+  }
+  if (icon === "channel") {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+        <circle cx="12" cy="11" r="3" />
+        <path d="M8 20v-1a4 4 0 0 1 8 0v1" />
       </svg>
     );
   }
