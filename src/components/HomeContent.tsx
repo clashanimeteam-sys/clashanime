@@ -58,6 +58,12 @@ export function HomeContent({
   return (
     <div className="relative overflow-hidden">
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-4 sm:px-6">
+        {hasReleaseBanner ? (
+          <div className={`mb-8 ${activeSeason ? "pt-2 sm:pt-4" : ""}`}>
+            <AnimeTrackerBanner clashes={activeReleaseClashes} activeSeason={activeSeason} />
+          </div>
+        ) : null}
+
         <section className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           {showTopCountdown && activeSeason ? (
             <SeasonCountdown season={activeSeason} className="shrink-0" />
@@ -115,12 +121,6 @@ export function HomeContent({
             ) : null}
           </div>
         </div>
-
-        {hasReleaseBanner ? (
-          <div className="mt-8 sm:mt-10">
-            <AnimeTrackerBanner clashes={activeReleaseClashes} activeSeason={activeSeason} />
-          </div>
-        ) : null}
       </div>
     </div>
   );

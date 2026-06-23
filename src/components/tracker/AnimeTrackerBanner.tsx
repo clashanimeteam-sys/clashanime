@@ -29,9 +29,9 @@ export function AnimeTrackerBanner({ clashes, activeSeason = null }: AnimeTracke
   );
 
   return (
-    <section className="relative mb-2 pt-2 sm:mb-4">
+    <section className="relative mb-2 sm:mb-4">
       {activeSeason ? (
-        <div className="relative z-20 mb-3 flex justify-start sm:absolute sm:start-0 sm:top-0 sm:mb-0 sm:-translate-y-[38%]">
+        <div className="relative z-20 mb-3 flex justify-end sm:absolute sm:end-0 sm:top-0 sm:mb-0 sm:-translate-y-[38%]">
           <SeasonCountdown season={activeSeason} />
         </div>
       ) : null}
