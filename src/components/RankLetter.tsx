@@ -3,10 +3,10 @@ import type { LevelDefinition } from "@/lib/points";
 export type RankLetterSize = "sm" | "md" | "lg" | "xl";
 
 const sizeClasses: Record<RankLetterSize, string> = {
-  sm: "h-7 min-w-7 text-[11px] rounded-lg",
-  md: "h-9 min-w-9 text-sm rounded-xl",
-  lg: "h-11 min-w-11 text-base rounded-xl",
-  xl: "h-16 min-w-16 text-2xl rounded-2xl",
+  sm: "h-6 w-6 rounded-md text-[10px]",
+  md: "h-8 w-8 rounded-lg text-xs",
+  lg: "h-10 w-10 rounded-lg text-sm",
+  xl: "h-14 w-14 rounded-xl text-xl",
 };
 
 const rankDesign: Record<LevelDefinition["rank"], string> = {
@@ -35,13 +35,14 @@ export function RankLetter({
 }: RankLetterProps) {
   return (
     <span
-      className={`inline-flex items-center justify-center border font-display font-black leading-none tracking-tight ${sizeClasses[size]} ${rankDesign[rank]} ${
+      dir="ltr"
+      className={`box-border inline-flex shrink-0 items-center justify-center border p-0 font-sans font-black ${sizeClasses[size]} ${rankDesign[rank]} ${
         muted ? "opacity-45 grayscale" : active ? "" : "opacity-70"
       } ${className}`}
       title={title}
       aria-label={rank}
     >
-      {rank}
+      <span className={`rank-letter-glyph rank-letter-glyph-${rank.toLowerCase()}`}>{rank}</span>
     </span>
   );
 }
