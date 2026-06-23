@@ -48,7 +48,7 @@ export function AdminUsersPanel() {
 
     const { data, error: fetchError } = await supabase
       .from("profiles")
-      .select("id, username, display_name, role, is_banned, is_verified, points, level, created_at, updated_at, avatar_url, banner_url, bio")
+      .select("id, username, display_name, role, is_banned, is_verified, points, level, created_at, updated_at, avatar_url, banner_url, bio, country_code, country_name, youtube_url")
       .order("created_at", { ascending: false })
       .limit(200);
 
@@ -314,6 +314,16 @@ export function AdminUsersPanel() {
                           {user.bio?.trim() ? (
                             <span className="rounded-full bg-sky-500/15 px-2 py-0.5 text-[10px] font-semibold text-sky-300">
                               {t.admin.channelHasBio}
+                            </span>
+                          ) : null}
+                          {user.country_name || user.country_code ? (
+                            <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-semibold text-emerald-300">
+                              {user.country_name ?? user.country_code}
+                            </span>
+                          ) : null}
+                          {user.youtube_url?.trim() ? (
+                            <span className="rounded-full bg-red-500/15 px-2 py-0.5 text-[10px] font-semibold text-red-300">
+                              {t.admin.channelHasYoutube}
                             </span>
                           ) : null}
                         </div>

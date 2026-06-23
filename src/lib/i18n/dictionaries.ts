@@ -866,6 +866,7 @@ export type Dictionary = {
     viewChannel: string;
     channelHasCover: string;
     channelHasBio: string;
+    channelHasYoutube: string;
     suspicionScore: string;
     globalRank: string;
     inClashTop: string;
@@ -2203,6 +2204,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       viewChannel: "View channel",
       channelHasCover: "Cover",
       channelHasBio: "Bio",
+      channelHasYoutube: "YouTube",
       suspicionScore: "Suspicion score",
       globalRank: "Global rank",
       inClashTop: "In Clash top 12",
@@ -3526,6 +3528,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       viewChannel: "チャンネルを見る",
       channelHasCover: "カバー",
       channelHasBio: "概要",
+      channelHasYoutube: "YouTube",
       suspicionScore: "疑わしさスコア",
       globalRank: "世界ランク",
       inClashTop: "クラッシュ上位12",
@@ -4850,6 +4853,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       viewChannel: "عرض القناة",
       channelHasCover: "غلاف",
       channelHasBio: "نبذة",
+      channelHasYoutube: "YouTube",
       suspicionScore: "درجة الاشتباه",
       globalRank: "المركز العالمي",
       inClashTop: "في النزالات (أفضل 12)",
