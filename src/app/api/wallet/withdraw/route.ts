@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import {
   isPaymentMethod,
   MIN_WITHDRAWAL_CENTS,
+  MIN_WITHDRAWAL_USD,
   USDT_NETWORKS,
   type PaymentMethod,
 } from "@/lib/clashCoins";
@@ -111,7 +112,10 @@ export async function POST(request: Request) {
   }
 
   if (amountCents < MIN_WITHDRAWAL_CENTS) {
-    return NextResponse.json({ error: "Minimum withdrawal is $50.00" }, { status: 400 });
+    return NextResponse.json(
+      { error: `Minimum withdrawal is $${MIN_WITHDRAWAL_USD.toFixed(2)}` },
+      { status: 400 },
+    );
   }
 
   if (!paymentMethod || !isPaymentMethod(paymentMethod)) {

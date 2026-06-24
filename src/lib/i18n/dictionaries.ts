@@ -1406,7 +1406,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashCoinsTitle: "ClashCoins — your digital wallet",
       clashCoinsSubtitle: "Turn hunter points into redeemable ClashCoins and cash out like a digital asset.",
       clashCoinsExchange: "10,000 points = $10",
-      clashCoinsMinPayout: "Minimum payout: $50.00",
+      clashCoinsMinPayout: "Minimum payout: $10.00",
       clashCoinsOpenWallet: "Open wallet",
       seasonCountdownLabel: "Season ends in",
       seasonDays: "Days",
@@ -2164,7 +2164,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       withdrawProcessingTime:
         "Payouts are reviewed manually. After approval, funds typically arrive within 24–72 hours.",
       withdrawFailed: "Could not submit withdrawal request.",
-      withdrawMinError: "Minimum withdrawal is $50.00.",
+      withdrawMinError: "Minimum withdrawal is $10.00.",
       withdrawPendingNotice:
         "Your request is under review. After approval, payout usually arrives within 24–72 hours.",
       fraudBlocked:
@@ -2842,7 +2842,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashCoinsTitle: "ClashCoins — デジタルウォレット",
       clashCoinsSubtitle: "ハンターポイントを換金可能なClashCoinsに変換。",
       clashCoinsExchange: "10,000ポイント = $10",
-      clashCoinsMinPayout: "最低出金: $50.00",
+      clashCoinsMinPayout: "最低出金: $10.00",
       clashCoinsOpenWallet: "ウォレットを開く",
       seasonCountdownLabel: "シーズン終了まで",
       seasonDays: "日",
@@ -3590,7 +3590,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       withdrawProcessingTime:
         "出金は手動で審査されます。承認後、通常24〜72時間以内にお支払いされます。",
       withdrawFailed: "出金リクエストを送信できませんでした。",
-      withdrawMinError: "最低出金は$50.00です。",
+      withdrawMinError: "最低出金は$10.00です。",
       withdrawPendingNotice:
         "リクエストは審査中です。承認後、通常24〜72時間以内にお支払いされます。",
       fraudBlocked: "異常なポイント活動のため審査対象になりました。",
@@ -4263,7 +4263,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashCoinsTitle: "ClashCoins — محفظتك الرقمية",
       clashCoinsSubtitle: "حوّل نقاط الصياد إلى ClashCoins قابلة للسحب كأصول رقمية.",
       clashCoinsExchange: "١٠,٠٠٠ نقطة = ١٠$",
-      clashCoinsMinPayout: "الحد الأدنى للسحب: ٥٠$",
+      clashCoinsMinPayout: "الحد الأدنى للسحب: ١٠$",
       clashCoinsOpenWallet: "افتح المحفظة",
       seasonCountdownLabel: "ينتهي الموسم خلال",
       seasonDays: "يوم",
@@ -5015,7 +5015,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       withdrawProcessingTime:
         "تُراجع جميع الطلبات يدوياً. بعد الموافقة، يصل المبلغ عادةً خلال ٢٤ إلى ٧٢ ساعة.",
       withdrawFailed: "تعذر إرسال طلب السحب.",
-      withdrawMinError: "الحد الأدنى للسحب ٥٠$.",
+      withdrawMinError: "الحد الأدنى للسحب ١٠$.",
       withdrawPendingNotice:
         "طلبك قيد المراجعة. بعد الموافقة، يصل المبلغ عادةً خلال ٢٤ إلى ٧٢ ساعة.",
       fraudBlocked: "تم تعليق الطلب للمراجعة بسبب نشاط نقاط غير اعتيادي.",

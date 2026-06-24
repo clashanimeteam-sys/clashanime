@@ -87,7 +87,7 @@ export async function GET() {
 
   if (withdrawalsTable) {
     const { error } = await supabase.rpc("request_clash_coin_withdrawal", {
-      p_amount_cents: 5000,
+      p_amount_cents: 1000,
       p_payment_method: "bank_transfer",
       p_payment_details: {
         iban: "DE89370400440532013000",
