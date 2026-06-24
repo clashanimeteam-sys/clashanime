@@ -22,6 +22,7 @@ export function BeatsLoungeMiniBar() {
     muted,
     setVolume,
     toggleMute,
+    stopListening,
   } = useBeatsLounge();
 
   if (
@@ -108,6 +109,14 @@ export function BeatsLoungeMiniBar() {
             >
               ♫
             </Link>
+            <button
+              type="button"
+              onClick={stopListening}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-zinc-600 bg-zinc-800 text-sm font-bold text-zinc-200 transition hover:border-zinc-400 hover:text-white"
+              aria-label={t.lounge.closePlayer}
+            >
+              ×
+            </button>
           </div>
         </div>
       </div>

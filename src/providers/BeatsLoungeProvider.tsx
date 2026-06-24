@@ -86,6 +86,7 @@ type BeatsLoungeContextValue = {
   toggleMute: () => void;
   unlockPlayback: () => void;
   refreshVote: (trackId: string, voteCount: number, userHasVoted: boolean) => void;
+  stopListening: () => void;
 };
 
 const BeatsLoungeContext = createContext<BeatsLoungeContextValue | null>(null);
@@ -499,6 +500,26 @@ export function BeatsLoungeProvider({
     });
   }, [applyVolume]);
 
+  const stopListening = useCallback(() => {
+    clearPlaybackCheck();
+    pendingAutoplayRef.current = false;
+    pendingPlayIndexRef.current = null;
+
+    const player = playerRef.current;
+    if (player) {
+      try {
+        player.stopVideo();
+      } catch {
+        /* player may not be ready */
+      }
+    }
+
+    setIsPlaying(false);
+    setHasStarted(false);
+    setNeedsUserAction(false);
+    setPlayerError(null);
+  }, [clearPlaybackCheck]);
+
   const refreshVote = useCallback((trackId: string, voteCount: number, userHasVoted: boolean) => {
     setPlaylistState((prev) =>
       prev.map((track) =>
@@ -571,6 +592,7 @@ export function BeatsLoungeProvider({
       toggleMute,
       unlockPlayback,
       refreshVote,
+      stopListening,
     }),
     [
       playlist,
@@ -593,6 +615,7 @@ export function BeatsLoungeProvider({
       toggleMute,
       unlockPlayback,
       refreshVote,
+      stopListening,
     ],
   );
 

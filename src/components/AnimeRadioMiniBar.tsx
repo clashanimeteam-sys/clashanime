@@ -31,6 +31,7 @@ export function AnimeRadioMiniBar() {
     togglePlay,
     setVolume,
     toggleMute,
+    stopListening,
   } = useAnimeRadio();
   const { hasStarted: loungeStarted } = useBeatsLounge();
 
@@ -138,6 +139,15 @@ export function AnimeRadioMiniBar() {
                 <circle cx="18" cy="16" r="3" />
               </svg>
             </Link>
+
+            <button
+              type="button"
+              onClick={stopListening}
+              className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/5 text-sm font-bold text-zinc-200 transition hover:border-white/30 hover:text-white"
+              aria-label={t.radio.closePlayer}
+            >
+              ×
+            </button>
           </div>
         </div>
       </div>

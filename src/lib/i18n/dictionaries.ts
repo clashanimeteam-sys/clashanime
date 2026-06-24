@@ -287,6 +287,7 @@ export type Dictionary = {
     pickStation: string;
     activeStation: string;
     openFullPlayer: string;
+    closePlayer: string;
     streamError: string;
     poweredBy: string;
   };
@@ -308,6 +309,7 @@ export type Dictionary = {
     pickTrack: string;
     previous: string;
     next: string;
+    closePlayer: string;
     playlistTitle: string;
     emptyPlaylist: string;
     voteTrack: string;
@@ -1578,6 +1580,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       pickStation: "Pick your vibe",
       activeStation: "Live",
       openFullPlayer: "Open radio",
+      closePlayer: "Close radio",
       streamError: "Could not connect to the stream. Try again in a moment.",
       poweredBy: "Anime OST stream by LISTEN.moe. Lofi beats via Nightwave Plaza.",
     },
@@ -1600,6 +1603,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       pickTrack: "Pick a track to start",
       previous: "Previous",
       next: "Next",
+      closePlayer: "Close player",
       playlistTitle: "Community playlist",
       emptyPlaylist: "No approved tracks yet. Submit a song or wait for staff to curate the lounge.",
       voteTrack: "Vote for this track",
@@ -2911,6 +2915,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       pickStation: "ステーションを選ぶ",
       activeStation: "再生中",
       openFullPlayer: "ラジオを開く",
+      closePlayer: "ラジオを閉じる",
       streamError: "ストリームに接続できませんでした。しばらくして再試行してください。",
       poweredBy: "OST配信: LISTEN.moe / Lofi: Nightwave Plaza",
     },
@@ -2932,6 +2937,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       pickTrack: "曲を選んで開始",
       previous: "前へ",
       next: "次へ",
+      closePlayer: "プレイヤーを閉じる",
       playlistTitle: "コミュニティプレイリスト",
       emptyPlaylist: "承認済みの曲がまだありません。",
       voteTrack: "この曲に投票",
@@ -4233,6 +4239,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       pickStation: "اختر المحطة",
       activeStation: "مباشر",
       openFullPlayer: "فتح الراديو",
+      closePlayer: "إغلاق الراديو",
       streamError: "تعذّر الاتصال بالبث. حاول مرة أخرى بعد قليل.",
       poweredBy: "بث OST من LISTEN.moe · إيقاعات Lofi من Nightwave Plaza.",
     },
@@ -4254,6 +4261,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       pickTrack: "اختر مقطعاً للبدء",
       previous: "السابق",
       next: "التالي",
+      closePlayer: "إغلاق المشغّل",
       playlistTitle: "قائمة تشغيل المجتمع",
       emptyPlaylist: "لا توجد مقاطع معتمدة بعد. اقترح أغنية أو انتظر مراجعة الفريق.",
       voteTrack: "صوّت لهذا المقطع",

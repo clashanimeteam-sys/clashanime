@@ -39,6 +39,7 @@ type AnimeRadioContextValue = {
   togglePlay: () => Promise<void>;
   setVolume: (volume: number) => void;
   toggleMute: () => void;
+  stopListening: () => void;
 };
 
 const AnimeRadioContext = createContext<AnimeRadioContextValue | null>(null);
@@ -190,6 +191,21 @@ export function AnimeRadioProvider({ children }: AnimeRadioProviderProps) {
     });
   }, [persist]);
 
+  const stopListening = useCallback(() => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
+    }
+    setIsPlaying(false);
+    setIsLoading(false);
+    setHasStarted(false);
+    setPausedByUser(true);
+    setError(null);
+    persist({ pausedByUser: true });
+  }, [persist]);
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -263,6 +279,7 @@ export function AnimeRadioProvider({ children }: AnimeRadioProviderProps) {
       togglePlay,
       setVolume,
       toggleMute,
+      stopListening,
     }),
     [
       stationId,
@@ -280,6 +297,7 @@ export function AnimeRadioProvider({ children }: AnimeRadioProviderProps) {
       togglePlay,
       setVolume,
       toggleMute,
+      stopListening,
     ],
   );
 
