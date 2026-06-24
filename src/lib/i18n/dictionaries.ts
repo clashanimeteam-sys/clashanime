@@ -953,7 +953,12 @@ export type Dictionary = {
       locale: string;
       status: string;
       user: string;
+      actions: string;
     };
+    emailRetry: string;
+    emailRetrying: string;
+    emailRetrySuccess: string;
+    emailRetryFailed: string;
     accountDeletionsTitle: string;
     noAccountDeletions: string;
     accountDeletionsTable: {
@@ -2294,7 +2299,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
         locale: "Locale",
         status: "Status",
         user: "User",
+        actions: "Actions",
       },
+      emailRetry: "Retry send",
+      emailRetrying: "Retrying...",
+      emailRetrySuccess: "Email sent successfully.",
+      emailRetryFailed: "Could not resend this email.",
       accountDeletionsTitle: "Deleted accounts",
       noAccountDeletions: "No account deletions logged yet.",
       accountDeletionsTable: {
@@ -3621,7 +3631,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
         locale: "言語",
         status: "状態",
         user: "ユーザー",
+        actions: "操作",
       },
+      emailRetry: "再送信",
+      emailRetrying: "再送信中...",
+      emailRetrySuccess: "メールを送信しました。",
+      emailRetryFailed: "メールを再送信できませんでした。",
       accountDeletionsTitle: "削除されたアカウント",
       noAccountDeletions: "まだ削除記録がありません。",
       accountDeletionsTable: {
@@ -4949,7 +4964,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
         locale: "اللغة",
         status: "الحالة",
         user: "المستخدم",
+        actions: "إجراءات",
       },
+      emailRetry: "إعادة الإرسال",
+      emailRetrying: "جارٍ الإرسال...",
+      emailRetrySuccess: "تم إرسال الإيميل بنجاح.",
+      emailRetryFailed: "تعذّر إعادة إرسال هذا الإيميل.",
       accountDeletionsTitle: "الحسابات المحذوفة",
       noAccountDeletions: "لا توجد سجلات حذف بعد.",
       accountDeletionsTable: {

@@ -154,7 +154,8 @@ export async function sendWelcomeEmail(input: {
   to: string;
   locale?: Locale;
 }): Promise<{ ok: true; id: string; subject: string } | { ok: false; error: string }> {
-  const locale: Locale = "en";
+  const locale: Locale =
+    input.locale === "ar" || input.locale === "ja" ? input.locale : "en";
   const copy = welcomeCopy[locale];
 
   const result = await sendResendEmail({

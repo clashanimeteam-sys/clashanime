@@ -44,17 +44,38 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const welcomeEmailRequestedRef = useRef<string | null>(null);
 
   const requestWelcomeEmail = useCallback(
-    (userId: string) => {
-      if (welcomeEmailRequestedRef.current === userId) return;
-      welcomeEmailRequestedRef.current = userId;
+    (user: { id: string }) => {
+      if (welcomeEmailRequestedRef.current === user.id) return;
+      welcomeEmailRequestedRef.current = user.id;
 
-      void fetch("/api/auth/welcome-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ locale }),
-      }).catch(() => {
-        welcomeEmailRequestedRef.current = null;
-      });
+      async function attempt(allowRetry: boolean) {
+        try {
+          const response = await fetch("/api/auth/welcome-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ locale }),
+          });
+          const data = (await response.json()) as {
+            sent?: boolean;
+            skipped?: string | null;
+          };
+
+          if (data.sent || data.skipped === "already_sent") {
+            return;
+          }
+
+          if (allowRetry) {
+            await new Promise((resolve) => window.setTimeout(resolve, 2500));
+            return attempt(false);
+          }
+
+          welcomeEmailRequestedRef.current = null;
+        } catch {
+          welcomeEmailRequestedRef.current = null;
+        }
+      }
+
+      void attempt(true);
     },
     [locale],
   );
@@ -101,11 +122,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setSession(nextSession);
       setLoading(false);
 
-      if (
-        nextSession?.user?.id &&
-        (event === "SIGNED_IN" || event === "INITIAL_SESSION")
-      ) {
-        requestWelcomeEmail(nextSession.user.id);
+      if (nextSession?.user?.id) {
+        const createdAt = nextSession.user.created_at;
+        const isRecentSignup =
+          !createdAt ||
+          Date.now() - new Date(createdAt).getTime() < 7 * 24 * 60 * 60 * 1000;
+
+        if (event === "SIGNED_IN" || (event === "INITIAL_SESSION" && isRecentSignup)) {
+          requestWelcomeEmail(nextSession.user);
+        }
       }
     });
 

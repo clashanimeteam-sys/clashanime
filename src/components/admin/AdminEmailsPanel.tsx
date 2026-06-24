@@ -49,6 +49,8 @@ export function AdminEmailsPanel() {
   const [notifications, setNotifications] = useState<NotificationRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [retryingId, setRetryingId] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<"all" | EmailRow["status"]>("all");
   const [notificationTypeFilter, setNotificationTypeFilter] = useState<"all" | string>("all");
 
@@ -142,6 +144,34 @@ export function AdminEmailsPanel() {
     void loadRows();
   }, [loadRows]);
 
+  async function retryEmail(row: EmailRow) {
+    setRetryingId(row.id);
+    setMessage(null);
+    setError(null);
+
+    const response = await fetch("/api/admin/emails/retry", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        dispatchId: row.id,
+        email: row.email_to,
+        emailType: row.email_type,
+        locale: row.locale,
+      }),
+    });
+
+    const data = (await response.json()) as { error?: string };
+    setRetryingId(null);
+
+    if (!response.ok) {
+      setError(data.error ?? t.admin.emailRetryFailed);
+      return;
+    }
+
+    setMessage(t.admin.emailRetrySuccess);
+    await loadRows();
+  }
+
   return (
     <div className="space-y-8">
       <div>
@@ -167,6 +197,7 @@ export function AdminEmailsPanel() {
       </div>
 
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
+      {message ? <p className="text-sm text-emerald-400">{message}</p> : null}
 
       {loading ? (
         <p className="text-sm text-zinc-400">{t.admin.loading}</p>
@@ -183,6 +214,7 @@ export function AdminEmailsPanel() {
                 <th className="px-4 py-3 text-start font-medium">{t.admin.emailsTable.locale}</th>
                 <th className="px-4 py-3 text-start font-medium">{t.admin.emailsTable.status}</th>
                 <th className="px-4 py-3 text-start font-medium">{t.admin.emailsTable.user}</th>
+                <th className="px-4 py-3 text-start font-medium">{t.admin.emailsTable.actions}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-800">
@@ -212,6 +244,20 @@ export function AdminEmailsPanel() {
                   </td>
                   <td className="px-4 py-3 text-zinc-300">
                     {row.username ? `@${row.username}` : row.user_id.slice(0, 8)}
+                  </td>
+                  <td className="px-4 py-3">
+                    {row.status === "failed" || row.status === "pending" ? (
+                      <button
+                        type="button"
+                        onClick={() => void retryEmail(row)}
+                        disabled={retryingId === row.id}
+                        className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-200 hover:border-zinc-500 disabled:opacity-50"
+                      >
+                        {retryingId === row.id ? t.admin.emailRetrying : t.admin.emailRetry}
+                      </button>
+                    ) : (
+                      <span className="text-zinc-600">—</span>
+                    )}
                   </td>
                 </tr>
               ))}
