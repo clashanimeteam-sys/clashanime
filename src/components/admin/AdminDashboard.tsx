@@ -29,6 +29,8 @@ type DashboardStats = {
   accountDeletions: number;
     inAppNotifications: number;
     legendWinners: number;
+    referralSignups: number;
+    referralWeekSignups: number;
   };
 
 export function AdminDashboard() {
@@ -65,6 +67,8 @@ export function AdminDashboard() {
         accountDeletionsResult,
         inAppNotificationsResult,
         legendWinnersResult,
+        referralSignupsResult,
+        referralWeekSignupsResult,
       ] = await Promise.all([
         client.from("profiles").select("*", { count: "exact", head: true }),
         client.from("videos").select("*", { count: "exact", head: true }),
@@ -174,6 +178,25 @@ export function AdminDashboard() {
             }
             return { count: result.count, error: false as const };
           }),
+        client
+          .from("referral_signups")
+          .select("*", { count: "exact", head: true })
+          .then((result) => {
+            if (result.error) {
+              return { count: null as number | null, error: true as const };
+            }
+            return { count: result.count, error: false as const };
+          }),
+        client
+          .from("referral_signups")
+          .select("*", { count: "exact", head: true })
+          .gte("created_at", new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
+          .then((result) => {
+            if (result.error) {
+              return { count: null as number | null, error: true as const };
+            }
+            return { count: result.count, error: false as const };
+          }),
       ]);
 
       const clipChallengesCount =
@@ -199,6 +222,10 @@ export function AdminDashboard() {
         inAppNotificationsResult.error ? 0 : (inAppNotificationsResult.count ?? 0);
       const legendWinnersCount =
         legendWinnersResult.error ? 0 : (legendWinnersResult.count ?? 0);
+      const referralSignupsCount =
+        referralSignupsResult.error ? 0 : (referralSignupsResult.count ?? 0);
+      const referralWeekSignupsCount =
+        referralWeekSignupsResult.error ? 0 : (referralWeekSignupsResult.count ?? 0);
 
       setStats({
         users: users ?? 0,
@@ -220,6 +247,8 @@ export function AdminDashboard() {
         accountDeletions: accountDeletionsCount,
         inAppNotifications: inAppNotificationsCount,
         legendWinners: legendWinnersCount,
+        referralSignups: referralSignupsCount,
+        referralWeekSignups: referralWeekSignupsCount,
       });
       setLoading(false);
     }
@@ -251,6 +280,8 @@ export function AdminDashboard() {
     { label: t.admin.stats.accountDeletions, value: stats?.accountDeletions ?? 0, href: "/admin/emails" },
     { label: t.admin.stats.inAppNotifications, value: stats?.inAppNotifications ?? 0, href: "/admin/emails" },
     { label: t.admin.stats.legendWinners, value: stats?.legendWinners ?? 0, href: "/admin/legends" },
+    { label: t.admin.stats.referralSignups, value: stats?.referralSignups ?? 0, href: "/admin/referrals" },
+    { label: t.admin.stats.referralWeekSignups, value: stats?.referralWeekSignups ?? 0, href: "/admin/referrals" },
     {
       label: t.admin.stats.pendingVerifications,
       value: counts.pendingVerifications,

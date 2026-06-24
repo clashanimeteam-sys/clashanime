@@ -19,6 +19,7 @@ export type Profile = {
   clash_coins?: number;
   level?: number;
   referred_by?: string | null;
+  referral_tier?: number;
   display_name_changed_at?: string | null;
   username_changed_at?: string | null;
   created_at: string;

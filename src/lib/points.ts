@@ -3,6 +3,9 @@ import type { Profile } from "@/lib/types";
 export const POINT_VALUES = {
   referralClick: 10,
   referralSignup: 100,
+  referralWelcome: 50,
+  referralFirstVideo: 200,
+  referralFirstBattle: 150,
   videoLike: 5,
   videoUpload: 20,
   trendingBonus: 500,

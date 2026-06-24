@@ -26,6 +26,7 @@ const navItems: Array<{
   { key: "kyc", href: "/admin/kyc" },
   { key: "contact", href: "/admin/contact" },
   { key: "emails", href: "/admin/emails" },
+  { key: "referrals", href: "/admin/referrals", adminOnly: true },
   { key: "broadcast", href: "/admin/broadcast", adminOnly: true },
   { key: "seasons", href: "/admin/seasons" },
   { key: "legends", href: "/admin/legends" },

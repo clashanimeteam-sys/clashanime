@@ -544,6 +544,10 @@ export type Dictionary = {
       mention: { label: string };
       broadcast: { label: string };
       system: { label: string };
+      referral_signup: { label: string; title: string; body: string };
+      referral_welcome: { label: string; title: string; body: string };
+      referral_milestone: { label: string; title: string; body: string };
+      referral_tier_up: { label: string; title: string; body: string };
     };
   };
   points: {
@@ -571,6 +575,28 @@ export type Dictionary = {
     howToEarn: string;
     referralTitle: string;
     referralHint: string;
+    referralHintV2: string;
+    referralSystemLabel: string;
+    referralDoubleSidedTitle: string;
+    referralStatsTitle: string;
+    referralStatsTotal: string;
+    referralStatsWeek: string;
+    referralStatsVideoBonus: string;
+    referralStatsBattleBonus: string;
+    referralMilestoneTitle: string;
+    referralMaxTier: string;
+    referralCosmeticHint: string;
+    referralFlashActive: string;
+    referralLeaderboardTitle: string;
+    referralLeaderboardWeek: string;
+    referralLeaderboardAll: string;
+    referralLeaderboardEmpty: string;
+    referralLeaderboardInvites: string;
+    referralTiers: {
+      scout: string;
+      recruit: string;
+      leader: string;
+    };
     copyReferral: string;
     linkCopied: string;
     verificationTitle: string;
@@ -606,6 +632,10 @@ export type Dictionary = {
     earn: {
       referralClick: string;
       referralSignup: string;
+      referralSignupYou: string;
+      referralSignupFriend: string;
+      referralFirstVideo: string;
+      referralFirstBattle: string;
       videoLike: string;
       videoUpload: string;
       communityPost: string;
@@ -614,6 +644,9 @@ export type Dictionary = {
     transactionReasons: {
       referral_click: string;
       referral_signup: string;
+      referral_welcome: string;
+      referral_first_video: string;
+      referral_first_battle: string;
       video_like: string;
       video_upload: string;
       community_post: string;
@@ -1069,7 +1102,38 @@ export type Dictionary = {
       animeTracker: string;
       contact: string;
       emails: string;
+      referrals: string;
       broadcast: string;
+    };
+    referrals: {
+      title: string;
+      subtitle: string;
+      totalSignups: string;
+      weekSignups: string;
+      activeFlash: string;
+      flashEventsTitle: string;
+      flashEventsEmpty: string;
+      createFlashTitle: string;
+      titleEn: string;
+      titleAr: string;
+      titleJa: string;
+      multiplier: string;
+      startsAt: string;
+      endsAt: string;
+      createButton: string;
+      creating: string;
+      created: string;
+      deactivate: string;
+      leaderboardTitle: string;
+      periodWeek: string;
+      periodAll: string;
+      table: {
+        title: string;
+        multiplier: string;
+        window: string;
+        status: string;
+        actions: string;
+      };
     };
     seasons: {
       title: string;
@@ -1234,6 +1298,8 @@ export type Dictionary = {
     accountDeletions: string;
     inAppNotifications: string;
     legendWinners: string;
+    referralSignups: string;
+    referralWeekSignups: string;
   };
     quickActions: {
       reviewVideos: string;
@@ -1874,6 +1940,26 @@ export const dictionaries: Record<Locale, Dictionary> = {
         mention: { label: "Mention" },
         broadcast: { label: "Broadcast" },
         system: { label: "System" },
+        referral_signup: {
+          label: "Referral signup",
+          title: "Friend joined",
+          body: "{name} signed up via your invite link (+{points} pts)",
+        },
+        referral_welcome: {
+          label: "Welcome bonus",
+          title: "Invite bonus",
+          body: "You earned +{points} points for joining via @{username}",
+        },
+        referral_milestone: {
+          label: "Referral milestone",
+          title: "Friend milestone",
+          body: "{name} {milestone} (+{points} pts)",
+        },
+        referral_tier_up: {
+          label: "Referral rank",
+          title: "New referral rank",
+          body: "You reached {tier} rank with {count} invites",
+        },
       },
     },
     points: {
@@ -1901,6 +1987,29 @@ export const dictionaries: Record<Locale, Dictionary> = {
       howToEarn: "How to earn points",
       referralTitle: "Invite friends",
       referralHint: "Share your link. You earn points when someone visits and when they sign up.",
+      referralHintV2:
+        "Share your link. You and your friend both earn points on signup, and you earn more when they upload or battle.",
+      referralSystemLabel: "Referral program",
+      referralDoubleSidedTitle: "Rewards for you and your friends",
+      referralStatsTitle: "Your referral stats",
+      referralStatsTotal: "Total invites",
+      referralStatsWeek: "This week",
+      referralStatsVideoBonus: "First-video bonuses",
+      referralStatsBattleBonus: "First-battle bonuses",
+      referralMilestoneTitle: "Referral rank progress",
+      referralMaxTier: "Max rank reached",
+      referralCosmeticHint: "Higher ranks unlock special name colors and avatar frames on your channel.",
+      referralFlashActive: "Flash event active: {multiplier}x signup points for you",
+      referralLeaderboardTitle: "Referral leaderboard",
+      referralLeaderboardWeek: "This week",
+      referralLeaderboardAll: "All time",
+      referralLeaderboardEmpty: "No referrals yet. Be the first on the board.",
+      referralLeaderboardInvites: "invites",
+      referralTiers: {
+        scout: "Scout · 5 invites",
+        recruit: "Recruit · 20 invites",
+        leader: "Leader · 50 invites",
+      },
       copyReferral: "Copy link",
       linkCopied: "Link copied",
       verificationTitle: "Channel verification",
@@ -1936,6 +2045,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       earn: {
         referralClick: "Unique visit from your invite link",
         referralSignup: "Friend signs up through your link",
+        referralSignupYou: "When a friend signs up via your link",
+        referralSignupFriend: "When you sign up via a friend's link",
+        referralFirstVideo: "When your invited friend uploads their first video",
+        referralFirstBattle: "When your invited friend joins their first battle",
         videoLike: "Like a video",
         videoUpload: "Upload an approved original clip",
         communityPost: "Publish in Community",
@@ -1944,6 +2057,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       transactionReasons: {
         referral_click: "Invite link visit",
         referral_signup: "Friend signed up",
+        referral_welcome: "Invite welcome bonus",
+        referral_first_video: "Friend's first video",
+        referral_first_battle: "Friend's first battle",
         video_like: "Video like",
         video_upload: "Approved upload",
         community_post: "Community post",
@@ -2415,7 +2531,38 @@ export const dictionaries: Record<Locale, Dictionary> = {
         animeTracker: "Anime Tracker",
         contact: "Contact inbox",
         emails: "Emails",
+        referrals: "Referrals",
         broadcast: "Broadcast",
+      },
+      referrals: {
+        title: "Referral program",
+        subtitle: "Track invite performance, weekly leaders, and flash multiplier events.",
+        totalSignups: "Total referral signups",
+        weekSignups: "Signups this week",
+        activeFlash: "Active flash events",
+        flashEventsTitle: "Flash referral events",
+        flashEventsEmpty: "No flash events yet.",
+        createFlashTitle: "Create flash event",
+        titleEn: "Title (English)",
+        titleAr: "Title (Arabic)",
+        titleJa: "Title (Japanese)",
+        multiplier: "Multiplier",
+        startsAt: "Starts at",
+        endsAt: "Ends at",
+        createButton: "Create event",
+        creating: "Creating...",
+        created: "Flash event created.",
+        deactivate: "Deactivate",
+        leaderboardTitle: "Top referrers",
+        periodWeek: "This week",
+        periodAll: "All time",
+        table: {
+          title: "Title",
+          multiplier: "Multiplier",
+          window: "Window",
+          status: "Status",
+          actions: "Actions",
+        },
       },
       seasons: {
         title: "Clash seasons",
@@ -2580,6 +2727,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         accountDeletions: "Accounts deleted",
         inAppNotifications: "In-app notifications",
         legendWinners: "Hall of Legends winners",
+        referralSignups: "Referral signups",
+        referralWeekSignups: "Referral signups (week)",
       },
       quickActions: {
         reviewVideos: "Review videos",
@@ -3209,6 +3358,26 @@ export const dictionaries: Record<Locale, Dictionary> = {
         mention: { label: "メンション" },
         broadcast: { label: "一斉通知" },
         system: { label: "システム" },
+        referral_signup: {
+          label: "招待登録",
+          title: "友達が参加",
+          body: "{name}さんが招待リンクから登録しました（+{points} pt）",
+        },
+        referral_welcome: {
+          label: "ウェルカムボーナス",
+          title: "招待ボーナス",
+          body: "@{username} のリンク経由で +{points} pt を獲得",
+        },
+        referral_milestone: {
+          label: "招待マイルストーン",
+          title: "友達のマイルストーン",
+          body: "{name} が {milestone}（+{points} pt）",
+        },
+        referral_tier_up: {
+          label: "招待ランク",
+          title: "新しい招待ランク",
+          body: "{count} 人招待で {tier} ランクに到達",
+        },
       },
     },
     points: {
@@ -3236,6 +3405,29 @@ export const dictionaries: Record<Locale, Dictionary> = {
       howToEarn: "ポイントの獲得方法",
       referralTitle: "友達を招待",
       referralHint: "リンクを共有すると、訪問と登録の両方でポイントを獲得できます。",
+      referralHintV2:
+        "リンクを共有しましょう。登録時にあなたと友達の両方がポイントを獲得し、友達が動画投稿やバトルに参加すると追加報酬があります。",
+      referralSystemLabel: "招待プログラム",
+      referralDoubleSidedTitle: "あなたと友達への報酬",
+      referralStatsTitle: "招待統計",
+      referralStatsTotal: "合計招待",
+      referralStatsWeek: "今週",
+      referralStatsVideoBonus: "初動画ボーナス",
+      referralStatsBattleBonus: "初バトルボーナス",
+      referralMilestoneTitle: "招待ランク進捗",
+      referralMaxTier: "最高ランク到達",
+      referralCosmeticHint: "ランクが上がると名前色とアバター枠が解放されます。",
+      referralFlashActive: "フラッシュイベント中: 登録ポイント {multiplier} 倍",
+      referralLeaderboardTitle: "招待リーダーボード",
+      referralLeaderboardWeek: "今週",
+      referralLeaderboardAll: "全期間",
+      referralLeaderboardEmpty: "まだ招待がありません。",
+      referralLeaderboardInvites: "招待",
+      referralTiers: {
+        scout: "スカウト · 5人",
+        recruit: "リクルート · 20人",
+        leader: "リーダー · 50人",
+      },
       copyReferral: "リンクをコピー",
       linkCopied: "コピーしました",
       verificationTitle: "チャンネル認証",
@@ -3271,6 +3463,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       earn: {
         referralClick: "招待リンクからのユニーク訪問",
         referralSignup: "招待リンク経由の新規登録",
+        referralSignupYou: "友達がリンク経由で登録したとき",
+        referralSignupFriend: "リンク経由で登録したとき",
+        referralFirstVideo: "招待した友達が初動画をアップロード",
+        referralFirstBattle: "招待した友達が初バトルに参加",
         videoLike: "動画にいいね",
         videoUpload: "承認されたオリジナル動画のアップロード",
         communityPost: "コミュニティへの投稿",
@@ -3279,6 +3475,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       transactionReasons: {
         referral_click: "招待リンク訪問",
         referral_signup: "友達の新規登録",
+        referral_welcome: "招待ウェルカムボーナス",
+        referral_first_video: "友達の初動画",
+        referral_first_battle: "友達の初バトル",
         video_like: "動画いいね",
         video_upload: "承認済みアップロード",
         community_post: "コミュニティ投稿",
@@ -3744,7 +3943,38 @@ export const dictionaries: Record<Locale, Dictionary> = {
         animeTracker: "新作アニメレーダー",
         contact: "お問い合わせ受信箱",
         emails: "メール",
+        referrals: "招待プログラム",
         broadcast: "一斉メール",
+      },
+      referrals: {
+        title: "招待プログラム",
+        subtitle: "招待実績、週間リーダー、フラッシュ倍率イベントを管理します。",
+        totalSignups: "招待登録の合計",
+        weekSignups: "今週の登録",
+        activeFlash: "アクティブなフラッシュ",
+        flashEventsTitle: "フラッシュ招待イベント",
+        flashEventsEmpty: "フラッシュイベントはまだありません。",
+        createFlashTitle: "フラッシュイベント作成",
+        titleEn: "タイトル（英語）",
+        titleAr: "タイトル（アラビア語）",
+        titleJa: "タイトル（日本語）",
+        multiplier: "倍率",
+        startsAt: "開始",
+        endsAt: "終了",
+        createButton: "イベント作成",
+        creating: "作成中...",
+        created: "フラッシュイベントを作成しました。",
+        deactivate: "無効化",
+        leaderboardTitle: "トップ招待者",
+        periodWeek: "今週",
+        periodAll: "全期間",
+        table: {
+          title: "タイトル",
+          multiplier: "倍率",
+          window: "期間",
+          status: "状態",
+          actions: "操作",
+        },
       },
       seasons: {
         title: "クラッシュシーズン",
@@ -3909,6 +4139,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         accountDeletions: "削除されたアカウント",
         inAppNotifications: "アプリ内通知",
         legendWinners: "伝説の殿堂の勝者",
+        referralSignups: "招待登録",
+        referralWeekSignups: "招待登録（今週）",
       },
       quickActions: {
         reviewVideos: "動画を審査",
@@ -4541,6 +4773,26 @@ export const dictionaries: Record<Locale, Dictionary> = {
         mention: { label: "إشارة" },
         broadcast: { label: "بث" },
         system: { label: "النظام" },
+        referral_signup: {
+          label: "تسجيل دعوة",
+          title: "صديق انضم",
+          body: "سجّل {name} عبر رابط دعوتك (+{points} نقطة)",
+        },
+        referral_welcome: {
+          label: "مكافأة ترحيب",
+          title: "مكافأة الدعوة",
+          body: "ربحت +{points} نقطة لانضمامك عبر @{username}",
+        },
+        referral_milestone: {
+          label: "إنجاز دعوة",
+          title: "إنجاز صديق مدعو",
+          body: "{name} {milestone} (+{points} نقطة)",
+        },
+        referral_tier_up: {
+          label: "رتبة دعوة",
+          title: "رتبة دعوة جديدة",
+          body: "وصلت إلى رتبة {tier} بعد {count} دعوة",
+        },
       },
     },
     points: {
@@ -4568,6 +4820,29 @@ export const dictionaries: Record<Locale, Dictionary> = {
       howToEarn: "كيف تكسب النقاط",
       referralTitle: "ادعُ أصدقاءك",
       referralHint: "شارك رابطك. تكسب نقاطاً عند كل زيارة وعند تسجيل صديق.",
+      referralHintV2:
+        "شارك رابطك. أنت وصديقك تربحان نقاطاً عند التسجيل، وتربح المزيد عندما يرفع فيديوه أو يشارك في نزال.",
+      referralSystemLabel: "برنامج الدعوة",
+      referralDoubleSidedTitle: "مكافآت لك ولصديقك",
+      referralStatsTitle: "إحصائيات دعوتك",
+      referralStatsTotal: "إجمالي الدعوات",
+      referralStatsWeek: "هذا الأسبوع",
+      referralStatsVideoBonus: "مكافآت أول فيديو",
+      referralStatsBattleBonus: "مكافآت أول نزال",
+      referralMilestoneTitle: "تقدّم رتبة الدعوة",
+      referralMaxTier: "أعلى رتبة",
+      referralCosmeticHint: "الرتب الأعلى تفتح لون اسم وإطاراً مميزاً لصورة ملفك.",
+      referralFlashActive: "حدث نشط: نقاط تسجيل ×{multiplier} لك",
+      referralLeaderboardTitle: "لوحة صدارة الدعوات",
+      referralLeaderboardWeek: "هذا الأسبوع",
+      referralLeaderboardAll: "كل الوقت",
+      referralLeaderboardEmpty: "لا دعوات بعد. كن الأول على اللوحة.",
+      referralLeaderboardInvites: "دعوة",
+      referralTiers: {
+        scout: "الكشاف · 5 دعوات",
+        recruit: "المجند · 20 دعوة",
+        leader: "القائد · 50 دعوة",
+      },
       copyReferral: "نسخ الرابط",
       linkCopied: "تم نسخ الرابط",
       verificationTitle: "توثيق القناة",
@@ -4603,6 +4878,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       earn: {
         referralClick: "زيارة فريدة من رابط دعوتك",
         referralSignup: "تسجيل صديق عبر رابطك",
+        referralSignupYou: "عند تسجيل صديق عبر رابطك",
+        referralSignupFriend: "عند تسجيلك عبر رابط صديق",
+        referralFirstVideo: "عند رفع صديقك المدعو أول فيديو",
+        referralFirstBattle: "عند مشاركة صديقك المدعو في أول نزال",
         videoLike: "الإعجاب بفيديو",
         videoUpload: "رفع مقطع أصلي معتمد",
         communityPost: "نشر في صفحة المجتمع",
@@ -4611,6 +4890,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       transactionReasons: {
         referral_click: "زيارة رابط الدعوة",
         referral_signup: "تسجيل صديق",
+        referral_welcome: "مكافأة ترحيب الدعوة",
+        referral_first_video: "أول فيdeo لصديق",
+        referral_first_battle: "أول نزال لصديق",
         video_like: "إعجاب بفيديو",
         video_upload: "رفع معتمد",
         community_post: "منشور مجتمع",
@@ -5077,7 +5359,38 @@ export const dictionaries: Record<Locale, Dictionary> = {
         animeTracker: "رادار الأنمي الجديد",
         contact: "صندوق التواصل",
         emails: "الإيميلات",
+        referrals: "برنامج الدعوة",
         broadcast: "إيميل جماعي",
+      },
+      referrals: {
+        title: "برنامج الدعوة",
+        subtitle: "تابع أداء الدعوات ولوحة الأسبوع وأحداث المضاعفة.",
+        totalSignups: "إجمالي تسجيلات الدعوة",
+        weekSignups: "تسجيلات هذا الأسبوع",
+        activeFlash: "أحداث مضاعفة نشطة",
+        flashEventsTitle: "أحداث دعوة مضاعفة",
+        flashEventsEmpty: "لا توجد أحداث مضاعفة بعد.",
+        createFlashTitle: "إنشاء حدث مضاعفة",
+        titleEn: "العنوان (إنجليزي)",
+        titleAr: "العنوان (عربي)",
+        titleJa: "العنوان (ياباني)",
+        multiplier: "المضاعف",
+        startsAt: "يبدأ في",
+        endsAt: "ينتهي في",
+        createButton: "إنشاء الحدث",
+        creating: "جارٍ الإنشاء...",
+        created: "تم إنشاء الحدث.",
+        deactivate: "إيقاف",
+        leaderboardTitle: "أفضل الداعين",
+        periodWeek: "هذا الأسبوع",
+        periodAll: "كل الوقت",
+        table: {
+          title: "العنوان",
+          multiplier: "المضاعف",
+          window: "الفترة",
+          status: "الحالة",
+          actions: "إجراءات",
+        },
       },
       seasons: {
         title: "مواسم النزال",
@@ -5242,6 +5555,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         accountDeletions: "حسابات محذوفة",
         inAppNotifications: "إشعارات داخل التطبيق",
         legendWinners: "فائزو أرشيف الأساطير",
+        referralSignups: "تسجيلات الدعوة",
+        referralWeekSignups: "تسجيلات الدعوة (الأسبوع)",
       },
       quickActions: {
         reviewVideos: "مراجعة الفيديوهات",

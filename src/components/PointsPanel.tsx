@@ -144,7 +144,10 @@ export function PointsPanel({ profile, onProfileRefresh, section }: PointsPanelP
           <p className="text-sm font-semibold text-black dark:text-white">{t.points.howToEarn}</p>
           <ul className="mt-3 grid gap-2 text-sm text-zinc-600 dark:text-zinc-300">
             <li>+{POINT_VALUES.referralClick} · {t.points.earn.referralClick}</li>
-            <li>+{POINT_VALUES.referralSignup} · {t.points.earn.referralSignup}</li>
+            <li>+{POINT_VALUES.referralSignup} · {t.points.earn.referralSignupYou}</li>
+            <li>+{POINT_VALUES.referralWelcome} · {t.points.earn.referralSignupFriend}</li>
+            <li>+{POINT_VALUES.referralFirstVideo} · {t.points.earn.referralFirstVideo}</li>
+            <li>+{POINT_VALUES.referralFirstBattle} · {t.points.earn.referralFirstBattle}</li>
             <li>+{POINT_VALUES.videoLike} · {t.points.earn.videoLike}</li>
             <li>+{POINT_VALUES.videoUpload} · {t.points.earn.videoUpload}</li>
             <li>+{POINT_VALUES.communityPost} · {t.points.earn.communityPost}</li>

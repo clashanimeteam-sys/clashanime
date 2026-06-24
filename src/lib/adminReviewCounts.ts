@@ -16,6 +16,7 @@ export type AdminNavKey =
   | "animeTracker"
   | "contact"
   | "emails"
+  | "referrals"
   | "broadcast"
   | "settings";
 

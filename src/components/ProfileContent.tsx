@@ -40,6 +40,11 @@ import { useLocale } from "@/providers/LocaleProvider";
 import { useProfileSection } from "@/providers/ProfileSectionProvider";
 import type { Profile, Video } from "@/lib/types";
 
+const ReferralPanel = dynamic(
+  () => import("@/components/ReferralPanel").then((mod) => mod.ReferralPanel),
+  { ssr: false },
+);
+
 const PointsPanel = dynamic(
   () => import("@/components/PointsPanel").then((mod) => mod.PointsPanel),
   { ssr: false },
@@ -824,11 +829,7 @@ export function ProfileContent() {
       ) : null}
 
       {activeSection === "referral" ? (
-        <PointsPanel
-          profile={profile}
-          onProfileRefresh={() => loadProfile({ silent: true })}
-          section="referral"
-        />
+        <ReferralPanel profile={profile} />
       ) : null}
 
       {activeSection === "wallet" ? (

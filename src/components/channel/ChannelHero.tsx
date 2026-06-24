@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { getReferralAvatarFrameClass, getReferralNameClass } from "@/lib/referrals";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Profile } from "@/lib/types";
 import type { ReactNode } from "react";
@@ -58,7 +59,9 @@ export function ChannelHero({
       <div className="px-4 pb-5 sm:px-6">
         <div className="-mt-12 flex flex-col gap-4 sm:-mt-16 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-end">
-            <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-white bg-zinc-200 shadow-lg sm:h-32 sm:w-32 dark:border-zinc-950 dark:bg-zinc-900">
+            <div
+              className={`relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-white bg-zinc-200 shadow-lg sm:h-32 sm:w-32 dark:border-zinc-950 dark:bg-zinc-900 ${getReferralAvatarFrameClass(profile.referral_tier)}`}
+            >
               {profile.avatar_url ? (
                 <Image
                   src={profile.avatar_url}
@@ -77,7 +80,11 @@ export function ChannelHero({
 
             <div className="min-w-0 pb-1 sm:max-w-2xl">
               <div className="flex flex-wrap items-center gap-2">
-                <h1 className="font-display text-2xl font-bold leading-tight text-black sm:text-3xl dark:text-white">
+                <h1
+                  className={`font-display text-2xl font-bold leading-tight sm:text-3xl ${
+                    getReferralNameClass(profile.referral_tier) || "text-black dark:text-white"
+                  }`}
+                >
                   {displayName}
                 </h1>
                 {profile.is_verified ? <VerifiedBadge size="md" /> : null}

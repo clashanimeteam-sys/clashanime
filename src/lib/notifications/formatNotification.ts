@@ -202,6 +202,43 @@ export function formatNotificationText(
           body: row.body,
           typeLabel,
         };
+      case "referral_signup": {
+        const name = metaString(metadata, "referred_display_name") || "A friend";
+        const points = metaString(metadata, "points") || "0";
+        return {
+          title: typeField(types, "referral_signup", "title", row.title),
+          body: applyTemplate(typeField(types, "referral_signup", "body", row.body), { name, points }),
+          typeLabel,
+        };
+      }
+      case "referral_welcome": {
+        const username = metaString(metadata, "referrer_username") || "friend";
+        const points = metaString(metadata, "points") || "0";
+        return {
+          title: typeField(types, "referral_welcome", "title", row.title),
+          body: applyTemplate(typeField(types, "referral_welcome", "body", row.body), { username, points }),
+          typeLabel,
+        };
+      }
+      case "referral_milestone": {
+        const name = metaString(metadata, "referred_display_name") || metaString(metadata, "referred_username") || "Friend";
+        const milestone = metaString(metadata, "milestone_label") || metaString(metadata, "milestone");
+        const points = metaString(metadata, "points") || "0";
+        return {
+          title: typeField(types, "referral_milestone", "title", row.title),
+          body: applyTemplate(typeField(types, "referral_milestone", "body", row.body), { name, milestone, points }),
+          typeLabel,
+        };
+      }
+      case "referral_tier_up": {
+        const tier = metaString(metadata, "tier_key") || metaString(metadata, "tier");
+        const count = metaString(metadata, "signup_count") || "0";
+        return {
+          title: typeField(types, "referral_tier_up", "title", row.title),
+          body: applyTemplate(typeField(types, "referral_tier_up", "body", row.body), { tier, count }),
+          typeLabel,
+        };
+      }
       default:
         return {
           title: row.title,
@@ -234,6 +271,10 @@ export const NOTIFICATION_TYPE_KEYS = [
   "comment_like",
   "mention",
   "broadcast",
+  "referral_signup",
+  "referral_welcome",
+  "referral_milestone",
+  "referral_tier_up",
   "system",
 ] as const;
 
