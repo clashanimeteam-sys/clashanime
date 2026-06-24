@@ -4698,7 +4698,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelFollowersStat: "{count} متابع",
       channelVideosStat: "{count} فيديو",
       channelViewsStat: "{count} مشاهدة",
-      channelLifetimePointsStat: "{count} نقطة مكتسبة (إجمالي)",
+      channelLifetimePointsStat: "{count} اجمالي نقاط مكتسبة",
       shareChannel: "مشاركة القناة",
       reportUser: "الإبلاغ عن المستخدم",
       reportUserHint: "الإبلاغ عن قناة المستخدم",
