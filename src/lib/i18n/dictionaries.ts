@@ -546,6 +546,7 @@ export type Dictionary = {
       system: { label: string };
       referral_signup: { label: string; title: string; body: string };
       referral_welcome: { label: string; title: string; body: string };
+      signup_welcome: { label: string; title: string; body: string };
       referral_milestone: { label: string; title: string; body: string };
       referral_tier_up: { label: string; title: string; body: string };
     };
@@ -634,6 +635,7 @@ export type Dictionary = {
       referralSignup: string;
       referralSignupYou: string;
       referralSignupFriend: string;
+      signupWelcome: string;
       referralFirstVideo: string;
       referralFirstBattle: string;
       videoLike: string;
@@ -645,6 +647,7 @@ export type Dictionary = {
       referral_click: string;
       referral_signup: string;
       referral_welcome: string;
+      signup_welcome: string;
       referral_first_video: string;
       referral_first_battle: string;
       video_like: string;
@@ -1950,6 +1953,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
           title: "Invite bonus",
           body: "You earned +{points} points for joining via @{username}",
         },
+        signup_welcome: {
+          label: "Signup bonus",
+          title: "Welcome to ClashAnime",
+          body: "You earned +{points} points for creating your account",
+        },
         referral_milestone: {
           label: "Referral milestone",
           title: "Friend milestone",
@@ -1988,7 +1996,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       referralTitle: "Invite friends",
       referralHint: "Share your link. You earn points when someone visits and when they sign up.",
       referralHintV2:
-        "Share your link. You and your friend both earn points on signup, and you earn more when they upload or battle.",
+        "Share your link. Every new account earns welcome points; you and friends earn extra when they join via your link.",
       referralSystemLabel: "Referral program",
       referralDoubleSidedTitle: "Rewards for you and your friends",
       referralStatsTitle: "Your referral stats",
@@ -2046,7 +2054,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         referralClick: "Unique visit from your invite link",
         referralSignup: "Friend signs up through your link",
         referralSignupYou: "When a friend signs up via your link",
-        referralSignupFriend: "When you sign up via a friend's link",
+        referralSignupFriend: "When you sign up via a friend's link (+50 extra)",
+        signupWelcome: "When you create a new account",
         referralFirstVideo: "When your invited friend uploads their first video",
         referralFirstBattle: "When your invited friend joins their first battle",
         videoLike: "Like a video",
@@ -2058,6 +2067,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         referral_click: "Invite link visit",
         referral_signup: "Friend signed up",
         referral_welcome: "Invite welcome bonus",
+        signup_welcome: "Account welcome bonus",
         referral_first_video: "Friend's first video",
         referral_first_battle: "Friend's first battle",
         video_like: "Video like",
@@ -3368,6 +3378,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
           title: "招待ボーナス",
           body: "@{username} のリンク経由で +{points} pt を獲得",
         },
+        signup_welcome: {
+          label: "登録ボーナス",
+          title: "ClashAnimeへようこそ",
+          body: "アカウント作成で +{points} pt を獲得しました",
+        },
         referral_milestone: {
           label: "招待マイルストーン",
           title: "友達のマイルストーン",
@@ -3406,7 +3421,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       referralTitle: "友達を招待",
       referralHint: "リンクを共有すると、訪問と登録の両方でポイントを獲得できます。",
       referralHintV2:
-        "リンクを共有しましょう。登録時にあなたと友達の両方がポイントを獲得し、友達が動画投稿やバトルに参加すると追加報酬があります。",
+        "リンクを共有しましょう。新規アカウントはウェルカムポイントを獲得し、招待リンク経由なら追加報酬があります。",
       referralSystemLabel: "招待プログラム",
       referralDoubleSidedTitle: "あなたと友達への報酬",
       referralStatsTitle: "招待統計",
@@ -3464,7 +3479,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         referralClick: "招待リンクからのユニーク訪問",
         referralSignup: "招待リンク経由の新規登録",
         referralSignupYou: "友達がリンク経由で登録したとき",
-        referralSignupFriend: "リンク経由で登録したとき",
+        referralSignupFriend: "友達のリンク経由で登録（+50 pt 追加）",
+        signupWelcome: "新規アカウント作成時",
         referralFirstVideo: "招待した友達が初動画をアップロード",
         referralFirstBattle: "招待した友達が初バトルに参加",
         videoLike: "動画にいいね",
@@ -3476,6 +3492,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         referral_click: "招待リンク訪問",
         referral_signup: "友達の新規登録",
         referral_welcome: "招待ウェルカムボーナス",
+        signup_welcome: "アカウント登録ボーナス",
         referral_first_video: "友達の初動画",
         referral_first_battle: "友達の初バトル",
         video_like: "動画いいね",
@@ -4783,6 +4800,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
           title: "مكافأة الدعوة",
           body: "ربحت +{points} نقطة لانضمامك عبر @{username}",
         },
+        signup_welcome: {
+          label: "مكافأة التسجيل",
+          title: "مرحباً بك في ClashAnime",
+          body: "ربحت +{points} نقطة لإنشاء حسابك",
+        },
         referral_milestone: {
           label: "إنجاز دعوة",
           title: "إنجاز صديق مدعو",
@@ -4821,7 +4843,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       referralTitle: "ادعُ أصدقاءك",
       referralHint: "شارك رابطك. تكسب نقاطاً عند كل زيارة وعند تسجيل صديق.",
       referralHintV2:
-        "شارك رابطك. أنت وصديقك تربحان نقاطاً عند التسجيل، وتربح المزيد عندما يرفع فيديوه أو يشارك في نزال.",
+        "شارك رابطك. كل حساب جديد يحصل على نقاط ترحib، وعبر رابطك تحصل أنت وصديقك على مكافآت إضافية.",
       referralSystemLabel: "برنامج الدعوة",
       referralDoubleSidedTitle: "مكافآت لك ولصديقك",
       referralStatsTitle: "إحصائيات دعوتك",
@@ -4879,7 +4901,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         referralClick: "زيارة فريدة من رابط دعوتك",
         referralSignup: "تسجيل صديق عبر رابطك",
         referralSignupYou: "عند تسجيل صديق عبر رابطك",
-        referralSignupFriend: "عند تسجيلك عبر رابط صديق",
+        referralSignupFriend: "عند تسجيلك عبر رابط صديق (+50 إضافية)",
+        signupWelcome: "عند إنشاء حساب جديد",
         referralFirstVideo: "عند رفع صديقك المدعو أول فيديو",
         referralFirstBattle: "عند مشاركة صديقك المدعو في أول نزال",
         videoLike: "الإعجاب بفيديو",
@@ -4891,6 +4914,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         referral_click: "زيارة رابط الدعوة",
         referral_signup: "تسجيل صديق",
         referral_welcome: "مكافأة ترحيب الدعوة",
+        signup_welcome: "مكافأة ترحib الحساب",
         referral_first_video: "أول فيdeo لصديق",
         referral_first_battle: "أول نزال لصديق",
         video_like: "إعجاب بفيديو",

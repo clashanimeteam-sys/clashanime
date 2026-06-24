@@ -49,6 +49,12 @@ export async function GET(request: Request) {
   }
 
   if (data.user?.id) {
+    await supabase.rpc("award_signup_welcome_bonus", {
+      target_user_id: data.user.id,
+    });
+  }
+
+  if (data.user?.id) {
     const welcomeResult = await sendWelcomeEmailIfNew({
       userId: data.user.id,
       email: data.user.email,

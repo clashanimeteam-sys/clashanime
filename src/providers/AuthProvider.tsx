@@ -42,6 +42,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [profileReady, setProfileReady] = useState(!supabase);
   const profileUserIdRef = useRef<string | null>(null);
   const welcomeEmailRequestedRef = useRef<string | null>(null);
+  const signupBonusRequestedRef = useRef<string | null>(null);
+
+  const requestSignupWelcomeBonus = useCallback((user: { id: string }) => {
+    if (signupBonusRequestedRef.current === user.id) return;
+    signupBonusRequestedRef.current = user.id;
+
+    void fetch("/api/auth/signup-welcome-bonus", { method: "POST" }).catch(() => {
+      signupBonusRequestedRef.current = null;
+    });
+  }, []);
 
   const requestWelcomeEmail = useCallback(
     (user: { id: string }) => {
@@ -129,6 +139,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           Date.now() - new Date(createdAt).getTime() < 7 * 24 * 60 * 60 * 1000;
 
         if (event === "SIGNED_IN" || (event === "INITIAL_SESSION" && isRecentSignup)) {
+          requestSignupWelcomeBonus(nextSession.user);
           requestWelcomeEmail(nextSession.user);
         }
       }
@@ -138,7 +149,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       active = false;
       subscription.unsubscribe();
     };
-  }, [supabase, requestWelcomeEmail]);
+  }, [supabase, requestSignupWelcomeBonus, requestWelcomeEmail]);
 
   useEffect(() => {
     const userId = session?.user?.id;

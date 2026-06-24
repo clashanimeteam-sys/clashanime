@@ -13,7 +13,7 @@ import {
   type ReferralLeaderboardRow,
   type ReferralStats,
 } from "@/lib/referrals";
-import { getReferralUrl } from "@/lib/points";
+import { getReferralUrl, POINT_VALUES } from "@/lib/points";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Profile } from "@/lib/types";
@@ -115,6 +115,9 @@ export function ReferralPanel({ profile }: ReferralPanelProps) {
         <div className="rounded-xl border border-zinc-200 bg-white/90 p-4 backdrop-blur dark:border-zinc-800 dark:bg-black/80">
           <p className="text-sm font-semibold text-black dark:text-white">{t.points.referralDoubleSidedTitle}</p>
           <ul className="mt-3 space-y-2 text-sm text-zinc-600 dark:text-zinc-300">
+            <li>
+              +{formatNumber(POINT_VALUES.signupWelcome)} · {t.points.earn.signupWelcome}
+            </li>
             <li>
               +{formatNumber(REFERRAL_POINT_VALUES.signupReferrer)} · {t.points.earn.referralSignupYou}
             </li>

@@ -220,6 +220,14 @@ export function formatNotificationText(
           typeLabel,
         };
       }
+      case "signup_welcome": {
+        const points = metaString(metadata, "points") || "25";
+        return {
+          title: typeField(types, "signup_welcome", "title", row.title),
+          body: applyTemplate(typeField(types, "signup_welcome", "body", row.body), { points }),
+          typeLabel,
+        };
+      }
       case "referral_milestone": {
         const name = metaString(metadata, "referred_display_name") || metaString(metadata, "referred_username") || "Friend";
         const milestone = metaString(metadata, "milestone_label") || metaString(metadata, "milestone");
@@ -273,6 +281,7 @@ export const NOTIFICATION_TYPE_KEYS = [
   "broadcast",
   "referral_signup",
   "referral_welcome",
+  "signup_welcome",
   "referral_milestone",
   "referral_tier_up",
   "system",

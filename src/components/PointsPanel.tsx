@@ -143,6 +143,7 @@ export function PointsPanel({ profile, onProfileRefresh, section }: PointsPanelP
         <div className="rounded-xl border border-zinc-200 bg-white/90 p-4 backdrop-blur dark:border-zinc-800 dark:bg-black/80">
           <p className="text-sm font-semibold text-black dark:text-white">{t.points.howToEarn}</p>
           <ul className="mt-3 grid gap-2 text-sm text-zinc-600 dark:text-zinc-300">
+            <li>+{POINT_VALUES.signupWelcome} · {t.points.earn.signupWelcome}</li>
             <li>+{POINT_VALUES.referralClick} · {t.points.earn.referralClick}</li>
             <li>+{POINT_VALUES.referralSignup} · {t.points.earn.referralSignupYou}</li>
             <li>+{POINT_VALUES.referralWelcome} · {t.points.earn.referralSignupFriend}</li>

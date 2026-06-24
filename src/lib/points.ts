@@ -1,6 +1,7 @@
 import type { Profile } from "@/lib/types";
 
 export const POINT_VALUES = {
+  signupWelcome: 25,
   referralClick: 10,
   referralSignup: 100,
   referralWelcome: 50,
