@@ -471,6 +471,7 @@ export type Dictionary = {
     channelFollowersStat: string;
     channelVideosStat: string;
     channelViewsStat: string;
+    channelLifetimePointsStat: string;
     shareChannel: string;
     reportUser: string;
     reportUserHint: string;
@@ -898,6 +899,7 @@ export type Dictionary = {
     verify: string;
     unverify: string;
     points: string;
+    lifetimePoints: string;
     level: string;
     verificationRequests: string;
     approveVerification: string;
@@ -1844,6 +1846,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelFollowersStat: "{count} followers",
       channelVideosStat: "{count} videos",
       channelViewsStat: "{count} views",
+      channelLifetimePointsStat: "{count} lifetime points earned",
       shareChannel: "Share channel",
       reportUser: "Report user",
       reportUserHint: "Report user channel",
@@ -2334,6 +2337,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       verify: "Verify",
       unverify: "Remove verification",
       points: "Points",
+      lifetimePoints: "Lifetime earned",
       level: "Level",
       verificationRequests: "Verification requests",
       approveVerification: "Approve verification",
@@ -3270,6 +3274,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelFollowersStat: "{count} フォロワー",
       channelVideosStat: "{count} 本の動画",
       channelViewsStat: "{count} 回視聴",
+      channelLifetimePointsStat: "累計獲得 {count} pt",
       shareChannel: "チャンネルを共有",
       reportUser: "ユーザーを報告",
       reportUserHint: "チャンネルを報告",
@@ -3756,6 +3761,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       verify: "認証する",
       unverify: "認証を解除",
       points: "ポイント",
+      lifetimePoints: "累計獲得",
       level: "レベル",
       verificationRequests: "認証リクエスト",
       approveVerification: "認証を承認",
@@ -4692,6 +4698,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelFollowersStat: "{count} متابع",
       channelVideosStat: "{count} فيديو",
       channelViewsStat: "{count} مشاهدة",
+      channelLifetimePointsStat: "{count} نقطة مكتسبة (إجمالي)",
       shareChannel: "مشاركة القناة",
       reportUser: "الإبلاغ عن المستخدم",
       reportUserHint: "الإبلاغ عن قناة المستخدم",
@@ -5179,6 +5186,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       verify: "توثيق",
       unverify: "إلغاء التوثيق",
       points: "النقاط",
+      lifetimePoints: "إجمالي المكتسب",
       level: "المستوى",
       verificationRequests: "طلبات التوثيق",
       approveVerification: "قبول التوثيق",

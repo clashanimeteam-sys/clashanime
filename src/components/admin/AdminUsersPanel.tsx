@@ -48,7 +48,7 @@ export function AdminUsersPanel() {
 
     const { data, error: fetchError } = await supabase
       .from("profiles")
-      .select("id, username, display_name, role, is_banned, is_verified, points, level, created_at, updated_at, avatar_url, banner_url, bio, country_code, country_name, youtube_url")
+      .select("id, username, display_name, role, is_banned, is_verified, points, lifetime_points_earned, level, created_at, updated_at, avatar_url, banner_url, bio, country_code, country_name, youtube_url")
       .order("created_at", { ascending: false })
       .limit(200);
 
@@ -278,6 +278,7 @@ export function AdminUsersPanel() {
               <tr>
                 <th className="px-4 py-3 text-start">{t.admin.table.user}</th>
                 <th className="px-4 py-3 text-start">{t.admin.points}</th>
+                <th className="px-4 py-3 text-start">{t.admin.lifetimePoints}</th>
                 <th className="px-4 py-3 text-start">{t.admin.level}</th>
                 <th className="px-4 py-3 text-start">{t.admin.table.role}</th>
                 <th className="px-4 py-3 text-start">{t.admin.table.videos}</th>
@@ -331,6 +332,9 @@ export function AdminUsersPanel() {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-zinc-300">{formatNumber(user.points ?? 0)}</td>
+                  <td className="px-4 py-3 text-zinc-300">
+                    {formatNumber(user.lifetime_points_earned ?? user.points ?? 0)}
+                  </td>
                   <td className="px-4 py-3">
                     <RankLetter rank={getLevelDefinition(user.level ?? 1).rank} size="sm" />
                   </td>

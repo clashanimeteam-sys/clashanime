@@ -16,6 +16,7 @@ export type Profile = {
   is_banned?: boolean;
   is_verified?: boolean;
   points?: number;
+  lifetime_points_earned?: number;
   clash_coins?: number;
   level?: number;
   referred_by?: string | null;

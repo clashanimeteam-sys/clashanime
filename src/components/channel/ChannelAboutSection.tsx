@@ -162,6 +162,19 @@ export function ChannelAboutSection({ profile, stats, showReportAction = true }:
         >
           {t.profile.channelViewsStat.replace("{count}", formatNumber(stats.totalViews))}
         </AboutRow>
+
+        <AboutRow
+          icon={
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5" aria-hidden>
+              <path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.8 7.2 17l.9-5.4L4.2 7.7l5.4-.8L12 2z" />
+            </svg>
+          }
+        >
+          {t.profile.channelLifetimePointsStat.replace(
+            "{count}",
+            formatNumber(profile.lifetime_points_earned ?? profile.points ?? 0),
+          )}
+        </AboutRow>
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
