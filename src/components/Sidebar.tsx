@@ -17,12 +17,13 @@ const mainNavItems = [
   { key: "community" as const, href: "/community", icon: "users" },
   { key: "music" as const, href: "/music", icon: "music" },
   { key: "exclusives" as const, href: "/exclusives", icon: "star" },
+  { key: "inviteFriends" as const, href: "/profile#referral", icon: "invite", referral: true as const },
   { key: "animeTracker" as const, href: "/tracker", icon: "radar" },
   { key: "clashCoins" as const, href: "/profile#wallet", icon: "wallet", wallet: true as const },
 ];
 
 const profileNavItems: {
-  key: "channelSettings" | "channel" | "myVideos" | "hunterSystem" | "bountyRewards" | "clashWallet" | "inviteFriends";
+  key: "channelSettings" | "channel" | "myVideos" | "hunterSystem" | "bountyRewards" | "clashWallet";
   section: ProfileSection;
   icon: string;
 }[] = [
@@ -32,7 +33,6 @@ const profileNavItems: {
   { key: "hunterSystem", section: "hunter-system", icon: "trophy" },
   { key: "bountyRewards", section: "bounty-log", icon: "coins" },
   { key: "clashWallet", section: "wallet", icon: "wallet" },
-  { key: "inviteFriends", section: "referral", icon: "invite" },
 ];
 
 function profileSectionHref(section: ProfileSection, loggedIn: boolean) {
@@ -187,10 +187,18 @@ export function Sidebar() {
 
       <nav className="flex flex-1 flex-col gap-1 p-3" aria-label="Main navigation">
         {mainNavItems.map((item) => {
-          const href = item.wallet ? profileSectionHref("wallet", Boolean(user)) : item.href;
-          const active = item.wallet
-            ? isProfilePage && section === "wallet"
-            : pathname === item.href;
+          const href =
+            "wallet" in item && item.wallet
+              ? profileSectionHref("wallet", Boolean(user))
+              : "referral" in item && item.referral
+                ? profileSectionHref("referral", Boolean(user))
+                : item.href;
+          const active =
+            "wallet" in item && item.wallet
+              ? isProfilePage && section === "wallet"
+              : "referral" in item && item.referral
+                ? isProfilePage && section === "referral"
+                : pathname === item.href;
 
           return (
             <Link key={item.key} href={href} className={navLinkClass(active)}>
