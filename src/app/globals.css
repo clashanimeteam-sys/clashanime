@@ -1503,3 +1503,40 @@ html[lang="ar-u-nu-latn"] {
     0 0 0 1px rgba(254, 243, 199, 0.35) inset,
     0 12px 28px rgba(245, 158, 11, 0.45);
 }
+
+.public-video-player {
+  z-index: 1;
+}
+
+.public-video-player::-webkit-media-controls-enclosure {
+  margin: 0 0.5rem 0.35rem;
+  border-radius: 0.75rem;
+  background-color: rgba(24, 24, 27, 0.94);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 10px 28px rgba(0, 0, 0, 0.55);
+}
+
+.public-video-player::-webkit-media-controls-panel {
+  background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.55));
+}
+
+.public-video-player::-webkit-media-controls-timeline {
+  min-height: 0.35rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.22);
+}
+
+.public-video-player::-webkit-media-controls-current-time-display,
+.public-video-player::-webkit-media-controls-time-remaining-display {
+  color: #fafafa;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.public-video-player::-webkit-media-controls-play-button,
+.public-video-player::-webkit-media-controls-mute-button,
+.public-video-player::-webkit-media-controls-fullscreen-button,
+.public-video-player::-webkit-media-controls-volume-slider,
+.public-video-player::-webkit-media-controls-timeline-container {
+  filter: brightness(1.25);
+}

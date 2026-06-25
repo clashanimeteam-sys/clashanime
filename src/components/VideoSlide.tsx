@@ -11,7 +11,7 @@ import { VideoSettingsMenu } from "@/components/VideoSettingsMenu";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getVideoPosterUrl, getVideoPreload } from "@/lib/mediaQuality";
 import { incrementVideoViews } from "@/lib/videoEngagement";
-import { blockPublicVideoContextMenu, PUBLIC_VIDEO_CONTROLS_LIST } from "@/lib/videoPlayer";
+import { blockPublicVideoContextMenu, PUBLIC_VIDEO_CONTROLS_LIST, PUBLIC_VIDEO_PLAYER_CLASS } from "@/lib/videoPlayer";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Video } from "@/lib/types";
 
@@ -41,23 +41,21 @@ export function VideoSlide({ video, isActive, showRank = false, onEnded }: Video
     const startPlayback = async () => {
       try {
         await element.play();
+        return;
       } catch {
         element.muted = true;
         try {
           await element.play();
         } catch {
-          // Browser blocked autoplay; controls remain available.
+          // Browser blocked autoplay; native controls remain available.
         }
       }
     };
 
-    if (element.readyState >= 2) {
-      void startPlayback();
-      return;
-    }
+    void startPlayback();
 
-    element.addEventListener("loadeddata", startPlayback, { once: true });
-    return () => element.removeEventListener("loadeddata", startPlayback);
+    element.addEventListener("canplay", startPlayback);
+    return () => element.removeEventListener("canplay", startPlayback);
   }, [hasVideo, isActive, video.video_url]);
 
   useEffect(() => {
@@ -77,22 +75,25 @@ export function VideoSlide({ video, isActive, showRank = false, onEnded }: Video
     >
       {hasVideo ? (
         <>
-          <video
-            ref={videoRef}
-            src={video.video_url}
-            controls
-            controlsList={PUBLIC_VIDEO_CONTROLS_LIST}
-            onContextMenu={blockPublicVideoContextMenu}
-            onEnded={() => {
-              if (isActive) onEnded?.();
-            }}
-            playsInline
-            preload={getVideoPreload(isActive)}
-            poster={getVideoPosterUrl(video.thumbnail_url)}
-            className="absolute inset-0 h-full w-full object-contain"
-          >
-            {t.video.unavailable}
-          </video>
+          <div className="absolute inset-0 bg-black pb-[3.75rem]">
+            <video
+              ref={videoRef}
+              src={video.video_url}
+              controls
+              controlsList={PUBLIC_VIDEO_CONTROLS_LIST}
+              onContextMenu={blockPublicVideoContextMenu}
+              onEnded={() => {
+                if (isActive) onEnded?.();
+              }}
+              autoPlay={isActive}
+              playsInline
+              preload={getVideoPreload(isActive)}
+              poster={getVideoPosterUrl(video.thumbnail_url)}
+              className={`${PUBLIC_VIDEO_PLAYER_CLASS} h-full w-full object-contain`}
+            >
+              {t.video.unavailable}
+            </video>
+          </div>
           {isActive ? (
             <VideoSettingsMenu
               videoRef={videoRef}
@@ -136,7 +137,7 @@ export function VideoSlide({ video, isActive, showRank = false, onEnded }: Video
         {formatNumber(viewsCount)} {t.video.views}
       </span>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent px-4 pb-24 pt-16 sm:px-6">
+      <div className="pointer-events-none absolute inset-x-0 bottom-[3.75rem] bg-gradient-to-t from-black/95 via-black/70 to-transparent px-4 pb-6 pt-16 sm:px-6">
         <div className="pointer-events-auto space-y-3">
           <h1 className="text-lg font-bold leading-snug text-white sm:text-xl">{video.title}</h1>
 
