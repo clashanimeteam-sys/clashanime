@@ -149,10 +149,14 @@ function NavIcon({ icon }: { icon: string }) {
   }
   if (icon === "settings") {
     return (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
-        <circle cx="12" cy="12" r="3" />
-        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-      </svg>
+      <Image
+        src="/icons/settings.png"
+        alt=""
+        width={20}
+        height={20}
+        className="h-5 w-5 shrink-0 object-contain"
+        aria-hidden
+      />
     );
   }
   if (icon === "channel") {
@@ -290,10 +294,7 @@ export function Sidebar() {
         ) : null}
 
         <Link href="/settings" className={navLinkClass(pathname === "/settings")}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
-            <circle cx="12" cy="12" r="3" />
-            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-          </svg>
+          <NavIcon icon="settings" />
           {t.nav.settings}
         </Link>
 
