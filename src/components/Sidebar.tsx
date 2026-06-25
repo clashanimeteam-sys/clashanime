@@ -113,11 +113,14 @@ function NavIcon({ icon }: { icon: string }) {
   }
   if (icon === "wallet") {
     return (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
-        <path d="M3 7h15a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z" />
-        <path d="M17 13h4v4h-4a2 2 0 0 1 0-4z" />
-        <path d="M3 7V5a2 2 0 0 1 2-2h13" />
-      </svg>
+      <Image
+        src="/icons/clash-coins.png"
+        alt=""
+        width={20}
+        height={20}
+        className="h-5 w-5 shrink-0 object-contain"
+        aria-hidden
+      />
     );
   }
   if (icon === "invite") {
