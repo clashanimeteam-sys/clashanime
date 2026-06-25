@@ -1,8 +1,4 @@
--- Run in Supabase SQL Editor (production: doqiuduigbdoczdzsima)
--- https://supabase.com/dashboard/project/doqiuduigbdoczdzsima/sql/new
---
--- Restrict community posting to Hunter ranks C, A and S (1000+ points).
--- Safe to re-run.
+-- Production: allow Hunter rank C (1000+ points) to post in the community.
 
 create or replace function public.can_post_to_community(target_user_id uuid default auth.uid())
 returns boolean
@@ -22,7 +18,6 @@ as $$
   );
 $$;
 
-drop policy if exists "Authenticated users can create community posts" on public.community_posts;
 drop policy if exists "Hunter A and S can create community posts" on public.community_posts;
 
 create policy "Hunter C, A and S can create community posts"
@@ -32,7 +27,6 @@ create policy "Hunter C, A and S can create community posts"
     and public.can_post_to_community(auth.uid())
   );
 
-drop policy if exists "Users upload own community images" on storage.objects;
 drop policy if exists "Hunter A and S upload own community images" on storage.objects;
 
 create policy "Hunter C, A and S upload own community images"
@@ -43,6 +37,4 @@ create policy "Hunter C, A and S upload own community images"
     and public.can_post_to_community(auth.uid())
   );
 
-select
-  (select count(*) from pg_policies where policyname = 'Hunter C, A and S can create community posts') as community_post_policy,
-  (select count(*) from pg_policies where policyname = 'Hunter C, A and S upload own community images') as community_image_policy;
+notify pgrst, 'reload schema';

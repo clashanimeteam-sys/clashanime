@@ -2191,7 +2191,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     communityFeed: {
       postPublished: "Post published.",
       postLevelRequired:
-        "Publishing in the community is limited to Hunter ranks A and S (5000+ points). You can still view posts and comment.",
+        "Publishing in the community is limited to Hunter ranks C, A, and S (1000+ points). You can still view posts and comment.",
       animeOnlyNotice: "Community posts must be anime-related only. Off-topic, political, or adult content is prohibited.",
       postPlaceholder:
         "The clash arena is open.. share your favorite moment in the anime world!",
@@ -3616,7 +3616,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     communityFeed: {
       postPublished: "投稿しました。",
       postLevelRequired:
-        "コミュニティへの投稿はハンターランク A と S（5000pt以上）のみ可能です。投稿の閲覧とコメントはできます。",
+        "コミュニティへの投稿はハンターランク C・A・S（1000pt以上）のみ可能です。投稿の閲覧とコメントはできます。",
       animeOnlyNotice: "コミュニティ投稿はアニメ関連のみ。政治・成人・無関係な内容は禁止です。",
       postPlaceholder: "決闘場は開いています.. アニメ世界の最高の瞬間を共有しよう！",
       addImage: "画像を追加",
@@ -5041,7 +5041,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     communityFeed: {
       postPublished: "تم النشر.",
       postLevelRequired:
-        "الساحة حصرية لأبطال الرتبة A و S فقط. استمر في التفاعل والمشاركة لتُثبت جدارتك وتنضم للنخبة!",
+        "الساحة حصرية لأبطال الرتبة C و A و S. استمر في التفاعل والمشاركة لتُثبت جدارتك وتنضم للنخبة!",
       animeOnlyNotice: "منشورات المجتمع يجب أن تكون مرتبطة بالأنمي فقط. يُمنع المحتوى السياسي أو الإباحي أو خارج الموضوع.",
       postPlaceholder: "ساحة النزال مفتوحة.. شاركنا لحظتك المفضلة في عالم الأنمي!",
       addImage: "إضافة صورة",

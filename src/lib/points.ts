@@ -100,7 +100,7 @@ export function canUploadVideos(profile: Pick<Profile, "level" | "points"> | nul
 
 export function canPostToCommunity(profile: Pick<Profile, "level" | "points"> | null | undefined) {
   if (!profile) return false;
-  return (profile.level ?? pointsToLevel(profile.points ?? 0)) >= 3;
+  return (profile.level ?? pointsToLevel(profile.points ?? 0)) >= 2;
 }
 
 export function getReferralUrl(username: string) {
