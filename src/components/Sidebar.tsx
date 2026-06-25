@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { ElementalSiteTitle } from "@/components/ElementalSiteTitle";
 import { BrandLogo } from "@/components/BrandLogo";
@@ -42,7 +43,16 @@ function profileSectionHref(section: ProfileSection, loggedIn: boolean) {
 
 function NavIcon({ icon }: { icon: string }) {
   if (icon === "clash") {
-    return <BrandLogo className="h-5 w-5 shrink-0" compact />;
+    return (
+      <Image
+        src="/icons/clash-vs.png"
+        alt=""
+        width={20}
+        height={20}
+        className="h-5 w-5 shrink-0 object-contain"
+        aria-hidden
+      />
+    );
   }
   if (icon === "video") {
     return (
