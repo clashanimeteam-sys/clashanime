@@ -160,6 +160,18 @@ function NavIcon({ icon }: { icon: string }) {
       </svg>
     );
   }
+  if (icon === "star") {
+    return (
+      <Image
+        src="/icons/exclusives.png"
+        alt=""
+        width={20}
+        height={20}
+        className="h-5 w-5 shrink-0 object-contain"
+        aria-hidden
+      />
+    );
+  }
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-hidden>
       <path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.8 7.2 17l.9-5.4L4.2 7.7l5.4-.8L12 2z" />
