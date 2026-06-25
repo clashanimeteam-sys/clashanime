@@ -134,13 +134,14 @@ function NavIcon({ icon }: { icon: string }) {
   }
   if (icon === "radar") {
     return (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
-        <circle cx="12" cy="12" r="2" />
-        <path d="M12 2v2M12 20v2M2 12h2M20 12h2" />
-        <path d="M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-        <circle cx="12" cy="12" r="6" />
-        <circle cx="12" cy="12" r="9" />
-      </svg>
+      <Image
+        src="/icons/anime-radar.png"
+        alt=""
+        width={20}
+        height={20}
+        className="h-5 w-5 shrink-0 object-contain"
+        aria-hidden
+      />
     );
   }
   if (icon === "settings") {
