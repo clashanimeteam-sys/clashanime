@@ -22,11 +22,11 @@ export function AppShell({ children }: AppShellProps) {
   return (
     <ProfileSectionProvider>
       <PageTitleProvider>
-        <div className="flex min-h-screen bg-white dark:bg-black">
-          <div className="hidden md:flex">
+        <div className="flex h-dvh overflow-hidden bg-white dark:bg-black">
+          <div className="hidden h-dvh shrink-0 md:flex">
             <Sidebar />
           </div>
-          <div className="flex min-h-screen flex-1 flex-col bg-white dark:bg-black">
+          <div className="flex min-h-0 flex-1 flex-col overflow-y-auto bg-white dark:bg-black">
             <AuthTopBar />
             <main
               className={`flex-1 bg-white dark:bg-black ${isVideoPage ? "overflow-hidden" : ""} ${

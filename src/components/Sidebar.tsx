@@ -167,7 +167,7 @@ export function Sidebar() {
   const showAdminLink = isStaff(profile);
 
   return (
-    <aside className="sticky top-0 flex min-h-screen w-56 shrink-0 flex-col border-e border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black lg:w-60">
+    <aside className="flex h-dvh w-56 shrink-0 flex-col border-e border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black lg:w-60">
       <div className="border-b border-zinc-200 px-2 py-4 dark:border-zinc-800 sm:px-3">
         <Link href="/" className="flex justify-center">
           <BrandLogo priority />
@@ -185,7 +185,7 @@ export function Sidebar() {
         </Link>
       </div>
 
-      <nav className="flex flex-1 flex-col gap-1 p-3" aria-label="Main navigation">
+      <nav className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-3" aria-label="Main navigation">
         {mainNavItems.map((item) => {
           const href =
             "wallet" in item && item.wallet
