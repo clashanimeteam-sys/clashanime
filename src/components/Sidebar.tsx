@@ -12,7 +12,7 @@ import { useLocale } from "@/providers/LocaleProvider";
 import { useProfileSection, type ProfileSection } from "@/providers/ProfileSectionProvider";
 
 const mainNavItems = [
-  { key: "clash" as const, href: "/", icon: "flame" },
+  { key: "clash" as const, href: "/", icon: "clash" },
   { key: "videos" as const, href: "/videos", icon: "video" },
   { key: "community" as const, href: "/community", icon: "users" },
   { key: "music" as const, href: "/music", icon: "music" },
@@ -41,12 +41,8 @@ function profileSectionHref(section: ProfileSection, loggedIn: boolean) {
 }
 
 function NavIcon({ icon }: { icon: string }) {
-  if (icon === "flame") {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-hidden>
-        <path d="M12 2c1.5 3 4 4.5 4 8a4 4 0 1 1-8 0c0-3.5 2.5-5 4-8zm0 18a6 6 0 0 0 6-6c0-4.5-3.5-7.5-6-11-2.5 3.5-6 6.5-6 11a6 6 0 0 0 6 6z" />
-      </svg>
-    );
+  if (icon === "clash") {
+    return <BrandLogo className="h-5 w-5 shrink-0" compact />;
   }
   if (icon === "video") {
     return (
