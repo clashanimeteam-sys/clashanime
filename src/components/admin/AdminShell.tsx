@@ -32,6 +32,7 @@ const navItems: Array<{
   { key: "legends", href: "/admin/legends" },
   { key: "beatsLounge", href: "/admin/beats-lounge" },
   { key: "animeTracker", href: "/admin/anime-tracker" },
+  { key: "blog", href: "/admin/blog" },
   { key: "withdrawals", href: "/admin/withdrawals" },
   { key: "moderationLog", href: "/admin/moderation-log" },
   { key: "settings", href: "/admin/settings", adminOnly: true },

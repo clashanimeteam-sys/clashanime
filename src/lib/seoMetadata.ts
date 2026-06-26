@@ -25,7 +25,8 @@ type PageSeoKey =
   | "community"
   | "exclusives"
   | "music"
-  | "about";
+  | "about"
+  | "blog";
 
 const PAGE_SEO: Record<
   PageSeoKey,
@@ -72,6 +73,12 @@ const PAGE_SEO: Record<
     description:
       "ClashAnime.com is a global platform for anime clips, release clashes, competitions, and creator rewards via ClashCoins — منصة انمي عالمية للمسابقات وربح المال — グローバルアニメ対戦プラットフォーム.",
     path: "/about",
+  },
+  blog: {
+    title: "Heroes' Arena Guide — ClashAnime Blog & SEO Knowledge Hub",
+    description:
+      "Guides to anime clashes, Anime Radar trends, winner stories, platform updates, prizes, ClashCoins, and FAQ. Learn how to rank and earn on ClashAnime — دليل الأبطال وSEO — 英雄アリーナガイド.",
+    path: "/blog",
   },
 };
 

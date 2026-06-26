@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getActiveAnimeReleaseClashes } from "@/lib/animeTracker.server";
+import { getBlogSlugs } from "@/lib/blog/posts";
 import { createServerClient } from "@/lib/supabase/server";
 import { absoluteSiteUrl, PUBLIC_STATIC_PATHS } from "@/lib/siteSeo";
 
@@ -88,6 +89,10 @@ export async function buildSitemapEntries(): Promise<MetadataRoute.Sitemap> {
     }
   } catch {
     // Sitemap should still publish static URLs if tracker RPC is unavailable.
+  }
+
+  for (const slug of getBlogSlugs()) {
+    addEntry(`/blog/${slug}`, null, 0.7);
   }
 
   return entries;

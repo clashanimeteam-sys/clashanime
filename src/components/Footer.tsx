@@ -44,7 +44,16 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
   );
 }
 
-function SocialIcon({ type }: { type: "mail" | "report" }) {
+function SocialIcon({ type }: { type: "mail" | "report" | "guide" }) {
+  if (type === "guide") {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4 shrink-0" aria-hidden>
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+      </svg>
+    );
+  }
+
   if (type === "mail") {
     return (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4 shrink-0" aria-hidden>
@@ -109,6 +118,13 @@ export function Footer() {
           <div>
             <FooterColumnHeading>{t.footer.socialHeading}</FooterColumnHeading>
             <nav className="flex flex-col gap-2.5" aria-label={t.footer.socialHeading}>
+              <Link
+                href="/blog"
+                className="flex items-center gap-2.5 text-sm text-zinc-600 transition-colors hover:text-black dark:text-zinc-400 dark:hover:text-white"
+              >
+                <SocialIcon type="guide" />
+                {t.footer.arenaGuide}
+              </Link>
               <Link
                 href="/contact"
                 className="flex items-center gap-2.5 text-sm text-zinc-600 transition-colors hover:text-black dark:text-zinc-400 dark:hover:text-white"

@@ -18,6 +18,7 @@ export const PUBLIC_STATIC_PATHS = [
   "/dmca",
   "/community-guidelines",
   "/report",
+  "/blog",
 ] as const;
 
 /** Paths that should never be crawled or listed in the sitemap. */

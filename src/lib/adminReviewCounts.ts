@@ -14,6 +14,7 @@ export type AdminNavKey =
   | "legends"
   | "beatsLounge"
   | "animeTracker"
+  | "blog"
   | "contact"
   | "emails"
   | "referrals"

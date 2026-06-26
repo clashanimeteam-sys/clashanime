@@ -132,6 +132,33 @@ export type Dictionary = {
     communityGuidelines: string;
     dmca: string;
     reportContent: string;
+    arenaGuide: string;
+  };
+  blog: {
+    hubBadge: string;
+    hubTitle: string;
+    hubSubtitle: string;
+    backToGuide: string;
+    published: string;
+    minRead: string;
+    relatedArticles: string;
+    notFound: string;
+    categories: {
+      "user-guide": string;
+      "radar-analysis": string;
+      "winner-stories": string;
+      "platform-updates": string;
+      "earnings-prizes": string;
+      faq: string;
+    };
+    categoryHint: {
+      "user-guide": string;
+      "radar-analysis": string;
+      "winner-stories": string;
+      "platform-updates": string;
+      "earnings-prizes": string;
+      faq: string;
+    };
   };
   pages: {
     videosTitle: string;
@@ -1139,6 +1166,7 @@ export type Dictionary = {
       legends: string;
       beatsLounge: string;
       animeTracker: string;
+      blog: string;
       contact: string;
       emails: string;
       referrals: string;
@@ -1306,6 +1334,17 @@ export type Dictionary = {
       clashNoWinner: string;
       clashEnded: string;
       clashStatusActive: string;
+    };
+    blog: {
+      title: string;
+      subtitle: string;
+      staticNote: string;
+      articlesCount: string;
+      category: string;
+      published: string;
+      readingTime: string;
+      viewOnSite: string;
+      openHub: string;
     };
     hashtags: {
       title: string;
@@ -1531,6 +1570,34 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communityGuidelines: "Community Guidelines",
       dmca: "Digital Millennium Copyright Act",
       reportContent: "Report Content",
+      arenaGuide: "Heroes' Arena Guide",
+    },
+    blog: {
+      hubBadge: "Knowledge hub",
+      hubTitle: "Heroes' Arena Guide",
+      hubSubtitle:
+        "Guides, radar analysis, winner stories, platform updates, prizes, and FAQ — built to help you rank higher and earn on ClashAnime.",
+      backToGuide: "Back to Arena Guide",
+      published: "Published",
+      minRead: "{minutes} min read",
+      relatedArticles: "Related articles",
+      notFound: "Article not found.",
+      categories: {
+        "user-guide": "User guide",
+        "radar-analysis": "Radar analysis",
+        "winner-stories": "Winner stories",
+        "platform-updates": "Platform updates",
+        "earnings-prizes": "Prizes & earnings",
+        faq: "FAQ",
+      },
+      categoryHint: {
+        "user-guide": "Learn clashes, uploads, invites, and hunter points.",
+        "radar-analysis": "Trending anime and clip patterns from the Radar.",
+        "winner-stories": "How Top 12 creators climb the arena.",
+        "platform-updates": "New features like instant 24-hour episode clashes.",
+        "earnings-prizes": "Points, ClashCoins, seasons, and payouts explained.",
+        faq: "Global availability, KYC, taxes, and common questions.",
+      },
     },
     pages: {
       videosTitle: "All Videos",
@@ -2634,6 +2701,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         legends: "Hall of Legends",
         beatsLounge: "Anime Beats Lounge",
         animeTracker: "Anime Tracker",
+        blog: "Arena Guide",
         contact: "Contact inbox",
         emails: "Emails",
         referrals: "Referrals",
@@ -2802,6 +2870,18 @@ export const dictionaries: Record<Locale, Dictionary> = {
         clashNoWinner: "Ended with no qualifying clips",
         clashEnded: "Ended {time}",
         clashStatusActive: "Active · 24h window",
+      },
+      blog: {
+        title: "Arena Guide (Blog)",
+        subtitle: "Static SEO articles published from the codebase — no database CMS.",
+        staticNote:
+          "Articles are version-controlled files in /blog. Edit content via git deploy; this panel is read-only for visibility.",
+        articlesCount: "{count} published articles",
+        category: "Category",
+        published: "Published",
+        readingTime: "Reading time",
+        viewOnSite: "View on site",
+        openHub: "Open guide hub",
       },
       hashtags: {
         title: "Top hashtags",
@@ -3025,6 +3105,34 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communityGuidelines: "コミュニティガイドライン",
       dmca: "デジタルミレニアム著作権法",
       reportContent: "コンテンツの報告",
+      arenaGuide: "英雄アリーナガイド",
+    },
+    blog: {
+      hubBadge: "ナレッジハブ",
+      hubTitle: "英雄アリーナガイド",
+      hubSubtitle:
+        "ガイド、レーダー分析、勝者ストーリー、アップデート、賞金、FAQ — ClashAnimeで順位アップと収益化のための記事。",
+      backToGuide: "ガイド一覧へ",
+      published: "公開日",
+      minRead: "約{minutes}分",
+      relatedArticles: "関連記事",
+      notFound: "記事が見つかりません。",
+      categories: {
+        "user-guide": "ユーザーガイド",
+        "radar-analysis": "レーダー分析",
+        "winner-stories": "勝者ストーリー",
+        "platform-updates": "プラットフォーム更新",
+        "earnings-prizes": "賞金と収益",
+        faq: "FAQ",
+      },
+      categoryHint: {
+        "user-guide": "クラッシュ、アップロード、招待、ポイントの基本。",
+        "radar-analysis": "トレンドアニメとクリップ傾向。",
+        "winner-stories": "Top 12クリエイターの戦略。",
+        "platform-updates": "24時間インスタントエピソードクラッシュなど。",
+        "earnings-prizes": "ポイント、ClashCoins、シーズン賞。",
+        faq: "全世界、KYC、税金、よくある質問。",
+      },
     },
     pages: {
       videosTitle: "すべての動画",
@@ -4113,6 +4221,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         legends: "伝説の殿堂",
         beatsLounge: "アニメ・ビーツ・ラウンジ",
         animeTracker: "新作アニメレーダー",
+        blog: "アリーナガイド",
         contact: "お問い合わせ受信箱",
         emails: "メール",
         referrals: "招待プログラム",
@@ -4281,6 +4390,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
         clashNoWinner: "対象クリップなしで終了",
         clashEnded: "終了 {time}",
         clashStatusActive: "開催中 · 24時間",
+      },
+      blog: {
+        title: "アリーナガイド（ブログ）",
+        subtitle: "コードベースの静的SEO記事 — DBのCMSはありません。",
+        staticNote: "記事は /blog のファイルです。gitデプロイで更新。このパネルは閲覧のみ。",
+        articlesCount: "公開記事 {count} 件",
+        category: "カテゴリ",
+        published: "公開日",
+        readingTime: "読了時間",
+        viewOnSite: "サイトで見る",
+        openHub: "ガイド一覧",
       },
       hashtags: {
         title: "人気ハッシュタグ",
@@ -4504,6 +4624,34 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communityGuidelines: "إرشادات المجتمع",
       dmca: "قانون الألفية الرقمية لحقوق المؤلف",
       reportContent: "تقرير المحتوى",
+      arenaGuide: "دليل الأبطال",
+    },
+    blog: {
+      hubBadge: "مركز المعرفة",
+      hubTitle: "دليل الأبطال",
+      hubSubtitle:
+        "شروحات، تحليلات الرادار، قصص الفائزين، تحديثات المنصة، الجوائز، وأسئلة شائعة — لترتيب أعلى وربح على ClashAnime.",
+      backToGuide: "العودة لدليل الأبطال",
+      published: "نُشر",
+      minRead: "{minutes} دقائق قراءة",
+      relatedArticles: "مقالات ذات صلة",
+      notFound: "المقالة غير موجودة.",
+      categories: {
+        "user-guide": "دليل المستخدم",
+        "radar-analysis": "تحليلات الرادار",
+        "winner-stories": "قصص الفائزين",
+        "platform-updates": "تحديثات المنصة",
+        "earnings-prizes": "الجوائز والربح",
+        faq: "أسئلة شائعة",
+      },
+      categoryHint: {
+        "user-guide": "تعلّم النزالات، الرفع، الدعوات، ونقاط الصياد.",
+        "radar-analysis": "ترند الأنمي وأنماط اللقطات من الرادار.",
+        "winner-stories": "كيف يصعد Top 12 في الساحة.",
+        "platform-updates": "ميزات جديدة مثل نزال الحلقة الفوري 24 ساعة.",
+        "earnings-prizes": "النقاط و ClashCoins والمواسم والسحب.",
+        faq: "التوفر العالمي و KYC والضرائب وأسئلة شائعة.",
+      },
     },
     pages: {
       videosTitle: "كل الفيديوهات",
@@ -5596,6 +5744,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         legends: "أرشيف الأساطير",
         beatsLounge: "صالة إيقاعات الأنمي",
         animeTracker: "رادار الأنمي الجديد",
+        blog: "دليل الأبطال",
         contact: "صندوق التواصل",
         emails: "الإيميلات",
         referrals: "برنامج الدعوة",
@@ -5764,6 +5913,17 @@ export const dictionaries: Record<Locale, Dictionary> = {
         clashNoWinner: "انتهى بدون مقاطع مؤهلة",
         clashEnded: "انتهى {time}",
         clashStatusActive: "مباشر · نافذة 24 ساعة",
+      },
+      blog: {
+        title: "دليل الأبطال (المدونة)",
+        subtitle: "مقالات SEO ثابتة من الكود — بدون قاعدة بيانات.",
+        staticNote: "المقالات ملفات في /blog. التحديث عبر git. هذه اللوحة للعرض فقط.",
+        articlesCount: "{count} مقالة منشورة",
+        category: "القسم",
+        published: "تاريخ النشر",
+        readingTime: "وقت القراءة",
+        viewOnSite: "عرض في الموقع",
+        openHub: "فتح دليل الأبطال",
       },
       hashtags: {
         title: "أبرز الهاشتاغات",
