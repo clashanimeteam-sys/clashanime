@@ -60,26 +60,24 @@ export function VideoCardActions({
   const [error, setError] = useState<string | null>(null);
 
   const isOverlay = variant === "overlay";
+  const overlayIconWrapBase =
+    "flex h-10 w-10 items-center justify-center max-md:h-auto max-md:w-auto max-md:bg-transparent md:rounded-full md:backdrop-blur-sm";
   const actionButtonClass = compact
     ? "inline-flex items-center gap-0.5 rounded-full border px-1.5 py-0.5 text-[9px] font-semibold transition-colors disabled:opacity-60"
     : isOverlay
-      ? "inline-flex flex-col items-center gap-1 border-0 bg-transparent p-0 text-[11px] font-semibold leading-none text-white shadow-none transition-opacity hover:opacity-80 disabled:opacity-60 max-md:drop-shadow-[0_1px_3px_rgba(0,0,0,0.85)]"
+      ? "inline-flex flex-col items-center gap-1 border-0 bg-transparent p-0 text-[11px] font-semibold leading-none shadow-none transition-colors hover:opacity-80 disabled:opacity-60 max-md:drop-shadow-[0_1px_3px_rgba(0,0,0,0.85)]"
       : "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors disabled:opacity-60";
-  const iconWrapClass = isOverlay
-    ? "flex h-10 w-10 items-center justify-center text-white max-md:h-auto max-md:w-auto max-md:bg-transparent md:rounded-full md:bg-zinc-900/75 md:backdrop-blur-sm"
+  const iconWrapClass = isOverlay ? `${overlayIconWrapBase} text-white md:bg-zinc-900/75` : "";
+  const likedIconWrapClass = isOverlay
+    ? `${overlayIconWrapBase} text-red-500 md:bg-red-500 md:text-white`
     : "";
   const iconClass = compact ? "h-2.5 w-2.5" : isOverlay ? "h-7 w-7 md:h-5 md:w-5" : "h-3.5 w-3.5";
   const buttonClass = isOverlay
-    ? ""
+    ? "text-white"
     : "border-zinc-300 text-zinc-700 hover:border-accent/40 hover:text-accent dark:border-zinc-700 dark:text-zinc-200";
   const likedClass = isOverlay
-    ? liked
-      ? "text-red-500"
-      : "text-white"
+    ? "text-red-500"
     : "border-accent bg-accent/10 text-accent";
-  const likedIconWrapClass = isOverlay
-    ? "text-red-500 md:rounded-full md:bg-red-500 md:text-white"
-    : "";
 
   useEffect(() => {
     setLikesCount(initialLikes);
@@ -120,15 +118,20 @@ export function VideoCardActions({
   async function handleLike() {
     if (!supabase || !requireSubscription() || !user) return;
 
+    const wasLiked = liked;
+    setLiked(!wasLiked);
+    setLikesCount((count) => Math.max(0, count + (wasLiked ? -1 : 1)));
     setLoadingLike(true);
     setError(null);
 
-    const counts = await toggleVideoLike(supabase, videoId, user.id, liked);
+    const counts = await toggleVideoLike(supabase, videoId, user.id, wasLiked);
 
     if (counts) {
-      setLiked(!liked);
+      setLiked(!wasLiked);
       setLikesCount(counts.likes_count);
     } else {
+      setLiked(wasLiked);
+      setLikesCount((count) => Math.max(0, count + (wasLiked ? 1 : -1)));
       setError(t.video.actionFailed);
     }
 
@@ -220,7 +223,7 @@ export function VideoCardActions({
           aria-label={liked ? t.video.unlike : t.video.like}
           className={`${actionButtonClass} ${liked ? likedClass : buttonClass}`}
         >
-          <span className={`${iconWrapClass} ${liked ? likedIconWrapClass : ""}`}>
+          <span className={liked && isOverlay ? likedIconWrapClass : iconWrapClass}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -231,7 +234,11 @@ export function VideoCardActions({
               <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
             </svg>
           </span>
-          {isOverlay ? <span>{formatNumber(likesCount)}</span> : formatNumber(likesCount)}
+          {isOverlay ? (
+            <span className={liked ? "text-red-500" : undefined}>{formatNumber(likesCount)}</span>
+          ) : (
+            formatNumber(likesCount)
+          )}
         </button>
 
         <button
