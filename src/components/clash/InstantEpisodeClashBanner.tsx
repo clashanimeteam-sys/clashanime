@@ -209,18 +209,6 @@ export function InstantEpisodeClashBanner({ clashes }: InstantEpisodeClashBanner
           className="absolute inset-0 bg-gradient-to-br from-orange-600/25 via-zinc-950 to-red-950/40"
           aria-hidden
         />
-        {clash.posterUrl ? (
-          <div className="pointer-events-none absolute -end-4 top-1/2 h-36 w-24 -translate-y-1/2 opacity-30 sm:end-6 sm:h-44 sm:w-32 sm:opacity-40">
-            <Image
-              src={clash.posterUrl}
-              alt=""
-              width={128}
-              height={176}
-              className="h-full w-full rounded-lg object-cover shadow-2xl"
-              unoptimized
-            />
-          </div>
-        ) : null}
 
         <div className="relative flex flex-col gap-4 px-4 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-6">
           <div className="min-w-0 flex-1">
@@ -241,26 +229,42 @@ export function InstantEpisodeClashBanner({ clashes }: InstantEpisodeClashBanner
             </p>
           </div>
 
-          <div className="shrink-0">
-            <p className="mb-2 text-center text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400 sm:text-start">
-              {t.animeTracker.instantEpisodeCountdown}
-            </p>
-            <div
-              className="grid grid-cols-3 divide-x divide-zinc-800 overflow-hidden rounded-xl border border-zinc-700 bg-zinc-900/90"
-              dir="ltr"
-            >
-              {units.map((unit) => (
-                <div key={unit.label} className="flex flex-col items-center px-3 py-2.5">
-                  <span className="font-sans text-2xl font-bold tabular-nums text-white">
-                    {formatUnit(unit.value, unit.digits, locale)}
-                  </span>
-                  <span className="mt-0.5 text-[10px] font-semibold uppercase text-zinc-400">
-                    {unit.label}
-                  </span>
+          <div className="flex w-full shrink-0 flex-col gap-3 sm:w-auto sm:max-w-md">
+            <div className="flex items-center gap-3 sm:gap-4">
+              {clash.posterUrl ? (
+                <div className="shrink-0">
+                  <Image
+                    src={clash.posterUrl}
+                    alt={title}
+                    width={88}
+                    height={128}
+                    className="h-28 w-20 rounded-xl object-cover shadow-xl ring-1 ring-white/10 sm:h-32 sm:w-[88px]"
+                    unoptimized
+                  />
                 </div>
-              ))}
+              ) : null}
+              <div className="min-w-0 flex-1">
+                <p className="mb-2 text-center text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400 sm:text-start">
+                  {t.animeTracker.instantEpisodeCountdown}
+                </p>
+                <div
+                  className="grid grid-cols-3 divide-x divide-zinc-800 overflow-hidden rounded-xl border border-zinc-700 bg-zinc-900/90"
+                  dir="ltr"
+                >
+                  {units.map((unit) => (
+                    <div key={unit.label} className="flex flex-col items-center px-3 py-2.5">
+                      <span className="font-sans text-2xl font-bold tabular-nums text-white">
+                        {formatUnit(unit.value, unit.digits, locale)}
+                      </span>
+                      <span className="mt-0.5 text-[10px] font-semibold uppercase text-zinc-400">
+                        {unit.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-            <span className="mt-3 flex w-full justify-center rounded-full bg-gradient-to-r from-orange-500 to-red-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-orange-900/40 transition group-hover:brightness-110 sm:justify-center">
+            <span className="flex w-full justify-center rounded-full bg-gradient-to-r from-orange-500 to-red-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-orange-900/40 transition group-hover:brightness-110">
               {t.animeTracker.instantEpisodeCta}
             </span>
           </div>
