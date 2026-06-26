@@ -155,6 +155,36 @@ export function formatNotificationText(
           typeLabel,
         };
       }
+      case "episode_clash_winner": {
+        const anime = metaString(metadata, "anime_title") || "";
+        const episode = metaString(metadata, "episode_number") || "";
+        const points = metaString(metadata, "points_awarded") || "2000";
+        const coins = metaString(metadata, "coins_awarded") || "5000";
+        return {
+          title: typeField(types, "episode_clash_winner", "title", row.title),
+          body: applyTemplate(typeField(types, "episode_clash_winner", "body", row.body), {
+            anime,
+            episode,
+            points,
+            coins,
+          }),
+          typeLabel,
+        };
+      }
+      case "episode_clash_crowned": {
+        const name = metaString(metadata, "winner_display_name") || "A hunter";
+        const anime = metaString(metadata, "anime_title") || "";
+        const episode = metaString(metadata, "episode_number") || "";
+        return {
+          title: typeField(types, "episode_clash_crowned", "title", row.title),
+          body: applyTemplate(typeField(types, "episode_clash_crowned", "body", row.body), {
+            name,
+            anime,
+            episode,
+          }),
+          typeLabel,
+        };
+      }
       case "video_like": {
         const name = metaString(metadata, "actor_display_name") || metaString(metadata, "actor_username") || "Someone";
         const title = metaString(metadata, "video_title") || "";
@@ -283,6 +313,9 @@ export const NOTIFICATION_TYPE_KEYS = [
   "points_duel_accepted",
   "season_start",
   "season_end",
+  "anime_release_clash",
+  "episode_clash_winner",
+  "episode_clash_crowned",
   "video_like",
   "video_comment",
   "comment_reply",

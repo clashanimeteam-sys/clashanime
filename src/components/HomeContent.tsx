@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimeTrackerBanner } from "@/components/tracker/AnimeTrackerBanner";
+import { InstantEpisodeClashBanner } from "@/components/clash/InstantEpisodeClashBanner";
 import { LiveClashCounter } from "@/components/clash/LiveClashCounter";
 import { ClashPrizeBanner } from "@/components/clash/ClashPrizeBanner";
 import { ClashVideosBackdrop } from "@/components/clash/ClashVideosBackdrop";
@@ -85,7 +85,7 @@ export function HomeContent({
         {hasReleaseBanner ? (
           <div className="mb-8 flex flex-col gap-4">
             <HomeHeroTop activeSeason={activeSeason} arenaStats={arenaStats} />
-            <AnimeTrackerBanner clashes={activeReleaseClashes} />
+            <InstantEpisodeClashBanner clashes={activeReleaseClashes} />
           </div>
         ) : (
           <section className="mb-8">

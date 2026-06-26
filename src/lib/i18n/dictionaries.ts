@@ -203,6 +203,15 @@ export type Dictionary = {
     scoreLabel: string;
     rankLabel: string;
     malLink: string;
+    instantEpisodeBadge: string;
+    instantEpisodeTitle: string;
+    instantEpisodeSubtitle: string;
+    instantEpisodeRewards: string;
+    instantEpisodeCountdown: string;
+    instantEpisodeHours: string;
+    instantEpisodeMinutes: string;
+    instantEpisodeSeconds: string;
+    instantEpisodeCta: string;
   };
   exclusives: {
     dailyHallBadge: string;
@@ -556,6 +565,8 @@ export type Dictionary = {
       season_start: { label: string; title: string; body: string };
       season_end: { label: string; title: string; body: string };
       anime_release_clash: { label: string; title: string; body: string };
+      episode_clash_winner: { label: string; title: string; body: string };
+      episode_clash_crowned: { label: string; title: string; body: string };
       video_like: { label: string; title: string; body: string; bodyWithTitle: string };
       video_comment: { label: string; title: string; body: string; bodyWithPreview: string };
       comment_reply: { label: string; title: string; body: string; bodyWithPreview: string };
@@ -1285,6 +1296,15 @@ export type Dictionary = {
       seoTitle: string;
       seoAnimeCount: string;
       seoKeywordCount: string;
+      instantEpisodeHint: string;
+      instantEpisodeRewards: string;
+      instantEpisodeActiveTitle: string;
+      instantEpisodeHistoryTitle: string;
+      clashClosesAt: string;
+      clashWinner: string;
+      clashNoWinner: string;
+      clashEnded: string;
+      clashStatusActive: string;
     };
     hashtags: {
       title: string;
@@ -1567,7 +1587,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       episodeLabel: "Episode {episode}",
       scheduledHint: "A special clash opens automatically on release day.",
       backToTracker: "Back to Anime Tracker",
-      clashSubtitle: "Upload clips tagged with this anime and battle for the top spot while the trend is hot.",
+      clashSubtitle: "Upload clips tagged with this anime. You have 24 hours — highest engagement wins +2,000 points and +5,000 ClashCoins.",
       uploadClip: "Upload your clip",
       matchTagsHint: "Use hashtags like {tags} on your upload to join this clash.",
       copyHashtag: "Copy",
@@ -1585,6 +1605,16 @@ export const dictionaries: Record<Locale, Dictionary> = {
       scoreLabel: "Score {score}",
       rankLabel: "Rank #{rank}",
       malLink: "View on MyAnimeList →",
+      instantEpisodeBadge: "24-hour episode clash",
+      instantEpisodeTitle: "{title} · Episode {episode}",
+      instantEpisodeSubtitle:
+        "Upload your best scene now. Only clips from the last 24 hours count — highest engagement wins.",
+      instantEpisodeRewards: "Winner: +{points} points & +{coins} ClashCoins",
+      instantEpisodeCountdown: "Time left",
+      instantEpisodeHours: "hrs",
+      instantEpisodeMinutes: "min",
+      instantEpisodeSeconds: "sec",
+      instantEpisodeCta: "Join the clash",
     },
     exclusives: {
       dailyHallBadge: "Daily Hall of Fame",
@@ -1964,9 +1994,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
         season_start: { label: "Season start", title: "New season started", body: "{season} is now live. Climb the ranks!" },
         season_end: { label: "Season end", title: "Season ended", body: "{season} has ended. Check the Hall of Legends!" },
         anime_release_clash: {
-          label: "Release clash",
-          title: "New release clash",
-          body: "{anime} just dropped. Use {hashtags} and submit your best clip!",
+          label: "Episode clash",
+          title: "Instant episode clash — 24 hours",
+          body: "{anime} is live for 24 hours! Use {hashtags} and upload your best scene. Winner earns +2,000 points & +5,000 ClashCoins.",
+        },
+        episode_clash_winner: {
+          label: "Episode king",
+          title: "You are the episode king!",
+          body: "You won {anime} Ep {episode} with +{points} points and +{coins} ClashCoins.",
+        },
+        episode_clash_crowned: {
+          label: "Episode crowned",
+          title: "Episode king crowned",
+          body: "{name} won {anime} Ep {episode} — the 24-hour window is closed.",
         },
         video_like: {
           label: "Like",
@@ -2713,7 +2753,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       },
       animeTracker: {
         title: "Anime Tracker",
-        subtitle: "Manage release schedule, sync Jikan (MyAnimeList), and open release clashes when episodes drop.",
+        subtitle: "Manage release schedule, sync Jikan (MyAnimeList), and open 24-hour instant episode clashes when episodes drop.",
         todayCount: "Releases today",
         upcomingCount: "Upcoming (14 days)",
         activeClashes: "Active release clashes",
@@ -2737,7 +2777,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         episodeLabel: "Episode number",
         posterLabel: "Poster URL (optional)",
         tagsLabel: "Match hashtags (comma separated, optional)",
-        openClashNow: "Open release clash immediately",
+        openClashNow: "Open 24-hour instant episode clash immediately",
         addButton: "Add release",
         listTitle: "All releases",
         empty: "No releases yet.",
@@ -2750,6 +2790,16 @@ export const dictionaries: Record<Locale, Dictionary> = {
         seoTitle: "Google SEO keywords",
         seoAnimeCount: "{count} anime titles from Jikan/DB feed search metadata (EN/AR/JA).",
         seoKeywordCount: "{count} unique keywords active across public pages.",
+        instantEpisodeHint:
+          "Instant episode clashes open for 24 hours when an episode drops. The top clip by engagement (likes + comments×2 + shares×3) wins automatically.",
+        instantEpisodeRewards: "Winner reward: +{points} points & +{coins} ClashCoins",
+        instantEpisodeActiveTitle: "Live instant episode clashes",
+        instantEpisodeHistoryTitle: "Recent episode clashes & winners",
+        clashClosesAt: "Closes {time}",
+        clashWinner: "Winner: {name} (+{points} pts, +{coins} coins)",
+        clashNoWinner: "Ended with no qualifying clips",
+        clashEnded: "Ended {time}",
+        clashStatusActive: "Active · 24h window",
       },
       hashtags: {
         title: "Top hashtags",
@@ -3028,7 +3078,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       episodeLabel: "第{episode}話",
       scheduledHint: "放送日に自動で特別クラッシュが開始されます。",
       backToTracker: "レーダーに戻る",
-      clashSubtitle: "この作品のハッシュタグ付きクリップをアップロードして、トレンド中に頂点を目指そう。",
+      clashSubtitle: "この作品のハッシュタグ付きクリップを24時間以内に投稿。エンゲージメント最高者が+2,000ポイントと+5,000 ClashCoinsを獲得。",
       uploadClip: "クリップをアップロード",
       matchTagsHint: "アップロード時に {tags} などのタグを付けて参加。",
       copyHashtag: "コピー",
@@ -3046,6 +3096,16 @@ export const dictionaries: Record<Locale, Dictionary> = {
       scoreLabel: "スコア {score}",
       rankLabel: "ランク #{rank}",
       malLink: "MyAnimeListで見る →",
+      instantEpisodeBadge: "24時間エピソードクラッシュ",
+      instantEpisodeTitle: "{title} · 第{episode}話",
+      instantEpisodeSubtitle:
+        "今すぐベストシーンを投稿。24時間以内のクリップのみ対象 — エンゲージメント最高者が勝利。",
+      instantEpisodeRewards: "勝者: +{points}ポイント & +{coins} ClashCoins",
+      instantEpisodeCountdown: "残り時間",
+      instantEpisodeHours: "時間",
+      instantEpisodeMinutes: "分",
+      instantEpisodeSeconds: "秒",
+      instantEpisodeCta: "クラッシュに参加",
     },
     exclusives: {
       dailyHallBadge: "デイリー殿堂",
@@ -3418,9 +3478,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
         season_start: { label: "シーズン開始", title: "新シーズン開始", body: "{season}が開始しました。ランキングを目指そう！" },
         season_end: { label: "シーズン終了", title: "シーズン終了", body: "{season}が終了しました。殿堂をチェック！" },
         anime_release_clash: {
-          label: "リリースクラッシュ",
-          title: "新リリースクラッシュ",
-          body: "{anime} が公開されました。{hashtags} を付けてベストクリップを投稿！",
+          label: "エピソードクラッシュ",
+          title: "24時間エピソードクラッシュ",
+          body: "{anime} は24時間限定で開催中！{hashtags} を付けてベストシーンを投稿。勝者は+2,000ポイント & +5,000 ClashCoins。",
+        },
+        episode_clash_winner: {
+          label: "エピソード王",
+          title: "あなたがエピソード王！",
+          body: "{anime} 第{episode}話で勝利 — +{points}ポイント & +{coins} ClashCoins を獲得。",
+        },
+        episode_clash_crowned: {
+          label: "王座決定",
+          title: "エピソード王が決定",
+          body: "{name} が {anime} 第{episode}話で勝利 — 24時間の窓は閉じました。",
         },
         video_like: {
           label: "いいね",
@@ -4198,6 +4268,16 @@ export const dictionaries: Record<Locale, Dictionary> = {
         seoTitle: "Google SEOキーワード",
         seoAnimeCount: "Jikan/DBの {count} 件のアニメタイトルが検索メタデータに反映（英/阿/日）。",
         seoKeywordCount: "公開ページで {count} 件のユニークキーワードが有効。",
+        instantEpisodeHint:
+          "エピソード放送時に24時間限定のインスタントクラッシュが開催されます。エンゲージメント最高のクリップが自動で勝利します。",
+        instantEpisodeRewards: "勝者報酬: +{points}ポイント & +{coins} ClashCoins",
+        instantEpisodeActiveTitle: "開催中の24時間エピソードクラッシュ",
+        instantEpisodeHistoryTitle: "最近のエピソードクラッシュと勝者",
+        clashClosesAt: "終了 {time}",
+        clashWinner: "勝者: {name} (+{points} pt, +{coins} coins)",
+        clashNoWinner: "対象クリップなしで終了",
+        clashEnded: "終了 {time}",
+        clashStatusActive: "開催中 · 24時間",
       },
       hashtags: {
         title: "人気ハッシュタグ",
@@ -4476,7 +4556,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       episodeLabel: "الحلقة {episode}",
       scheduledHint: "يُفتح نزال خاص تلقائياً يوم الإصدار.",
       backToTracker: "العودة للرادار",
-      clashSubtitle: "ارفع مقاطعك بوسم هذا الأنمي وتنافس على المركز الأول مع الترند العالمي.",
+      clashSubtitle: "ارفع مقاطعك بوسم هذا الأنمي خلال 24 ساعة — الأعلى تفاعلاً يفوز بـ +2,000 نقطة و +5,000 ClashCoin.",
       uploadClip: "ارفع مقطعك",
       matchTagsHint: "استخدم وسوماً مثل {tags} في رفعك للانضمام لهذا النزال.",
       copyHashtag: "نسخ",
@@ -4494,6 +4574,16 @@ export const dictionaries: Record<Locale, Dictionary> = {
       scoreLabel: "التقييم {score}",
       rankLabel: "الترتيب #{rank}",
       malLink: "عرض على MyAnimeList ←",
+      instantEpisodeBadge: "نزال الحلقة — 24 ساعة",
+      instantEpisodeTitle: "{title} · الحلقة {episode}",
+      instantEpisodeSubtitle:
+        "ارفع أفضل مشهد الآن. تُحسب فقط المقاطع خلال 24 ساعة — الأعلى تفاعلاً يفوز.",
+      instantEpisodeRewards: "الفائز: +{points} نقطة و +{coins} ClashCoin",
+      instantEpisodeCountdown: "الوقت المتبقي",
+      instantEpisodeHours: "ساعة",
+      instantEpisodeMinutes: "دقيقة",
+      instantEpisodeSeconds: "ثانية",
+      instantEpisodeCta: "ادخل النزال",
     },
     exclusives: {
       dailyHallBadge: "لوحة الشرف اليومية",
@@ -4869,9 +4959,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
         season_start: { label: "بداية موسم", title: "موسم جديد", body: "{season} بدأ الآن. تسلّق الترتيب!" },
         season_end: { label: "نهاية موسم", title: "انتهى الموسم", body: "انتهى {season}. راجع قاعة الأساطير!" },
         anime_release_clash: {
-          label: "نزال إصدار",
-          title: "نزال إصدار جديد",
-          body: "نزل {anime}. استخدم {hashtags} وارفع أفضل لقطتك!",
+          label: "نزال الحلقة",
+          title: "نزال الحلقة الفوري — 24 ساعة",
+          body: "{anime} مباشر لمدة 24 ساعة! استخدم {hashtags} وارفع أفضل مشهد. الفائز يحصل على +2,000 نقطة و +5,000 ClashCoin.",
+        },
+        episode_clash_winner: {
+          label: "ملك الحلقة",
+          title: "أنت ملك الحلقة!",
+          body: "فزت في {anime} الحلقة {episode} — +{points} نقطة و +{coins} ClashCoin.",
+        },
+        episode_clash_crowned: {
+          label: "تتويج",
+          title: "تُوّج ملك الحلقة",
+          body: "{name} فاز في {anime} الحلقة {episode} — انتهت نافذة الـ24 ساعة.",
         },
         video_like: {
           label: "إعجاب",
@@ -5650,6 +5750,16 @@ export const dictionaries: Record<Locale, Dictionary> = {
         seoTitle: "كلمات SEO لجوجل",
         seoAnimeCount: "{count} عنوان أنمي من Jikan/قاعدة البيانات يغذّي بيانات البحث (عربي/إنجليزي/ياباني).",
         seoKeywordCount: "{count} كلمة مفتاحية فريدة نشطة على الصفحات العامة.",
+        instantEpisodeHint:
+          "تُفتح نزالات الحلقة الفورية لمدة 24 ساعة عند نزول الحلقة. أعلى مقطع تفاعلاً يفوز تلقائياً.",
+        instantEpisodeRewards: "مكافأة الفائز: +{points} نقطة و +{coins} ClashCoin",
+        instantEpisodeActiveTitle: "نزالات الحلقة المباشرة (24 ساعة)",
+        instantEpisodeHistoryTitle: "آخر نزالات الحلقة والفائزين",
+        clashClosesAt: "يُغلق {time}",
+        clashWinner: "الفائز: {name} (+{points} نقطة، +{coins} عملة)",
+        clashNoWinner: "انتهى بدون مقاطع مؤهلة",
+        clashEnded: "انتهى {time}",
+        clashStatusActive: "مباشر · نافذة 24 ساعة",
       },
       hashtags: {
         title: "أبرز الهاشتاغات",

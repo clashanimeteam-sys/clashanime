@@ -2,8 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import type { AnimeReleaseClash, TrendingSpotlightCard } from "@/lib/animeTracker";
+import {
+  EpisodeClashCountdown,
+  EpisodeClashRewardsBadge,
+  InstantEpisodeClashBanner,
+} from "@/components/clash/InstantEpisodeClashBanner";
 import { localizedAnimeTitle } from "@/lib/animeTracker";
+import type { AnimeReleaseClash, TrendingSpotlightCard } from "@/lib/animeTracker";
 import type { JikanAnimeEntry } from "@/lib/jikan";
 import { AnimeSynopsisBlock } from "@/components/tracker/AnimeSynopsisBlock";
 import { MatchTagUsageBadges } from "@/components/tracker/MatchTagUsageBadges";
@@ -138,6 +143,10 @@ function ActiveClashCard({ clash }: { clash: AnimeReleaseClash }) {
           <p className="mt-3 text-base font-medium text-orange-700 dark:text-orange-300">
             {t.animeTracker.clipCount.replace("{count}", formatNumber(clash.clipCount))}
           </p>
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <EpisodeClashRewardsBadge />
+            {clash.closesAt ? <EpisodeClashCountdown closesAt={clash.closesAt} compact /> : null}
+          </div>
           <AnimeSynopsisBlock synopsis={clash} variant="compact" />
           {clash.matchTags.length > 0 ? (
             <MatchTagUsageBadges tags={clash.matchTags} title={title} className="mt-3" />
@@ -285,6 +294,8 @@ export function AnimeTrackerPageContent({
       </header>
 
       <TrendingSpotlightSection cards={trendingSpotlight} />
+
+      <InstantEpisodeClashBanner clashes={activeClashes} />
 
       {activeClashes.length > 0 ? (
         <section className="mb-12">

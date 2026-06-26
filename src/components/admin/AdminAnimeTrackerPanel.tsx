@@ -2,6 +2,10 @@
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { AdminTopHashtags } from "@/components/admin/AdminTopHashtags";
+import {
+  EPISODE_CLASH_WINNER_COINS,
+  EPISODE_CLASH_WINNER_POINTS,
+} from "@/components/clash/InstantEpisodeClashBanner";
 import { HashtagLinks } from "@/components/HashtagLinks";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { buildMatchTagsFromTitle } from "@/lib/animeTracker";
@@ -43,6 +47,22 @@ type TrendingSpotlightRow = {
   mal_score: number | null;
 };
 
+type EpisodeClashRow = {
+  clash_id: string;
+  clash_title: string;
+  anime_title: string;
+  episode_number: number;
+  clash_status: string;
+  opens_at: string;
+  closes_at: string | null;
+  finalized_at: string | null;
+  winner_video_id: string | null;
+  winner_display_name: string | null;
+  winner_points_awarded: number | null;
+  winner_coins_awarded: number | null;
+  clip_count: number;
+};
+
 type AdminAnimeTrackerPanelProps = {
   seoAnimeCount?: number;
   seoKeywordCount?: number;
@@ -52,9 +72,10 @@ export function AdminAnimeTrackerPanel({
   seoAnimeCount = 0,
   seoKeywordCount = 0,
 }: AdminAnimeTrackerPanelProps) {
-  const { t, formatDateTime } = useLocale();
+  const { t, formatDateTime, formatNumber } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [releases, setReleases] = useState<ReleaseRow[]>([]);
+  const [episodeClashes, setEpisodeClashes] = useState<EpisodeClashRow[]>([]);
   const [trendingRows, setTrendingRows] = useState<TrendingSpotlightRow[]>([]);
   const [lastSyncedAt, setLastSyncedAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -78,11 +99,16 @@ export function AdminAnimeTrackerPanel({
   const loadReleases = useCallback(async () => {
     if (!supabase) return;
     setLoading(true);
-    const [{ data, error: listError }, { data: trendingData, error: trendingError }, { data: syncMeta }] =
-      await Promise.all([
+    const [
+      { data, error: listError },
+      { data: trendingData, error: trendingError },
+      { data: syncMeta },
+      { data: clashData, error: clashError },
+    ] = await Promise.all([
       supabase.rpc("list_anime_releases_admin"),
       supabase.rpc("list_trending_spotlight_admin"),
       supabase.rpc("get_anime_tracker_sync_meta"),
+      supabase.rpc("list_episode_clashes_admin", { p_limit: 24 }),
     ]);
     if (listError) {
       setError(listError.message);
@@ -94,6 +120,11 @@ export function AdminAnimeTrackerPanel({
       setTrendingRows([]);
     } else {
       setTrendingRows((trendingData as TrendingSpotlightRow[]) ?? []);
+    }
+    if (clashError) {
+      setEpisodeClashes([]);
+    } else {
+      setEpisodeClashes((clashData as EpisodeClashRow[]) ?? []);
     }
     const metaRow = (syncMeta as Array<{ last_synced_at: string }> | null)?.[0];
     setLastSyncedAt(metaRow?.last_synced_at ?? null);
@@ -108,7 +139,9 @@ export function AdminAnimeTrackerPanel({
   const upcomingCount = releases.filter(
     (release) => release.status === "scheduled" && release.release_date > new Date().toISOString().slice(0, 10),
   ).length;
-  const activeClashCount = releases.filter((release) => release.clash_id && release.status === "released").length;
+  const activeClashCount = episodeClashes.filter((row) => row.clash_status === "active").length;
+  const activeEpisodeClashes = episodeClashes.filter((row) => row.clash_status === "active");
+  const endedEpisodeClashes = episodeClashes.filter((row) => row.clash_status !== "active");
 
   async function handleCreate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -316,6 +349,108 @@ export function AdminAnimeTrackerPanel({
       </div>
 
       <AdminTopHashtags />
+
+      <div className="rounded-2xl border border-orange-500/30 bg-orange-950/20 p-5">
+        <h2 className="text-lg font-semibold text-white">{t.admin.animeTracker.instantEpisodeActiveTitle}</h2>
+        <p className="mt-2 text-sm text-orange-100/90">{t.admin.animeTracker.instantEpisodeHint}</p>
+        <p className="mt-3 inline-flex rounded-full bg-black/30 px-3 py-1.5 text-xs font-bold text-amber-200 ring-1 ring-amber-400/30">
+          {t.admin.animeTracker.instantEpisodeRewards
+            .replace("{points}", formatNumber(EPISODE_CLASH_WINNER_POINTS))
+            .replace("{coins}", formatNumber(EPISODE_CLASH_WINNER_COINS))}
+        </p>
+
+        {loading ? (
+          <p className="mt-4 text-sm text-zinc-400">{t.admin.loading}</p>
+        ) : activeEpisodeClashes.length === 0 ? (
+          <p className="mt-4 text-sm text-zinc-400">{t.admin.animeTracker.empty}</p>
+        ) : (
+          <div className="mt-4 space-y-3">
+            {activeEpisodeClashes.map((row) => (
+              <div key={row.clash_id} className="rounded-xl border border-orange-500/30 bg-zinc-950/60 p-4">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <p className="font-semibold text-white">
+                      {row.anime_title} · Ep {row.episode_number}
+                    </p>
+                    <p className="mt-1 text-xs font-bold uppercase tracking-wide text-orange-300">
+                      {t.admin.animeTracker.clashStatusActive}
+                    </p>
+                    <p className="mt-2 text-xs text-zinc-400">
+                      {row.closes_at
+                        ? t.admin.animeTracker.clashClosesAt.replace(
+                            "{time}",
+                            formatDateTime(row.closes_at, { dateStyle: "medium", timeStyle: "short" }),
+                          )
+                        : null}
+                      {" · "}
+                      {formatNumber(row.clip_count)} clips
+                    </p>
+                  </div>
+                  <a
+                    href={`/tracker/clash/${row.clash_id}`}
+                    className="rounded-full border border-orange-500/40 px-3 py-1.5 text-xs font-bold text-orange-200"
+                  >
+                    {t.admin.animeTracker.viewClash}
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {endedEpisodeClashes.length > 0 ? (
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5">
+          <h2 className="text-lg font-semibold text-white">{t.admin.animeTracker.instantEpisodeHistoryTitle}</h2>
+          <div className="mt-4 space-y-3">
+            {endedEpisodeClashes.slice(0, 8).map((row) => (
+              <div key={row.clash_id} className="rounded-xl border border-zinc-800 bg-zinc-950/60 p-4">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <p className="font-semibold text-white">
+                      {row.anime_title} · Ep {row.episode_number}
+                    </p>
+                    <p className="mt-2 text-xs text-zinc-400">
+                      {row.finalized_at
+                        ? t.admin.animeTracker.clashEnded.replace(
+                            "{time}",
+                            formatDateTime(row.finalized_at, { dateStyle: "medium", timeStyle: "short" }),
+                          )
+                        : null}
+                      {" · "}
+                      {formatNumber(row.clip_count)} clips
+                    </p>
+                    <p className="mt-2 text-xs text-emerald-300">
+                      {row.winner_display_name && row.winner_video_id
+                        ? t.admin.animeTracker.clashWinner
+                            .replace("{name}", row.winner_display_name)
+                            .replace("{points}", formatNumber(row.winner_points_awarded ?? EPISODE_CLASH_WINNER_POINTS))
+                            .replace("{coins}", formatNumber(row.winner_coins_awarded ?? EPISODE_CLASH_WINNER_COINS))
+                        : t.admin.animeTracker.clashNoWinner}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <a
+                      href={`/tracker/clash/${row.clash_id}`}
+                      className="rounded-full border border-zinc-600 px-3 py-1.5 text-xs font-bold text-zinc-200"
+                    >
+                      {t.admin.animeTracker.viewClash}
+                    </a>
+                    {row.winner_video_id ? (
+                      <a
+                        href={`/video/${row.winner_video_id}`}
+                        className="rounded-full border border-emerald-500/40 px-3 py-1.5 text-xs font-bold text-emerald-200"
+                      >
+                        Winner clip
+                      </a>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
       {message ? <p className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 px-4 py-3 text-sm text-emerald-200">{message}</p> : null}
       {error ? <p className="rounded-xl border border-red-500/30 bg-red-950/20 px-4 py-3 text-sm text-red-200">{error}</p> : null}
