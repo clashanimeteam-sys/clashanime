@@ -12,6 +12,27 @@ import { useLocale } from "@/providers/LocaleProvider";
 /** Must match `finalize_expired_anime_release_clashes` in Supabase. */
 export const EPISODE_CLASH_WINNER_POINTS = 2000;
 export const EPISODE_CLASH_WINNER_COINS = 5000;
+export const EPISODE_CLASH_WINDOW_MS = 24 * 60 * 60 * 1000;
+
+export function getEffectiveClosesAt(closesAt: string, opensAt?: string | null): string {
+  const closesMs = new Date(closesAt).getTime();
+  if (!opensAt) return closesAt;
+
+  const capMs = new Date(opensAt).getTime() + EPISODE_CLASH_WINDOW_MS;
+  if (!Number.isFinite(capMs)) return closesAt;
+
+  return new Date(Math.min(closesMs, capMs)).toISOString();
+}
+
+function getRemainingParts(closesAt: string, opensAt?: string | null) {
+  const effectiveClosesAt = getEffectiveClosesAt(closesAt, opensAt);
+  const ms = Math.max(new Date(effectiveClosesAt).getTime() - Date.now(), 0);
+  const totalSeconds = Math.floor(ms / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return { hours, minutes, seconds, ended: ms <= 0 };
+}
 
 type InstantEpisodeClashBannerProps = {
   clashes: AnimeReleaseClash[];
@@ -22,15 +43,6 @@ function formatUnit(value: number, digits: number, locale: "en" | "ar" | "ja") {
     minimumIntegerDigits: digits,
     useGrouping: false,
   }).format(value);
-}
-
-function getRemainingParts(closesAt: string) {
-  const ms = Math.max(new Date(closesAt).getTime() - Date.now(), 0);
-  const totalSeconds = Math.floor(ms / 1000);
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-  return { hours, minutes, seconds, ended: ms <= 0 };
 }
 
 export function EpisodeClashRewardsBadge({ className = "" }: { className?: string }) {
@@ -49,22 +61,28 @@ export function EpisodeClashRewardsBadge({ className = "" }: { className?: strin
 
 export function EpisodeClashCountdown({
   closesAt,
+  opensAt,
   compact = false,
 }: {
   closesAt: string;
+  opensAt?: string | null;
   compact?: boolean;
 }) {
   const { t, locale } = useLocale();
-  const endsAtMs = useMemo(() => new Date(closesAt).getTime(), [closesAt]);
-  const [remaining, setRemaining] = useState(() => getRemainingParts(closesAt));
+  const effectiveClosesAt = useMemo(
+    () => getEffectiveClosesAt(closesAt, opensAt),
+    [closesAt, opensAt],
+  );
+  const endsAtMs = useMemo(() => new Date(effectiveClosesAt).getTime(), [effectiveClosesAt]);
+  const [remaining, setRemaining] = useState(() => getRemainingParts(closesAt, opensAt));
 
   useEffect(() => {
-    setRemaining(getRemainingParts(closesAt));
+    setRemaining(getRemainingParts(closesAt, opensAt));
     const timer = window.setInterval(() => {
-      setRemaining(getRemainingParts(closesAt));
+      setRemaining(getRemainingParts(closesAt, opensAt));
     }, 1000);
     return () => window.clearInterval(timer);
-  }, [closesAt, endsAtMs]);
+  }, [closesAt, opensAt, endsAtMs]);
 
   if (remaining.ended) return null;
 
@@ -128,15 +146,15 @@ export function InstantEpisodeClashBanner({ clashes }: InstantEpisodeClashBanner
   );
 
   const [remaining, setRemaining] = useState(() =>
-    closesAt ? getRemainingParts(closesAt) : { hours: 0, minutes: 0, seconds: 0, ended: true },
+    closesAt ? getRemainingParts(closesAt, clash?.opensAt) : { hours: 0, minutes: 0, seconds: 0, ended: true },
   );
 
   useEffect(() => {
     if (!closesAt) return;
 
-    setRemaining(getRemainingParts(closesAt));
+    setRemaining(getRemainingParts(closesAt, clash.opensAt));
     const timer = window.setInterval(() => {
-      setRemaining(getRemainingParts(closesAt));
+      setRemaining(getRemainingParts(closesAt, clash.opensAt));
     }, 1000);
 
     return () => window.clearInterval(timer);

@@ -65,7 +65,9 @@ export function AnimeReleaseClashPageContent({ clash, videos }: AnimeReleaseClas
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-3">
               <EpisodeClashRewardsBadge />
-              {clash.closesAt ? <EpisodeClashCountdown closesAt={clash.closesAt} /> : null}
+              {clash.closesAt ? (
+                <EpisodeClashCountdown closesAt={clash.closesAt} opensAt={clash.opensAt} />
+              ) : null}
             </div>
             <AnimeSynopsisBlock synopsis={clash} variant="full" />
             <div className="mt-5 flex flex-wrap items-center gap-3">

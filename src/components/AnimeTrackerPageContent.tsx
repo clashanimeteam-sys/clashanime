@@ -145,7 +145,9 @@ function ActiveClashCard({ clash }: { clash: AnimeReleaseClash }) {
           </p>
           <div className="mt-3 flex flex-wrap items-center gap-3">
             <EpisodeClashRewardsBadge />
-            {clash.closesAt ? <EpisodeClashCountdown closesAt={clash.closesAt} compact /> : null}
+            {clash.closesAt ? (
+              <EpisodeClashCountdown closesAt={clash.closesAt} opensAt={clash.opensAt} compact />
+            ) : null}
           </div>
           <AnimeSynopsisBlock synopsis={clash} variant="compact" />
           {clash.matchTags.length > 0 ? (
