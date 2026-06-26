@@ -98,9 +98,5 @@ export async function syncTrendingSpotlightToDatabase() {
     await sleep(DETAIL_FETCH_DELAY_MS);
   }
 
-  if (synced > 0) {
-    await serviceRole.rpc("notify_trending_spotlight_launch");
-  }
-
   return { synced, syncErrors, clashesOpened, total: seeds?.length ?? 0 };
 }

@@ -33,10 +33,8 @@ export async function runAnimeTrackerFullSync(): Promise<AnimeTrackerFullSyncRes
     throw new Error("Service role not configured");
   }
 
-  const [schedule, trending] = await Promise.all([
-    syncJikanReleasesToDatabase(),
-    syncTrendingSpotlightToDatabase(),
-  ]);
+  const schedule = await syncJikanReleasesToDatabase();
+  const trending = await syncTrendingSpotlightToDatabase();
 
   await serviceRole.rpc("refresh_short_anime_match_tags");
 
