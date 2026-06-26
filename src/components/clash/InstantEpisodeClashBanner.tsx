@@ -24,6 +24,30 @@ export function getEffectiveClosesAt(closesAt: string, opensAt?: string | null):
   return new Date(Math.min(closesMs, capMs)).toISOString();
 }
 
+export function resolveEpisodeClashEndsAt(
+  closesAt: string | null | undefined,
+  opensAt: string | null | undefined,
+): string | null {
+  const candidates: string[] = [];
+
+  if (closesAt) {
+    candidates.push(getEffectiveClosesAt(closesAt, opensAt));
+  }
+  if (opensAt) {
+    candidates.push(new Date(new Date(opensAt).getTime() + EPISODE_CLASH_WINDOW_MS).toISOString());
+  }
+
+  const now = Date.now();
+  for (const candidate of candidates) {
+    const ms = new Date(candidate).getTime();
+    if (Number.isFinite(ms) && ms > now) {
+      return candidate;
+    }
+  }
+
+  return candidates[0] ?? null;
+}
+
 function getRemainingParts(closesAt: string, opensAt?: string | null) {
   const effectiveClosesAt = getEffectiveClosesAt(closesAt, opensAt);
   const ms = Math.max(new Date(effectiveClosesAt).getTime() - Date.now(), 0);
@@ -63,63 +87,73 @@ export function EpisodeClashCountdown({
   closesAt,
   opensAt,
   compact = false,
+  prominent = false,
 }: {
   closesAt: string;
   opensAt?: string | null;
   compact?: boolean;
+  prominent?: boolean;
 }) {
   const { t, locale } = useLocale();
-  const effectiveClosesAt = useMemo(
-    () => getEffectiveClosesAt(closesAt, opensAt),
+  const resolvedClosesAt = useMemo(
+    () => resolveEpisodeClashEndsAt(closesAt, opensAt) ?? closesAt,
     [closesAt, opensAt],
   );
-  const endsAtMs = useMemo(() => new Date(effectiveClosesAt).getTime(), [effectiveClosesAt]);
-  const [remaining, setRemaining] = useState(() => getRemainingParts(closesAt, opensAt));
+  const endsAtMs = useMemo(() => new Date(resolvedClosesAt).getTime(), [resolvedClosesAt]);
+  const [remaining, setRemaining] = useState(() => getRemainingParts(resolvedClosesAt, opensAt));
 
   useEffect(() => {
-    setRemaining(getRemainingParts(closesAt, opensAt));
+    setRemaining(getRemainingParts(resolvedClosesAt, opensAt));
     const timer = window.setInterval(() => {
-      setRemaining(getRemainingParts(closesAt, opensAt));
+      setRemaining(getRemainingParts(resolvedClosesAt, opensAt));
     }, 1000);
     return () => window.clearInterval(timer);
-  }, [closesAt, opensAt, endsAtMs]);
-
-  if (remaining.ended) return null;
+  }, [resolvedClosesAt, opensAt, endsAtMs]);
 
   const units = [
-    { value: remaining.hours, label: t.animeTracker.instantEpisodeHours, digits: 2 },
-    { value: remaining.minutes, label: t.animeTracker.instantEpisodeMinutes, digits: 2 },
-    { value: remaining.seconds, label: t.animeTracker.instantEpisodeSeconds, digits: 2 },
+    { value: remaining.ended ? 0 : remaining.hours, label: t.animeTracker.instantEpisodeHours, digits: 2 },
+    { value: remaining.ended ? 0 : remaining.minutes, label: t.animeTracker.instantEpisodeMinutes, digits: 2 },
+    { value: remaining.ended ? 0 : remaining.seconds, label: t.animeTracker.instantEpisodeSeconds, digits: 2 },
   ] as const;
 
+  const labelClass = prominent
+    ? "mb-3 text-[11px] font-bold uppercase tracking-[0.2em] text-orange-700 dark:text-orange-100"
+    : compact
+      ? "sr-only"
+      : "mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-500 dark:text-zinc-400";
+
+  const shellClass = prominent
+    ? "grid grid-cols-3 divide-x divide-orange-400/30 overflow-hidden rounded-2xl border-2 border-orange-300/50 bg-gradient-to-b from-orange-600 to-red-700 shadow-lg shadow-orange-900/30"
+    : `grid grid-cols-3 divide-x divide-zinc-200 overflow-hidden rounded-xl border border-zinc-200 bg-white dark:divide-zinc-800 dark:border-zinc-700 dark:bg-zinc-900/90 ${
+        compact ? "max-w-[200px]" : ""
+      }`;
+
+  const digitClass = prominent
+    ? "font-sans text-3xl font-bold tabular-nums text-white sm:text-4xl"
+    : `font-sans font-bold tabular-nums text-zinc-900 dark:text-white ${compact ? "text-lg" : "text-2xl"}`;
+
+  const unitLabelClass = prominent
+    ? "mt-1 text-[10px] font-bold uppercase tracking-wide text-orange-100/90"
+    : "mt-0.5 text-[10px] font-semibold uppercase text-zinc-500 dark:text-zinc-400";
+
+  const cellPad = prominent ? "px-4 py-4 sm:px-5 sm:py-5" : compact ? "px-2 py-1.5" : "px-3 py-2.5";
+
   return (
-    <div aria-live="polite">
-      {!compact ? (
-        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-500 dark:text-zinc-400">
-          {t.animeTracker.instantEpisodeCountdown}
-        </p>
-      ) : null}
-      <div
-        className={`grid grid-cols-3 divide-x divide-zinc-200 overflow-hidden rounded-xl border border-zinc-200 bg-white dark:divide-zinc-800 dark:border-zinc-700 dark:bg-zinc-900/90 ${
-          compact ? "max-w-[200px]" : ""
-        }`}
-        dir="ltr"
-      >
+    <div aria-live="polite" className={prominent ? "w-full max-w-sm" : undefined}>
+      <p className={labelClass}>{t.animeTracker.instantEpisodeCountdown}</p>
+      <div className={shellClass} dir="ltr">
         {units.map((unit) => (
-          <div key={unit.label} className={`flex flex-col items-center ${compact ? "px-2 py-1.5" : "px-3 py-2.5"}`}>
-            <span
-              className={`font-sans font-bold tabular-nums text-zinc-900 dark:text-white ${
-                compact ? "text-lg" : "text-2xl"
-              }`}
-            >
-              {formatUnit(unit.value, unit.digits, locale)}
-            </span>
-            <span className="mt-0.5 text-[10px] font-semibold uppercase text-zinc-500 dark:text-zinc-400">
-              {unit.label}
-            </span>
+          <div key={unit.label} className={`flex flex-col items-center ${cellPad}`}>
+            <span className={digitClass}>{formatUnit(unit.value, unit.digits, locale)}</span>
+            <span className={unitLabelClass}>{unit.label}</span>
           </div>
         ))}
       </div>
+      {remaining.ended ? (
+        <p className={`mt-2 text-sm font-semibold ${prominent ? "text-orange-100" : "text-zinc-500 dark:text-zinc-400"}`}>
+          {t.animeTracker.instantEpisodeEnded}
+        </p>
+      ) : null}
     </div>
   );
 }

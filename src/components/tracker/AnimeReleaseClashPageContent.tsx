@@ -6,6 +6,7 @@ import { PageBackLink } from "@/components/PageBackLink";
 import {
   EpisodeClashCountdown,
   EpisodeClashRewardsBadge,
+  resolveEpisodeClashEndsAt,
 } from "@/components/clash/InstantEpisodeClashBanner";
 import { VideoCard } from "@/components/VideoCard";
 import type { AnimeReleaseClashDetail } from "@/lib/animeTracker";
@@ -31,6 +32,8 @@ export function AnimeReleaseClashPageContent({ clash, videos }: AnimeReleaseClas
     },
     locale,
   );
+  const countdownEndsAt = resolveEpisodeClashEndsAt(clash.closesAt, clash.opensAt);
+  const isActiveClash = clash.clashStatus === "active";
 
   usePageTitle(title);
 
@@ -39,61 +42,73 @@ export function AnimeReleaseClashPageContent({ clash, videos }: AnimeReleaseClas
       <PageBackLink href="/tracker" label={t.animeTracker.backToTracker} className="mt-5" />
 
       <header className="mt-5 overflow-hidden rounded-3xl border border-orange-200 bg-gradient-to-br from-orange-50 via-white to-amber-50 p-6 shadow-lg dark:border-orange-500/30 dark:from-orange-950/50 dark:via-zinc-950 dark:to-red-950/30 sm:p-8">
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-          {clash.posterUrl ? (
-            <Image
-              src={clash.posterUrl}
-              alt={title}
-              width={120}
-              height={170}
-              className="h-[170px] w-[120px] shrink-0 rounded-2xl object-cover shadow-xl ring-1 ring-black/10 dark:ring-white/10"
-              unoptimized
-            />
-          ) : null}
-          <div className="min-w-0 flex-1">
-            <span className="inline-flex rounded-lg bg-orange-500 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-white">
-              {t.animeTracker.liveClashBadge}
-            </span>
-            <h1 className="mt-4 font-display text-3xl font-bold leading-tight text-zinc-900 dark:text-white sm:text-4xl">
-              {title}
-            </h1>
-            <p className="mt-2 text-base font-semibold text-zinc-600 dark:text-zinc-300">
-              {t.animeTracker.episodeLabel.replace("{episode}", String(clash.episodeNumber))}
-            </p>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-zinc-700 dark:text-orange-100">
-              {t.animeTracker.clashSubtitle}
-            </p>
-            <div className="mt-4 flex flex-wrap items-center gap-3">
-              <EpisodeClashRewardsBadge />
-              {clash.closesAt ? (
-                <EpisodeClashCountdown closesAt={clash.closesAt} opensAt={clash.opensAt} />
-              ) : null}
-            </div>
-            <AnimeSynopsisBlock synopsis={clash} variant="full" />
-            <div className="mt-5 flex flex-wrap items-center gap-3">
-              <span className="rounded-xl border border-orange-200 bg-white px-4 py-2 text-sm font-bold text-orange-800 dark:border-orange-500/40 dark:bg-zinc-900/60 dark:text-orange-200">
-                {t.animeTracker.clipCount.replace("{count}", formatNumber(clash.clipCount))}
-              </span>
-              <Link
-                href={buildClashUploadHref(clash.clashId)}
-                className="rounded-full bg-gradient-to-r from-orange-500 to-red-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-orange-500/30 transition hover:brightness-110"
-              >
-                {t.animeTracker.uploadClip}
-              </Link>
-            </div>
-            {clash.matchTags.length > 0 ? (
-              <div className="mt-4 space-y-3 rounded-xl border border-dashed border-zinc-300 bg-zinc-50 px-4 py-3 dark:border-zinc-700 dark:bg-zinc-900/50">
-                <p className="text-sm font-medium text-zinc-600 dark:text-zinc-300">
-                  {t.animeTracker.matchTagsHint.replace(
-                    "{tags}",
-                    clash.matchTags.map((tag) => `#${tag}`).join(" "),
-                  )}
-                </p>
-                <MatchTagUsageBadges tags={clash.matchTags} title={title} />
-              </div>
+        <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
+          <div className="flex min-w-0 flex-1 flex-col gap-6 sm:flex-row sm:items-start">
+            {clash.posterUrl ? (
+              <Image
+                src={clash.posterUrl}
+                alt={title}
+                width={120}
+                height={170}
+                className="h-[170px] w-[120px] shrink-0 rounded-2xl object-cover shadow-xl ring-1 ring-black/10 dark:ring-white/10"
+                unoptimized
+              />
             ) : null}
+            <div className="min-w-0 flex-1">
+              <span className="inline-flex rounded-lg bg-orange-500 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-white">
+                {t.animeTracker.instantEpisodeBadge}
+              </span>
+              <h1 className="mt-4 font-display text-3xl font-bold leading-tight text-zinc-900 dark:text-white sm:text-4xl">
+                {title}
+              </h1>
+              <p className="mt-2 text-base font-semibold text-zinc-600 dark:text-zinc-300">
+                {t.animeTracker.episodeLabel.replace("{episode}", String(clash.episodeNumber))}
+              </p>
+              <p className="mt-4 max-w-xl text-base leading-relaxed text-zinc-700 dark:text-orange-100">
+                {t.animeTracker.clashSubtitle}
+              </p>
+              <div className="mt-4">
+                <EpisodeClashRewardsBadge />
+              </div>
+            </div>
           </div>
+
+          {isActiveClash && countdownEndsAt ? (
+            <div className="shrink-0 xl:pt-2">
+              <EpisodeClashCountdown
+                closesAt={countdownEndsAt}
+                opensAt={clash.opensAt}
+                prominent
+              />
+            </div>
+          ) : null}
         </div>
+
+        <AnimeSynopsisBlock synopsis={clash} variant="full" />
+
+        <div className="mt-5 flex flex-wrap items-center gap-3">
+          <span className="rounded-xl border border-orange-200 bg-white px-4 py-2 text-sm font-bold text-orange-800 dark:border-orange-500/40 dark:bg-zinc-900/60 dark:text-orange-200">
+            {t.animeTracker.clipCount.replace("{count}", formatNumber(clash.clipCount))}
+          </span>
+          <Link
+            href={buildClashUploadHref(clash.clashId)}
+            className="rounded-full bg-gradient-to-r from-orange-500 to-red-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-orange-500/30 transition hover:brightness-110"
+          >
+            {t.animeTracker.uploadClip}
+          </Link>
+        </div>
+
+        {clash.matchTags.length > 0 ? (
+          <div className="mt-4 space-y-3 rounded-xl border border-dashed border-zinc-300 bg-zinc-50 px-4 py-3 dark:border-zinc-700 dark:bg-zinc-900/50">
+            <p className="text-sm font-medium text-zinc-600 dark:text-zinc-300">
+              {t.animeTracker.matchTagsHint.replace(
+                "{tags}",
+                clash.matchTags.map((tag) => `#${tag}`).join(" "),
+              )}
+            </p>
+            <MatchTagUsageBadges tags={clash.matchTags} title={title} />
+          </div>
+        ) : null}
       </header>
 
       <section className="mt-10">

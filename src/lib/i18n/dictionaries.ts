@@ -212,6 +212,7 @@ export type Dictionary = {
     instantEpisodeMinutes: string;
     instantEpisodeSeconds: string;
     instantEpisodeCta: string;
+    instantEpisodeEnded: string;
   };
   exclusives: {
     dailyHallBadge: string;
@@ -1615,6 +1616,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       instantEpisodeMinutes: "min",
       instantEpisodeSeconds: "sec",
       instantEpisodeCta: "Join the clash",
+      instantEpisodeEnded: "This clash window has closed.",
     },
     exclusives: {
       dailyHallBadge: "Daily Hall of Fame",
@@ -3106,6 +3108,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       instantEpisodeMinutes: "分",
       instantEpisodeSeconds: "秒",
       instantEpisodeCta: "クラッシュに参加",
+      instantEpisodeEnded: "このクラッシュの受付は終了しました。",
     },
     exclusives: {
       dailyHallBadge: "デイリー殿堂",
@@ -4584,6 +4587,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       instantEpisodeMinutes: "دقيقة",
       instantEpisodeSeconds: "ثانية",
       instantEpisodeCta: "ادخل النزال",
+      instantEpisodeEnded: "انتهت نافذة هذا النزال.",
     },
     exclusives: {
       dailyHallBadge: "لوحة الشرف اليومية",
