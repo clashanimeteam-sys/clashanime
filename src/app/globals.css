@@ -1523,7 +1523,18 @@ html[lang="ar-u-nu-latn"] {
 }
 
 .public-video-player::-webkit-media-controls-timeline-container {
-  display: none;
+  min-height: 1.6rem;
+  padding-inline: 0.35rem;
+  flex: 1 1 auto;
+}
+
+.public-video-player::-webkit-media-controls-timeline {
+  min-height: 0.5rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.38);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.55),
+    0 1px 4px rgba(0, 0, 0, 0.45);
 }
 
 .public-video-player::-webkit-media-controls-current-time-display,
@@ -1539,60 +1550,4 @@ html[lang="ar-u-nu-latn"] {
 .public-video-player::-webkit-media-controls-fullscreen-button,
 .public-video-player::-webkit-media-controls-volume-slider {
   filter: brightness(1.45) contrast(1.1);
-}
-
-.video-scrubber {
-  -webkit-appearance: none;
-  appearance: none;
-  height: 0.625rem;
-  border-radius: 9999px;
-  background: linear-gradient(
-    to right,
-    var(--color-accent) 0%,
-    var(--color-accent) var(--progress, 0%),
-    rgba(255, 255, 255, 0.32) var(--progress, 0%),
-    rgba(255, 255, 255, 0.32) 100%
-  );
-  cursor: pointer;
-}
-
-.video-scrubber::-webkit-slider-runnable-track {
-  height: 0.625rem;
-  border-radius: 9999px;
-  background: transparent;
-}
-
-.video-scrubber::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 1.125rem;
-  height: 1.125rem;
-  margin-top: -0.25rem;
-  border-radius: 9999px;
-  background: #ffffff;
-  border: 3px solid var(--color-accent);
-  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.28);
-  cursor: pointer;
-}
-
-.video-scrubber::-moz-range-track {
-  height: 0.625rem;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.32);
-}
-
-.video-scrubber::-moz-range-progress {
-  height: 0.625rem;
-  border-radius: 9999px;
-  background: var(--color-accent);
-}
-
-.video-scrubber::-moz-range-thumb {
-  width: 1.125rem;
-  height: 1.125rem;
-  border-radius: 9999px;
-  background: #ffffff;
-  border: 3px solid var(--color-accent);
-  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.28);
-  cursor: pointer;
 }
