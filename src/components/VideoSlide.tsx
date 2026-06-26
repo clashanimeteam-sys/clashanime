@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ChallengeClipButton } from "@/components/duel/ChallengeClipButton";
 import { HashtagLinks } from "@/components/HashtagLinks";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { VideoCardChannel } from "@/components/VideoCardChannel";
@@ -19,11 +18,10 @@ type VideoSlideProps = {
   video: Video;
   isActive: boolean;
   showRank?: boolean;
-  onEnded?: () => void;
 };
 
-export function VideoSlide({ video, isActive, showRank = false, onEnded }: VideoSlideProps) {
-  const { t, formatNumber, formatDateTime } = useLocale();
+export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProps) {
+  const { t, formatNumber } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [viewsCount, setViewsCount] = useState(video.views_count ?? 0);
@@ -82,10 +80,8 @@ export function VideoSlide({ video, isActive, showRank = false, onEnded }: Video
               controls
               controlsList={PUBLIC_VIDEO_CONTROLS_LIST}
               onContextMenu={blockPublicVideoContextMenu}
-              onEnded={() => {
-                if (isActive) onEnded?.();
-              }}
               autoPlay={isActive}
+              loop
               playsInline
               preload={getVideoPreload(isActive)}
               poster={getVideoPosterUrl(video.thumbnail_url)}
@@ -141,6 +137,14 @@ export function VideoSlide({ video, isActive, showRank = false, onEnded }: Video
         <div className="pointer-events-auto space-y-3">
           <h1 className="text-lg font-bold leading-snug text-white sm:text-xl">{video.title}</h1>
 
+          {video.hashtags && video.hashtags.length > 0 ? (
+            <HashtagLinks
+              tags={video.hashtags}
+              className="text-sm font-semibold text-white"
+              linkClassName="text-white transition-colors hover:text-orange-300 hover:underline"
+            />
+          ) : null}
+
           {video.channel ? (
             <div className="[&_a]:hover:bg-white/10 [&_span]:text-zinc-200">
               <VideoCardChannel channel={video.channel} />
@@ -162,23 +166,6 @@ export function VideoSlide({ video, isActive, showRank = false, onEnded }: Video
             }}
             variant="overlay"
           />
-
-          {(!video.moderation_status || video.moderation_status === "approved") ? (
-            <ChallengeClipButton
-              challengedVideoId={video.id}
-              challengedVideoTitle={video.title}
-              challengedVideoOwnerId={video.user_id}
-              variant="overlay"
-            />
-          ) : null}
-
-          {video.hashtags && video.hashtags.length > 0 ? (
-            <HashtagLinks
-              tags={video.hashtags}
-              className="text-sm font-semibold text-zinc-300"
-              linkClassName="text-zinc-300 transition-colors hover:text-orange-300 hover:underline"
-            />
-          ) : null}
         </div>
       </div>
     </section>

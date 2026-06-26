@@ -90,11 +90,6 @@ export function VideoPageContent({ video, feed, feedMode }: VideoPageContentProp
     [feedMode, loopFeed, scrollToIndex, videos, wrapIndex],
   );
 
-  const handleVideoEnded = useCallback(() => {
-    if (!loopFeed || videos.length <= 1) return;
-    goToIndex(activeIndex + 1);
-  }, [activeIndex, goToIndex, loopFeed, videos.length]);
-
   useEffect(() => {
     if (videos.length <= 1) return;
 
@@ -216,7 +211,6 @@ export function VideoPageContent({ video, feed, feedMode }: VideoPageContentProp
             video={item}
             isActive={item.id === activeId}
             showRank={feedMode === "clash" || typeof item.global_rank === "number"}
-            onEnded={handleVideoEnded}
           />
         ))}
       </div>
