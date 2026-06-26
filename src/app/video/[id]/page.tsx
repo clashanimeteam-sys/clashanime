@@ -5,7 +5,7 @@ import {
   buildVideoShareMetadata,
   buildVideoStructuredData,
 } from "@/lib/videoMetadata";
-import { CLASH_TOP_COUNT } from "@/lib/videoRanking";
+import { getClashDisplayRank } from "@/lib/videoRanking";
 import { getClashVideos, getVideoById, getVideosCatalog } from "@/lib/videos";
 
 export const dynamic = "force-dynamic";
@@ -31,11 +31,11 @@ export async function generateMetadata({ params }: VideoPageProps): Promise<Meta
 
 function resolveFeedMode(
   requestedFeed: string | undefined,
-  globalRank: number | undefined,
+  video: { clash_rank?: number; global_rank?: number },
 ): VideoFeedMode {
   if (requestedFeed === "catalog") return "catalog";
   if (requestedFeed === "clash") return "clash";
-  if (typeof globalRank === "number" && globalRank >= 1 && globalRank <= CLASH_TOP_COUNT) {
+  if (getClashDisplayRank(video)) {
     return "clash";
   }
   return "catalog";
@@ -54,7 +54,7 @@ export default async function VideoPage({ params, searchParams }: VideoPageProps
     notFound();
   }
 
-  const feedMode = resolveFeedMode(requestedFeed, video.global_rank);
+  const feedMode = resolveFeedMode(requestedFeed, video);
   const feed = feedMode === "clash" ? clashFeed : catalogFeed;
   const structuredData = buildVideoStructuredData(video);
 

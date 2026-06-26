@@ -13,6 +13,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getVideoPosterUrl, getVideoPreload } from "@/lib/mediaQuality";
 import { incrementVideoViews } from "@/lib/videoEngagement";
+import { getClashDisplayRank } from "@/lib/videoRanking";
 import {
   blockPublicVideoContextMenu,
   PUBLIC_VIDEO_PLAYER_CLASS,
@@ -55,6 +56,7 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
   const [progressBarVisible, setProgressBarVisible] = useState(false);
   const hasVideo = Boolean(video.video_url?.trim());
   const channelLabel = video.channel?.display_name?.trim() || video.channel?.username || "";
+  const clashDisplayRank = getClashDisplayRank(video);
   const progressPercent =
     duration > 0 ? `${Math.min(100, Math.max(0, (currentTime / duration) * 100))}%` : "0%";
 
@@ -454,8 +456,8 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
             </>
           )}
 
-          {showRank && typeof video.global_rank === "number" ? (
-            <VideoRankBadge rank={video.global_rank} overlay embedded />
+          {showRank && clashDisplayRank ? (
+            <VideoRankBadge rank={clashDisplayRank} overlay embedded />
           ) : null}
 
           <span className="pointer-events-none absolute left-3 top-3 hidden items-center gap-1 rounded-full bg-black/70 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-sm md:top-14 md:inline-flex">

@@ -2,6 +2,7 @@ import { createServerClient } from "@/lib/supabase/server";
 import {
   assignClashRanks,
   assignGlobalRanks,
+  attachClashRanks,
   calculateTrendingScore,
   CLASH_TOP_COUNT,
 } from "@/lib/videoRanking";
@@ -250,18 +251,23 @@ export async function getClashVideos(): Promise<Video[]> {
   return top;
 }
 
-/** All approved videos, newest first, each with its global rank. */
+/** All approved videos, newest first, with trending rank and clash engagement rank. */
 export async function getVideosCatalog(): Promise<Video[]> {
-  const ranked = await fetchApprovedVideos();
+  const pool = await fetchApprovedVideoPool();
+  const ranked = assignGlobalRanks(pool);
   const rankById = new Map(ranked.map((video) => [video.id, video.global_rank ?? 0]));
+  const withClashRanks = attachClashRanks(pool);
+  const clashRankById = new Map(withClashRanks.map((video) => [video.id, video.clash_rank]));
 
-  return [...ranked]
+  return [...pool]
     .sort(
       (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
     )
     .map((video) => ({
       ...video,
       global_rank: rankById.get(video.id),
+      clash_rank: clashRankById.get(video.id),
+      trending_score: ranked.find((entry) => entry.id === video.id)?.trending_score ?? video.trending_score,
     }));
 }
 
@@ -342,7 +348,15 @@ export async function getVideoById(id: string): Promise<Video | null> {
   }
 
   const [video] = await attachVideoChannels(supabase, [data]);
-  const ranked = await fetchApprovedVideos();
-  const match = ranked.find((entry) => entry.id === id);
-  return match ? { ...video, global_rank: match.global_rank, trending_score: match.trending_score } : video;
+  const pool = await fetchApprovedVideoPool();
+  const trending = assignGlobalRanks(pool).find((entry) => entry.id === id);
+  const clash = attachClashRanks(pool).find((entry) => entry.id === id);
+  return trending
+    ? {
+        ...video,
+        global_rank: trending.global_rank,
+        clash_rank: clash?.clash_rank,
+        trending_score: trending.trending_score,
+      }
+    : video;
 }

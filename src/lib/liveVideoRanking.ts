@@ -1,5 +1,5 @@
 import type { Video } from "@/lib/types";
-import { assignClashRanks, assignGlobalRanks, CLASH_TOP_COUNT } from "@/lib/videoRanking";
+import { assignClashRanks, assignGlobalRanks, attachClashRanks, CLASH_TOP_COUNT } from "@/lib/videoRanking";
 import type { VideoEngagementDelta } from "@/lib/videoEngagementEvents";
 
 type VideoEngagementRow = {
@@ -53,12 +53,15 @@ export function applyCatalogRanking(pool: Video[]): Video[] {
   const ranked = assignGlobalRanks(pool);
   const rankById = new Map(ranked.map((video) => [video.id, video.global_rank ?? 0]));
   const scoreById = new Map(ranked.map((video) => [video.id, video.trending_score ?? 0]));
+  const withClashRanks = attachClashRanks(pool);
+  const clashRankById = new Map(withClashRanks.map((video) => [video.id, video.clash_rank]));
 
   return [...pool]
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
     .map((video) => ({
       ...video,
       global_rank: rankById.get(video.id),
+      clash_rank: clashRankById.get(video.id),
       trending_score: scoreById.get(video.id) ?? video.trending_score ?? 0,
     }));
 }

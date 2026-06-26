@@ -3,6 +3,7 @@
 import { VideoCard } from "@/components/VideoCard";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
+import { getClashDisplayRank } from "@/lib/videoRanking";
 import type { Video } from "@/lib/types";
 
 type VideoGridContentProps = {
@@ -49,7 +50,7 @@ export function VideoGridContent({
             <VideoCard
               key={video.id}
               video={video}
-              rank={showRank ? video.global_rank : undefined}
+              rank={showRank ? getClashDisplayRank(video) : undefined}
               showClashBadge={showRank}
               compact
               feedMode="catalog"

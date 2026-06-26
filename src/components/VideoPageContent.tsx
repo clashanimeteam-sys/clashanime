@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { VideoSlide } from "@/components/VideoSlide";
-import { CLASH_TOP_COUNT } from "@/lib/videoRanking";
+import { CLASH_TOP_COUNT, getClashDisplayRank } from "@/lib/videoRanking";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Video } from "@/lib/types";
 
@@ -235,7 +235,7 @@ export function VideoPageContent({ video, feed, feedMode }: VideoPageContentProp
             key={item.id}
             video={item}
             isActive={item.id === activeId}
-            showRank={feedMode === "clash" || typeof item.global_rank === "number"}
+            showRank={feedMode === "clash" || getClashDisplayRank(item) !== undefined}
           />
         ))}
       </div>

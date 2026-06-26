@@ -30,7 +30,24 @@ export function assignClashRanks(videos: Video[]): Video[] {
   return sortByClashEngagement(videos).map((video, index) => ({
     ...video,
     global_rank: index + 1,
+    clash_rank: index + 1,
   }));
+}
+
+export function attachClashRanks(videos: Video[]): Video[] {
+  const clashRankById = new Map(
+    assignClashRanks(videos).map((video) => [video.id, video.clash_rank ?? video.global_rank ?? 0]),
+  );
+
+  return videos.map((video) => ({
+    ...video,
+    clash_rank: clashRankById.get(video.id),
+  }));
+}
+
+export function getClashDisplayRank(video: Pick<Video, "clash_rank" | "global_rank">): number | undefined {
+  const rank = video.clash_rank ?? video.global_rank;
+  return typeof rank === "number" && isInClashTop(rank) ? rank : undefined;
 }
 
 export function calculateTrendingScore(video: Video): number {
