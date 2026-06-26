@@ -458,7 +458,7 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
             <VideoRankBadge rank={video.global_rank} overlay embedded />
           ) : null}
 
-          <span className="pointer-events-none absolute start-3 top-3 hidden items-center gap-1 rounded-full bg-black/70 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-sm md:top-14 md:inline-flex">
+          <span className="pointer-events-none absolute left-3 top-3 hidden items-center gap-1 rounded-full bg-black/70 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-sm md:top-14 md:inline-flex">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"

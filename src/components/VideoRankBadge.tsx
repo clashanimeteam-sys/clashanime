@@ -46,8 +46,8 @@ export function VideoRankBadge({
   const medal = getMedalTier(rank);
   const positionClass = embedded
     ? compact
-      ? "start-2 top-2"
-      : "start-3 top-3"
+      ? "left-2 top-2"
+      : "left-3 top-3"
     : overlay
       ? compact
         ? "start-3 top-3"
