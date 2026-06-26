@@ -269,27 +269,28 @@ export function VideoCardActions({
           {isOverlay ? <span>{formatNumber(sharesCount)}</span> : formatNumber(sharesCount)}
         </button>
 
-        {!isOverlay ? (
         <button
           type="button"
           onClick={handleReport}
           aria-label={t.video.report}
-          className={`${actionButtonClass} border-zinc-300 text-zinc-600 hover:border-red-400/50 hover:text-red-500 dark:border-zinc-700 dark:text-zinc-200`}
+          className={`${actionButtonClass} ${isOverlay ? "" : "border-zinc-300 text-zinc-600 hover:border-red-400/50 hover:text-red-500 dark:border-zinc-700 dark:text-zinc-200"}`}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            className={iconClass}
-            aria-hidden
-          >
-            <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
-            <path d="M4 22v-7" />
-          </svg>
+          <span className={isOverlay ? iconWrapClass : ""}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              className={iconClass}
+              aria-hidden
+            >
+              <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+              <path d="M4 22v-7" />
+            </svg>
+          </span>
+          {isOverlay ? <span className="max-w-[4.5rem] truncate text-center text-[10px] md:sr-only">{t.video.report}</span> : null}
         </button>
-        ) : null}
       </div>
 
       {isOverlay && preview?.channel ? (

@@ -293,7 +293,7 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
               ) : null}
 
               {isActive ? (
-                <div className="absolute right-2 top-[38%] z-20 md:hidden">
+                <div className="absolute bottom-36 right-2 z-20 md:hidden">
                   <VideoCardActions
                     videoId={video.id}
                     title={video.title}
@@ -370,24 +370,24 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
                     )}
                   </Link>
 
-                  <div className="min-w-0 flex-1">
+                  <div className="flex min-w-0 items-center gap-2">
                     <Link
                       href={`/channel/${video.channel.username}`}
-                      className="font-channel inline-flex max-w-full items-center gap-1 text-sm font-bold text-white transition-colors hover:text-orange-300"
+                      className="font-channel inline-flex min-w-0 items-center gap-1 text-sm font-bold text-white transition-colors hover:text-orange-300"
                     >
                       <span className="truncate">@{video.channel.username}</span>
                       {video.channel.is_verified ? <VerifiedBadge className="shrink-0" /> : null}
                     </Link>
-                  </div>
 
-                  {video.user_id ? (
-                    <FollowButton
-                      channelId={video.user_id}
-                      initialFollowing={isFollowing}
-                      initialFollowerCount={video.channel.follower_count ?? 0}
-                      compact
-                    />
-                  ) : null}
+                    {video.user_id ? (
+                      <FollowButton
+                        channelId={video.user_id}
+                        initialFollowing={isFollowing}
+                        initialFollowerCount={video.channel.follower_count ?? 0}
+                        compact
+                      />
+                    ) : null}
+                  </div>
                 </div>
               ) : null}
 

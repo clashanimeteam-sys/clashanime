@@ -82,7 +82,7 @@ export function FollowButton({
         type="button"
         onClick={toggleFollow}
         disabled={loading || user?.id === channelId}
-        className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+        className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-50 max-md:px-2 max-md:py-1 max-md:text-[10px] ${
           isFollowing
             ? "border border-white/35 bg-white/10 text-white hover:bg-white/20"
             : "bg-white text-black hover:bg-zinc-100"
