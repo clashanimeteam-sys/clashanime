@@ -150,7 +150,11 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
               <VideoCardChannel channel={video.channel} />
             </div>
           ) : null}
+        </div>
+      </div>
 
+      <div className="pointer-events-none absolute end-3 bottom-28 z-10 sm:end-4">
+        <div className="pointer-events-auto">
           <VideoCardActions
             videoId={video.id}
             title={video.title}

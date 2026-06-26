@@ -60,13 +60,15 @@ export function VideoCardActions({
   const isOverlay = variant === "overlay";
   const actionButtonClass = compact
     ? "inline-flex items-center gap-0.5 rounded-full border px-1.5 py-0.5 text-[9px] font-semibold transition-colors disabled:opacity-60"
-    : "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors disabled:opacity-60";
-  const iconClass = compact ? "h-2.5 w-2.5" : "h-3.5 w-3.5";
+    : isOverlay
+      ? "inline-flex flex-col items-center justify-center gap-1 rounded-2xl border px-2.5 py-2.5 text-[11px] font-bold leading-none transition-colors disabled:opacity-60 min-w-[3.25rem]"
+      : "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors disabled:opacity-60";
+  const iconClass = compact ? "h-2.5 w-2.5" : isOverlay ? "h-5 w-5" : "h-3.5 w-3.5";
   const buttonClass = isOverlay
-    ? "border-white/30 text-white hover:border-white/60 hover:text-white"
+    ? "border-white/35 bg-black/45 text-white shadow-[0_8px_24px_rgba(0,0,0,0.45)] backdrop-blur-sm hover:border-white/60 hover:text-white"
     : "border-zinc-300 text-zinc-700 hover:border-accent/40 hover:text-accent dark:border-zinc-700 dark:text-zinc-200";
   const likedClass = isOverlay
-    ? "border-accent bg-accent/20 text-accent"
+    ? "border-accent bg-accent/25 text-accent shadow-[0_8px_24px_rgba(0,0,0,0.45)] backdrop-blur-sm"
     : "border-accent bg-accent/10 text-accent";
 
   useEffect(() => {
@@ -186,7 +188,13 @@ export function VideoCardActions({
 
   return (
     <div className="space-y-2">
-      <div className={`flex flex-wrap items-center ${compact ? "gap-1" : "gap-2"}`}>
+      <div
+        className={
+          isOverlay
+            ? "flex flex-col items-center gap-2.5"
+            : `flex flex-wrap items-center ${compact ? "gap-1" : "gap-2"}`
+        }
+      >
         <button
           type="button"
           onClick={handleLike}
