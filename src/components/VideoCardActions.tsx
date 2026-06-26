@@ -73,9 +73,13 @@ export function VideoCardActions({
     ? ""
     : "border-zinc-300 text-zinc-700 hover:border-accent/40 hover:text-accent dark:border-zinc-700 dark:text-zinc-200";
   const likedClass = isOverlay
-    ? "text-white"
+    ? liked
+      ? "text-red-500"
+      : "text-white"
     : "border-accent bg-accent/10 text-accent";
-  const likedIconWrapClass = isOverlay ? "text-accent md:rounded-full md:bg-accent md:text-white" : "";
+  const likedIconWrapClass = isOverlay
+    ? "text-red-500 md:rounded-full md:bg-red-500 md:text-white"
+    : "";
 
   useEffect(() => {
     setLikesCount(initialLikes);
@@ -150,17 +154,24 @@ export function VideoCardActions({
         setShareStatus(t.video.linkCopied);
         shared = true;
       }
-    } catch {
-      setShareStatus(t.video.shareCancelled);
+    } catch (error) {
+      const cancelled =
+        error instanceof Error &&
+        (error.name === "AbortError" || error.message.toLowerCase().includes("cancel"));
+      setShareStatus(cancelled ? t.video.shareCancelled : t.video.actionFailed);
     }
 
     if (shared) {
+      setSharesCount((count) => count + 1);
+
       const nextShares = await incrementVideoShares(supabase, videoId);
       if (nextShares !== null) {
         setSharesCount(nextShares);
       } else {
         const counts = await fetchVideoCounts(supabase, videoId);
-        if (counts) setSharesCount(counts.shares_count);
+        if (counts) {
+          setSharesCount(counts.shares_count);
+        }
       }
     }
 
@@ -266,7 +277,11 @@ export function VideoCardActions({
               <path d="M12 2v14" />
             </svg>
           </span>
-          {isOverlay ? <span>{formatNumber(sharesCount)}</span> : formatNumber(sharesCount)}
+          {isOverlay ? (
+            <span className={sharesCount > 0 ? "" : "opacity-0"}>{formatNumber(sharesCount)}</span>
+          ) : (
+            formatNumber(sharesCount)
+          )}
         </button>
 
         <button
