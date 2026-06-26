@@ -80,6 +80,7 @@ export type Dictionary = {
     backHome: string;
     notFound: string;
     views: string;
+    progressBar: string;
     commentPlaceholder: string;
     postComment: string;
     postingComment: string;
@@ -1436,6 +1437,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       backHome: "Back to trending",
       notFound: "Video not found.",
       views: "views",
+      progressBar: "Video progress",
       commentPlaceholder: "Write a comment...",
       postComment: "Post comment",
       postingComment: "Posting...",
@@ -2872,6 +2874,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       backHome: "トレンドに戻る",
       notFound: "動画が見つかりません。",
       views: "回視聴",
+      progressBar: "再生位置",
       commentPlaceholder: "コメントを書く...",
       postComment: "コメントする",
       postingComment: "送信中...",
@@ -4293,6 +4296,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       backHome: "العودة إلى الرائج",
       notFound: "الفيديو غير موجود.",
       views: "مشاهدة",
+      progressBar: "شريط تقدّم الفيديو",
       commentPlaceholder: "اكتب تعليقاً...",
       postComment: "نشر التعليق",
       postingComment: "جارٍ النشر...",

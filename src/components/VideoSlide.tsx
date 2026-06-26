@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { HashtagLinks } from "@/components/HashtagLinks";
 import { VideoCardActions } from "@/components/VideoCardActions";
 import { VideoCardChannel } from "@/components/VideoCardChannel";
@@ -10,7 +10,13 @@ import { VideoSettingsMenu } from "@/components/VideoSettingsMenu";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getVideoPosterUrl, getVideoPreload } from "@/lib/mediaQuality";
 import { incrementVideoViews } from "@/lib/videoEngagement";
-import { blockPublicVideoContextMenu, PUBLIC_VIDEO_CONTROLS_LIST, PUBLIC_VIDEO_PLAYER_CLASS } from "@/lib/videoPlayer";
+import {
+  blockPublicVideoContextMenu,
+  formatVideoTimestamp,
+  PUBLIC_VIDEO_CONTROLS_LIST,
+  PUBLIC_VIDEO_PLAYER_CLASS,
+  VIDEO_SCRUBBER_CLASS,
+} from "@/lib/videoPlayer";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Video } from "@/lib/types";
 
@@ -25,7 +31,12 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
   const supabase = useMemo(() => createBrowserClient(), []);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [viewsCount, setViewsCount] = useState(video.views_count ?? 0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isSeeking, setIsSeeking] = useState(false);
   const hasVideo = Boolean(video.video_url?.trim());
+  const progressPercent =
+    duration > 0 ? `${Math.min(100, Math.max(0, (currentTime / duration) * 100))}%` : "0%";
 
   useEffect(() => {
     const element = videoRef.current;
@@ -66,6 +77,43 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
     });
   }, [supabase, video.id, isActive]);
 
+  useEffect(() => {
+    const element = videoRef.current;
+    if (!element || !hasVideo) return;
+
+    const syncDuration = () => {
+      if (Number.isFinite(element.duration)) {
+        setDuration(element.duration);
+      }
+    };
+
+    const onTimeUpdate = () => {
+      if (!isSeeking) {
+        setCurrentTime(element.currentTime);
+      }
+    };
+
+    syncDuration();
+    element.addEventListener("loadedmetadata", syncDuration);
+    element.addEventListener("durationchange", syncDuration);
+    element.addEventListener("timeupdate", onTimeUpdate);
+
+    return () => {
+      element.removeEventListener("loadedmetadata", syncDuration);
+      element.removeEventListener("durationchange", syncDuration);
+      element.removeEventListener("timeupdate", onTimeUpdate);
+    };
+  }, [hasVideo, isSeeking, video.video_url]);
+
+  function handleSeek(nextTime: number) {
+    const element = videoRef.current;
+    if (!element) return;
+
+    const clamped = Math.min(Math.max(nextTime, 0), duration || element.duration || 0);
+    element.currentTime = clamped;
+    setCurrentTime(clamped);
+  }
+
   return (
     <section
       data-video-id={video.id}
@@ -73,7 +121,7 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
     >
       {hasVideo ? (
         <>
-          <div className="absolute inset-0 bg-black pb-[3.75rem]">
+          <div className="absolute inset-0 bg-black pb-28">
             <video
               ref={videoRef}
               src={video.video_url}
@@ -90,6 +138,33 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
               {t.video.unavailable}
             </video>
           </div>
+          {isActive ? (
+            <div className="absolute inset-x-0 bottom-[4.25rem] z-20 px-4 sm:px-5">
+              <div className="rounded-xl border border-white/25 bg-zinc-950/95 px-3 py-3 shadow-[0_12px_36px_rgba(0,0,0,0.65)] backdrop-blur-md">
+                <div className="mb-2 flex items-center justify-between text-xs font-bold tabular-nums text-white">
+                  <span>{formatVideoTimestamp(currentTime)}</span>
+                  <span className="text-white/75">{formatVideoTimestamp(duration)}</span>
+                </div>
+                <input
+                  type="range"
+                  min={0}
+                  max={duration || 0}
+                  step={0.05}
+                  value={Math.min(currentTime, duration || 0)}
+                  onChange={(event) => {
+                    setIsSeeking(true);
+                    handleSeek(Number(event.target.value));
+                  }}
+                  onPointerUp={() => setIsSeeking(false)}
+                  onPointerCancel={() => setIsSeeking(false)}
+                  onBlur={() => setIsSeeking(false)}
+                  style={{ "--progress": progressPercent } as CSSProperties}
+                  className={`${VIDEO_SCRUBBER_CLASS} w-full`}
+                  aria-label={t.video.progressBar}
+                />
+              </div>
+            </div>
+          ) : null}
           {isActive ? (
             <VideoSettingsMenu
               videoRef={videoRef}
@@ -133,7 +208,7 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
         {formatNumber(viewsCount)} {t.video.views}
       </span>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-[3.75rem] bg-gradient-to-t from-black/95 via-black/70 to-transparent px-4 pb-6 pt-16 sm:px-6">
+      <div className="pointer-events-none absolute inset-x-0 bottom-36 bg-gradient-to-t from-black/95 via-black/70 to-transparent px-4 pb-4 pt-16 sm:px-6">
         <div className="pointer-events-auto space-y-3">
           <h1 className="text-lg font-bold leading-snug text-white sm:text-xl">{video.title}</h1>
 
