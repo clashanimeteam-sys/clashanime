@@ -15,7 +15,6 @@ import { getVideoPosterUrl, getVideoPreload } from "@/lib/mediaQuality";
 import { incrementVideoViews } from "@/lib/videoEngagement";
 import {
   blockPublicVideoContextMenu,
-  formatVideoTimestamp,
   PUBLIC_VIDEO_PLAYER_CLASS,
   SHORTS_PROGRESS_CLASS,
 } from "@/lib/videoPlayer";
@@ -179,10 +178,10 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
   return (
     <section
       data-video-id={video.id}
-      className="relative flex h-[calc(100dvh-3.5rem)] w-full shrink-0 snap-start snap-always items-center justify-center bg-black px-3 sm:px-6"
+      className="relative flex h-full w-full shrink-0 snap-start snap-always items-stretch justify-center bg-black md:h-[calc(100dvh-3.5rem)] md:items-center md:px-6"
     >
-      <div className="flex max-w-full items-end gap-3 sm:gap-5">
-        <article className="relative h-[min(calc(100dvh-7rem),42rem)] w-[min(100%,calc((100dvh-7rem)*9/16))] max-w-[calc(100vw-7rem)] overflow-hidden rounded-2xl bg-black shadow-[0_24px_80px_rgba(0,0,0,0.55)]">
+      <div className="flex h-full w-full max-w-full items-end justify-center gap-3 md:gap-5">
+        <article className="relative h-full w-full overflow-hidden bg-black md:h-[min(calc(100dvh-7rem),42rem)] md:w-[min(100%,calc((100dvh-7rem)*9/16))] md:max-w-[calc(100vw-7rem)] md:rounded-2xl md:shadow-[0_24px_80px_rgba(0,0,0,0.55)]">
           {hasVideo ? (
             <>
               <video
@@ -193,6 +192,8 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
                 autoPlay={isActive}
                 loop
                 playsInline
+                disablePictureInPicture
+                controlsList="nodownload noplaybackrate noremoteplayback"
                 preload={getVideoPreload(isActive)}
                 poster={getVideoPosterUrl(video.thumbnail_url)}
                 className={`${PUBLIC_VIDEO_PLAYER_CLASS} h-full w-full cursor-pointer object-cover`}
@@ -201,7 +202,7 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
               </video>
 
               {isPaused && isActive ? (
-                <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/20">
+                <div className="pointer-events-none absolute inset-0 hidden items-center justify-center bg-black/20 md:flex">
                   <span className="flex h-16 w-16 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur-sm">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -218,7 +219,7 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
 
               {isActive ? (
                 <>
-                  <div className="absolute end-3 top-3 z-30 flex items-center gap-2">
+                  <div className="absolute right-3 top-3 z-30 flex items-center gap-2">
                     <button
                       type="button"
                       onClick={(event) => {
@@ -267,7 +268,7 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
                   </div>
 
                   <div
-                    className="absolute inset-x-0 bottom-0 z-20 px-3 pb-2 pt-10"
+                    className="absolute inset-x-0 bottom-0 z-30 max-md:px-0 md:px-3 md:pb-2 md:pt-10"
                     onClick={(event) => event.stopPropagation()}
                   >
                     <input
@@ -284,11 +285,31 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
                       onPointerCancel={() => setIsSeeking(false)}
                       onBlur={() => setIsSeeking(false)}
                       style={{ "--progress": progressPercent } as CSSProperties}
-                      className={`${SHORTS_PROGRESS_CLASS} w-full`}
+                      className={`${SHORTS_PROGRESS_CLASS} w-full max-md:h-[3px] max-md:rounded-none`}
                       aria-label={t.video.views}
                     />
                   </div>
                 </>
+              ) : null}
+
+              {isActive ? (
+                <div className="absolute right-2 top-[38%] z-20 md:hidden">
+                  <VideoCardActions
+                    videoId={video.id}
+                    title={video.title}
+                    initialLikes={video.likes_count}
+                    initialComments={video.comments_count}
+                    initialShares={video.shares_count ?? 0}
+                    preview={{
+                      thumbnailUrl: video.thumbnail_url,
+                      videoUrl: video.video_url || undefined,
+                      videoOwnerId: video.user_id,
+                      channel: video.channel,
+                      hashtags: video.hashtags,
+                    }}
+                    variant="overlay"
+                  />
+                </div>
               ) : null}
             </>
           ) : (
@@ -310,7 +331,7 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
             <VideoRankBadge rank={video.global_rank} overlay embedded />
           ) : null}
 
-          <span className="pointer-events-none absolute start-3 top-14 inline-flex items-center gap-1 rounded-full bg-black/70 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-sm">
+          <span className="pointer-events-none absolute start-3 top-3 hidden items-center gap-1 rounded-full bg-black/70 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-sm md:top-14 md:inline-flex">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -326,13 +347,13 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
             {formatNumber(viewsCount)}
           </span>
 
-          <div className="pointer-events-none absolute inset-x-0 bottom-3 bg-gradient-to-t from-black/90 via-black/55 to-transparent px-3 pb-8 pt-16">
-            <div className="pointer-events-auto space-y-2.5">
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/55 to-transparent px-3 pb-10 pt-20 max-md:pe-16 md:bottom-3 md:pb-8 md:pt-16">
+            <div className="pointer-events-auto space-y-2 md:space-y-2.5">
               {video.channel ? (
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2">
                   <Link
                     href={`/channel/${video.channel.username}`}
-                    className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-zinc-800 ring-2 ring-white/20"
+                    className="relative hidden h-9 w-9 shrink-0 overflow-hidden rounded-full bg-zinc-800 ring-2 ring-white/20 md:block"
                   >
                     {video.channel.avatar_url ? (
                       <Image
@@ -370,14 +391,14 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
                 </div>
               ) : null}
 
-              <h1 className="line-clamp-2 text-sm font-bold leading-snug text-white sm:text-base">
+              <h1 className="line-clamp-2 text-sm font-semibold leading-snug text-white md:text-base">
                 {video.title}
               </h1>
 
               {video.hashtags && video.hashtags.length > 0 ? (
                 <HashtagLinks
                   tags={video.hashtags}
-                  className="line-clamp-2 text-xs font-semibold text-white/90 sm:text-sm"
+                  className="line-clamp-1 text-xs font-semibold text-white/90 md:line-clamp-2 md:text-sm"
                   linkClassName="text-white transition-colors hover:text-orange-300 hover:underline"
                 />
               ) : null}
@@ -386,7 +407,7 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
         </article>
 
         {isActive ? (
-          <div className="hidden shrink-0 sm:block">
+          <div className="hidden shrink-0 md:block">
             <VideoCardActions
               videoId={video.id}
               title={video.title}
@@ -405,26 +426,6 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
           </div>
         ) : null}
       </div>
-
-      {isActive ? (
-        <div className="absolute end-3 bottom-28 z-10 sm:hidden">
-          <VideoCardActions
-            videoId={video.id}
-            title={video.title}
-            initialLikes={video.likes_count}
-            initialComments={video.comments_count}
-            initialShares={video.shares_count ?? 0}
-            preview={{
-              thumbnailUrl: video.thumbnail_url,
-              videoUrl: video.video_url || undefined,
-              videoOwnerId: video.user_id,
-              channel: video.channel,
-              hashtags: video.hashtags,
-            }}
-            variant="overlay"
-          />
-        </div>
-      ) : null}
     </section>
   );
 }

@@ -152,7 +152,7 @@ export function VideoPageContent({ video, feed, feedMode }: VideoPageContentProp
   }, [activeIndex, feedMode, goToIndex, router]);
 
   return (
-    <div className="relative h-[calc(100dvh-3.5rem)] w-full bg-black">
+    <div className="relative h-full min-h-0 w-full bg-black md:h-[calc(100dvh-3.5rem)]">
       {videos.length > 1 ? (
         <div className="pointer-events-none absolute inset-y-0 start-2 z-30 hidden items-center lg:flex">
           <div className="flex flex-col gap-3">

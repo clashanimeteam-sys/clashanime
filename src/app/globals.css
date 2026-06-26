@@ -1559,12 +1559,39 @@ html[lang="ar-u-nu-latn"] {
   border-radius: 9999px;
   background: linear-gradient(
     to right,
-    #ffffff 0%,
-    #ffffff var(--progress, 0%),
+    var(--color-accent) 0%,
+    var(--color-accent) var(--progress, 0%),
     rgba(255, 255, 255, 0.35) var(--progress, 0%),
     rgba(255, 255, 255, 0.35) 100%
   );
   cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .shorts-progress {
+    height: 3px;
+    border-radius: 0;
+    background: linear-gradient(
+      to right,
+      var(--color-accent) 0%,
+      var(--color-accent) var(--progress, 0%),
+      rgba(255, 255, 255, 0.28) var(--progress, 0%),
+      rgba(255, 255, 255, 0.28) 100%
+    );
+  }
+
+  .shorts-progress::-webkit-slider-thumb {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+
+  .shorts-progress::-moz-range-thumb {
+    width: 0;
+    height: 0;
+    opacity: 0;
+    border: none;
+  }
 }
 
 .shorts-progress::-webkit-slider-runnable-track {

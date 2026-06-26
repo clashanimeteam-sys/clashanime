@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { createBrowserClient } from "@/lib/supabase/client";
 import {
@@ -61,19 +63,19 @@ export function VideoCardActions({
   const actionButtonClass = compact
     ? "inline-flex items-center gap-0.5 rounded-full border px-1.5 py-0.5 text-[9px] font-semibold transition-colors disabled:opacity-60"
     : isOverlay
-      ? "inline-flex flex-col items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-semibold leading-none text-white transition-opacity hover:opacity-80 disabled:opacity-60"
+      ? "inline-flex flex-col items-center gap-1 border-0 bg-transparent p-0 text-[11px] font-semibold leading-none text-white shadow-none transition-opacity hover:opacity-80 disabled:opacity-60 max-md:drop-shadow-[0_1px_3px_rgba(0,0,0,0.85)]"
       : "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors disabled:opacity-60";
   const iconWrapClass = isOverlay
-    ? "flex h-11 w-11 items-center justify-center rounded-full bg-zinc-900/75 text-white backdrop-blur-sm"
+    ? "flex h-10 w-10 items-center justify-center text-white max-md:h-auto max-md:w-auto max-md:bg-transparent md:rounded-full md:bg-zinc-900/75 md:backdrop-blur-sm"
     : "";
-  const iconClass = compact ? "h-2.5 w-2.5" : isOverlay ? "h-5 w-5" : "h-3.5 w-3.5";
+  const iconClass = compact ? "h-2.5 w-2.5" : isOverlay ? "h-7 w-7 md:h-5 md:w-5" : "h-3.5 w-3.5";
   const buttonClass = isOverlay
     ? ""
     : "border-zinc-300 text-zinc-700 hover:border-accent/40 hover:text-accent dark:border-zinc-700 dark:text-zinc-200";
   const likedClass = isOverlay
     ? "text-white"
     : "border-accent bg-accent/10 text-accent";
-  const likedIconWrapClass = isOverlay ? "bg-accent text-white" : "";
+  const likedIconWrapClass = isOverlay ? "text-accent md:rounded-full md:bg-accent md:text-white" : "";
 
   useEffect(() => {
     setLikesCount(initialLikes);
@@ -195,7 +197,7 @@ export function VideoCardActions({
       <div
         className={
           isOverlay
-            ? "flex flex-col items-center gap-4 pb-2"
+            ? "flex flex-col items-center gap-5 pb-2 max-md:gap-4"
             : `flex flex-wrap items-center ${compact ? "gap-1" : "gap-2"}`
         }
       >
@@ -289,6 +291,30 @@ export function VideoCardActions({
         </button>
         ) : null}
       </div>
+
+      {isOverlay && preview?.channel ? (
+        <Link
+          href={`/channel/${preview.channel.username}`}
+          className="mx-auto mt-1 block max-md:mt-0"
+          aria-label={preview.channel.display_name ?? preview.channel.username}
+        >
+          <span className="relative block h-10 w-10 overflow-hidden rounded-full ring-2 ring-white max-md:h-9 max-md:w-9">
+            {preview.channel.avatar_url ? (
+              <Image
+                src={preview.channel.avatar_url}
+                alt={preview.channel.display_name ?? preview.channel.username}
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            ) : (
+              <span className="flex h-full w-full items-center justify-center bg-zinc-800 text-[10px] font-bold text-white">
+                {(preview.channel.display_name ?? preview.channel.username).slice(0, 1).toUpperCase()}
+              </span>
+            )}
+          </span>
+        </Link>
+      ) : null}
 
       {(shareStatus || error) && (
         <p
