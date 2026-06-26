@@ -11,7 +11,6 @@ import { useLocale } from "@/providers/LocaleProvider";
 
 /** Must match `finalize_expired_anime_release_clashes` in Supabase. */
 export const EPISODE_CLASH_WINNER_POINTS = 2000;
-export const EPISODE_CLASH_WINNER_COINS = 5000;
 export const EPISODE_CLASH_WINDOW_MS = 24 * 60 * 60 * 1000;
 
 export function getEffectiveClosesAt(closesAt: string, opensAt?: string | null): string {
@@ -76,9 +75,7 @@ export function EpisodeClashRewardsBadge({ className = "" }: { className?: strin
     <span
       className={`inline-flex rounded-full bg-amber-500/15 px-3 py-1.5 text-xs font-bold text-amber-800 ring-1 ring-amber-400/30 dark:text-amber-200 ${className}`.trim()}
     >
-      {t.animeTracker.instantEpisodeRewards
-        .replace("{points}", formatNumber(EPISODE_CLASH_WINNER_POINTS))
-        .replace("{coins}", formatNumber(EPISODE_CLASH_WINNER_COINS))}
+      {t.animeTracker.instantEpisodeRewards.replace("{points}", formatNumber(EPISODE_CLASH_WINNER_POINTS))}
     </span>
   );
 }
@@ -240,9 +237,7 @@ export function InstantEpisodeClashBanner({ clashes }: InstantEpisodeClashBanner
               {t.animeTracker.instantEpisodeSubtitle}
             </p>
             <p className="mt-3 inline-flex rounded-full bg-black/40 px-3 py-1.5 text-xs font-bold text-amber-200 ring-1 ring-amber-400/30">
-              {t.animeTracker.instantEpisodeRewards
-                .replace("{points}", formatNumber(EPISODE_CLASH_WINNER_POINTS))
-                .replace("{coins}", formatNumber(EPISODE_CLASH_WINNER_COINS))}
+              {t.animeTracker.instantEpisodeRewards.replace("{points}", formatNumber(EPISODE_CLASH_WINNER_POINTS))}
             </p>
           </div>
 

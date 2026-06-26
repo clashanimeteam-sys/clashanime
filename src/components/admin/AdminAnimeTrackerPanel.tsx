@@ -3,7 +3,6 @@
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { AdminTopHashtags } from "@/components/admin/AdminTopHashtags";
 import {
-  EPISODE_CLASH_WINNER_COINS,
   EPISODE_CLASH_WINNER_POINTS,
 } from "@/components/clash/InstantEpisodeClashBanner";
 import { HashtagLinks } from "@/components/HashtagLinks";
@@ -354,9 +353,7 @@ export function AdminAnimeTrackerPanel({
         <h2 className="text-lg font-semibold text-white">{t.admin.animeTracker.instantEpisodeActiveTitle}</h2>
         <p className="mt-2 text-sm text-orange-100/90">{t.admin.animeTracker.instantEpisodeHint}</p>
         <p className="mt-3 inline-flex rounded-full bg-black/30 px-3 py-1.5 text-xs font-bold text-amber-200 ring-1 ring-amber-400/30">
-          {t.admin.animeTracker.instantEpisodeRewards
-            .replace("{points}", formatNumber(EPISODE_CLASH_WINNER_POINTS))
-            .replace("{coins}", formatNumber(EPISODE_CLASH_WINNER_COINS))}
+          {t.admin.animeTracker.instantEpisodeRewards.replace("{points}", formatNumber(EPISODE_CLASH_WINNER_POINTS))}
         </p>
 
         {loading ? (
@@ -425,7 +422,6 @@ export function AdminAnimeTrackerPanel({
                         ? t.admin.animeTracker.clashWinner
                             .replace("{name}", row.winner_display_name)
                             .replace("{points}", formatNumber(row.winner_points_awarded ?? EPISODE_CLASH_WINNER_POINTS))
-                            .replace("{coins}", formatNumber(row.winner_coins_awarded ?? EPISODE_CLASH_WINNER_COINS))
                         : t.admin.animeTracker.clashNoWinner}
                     </p>
                   </div>

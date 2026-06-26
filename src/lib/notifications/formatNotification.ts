@@ -159,14 +159,12 @@ export function formatNotificationText(
         const anime = metaString(metadata, "anime_title") || "";
         const episode = metaString(metadata, "episode_number") || "";
         const points = metaString(metadata, "points_awarded") || "2000";
-        const coins = metaString(metadata, "coins_awarded") || "5000";
         return {
           title: typeField(types, "episode_clash_winner", "title", row.title),
           body: applyTemplate(typeField(types, "episode_clash_winner", "body", row.body), {
             anime,
             episode,
             points,
-            coins,
           }),
           typeLabel,
         };
