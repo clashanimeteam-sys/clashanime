@@ -35,11 +35,16 @@ function getInitials(name: string) {
     .join("");
 }
 
+const PROGRESS_BAR_HIDE_MS = 2500;
+
 export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProps) {
   const { t, formatNumber } = useLocale();
   const { user } = useAuth();
   const supabase = useMemo(() => createBrowserClient(), []);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const hideProgressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isPausedRef = useRef(false);
+  const isSeekingRef = useRef(false);
   const [viewsCount, setViewsCount] = useState(video.views_count ?? 0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -47,10 +52,67 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
   const [isPaused, setIsPaused] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [progressBarVisible, setProgressBarVisible] = useState(false);
   const hasVideo = Boolean(video.video_url?.trim());
   const channelLabel = video.channel?.display_name?.trim() || video.channel?.username || "";
   const progressPercent =
     duration > 0 ? `${Math.min(100, Math.max(0, (currentTime / duration) * 100))}%` : "0%";
+
+  useEffect(() => {
+    isPausedRef.current = isPaused;
+  }, [isPaused]);
+
+  useEffect(() => {
+    isSeekingRef.current = isSeeking;
+  }, [isSeeking]);
+
+  useEffect(() => {
+    return () => {
+      if (hideProgressTimerRef.current) {
+        clearTimeout(hideProgressTimerRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isActive) {
+      setProgressBarVisible(false);
+      if (hideProgressTimerRef.current) {
+        clearTimeout(hideProgressTimerRef.current);
+        hideProgressTimerRef.current = null;
+      }
+    }
+  }, [isActive]);
+
+  useEffect(() => {
+    if (!isActive) return;
+
+    if (isPaused || isSeeking) {
+      setProgressBarVisible(true);
+      if (hideProgressTimerRef.current) {
+        clearTimeout(hideProgressTimerRef.current);
+        hideProgressTimerRef.current = null;
+      }
+      return;
+    }
+
+    if (hideProgressTimerRef.current) {
+      clearTimeout(hideProgressTimerRef.current);
+    }
+
+    hideProgressTimerRef.current = setTimeout(() => {
+      if (!isPausedRef.current && !isSeekingRef.current) {
+        setProgressBarVisible(false);
+      }
+    }, PROGRESS_BAR_HIDE_MS);
+
+    return () => {
+      if (hideProgressTimerRef.current) {
+        clearTimeout(hideProgressTimerRef.current);
+        hideProgressTimerRef.current = null;
+      }
+    };
+  }, [isActive, isPaused, isSeeking]);
 
   useEffect(() => {
     const element = videoRef.current;
@@ -147,6 +209,29 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
       .then(({ data }) => setIsFollowing(Boolean(data)));
   }, [supabase, user, video.user_id]);
 
+  function clearHideProgressTimer() {
+    if (hideProgressTimerRef.current) {
+      clearTimeout(hideProgressTimerRef.current);
+      hideProgressTimerRef.current = null;
+    }
+  }
+
+  function revealProgressBar() {
+    setProgressBarVisible(true);
+  }
+
+  function scheduleHideProgressBar() {
+    clearHideProgressTimer();
+
+    if (isPausedRef.current || isSeekingRef.current) return;
+
+    hideProgressTimerRef.current = setTimeout(() => {
+      if (!isPausedRef.current && !isSeekingRef.current) {
+        setProgressBarVisible(false);
+      }
+    }, PROGRESS_BAR_HIDE_MS);
+  }
+
   function handleSeek(nextTime: number) {
     const element = videoRef.current;
     if (!element) return;
@@ -154,6 +239,18 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
     const clamped = Math.min(Math.max(nextTime, 0), duration || element.duration || 0);
     element.currentTime = clamped;
     setCurrentTime(clamped);
+  }
+
+  function handleVideoClick() {
+    revealProgressBar();
+    scheduleHideProgressBar();
+    togglePlayback();
+  }
+
+  function handleProgressReveal(event: { stopPropagation: () => void }) {
+    event.stopPropagation();
+    revealProgressBar();
+    scheduleHideProgressBar();
   }
 
   function togglePlayback() {
@@ -188,7 +285,7 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
                 ref={videoRef}
                 src={video.video_url}
                 onContextMenu={blockPublicVideoContextMenu}
-                onClick={togglePlayback}
+                onClick={handleVideoClick}
                 autoPlay={isActive}
                 loop
                 playsInline
@@ -268,7 +365,11 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
                   </div>
 
                   <div
-                    className="absolute inset-x-0 bottom-0 z-30 max-md:px-0 md:px-3 md:pb-2 md:pt-10"
+                    className={`absolute inset-x-0 bottom-0 z-30 transition-opacity duration-300 max-md:px-0 md:px-3 md:pb-2 md:pt-10 ${
+                      progressBarVisible
+                        ? "pointer-events-auto opacity-100"
+                        : "pointer-events-none opacity-0"
+                    }`}
                     onClick={(event) => event.stopPropagation()}
                   >
                     <input
@@ -277,18 +378,44 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
                       max={duration || 0}
                       step={0.05}
                       value={Math.min(currentTime, duration || 0)}
+                      onPointerDown={(event) => {
+                        event.stopPropagation();
+                        setIsSeeking(true);
+                        revealProgressBar();
+                        clearHideProgressTimer();
+                      }}
                       onChange={(event) => {
                         setIsSeeking(true);
                         handleSeek(Number(event.target.value));
                       }}
-                      onPointerUp={() => setIsSeeking(false)}
-                      onPointerCancel={() => setIsSeeking(false)}
-                      onBlur={() => setIsSeeking(false)}
+                      onPointerUp={() => {
+                        setIsSeeking(false);
+                        scheduleHideProgressBar();
+                      }}
+                      onPointerCancel={() => {
+                        setIsSeeking(false);
+                        scheduleHideProgressBar();
+                      }}
+                      onBlur={() => {
+                        setIsSeeking(false);
+                        scheduleHideProgressBar();
+                      }}
                       style={{ "--progress": progressPercent } as CSSProperties}
-                      className={`${SHORTS_PROGRESS_CLASS} w-full max-md:h-[3px] max-md:rounded-none`}
+                      className={`${SHORTS_PROGRESS_CLASS} w-full max-md:h-[3px] max-md:rounded-none ${
+                        progressBarVisible ? "shorts-progress--visible" : ""
+                      }`}
                       aria-label={t.video.views}
                     />
                   </div>
+
+                  {!progressBarVisible ? (
+                    <button
+                      type="button"
+                      className="absolute inset-x-0 bottom-0 z-[24] h-12 bg-transparent"
+                      aria-label={t.video.views}
+                      onClick={handleProgressReveal}
+                    />
+                  ) : null}
                 </>
               ) : null}
 

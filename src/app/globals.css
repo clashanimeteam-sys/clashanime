@@ -1565,6 +1565,20 @@ html[lang="ar-u-nu-latn"] {
     rgba(255, 255, 255, 0.35) 100%
   );
   cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.shorts-progress:not(.shorts-progress--visible)::-webkit-slider-thumb {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.shorts-progress:not(.shorts-progress--visible)::-moz-range-thumb {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  border: none;
 }
 
 @media (max-width: 767px) {
