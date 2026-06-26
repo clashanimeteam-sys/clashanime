@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { VideosPageContent } from "@/components/VideosPageContent";
-import { getAnimeSeoCatalog } from "@/lib/animeTracker.server";
+import { getAnimeSeoCatalog, getAnimeTrackerUpcoming, getRecentAnimeReleases } from "@/lib/animeTracker.server";
 import { buildPageMetadata } from "@/lib/seoMetadata";
+import { getRecentVideoDuels } from "@/lib/videoDuelsServer";
 import { getVideosCatalog } from "@/lib/videos";
 
 export const dynamic = "force-dynamic";
@@ -12,6 +13,19 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function VideosPage() {
-  const videos = await getVideosCatalog();
-  return <VideosPageContent videos={videos} />;
+  const [videos, recentAnimeReleases, upcomingAnimeReleases, recentDuels] = await Promise.all([
+    getVideosCatalog(),
+    getRecentAnimeReleases(20),
+    getAnimeTrackerUpcoming(14),
+    getRecentVideoDuels(16),
+  ]);
+
+  return (
+    <VideosPageContent
+      videos={videos}
+      recentAnimeReleases={recentAnimeReleases}
+      upcomingAnimeReleases={upcomingAnimeReleases}
+      recentDuels={recentDuels}
+    />
+  );
 }

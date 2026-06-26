@@ -1653,6 +1653,21 @@ html[lang="ar-u-nu-latn"] {
     opacity 0.3s ease;
 }
 
+.video-shelf-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(161, 161, 170, 0.55) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.video-shelf-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.video-shelf-scroll::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: rgba(161, 161, 170, 0.55);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .live-ranked-card {
     transition: none;

@@ -194,6 +194,26 @@ export async function getTodayClashLinksByMalId(): Promise<Map<number, string>> 
   );
 }
 
+export async function getRecentAnimeReleases(limit = 20): Promise<AnimeRelease[]> {
+  const supabase = await createServerClient();
+  if (!supabase) return [];
+
+  const { date } = getJstDateParts();
+
+  const { data, error } = await supabase
+    .from("anime_releases")
+    .select(
+      "id, title, title_ar, title_ja, mal_id, release_date, airs_at, episode_number, poster_url, match_tags, synopsis_en, synopsis_ar, synopsis_ja, status, clash_id, clash_status, clash_opens_at",
+    )
+    .lte("release_date", date)
+    .order("release_date", { ascending: false })
+    .limit(limit);
+
+  if (error || !data) return [];
+
+  return (data as ReleaseRow[]).map(mapRelease);
+}
+
 export async function getAnimeTrackerToday(): Promise<AnimeRelease[]> {
   const supabase = await createServerClient();
   if (!supabase) return [];

@@ -152,6 +152,21 @@ export type Dictionary = {
     videosSearchResults: string;
     emptyVideoSearch: string;
   };
+  videosPage: {
+    shelfNew: string;
+    shelfTrending: string;
+    shelfLatestAnime: string;
+    shelfComingSoon: string;
+    shelfUserDuels: string;
+    newBadge: string;
+    comingSoonBadge: string;
+    duelDefender: string;
+    duelChallenger: string;
+    duelVersus: string;
+    watchDuel: string;
+    searchResultsTitle: string;
+    emptyDuels: string;
+  };
   hashtag: {
     statsLine: string;
     emptyVideos: string;
@@ -1499,7 +1514,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     pages: {
       videosTitle: "All Videos",
       videosSubtitle:
-        "All approved videos, newest first. Each card shows its global rank. Top 12 also appear in Clash.",
+        "Browse new uploads, trending clips, latest anime drops, coming soon, and live creator duels.",
       exclusivesTitle: "Exclusives",
       exclusivesSubtitle: "Clips from verified creators on ClashAnime.",
       animeTrackerTitle: "Anime Tracker",
@@ -1518,6 +1533,21 @@ export const dictionaries: Record<Locale, Dictionary> = {
       videosSearchPlaceholder: "Search anime...",
       videosSearchResults: "{count} videos found",
       emptyVideoSearch: 'No videos found for "{query}".',
+    },
+    videosPage: {
+      shelfNew: "New uploads",
+      shelfTrending: "Trending now",
+      shelfLatestAnime: "Latest anime releases",
+      shelfComingSoon: "Coming soon",
+      shelfUserDuels: "Creator challenges",
+      newBadge: "New",
+      comingSoonBadge: "Soon",
+      duelDefender: "Clip",
+      duelChallenger: "You",
+      duelVersus: "vs {title}",
+      watchDuel: "Watch duel",
+      searchResultsTitle: "Search results",
+      emptyDuels: "No creator challenges yet. Challenge a clip from any video card.",
     },
     hashtag: {
       statsLine: "{videos} videos · {channels} channels",
@@ -2947,7 +2977,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     pages: {
       videosTitle: "すべての動画",
       videosSubtitle:
-        "承認済みの全動画を新しい順に表示。各カードに世界ランクを表示。トップ12はクラッシュにも表示されます。",
+        "新着、トレンド、最新アニメ配信、近日配信、クリエイター対決を横スクロールで探索。",
       exclusivesTitle: "限定",
       exclusivesSubtitle: "認証済みクリエイターのクリップ。",
       animeTrackerTitle: "新作アニメレーダー",
@@ -2964,6 +2994,21 @@ export const dictionaries: Record<Locale, Dictionary> = {
       videosSearchPlaceholder: "アニメを検索...",
       videosSearchResults: "{count} 件の動画",
       emptyVideoSearch: "「{query}」に一致する動画はありません。",
+    },
+    videosPage: {
+      shelfNew: "新着動画",
+      shelfTrending: "いま話題",
+      shelfLatestAnime: "最新アニメ配信",
+      shelfComingSoon: "近日配信",
+      shelfUserDuels: "クリエイター対決",
+      newBadge: "新着",
+      comingSoonBadge: "近日",
+      duelDefender: "対象",
+      duelChallenger: "挑戦",
+      duelVersus: "vs {title}",
+      watchDuel: "対決を見る",
+      searchResultsTitle: "検索結果",
+      emptyDuels: "まだクリエイター対決はありません。動画カードから挑戦してください。",
     },
     hashtag: {
       statsLine: "{videos} 本の動画 · {channels} チャンネル",
@@ -4380,7 +4425,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     pages: {
       videosTitle: "كل الفيديوهات",
       videosSubtitle:
-        "كل الفيديوهات المعتمدة من الأحدث، مع رقم المركز العالمي. المركز ١–١٢ يظهر أيضاً في النزالات.",
+        "تصفّح الجديد والترند وآخر إصدارات الأنمي وقريباً وتحديات المستخدمين في صفوف أفقية.",
       exclusivesTitle: "حصري",
       exclusivesSubtitle: "مقاطع من القنوات الموثّقة على ClashAnime.",
       animeTrackerTitle: "رادار الأنمي الجديد",
@@ -4397,6 +4442,21 @@ export const dictionaries: Record<Locale, Dictionary> = {
       videosSearchPlaceholder: "ابحث عن أنمي...",
       videosSearchResults: "تم العثور على {count} فيديو",
       emptyVideoSearch: 'لا توجد فيديوهات لـ "{query}".',
+    },
+    videosPage: {
+      shelfNew: "فيديوهات جديدة",
+      shelfTrending: "الترند الآن",
+      shelfLatestAnime: "آخر إصدارات الأنمي",
+      shelfComingSoon: "قريباً",
+      shelfUserDuels: "تحديات بين المستخدمين",
+      newBadge: "جديد",
+      comingSoonBadge: "قريباً",
+      duelDefender: "المقطع",
+      duelChallenger: "التحدي",
+      duelVersus: "ضد {title}",
+      watchDuel: "شاهد النزال",
+      searchResultsTitle: "نتائج البحث",
+      emptyDuels: "لا توجد تحديات بعد. تحدَّ أي مقطع من بطاقة الفيديو.",
     },
     hashtag: {
       statsLine: "{videos} فيديو · {channels} قناة",
