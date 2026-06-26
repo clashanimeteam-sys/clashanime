@@ -41,7 +41,7 @@ export function VideoRankBadge({ rank, compact = false, overlay = false }: Video
   const positionClass = overlay
     ? compact
       ? "start-3 top-3"
-      : "start-4 top-20"
+      : "start-4 top-4"
     : compact
       ? "start-2 top-2"
       : "start-3 top-3";

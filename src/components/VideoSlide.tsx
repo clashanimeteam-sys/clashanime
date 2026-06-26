@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HashtagLinks } from "@/components/HashtagLinks";
 import { VideoCardActions } from "@/components/VideoCardActions";
-import { VideoCardChannel } from "@/components/VideoCardChannel";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { VideoRankBadge } from "@/components/VideoRankBadge";
 import { VideoSettingsMenu } from "@/components/VideoSettingsMenu";
 import { createBrowserClient } from "@/lib/supabase/client";
@@ -146,9 +147,15 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
           ) : null}
 
           {video.channel ? (
-            <div className="[&_a]:hover:bg-white/10 [&_span]:text-zinc-200">
-              <VideoCardChannel channel={video.channel} />
-            </div>
+            <Link
+              href={`/channel/${video.channel.username}`}
+              className="font-channel inline-flex max-w-full items-center gap-1 text-sm font-semibold text-white transition-colors hover:text-orange-300 hover:underline"
+            >
+              <span className="truncate">
+                {video.channel.display_name?.trim() || video.channel.username}
+              </span>
+              {video.channel.is_verified ? <VerifiedBadge className="shrink-0" /> : null}
+            </Link>
           ) : null}
         </div>
       </div>

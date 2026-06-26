@@ -2,10 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { BackArrowIcon } from "@/components/PageBackLink";
 import { VideoSlide } from "@/components/VideoSlide";
 import { CLASH_TOP_COUNT } from "@/lib/videoRanking";
-import { useLocale } from "@/providers/LocaleProvider";
 import type { Video } from "@/lib/types";
 
 export type VideoFeedMode = "clash" | "catalog";
@@ -47,7 +45,6 @@ function buildFeed(current: Video, feed: Video[], feedMode: VideoFeedMode): Vide
 
 export function VideoPageContent({ video, feed, feedMode }: VideoPageContentProps) {
   const router = useRouter();
-  const { t } = useLocale();
   const containerRef = useRef<HTMLDivElement>(null);
   const loopFeed = feedMode === "clash";
 
@@ -152,27 +149,8 @@ export function VideoPageContent({ video, feed, feedMode }: VideoPageContentProp
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeIndex, feedMode, goToIndex, router]);
 
-  function handleClose() {
-    if (window.history.length > 1) {
-      router.back();
-      return;
-    }
-
-    router.push(feedMode === "catalog" ? "/videos" : "/");
-  }
-
   return (
     <div className="relative h-[calc(100dvh-3.5rem)] w-full bg-black">
-      <button
-        type="button"
-        onClick={handleClose}
-        aria-label={t.common.back}
-        className="absolute start-4 top-4 z-30 flex h-10 items-center justify-center gap-1 rounded-full bg-black/60 px-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-black/80"
-      >
-        <BackArrowIcon />
-        <span className="hidden sm:inline">{t.common.back}</span>
-      </button>
-
       {showSwipeHint && videos.length > 1 ? (
         <div
           className="pointer-events-none absolute start-1/2 top-16 z-20 flex -translate-x-1/2 flex-col items-center gap-0.5 text-white/90 transition-opacity duration-300"
