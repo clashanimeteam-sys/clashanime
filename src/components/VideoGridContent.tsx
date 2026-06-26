@@ -53,6 +53,7 @@ export function VideoGridContent({
               showClashBadge={showRank}
               compact
               feedMode="catalog"
+              className="live-ranked-card"
             />
           ))}
         </section>

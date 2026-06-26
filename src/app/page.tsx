@@ -9,7 +9,7 @@ import {
 import { getActiveAnimeReleaseClashes, getAnimeSeoCatalog } from "@/lib/animeTracker.server";
 import { getActiveClashSeason } from "@/lib/clashSeasons.server";
 import { getHallOfLegends } from "@/lib/hallOfLegends";
-import { getClashArenaStats, getClashVideos } from "@/lib/videos";
+import { getClashArenaStats, getClashVideos, getGloballyRankedVideos } from "@/lib/videos";
 
 export const dynamic = "force-dynamic";
 
@@ -19,19 +19,21 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const [videos, activeSeason, arenaStats, legendSeasons, activeReleaseClashes] = await Promise.all([
-    getClashVideos(),
-    getActiveClashSeason(),
-    getClashArenaStats(),
-    getHallOfLegends(4),
-    getActiveAnimeReleaseClashes(),
-  ]);
+  const [, rankedPool, activeSeason, arenaStats, legendSeasons, activeReleaseClashes] =
+    await Promise.all([
+      getClashVideos(),
+      getGloballyRankedVideos(),
+      getActiveClashSeason(),
+      getClashArenaStats(),
+      getHallOfLegends(4),
+      getActiveAnimeReleaseClashes(),
+    ]);
 
   return (
     <>
       <JsonLd data={[buildWebSiteJsonLd(), buildOrganizationJsonLd()]} />
       <HomeContent
-        videos={videos}
+        rankedPool={rankedPool}
         activeSeason={activeSeason}
         arenaStats={arenaStats}
         legendSeasons={legendSeasons}

@@ -98,9 +98,71 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
     setLoading(false);
   }, [supabase, statusFilter]);
 
+  const refreshGlobalRanks = useCallback(async () => {
+    try {
+      const response = await fetch("/api/videos/global-ranks", { cache: "no-store" });
+      if (response.ok) {
+        setGlobalRanks((await response.json()) as Record<string, number>);
+      }
+    } catch {
+      setGlobalRanks({});
+    }
+  }, []);
+
   useEffect(() => {
     loadVideos();
   }, [loadVideos]);
+
+  useEffect(() => {
+    if (!supabase) return;
+
+    let rankTimer: number | null = null;
+    const scheduleRankRefresh = () => {
+      if (rankTimer !== null) window.clearTimeout(rankTimer);
+      rankTimer = window.setTimeout(() => {
+        rankTimer = null;
+        void refreshGlobalRanks();
+      }, 300);
+    };
+
+    const channel = supabase
+      .channel("admin-videos-live")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "videos" },
+        (payload) => {
+          if (payload.eventType === "DELETE") {
+            const row = payload.old as { id?: string };
+            if (row.id) {
+              setVideos((current) => current.filter((video) => video.id !== row.id));
+            }
+            scheduleRankRefresh();
+            return;
+          }
+
+          const row = payload.new as AdminVideo;
+          if (!row.id) return;
+
+          setVideos((current) => {
+            const index = current.findIndex((video) => video.id === row.id);
+            if (index === -1) {
+              void loadVideos();
+              return current;
+            }
+            const next = [...current];
+            next[index] = { ...next[index], ...row };
+            return next;
+          });
+          scheduleRankRefresh();
+        },
+      )
+      .subscribe();
+
+    return () => {
+      if (rankTimer !== null) window.clearTimeout(rankTimer);
+      void supabase.removeChannel(channel);
+    };
+  }, [supabase, loadVideos, refreshGlobalRanks]);
 
   async function moderateVideo(
     videoId: string,

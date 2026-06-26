@@ -2,13 +2,15 @@
 
 import { useMemo, useState } from "react";
 import { VideoGridContent } from "@/components/VideoGridContent";
+import { useLiveRankedVideos } from "@/hooks/useLiveRankedVideos";
 import { filterVideosByQuery } from "@/lib/videoSearch";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Video } from "@/lib/types";
 
-export function VideosPageContent({ videos }: { videos: Video[] }) {
+export function VideosPageContent({ videos: initialVideos }: { videos: Video[] }) {
   const { t } = useLocale();
   const [query, setQuery] = useState("");
+  const videos = useLiveRankedVideos(initialVideos, { mode: "catalog" });
 
   const trimmedQuery = query.trim();
   const filteredVideos = useMemo(

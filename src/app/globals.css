@@ -1645,3 +1645,16 @@ html[lang="ar-u-nu-latn"] {
   border: none;
   cursor: pointer;
 }
+
+.live-ranked-card {
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease,
+    opacity 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-ranked-card {
+    transition: none;
+  }
+}

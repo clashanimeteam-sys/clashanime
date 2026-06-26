@@ -12,10 +12,11 @@ import type { HallOfLegendsSeason } from "@/lib/hallOfLegends";
 import type { AnimeReleaseClash } from "@/lib/animeTracker";
 import type { ClashArenaStats } from "@/lib/videos";
 import { useLocale } from "@/providers/LocaleProvider";
+import { useLiveRankedVideos } from "@/hooks/useLiveRankedVideos";
 import type { Video } from "@/lib/types";
 
 type HomeContentProps = {
-  videos: Video[];
+  rankedPool: Video[];
   activeSeason: ClashSeason | null;
   arenaStats: ClashArenaStats;
   legendSeasons: HallOfLegendsSeason[];
@@ -46,13 +47,14 @@ function HomeHeroTop({
 }
 
 export function HomeContent({
-  videos,
+  rankedPool,
   activeSeason,
   arenaStats,
   legendSeasons,
   activeReleaseClashes,
 }: HomeContentProps) {
   const { t } = useLocale();
+  const videos = useLiveRankedVideos(rankedPool, { mode: "clash" });
   const hasReleaseBanner = activeReleaseClashes.length > 0;
 
   const podiumVideos = PODIUM_ORDER.map((rank) =>
@@ -66,11 +68,13 @@ export function HomeContent({
   function renderClashCard(video: Video) {
     return (
       <VideoCard
+        key={video.id}
         video={video}
         rank={video.global_rank}
         clashMode
         showClashBadge
         feedMode="clash"
+        className="live-ranked-card"
       />
     );
   }
@@ -102,7 +106,7 @@ export function HomeContent({
 
           <div className="relative z-10 px-4 py-6 sm:px-6 sm:py-8">
             {podiumVideos.length > 0 ? (
-              <section aria-label={t.home.podiumLabel} className="mb-10">
+              <section aria-label={t.home.podiumLabel} className="mb-10" aria-live="polite">
                 <h2 className="mb-4 font-display text-sm font-bold uppercase tracking-[0.24em] text-amber-200">
                   {t.home.podiumLabel}
                 </h2>
@@ -113,7 +117,7 @@ export function HomeContent({
             ) : null}
 
             {challengerVideos.length > 0 ? (
-              <section aria-label={t.home.challengersLabel}>
+              <section aria-label={t.home.challengersLabel} aria-live="polite">
                 <h2 className="mb-4 font-display text-sm font-bold uppercase tracking-[0.24em] text-orange-200">
                   {t.home.challengersLabel}
                 </h2>

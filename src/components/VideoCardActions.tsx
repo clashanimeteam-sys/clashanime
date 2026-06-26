@@ -10,6 +10,7 @@ import {
   incrementVideoShares,
   toggleVideoLike,
 } from "@/lib/videoEngagement";
+import { dispatchVideoEngagementChanged } from "@/lib/videoEngagementEvents";
 import { useRequireSubscription } from "@/hooks/useRequireSubscription";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -119,8 +120,11 @@ export function VideoCardActions({
     if (!supabase || !requireSubscription() || !user) return;
 
     const wasLiked = liked;
+    const previousLikes = likesCount;
+    const optimisticLikes = Math.max(0, previousLikes + (wasLiked ? -1 : 1));
     setLiked(!wasLiked);
-    setLikesCount((count) => Math.max(0, count + (wasLiked ? -1 : 1)));
+    setLikesCount(optimisticLikes);
+    dispatchVideoEngagementChanged({ videoId, likes_count: optimisticLikes });
     setLoadingLike(true);
     setError(null);
 
@@ -129,9 +133,11 @@ export function VideoCardActions({
     if (counts) {
       setLiked(!wasLiked);
       setLikesCount(counts.likes_count);
+      dispatchVideoEngagementChanged({ videoId, likes_count: counts.likes_count });
     } else {
       setLiked(wasLiked);
-      setLikesCount((count) => Math.max(0, count + (wasLiked ? 1 : -1)));
+      setLikesCount(previousLikes);
+      dispatchVideoEngagementChanged({ videoId, likes_count: previousLikes });
       setError(t.video.actionFailed);
     }
 
@@ -165,15 +171,19 @@ export function VideoCardActions({
     }
 
     if (shared) {
-      setSharesCount((count) => count + 1);
+      const optimisticShares = sharesCount + 1;
+      setSharesCount(optimisticShares);
+      dispatchVideoEngagementChanged({ videoId, shares_count: optimisticShares });
 
       const nextShares = await incrementVideoShares(supabase, videoId);
       if (nextShares !== null) {
         setSharesCount(nextShares);
+        dispatchVideoEngagementChanged({ videoId, shares_count: nextShares });
       } else {
         const counts = await fetchVideoCounts(supabase, videoId);
         if (counts) {
           setSharesCount(counts.shares_count);
+          dispatchVideoEngagementChanged({ videoId, shares_count: counts.shares_count });
         }
       }
     }
@@ -202,7 +212,10 @@ export function VideoCardActions({
       loadingLike,
       onLike: handleLike,
       onShare: handleShare,
-      onCommentsCountChange: setCommentsCount,
+      onCommentsCountChange: (count) => {
+        setCommentsCount(count);
+        dispatchVideoEngagementChanged({ videoId, comments_count: count });
+      },
     });
   }
 

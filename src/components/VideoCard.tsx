@@ -23,6 +23,7 @@ type VideoCardProps = {
   compact?: boolean;
   clashMode?: boolean;
   feedMode?: VideoFeedMode;
+  className?: string;
 };
 
 export function VideoCard({
@@ -34,6 +35,7 @@ export function VideoCard({
   compact = false,
   clashMode = false,
   feedMode,
+  className = "",
 }: VideoCardProps) {
   const { t, formatNumber, formatDateTime } = useLocale();
   const videoHref = feedMode ? `/video/${video.id}?feed=${feedMode}` : `/video/${video.id}`;
@@ -46,7 +48,7 @@ export function VideoCard({
 
   return (
     <article
-      className={`group overflow-hidden border bg-white shadow-sm transition-all hover:-translate-y-0.5 dark:border-zinc-800 dark:bg-black ${compact ? "rounded-xl" : "rounded-2xl"} ${
+      className={`group overflow-hidden border bg-white shadow-sm transition-all hover:-translate-y-0.5 dark:border-zinc-800 dark:bg-black ${compact ? "rounded-xl" : "rounded-2xl"} ${className} ${
         isClashChampion
           ? "hover:shadow-[0_20px_50px_rgba(249,115,22,0.25)]"
           : "hover:shadow-lg hover:shadow-accent/10"
