@@ -65,6 +65,15 @@ export function formatNotificationText(
           typeLabel,
         };
       }
+      case "admin_video_review": {
+        const channel = metaString(metadata, "channel_display_name") || metaString(metadata, "channel_username") || "A creator";
+        const title = metaString(metadata, "video_title") || "";
+        return {
+          title: typeField(types, "admin_video_review", "title", row.title),
+          body: applyTemplate(typeField(types, "admin_video_review", "body", row.body), { channel, title }),
+          typeLabel,
+        };
+      }
       case "new_music": {
         const channel = metaString(metadata, "channel_display_name") || metaString(metadata, "channel_username") || "A channel";
         const title = metaString(metadata, "track_title") || "";
@@ -266,6 +275,7 @@ export function formatNotificationText(
 export const NOTIFICATION_TYPE_KEYS = [
   "follow",
   "new_video",
+  "admin_video_review",
   "new_music",
   "community_post",
   "video_duel",

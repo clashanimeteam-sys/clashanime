@@ -1,6 +1,8 @@
 import { createServerClient } from "@/lib/supabase/server";
 import {
+  assignClashRanks,
   assignGlobalRanks,
+  calculateTrendingScore,
   CLASH_TOP_COUNT,
 } from "@/lib/videoRanking";
 import type { Video, VideoChannel } from "@/lib/types";
@@ -122,11 +124,14 @@ export async function attachVideoChannels(
 const APPROVED_VIDEO_SELECT =
   "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, user_id, hashtags";
 
-async function fetchApprovedVideos(): Promise<Video[]> {
+async function fetchApprovedVideoPool(): Promise<Video[]> {
   const supabase = await createServerClient();
 
   if (!supabase) {
-    return assignGlobalRanks(MOCK_VIDEOS);
+    return MOCK_VIDEOS.map((video) => ({
+      ...video,
+      trending_score: calculateTrendingScore(video),
+    }));
   }
 
   const { data, error } = await supabase
@@ -137,11 +142,26 @@ async function fetchApprovedVideos(): Promise<Video[]> {
     .limit(500);
 
   if (error || !data?.length) {
-    return assignGlobalRanks(MOCK_VIDEOS);
+    return MOCK_VIDEOS.map((video) => ({
+      ...video,
+      trending_score: calculateTrendingScore(video),
+    }));
   }
 
   const withChannels = await attachVideoChannels(supabase, data);
-  return assignGlobalRanks(withChannels);
+  return withChannels.map((video) => ({
+    ...video,
+    trending_score: calculateTrendingScore(video),
+  }));
+}
+
+async function fetchApprovedVideos(): Promise<Video[]> {
+  return assignGlobalRanks(await fetchApprovedVideoPool());
+}
+
+/** Approved videos with channel data for live clash ranking (no ranks assigned). */
+export async function getApprovedVideoPool(): Promise<Video[]> {
+  return fetchApprovedVideoPool();
 }
 
 async function awardClashTrendingBonuses(videos: Video[]): Promise<void> {
@@ -157,6 +177,10 @@ async function awardClashTrendingBonuses(videos: Video[]): Promise<void> {
 
 export async function getGloballyRankedVideos(): Promise<Video[]> {
   return fetchApprovedVideos();
+}
+
+export async function getClashRankedVideos(): Promise<Video[]> {
+  return assignClashRanks(await fetchApprovedVideoPool());
 }
 
 export type ClashArenaStats = {
@@ -216,9 +240,9 @@ export async function getClashArenaStats(): Promise<ClashArenaStats> {
   };
 }
 
-/** Top 12 globally ranked videos for the Clash (النزالات) feed. */
+/** Top 12 engagement-ranked videos for the Clash (النزالات) feed. */
 export async function getClashVideos(): Promise<Video[]> {
-  const ranked = await fetchApprovedVideos();
+  const ranked = await getClashRankedVideos();
   const top = ranked
     .slice(0, CLASH_TOP_COUNT)
     .sort((a, b) => (a.global_rank ?? 999) - (b.global_rank ?? 999));
@@ -252,6 +276,13 @@ export async function getRecentVideos(limit = 48): Promise<Video[]> {
 }
 
 export async function getGlobalRankMap(): Promise<Record<string, number>> {
+  const ranked = await getClashRankedVideos();
+  return Object.fromEntries(
+    ranked.map((video) => [video.id, video.global_rank ?? 0]),
+  );
+}
+
+export async function getTrendingRankMap(): Promise<Record<string, number>> {
   const ranked = await fetchApprovedVideos();
   return Object.fromEntries(
     ranked.map((video) => [video.id, video.global_rank ?? 0]),

@@ -253,7 +253,8 @@ export function UploadVideoForm({ clashContext = null }: UploadVideoFormProps) {
       hashtags: tags,
       duration_seconds: duration,
       description: tags.length ? tags.map((tag) => `#${tag}`).join(" ") : "",
-      moderation_status: scan.status,
+      moderation_status: "approved",
+      admin_review_pending: true,
       file_hash: fingerprints.fileHash,
       perceptual_hash: fingerprints.perceptualHash,
       thumb_hash: fingerprints.thumbHash,
@@ -271,16 +272,11 @@ export function UploadVideoForm({ clashContext = null }: UploadVideoFormProps) {
       return;
     }
 
-    if (scan.status === "review" || scan.status === "pending") {
-      setSuccessMessage(t.upload.reviewPending);
-      window.setTimeout(
-        () => router.push(clashContext ? `/tracker/clash/${clashContext.clashId}` : "/profile"),
-        1800,
-      );
-      return;
-    }
-
-    router.push(clashContext ? `/tracker/clash/${clashContext.clashId}` : "/profile");
+    setSuccessMessage(t.upload.publishedLive);
+    window.setTimeout(
+      () => router.push(clashContext ? `/tracker/clash/${clashContext.clashId}` : "/profile"),
+      1800,
+    );
   }
 
   async function removeUploadedMedia(

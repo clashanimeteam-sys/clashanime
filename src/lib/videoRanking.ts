@@ -2,6 +2,37 @@ import type { Video } from "@/lib/types";
 
 export const CLASH_TOP_COUNT = 12;
 
+/** Pure engagement score for النزالات — likes, comments, shares only (no age decay). */
+export function calculateClashEngagementScore(video: Video): number {
+  return (
+    video.likes_count +
+    video.comments_count * 2 +
+    (video.shares_count ?? 0) * 3
+  );
+}
+
+export function sortByClashEngagement(videos: Video[]): Video[] {
+  return [...videos]
+    .map((video) => ({
+      ...video,
+      trending_score: video.trending_score ?? calculateTrendingScore(video),
+    }))
+    .sort((a, b) => {
+      const scoreA = calculateClashEngagementScore(a);
+      const scoreB = calculateClashEngagementScore(b);
+      if (scoreB !== scoreA) return scoreB - scoreA;
+      if (b.likes_count !== a.likes_count) return b.likes_count - a.likes_count;
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    });
+}
+
+export function assignClashRanks(videos: Video[]): Video[] {
+  return sortByClashEngagement(videos).map((video, index) => ({
+    ...video,
+    global_rank: index + 1,
+  }));
+}
+
 export function calculateTrendingScore(video: Video): number {
   const ageHours =
     (Date.now() - new Date(video.created_at).getTime()) / (1000 * 60 * 60);

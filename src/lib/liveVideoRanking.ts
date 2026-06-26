@@ -1,5 +1,5 @@
 import type { Video } from "@/lib/types";
-import { assignGlobalRanks, CLASH_TOP_COUNT } from "@/lib/videoRanking";
+import { assignClashRanks, assignGlobalRanks, CLASH_TOP_COUNT } from "@/lib/videoRanking";
 import type { VideoEngagementDelta } from "@/lib/videoEngagementEvents";
 
 type VideoEngagementRow = {
@@ -44,7 +44,7 @@ export function patchVideoFromRow(pool: Video[], row: VideoEngagementRow): Video
 }
 
 export function applyClashRanking(pool: Video[]): Video[] {
-  return assignGlobalRanks(pool)
+  return assignClashRanks(pool)
     .slice(0, CLASH_TOP_COUNT)
     .sort((a, b) => (a.global_rank ?? 999) - (b.global_rank ?? 999));
 }

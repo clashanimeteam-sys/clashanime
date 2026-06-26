@@ -78,6 +78,7 @@ export type Video = {
   duration_seconds?: number | null;
   description?: string;
   moderation_status?: ModerationStatus;
+  admin_review_pending?: boolean;
   rejection_reason?: string | null;
   suspicion_score?: number;
   suspicion_flags?: string[];

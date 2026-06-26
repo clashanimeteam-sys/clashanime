@@ -532,6 +532,7 @@ export type Dictionary = {
     types: {
       follow: { label: string; title: string; body: string };
       new_video: { label: string; title: string; body: string };
+      admin_video_review: { label: string; title: string; body: string };
       new_music: { label: string; title: string; body: string };
       community_post: { label: string; title: string; body: string; bodyWithPreview: string };
       video_duel: { label: string; title: string; body: string };
@@ -834,6 +835,7 @@ export type Dictionary = {
     uploading: string;
     publish: string;
     reviewPending: string;
+    publishedLive: string;
     scanFailed: string;
     uploadFailed: string;
     r2UploadBlocked: string;
@@ -912,6 +914,9 @@ export type Dictionary = {
     channelHasYoutube: string;
     suspicionScore: string;
     globalRank: string;
+    clashRank: string;
+    awaitingAdminReview: string;
+    markReviewed: string;
     inClashTop: string;
     rejectionReason: string;
     reportReason: string;
@@ -1911,6 +1916,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       types: {
         follow: { label: "Follow", title: "New follower", body: "{name} started following you" },
         new_video: { label: "Video", title: "New video", body: "{channel} published: {title}" },
+        admin_video_review: {
+          label: "Admin",
+          title: "Video needs review",
+          body: "{channel} published: {title}",
+        },
         new_music: { label: "Music", title: "New music", body: "{channel} added a track: {title}" },
         community_post: {
           label: "Community",
@@ -2268,6 +2278,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       publish: "Publish",
       reviewPending:
         "Your clip was uploaded and is under review. It will appear publicly once approved.",
+      publishedLive:
+        "Your video is live! Our team may review it later.",
       scanFailed: "Could not verify this file. Try again with a different export.",
       uploadFailed: "Could not upload files. Try again in a moment.",
       r2UploadBlocked:
@@ -2352,6 +2364,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelHasYoutube: "YouTube",
       suspicionScore: "Suspicion score",
       globalRank: "Global rank",
+      clashRank: "Clash rank",
+      awaitingAdminReview: "Awaiting review",
+      markReviewed: "Mark reviewed",
       inClashTop: "In Clash top 12",
       rejectionReason: "Rejection reason",
       reportReason: "Reason",
@@ -3340,6 +3355,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       types: {
         follow: { label: "フォロー", title: "新しいフォロワー", body: "{name}さんがあなたをフォローしました" },
         new_video: { label: "動画", title: "新しい動画", body: "{channel}が公開: {title}" },
+        admin_video_review: {
+          label: "管理",
+          title: "動画の確認が必要",
+          body: "{channel}が公開: {title}",
+        },
         new_music: { label: "音楽", title: "新しい音楽", body: "{channel}がトラックを追加: {title}" },
         community_post: {
           label: "コミュニティ",
@@ -3694,6 +3714,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       publish: "公開",
       reviewPending:
         "クリップはアップロードされ、審査中です。承認後に公開されます。",
+      publishedLive:
+        "動画が公開されました。後ほどチームが確認する場合があります。",
       scanFailed: "ファイルを検証できませんでした。別の書き出しで再試行してください。",
       uploadFailed: "ファイルをアップロードできませんでした。しばらくして再試行してください。",
       r2UploadBlocked:
@@ -3778,6 +3800,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelHasYoutube: "YouTube",
       suspicionScore: "疑わしさスコア",
       globalRank: "世界ランク",
+      clashRank: "クラッシュ順位",
+      awaitingAdminReview: "レビュー待ち",
+      markReviewed: "レビュー済みにする",
       inClashTop: "クラッシュ上位12",
       rejectionReason: "拒否理由",
       reportReason: "理由",
@@ -4766,6 +4791,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
       types: {
         follow: { label: "متابعة", title: "متابع جديد", body: "{name} بدأ بمتابعتك" },
         new_video: { label: "فيديو", title: "فيديو جديد", body: "{channel} نشر: {title}" },
+        admin_video_review: {
+          label: "إدارة",
+          title: "فيديو يحتاج مراجعة",
+          body: "{channel} نشر: {title}",
+        },
         new_music: { label: "موسيقى", title: "موسيقى جديدة", body: "{channel} أضاف مقطعاً: {title}" },
         community_post: {
           label: "المجتمع",
@@ -5121,6 +5151,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       publish: "نشر",
       reviewPending:
         "تم رفع المقطع وهو قيد المراجعة. سيظهر للعامة بعد الموافقة.",
+      publishedLive:
+        "فيديوك منشور الآن! قد يراجعه فريقنا لاحقاً.",
       scanFailed: "تعذر التحقق من الملف. جرّب تصديراً مختلفاً للفيديو.",
       uploadFailed: "تعذر رفع الملفات. حاول مرة أخرى بعد قليل.",
       r2UploadBlocked:
@@ -5205,6 +5237,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelHasYoutube: "YouTube",
       suspicionScore: "درجة الاشتباه",
       globalRank: "المركز العالمي",
+      clashRank: "مركز النزال",
+      awaitingAdminReview: "بانتظار المراجعة",
+      markReviewed: "تمت المراجعة",
       inClashTop: "في النزالات (أفضل 12)",
       rejectionReason: "سبب الرفض",
       reportReason: "السبب",

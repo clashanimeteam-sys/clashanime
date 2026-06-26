@@ -17,23 +17,28 @@ type AdminVideo = Video & {
   owner_username?: string | null;
 };
 
-const STATUS_FILTERS: Array<ModerationStatus | "all"> = [
+type VideoFilter = ModerationStatus | "all" | "awaiting_review";
+
+const STATUS_FILTERS: VideoFilter[] = [
   "all",
+  "awaiting_review",
   "review",
   "pending",
   "approved",
   "rejected",
 ];
 
+function isVideoFilter(value: string): value is VideoFilter {
+  return STATUS_FILTERS.includes(value as VideoFilter);
+}
+
 export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: string }) {
   const { user } = useAuth();
   const { t, formatNumber, formatDateTime } = useLocale();
   const supabase = useMemo(() => createBrowserClient(), []);
   const [videos, setVideos] = useState<AdminVideo[]>([]);
-  const [statusFilter, setStatusFilter] = useState<ModerationStatus | "all">(
-    STATUS_FILTERS.includes(initialStatus as ModerationStatus | "all")
-      ? (initialStatus as ModerationStatus | "all")
-      : "all",
+  const [statusFilter, setStatusFilter] = useState<VideoFilter>(
+    isVideoFilter(initialStatus) ? initialStatus : "all",
   );
   const [loading, setLoading] = useState(true);
   const [globalRanks, setGlobalRanks] = useState<Record<string, number>>({});
@@ -49,12 +54,14 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
     let query = supabase
       .from("videos")
       .select(
-        "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, user_id, moderation_status, rejection_reason, suspicion_score, suspicion_flags",
+        "id, title, thumbnail_url, video_url, likes_count, comments_count, views_count, shares_count, created_at, user_id, moderation_status, admin_review_pending, rejection_reason, suspicion_score, suspicion_flags",
       )
       .order("created_at", { ascending: false })
       .limit(100);
 
-    if (statusFilter !== "all") {
+    if (statusFilter === "awaiting_review") {
+      query = query.eq("admin_review_pending", true);
+    } else if (statusFilter !== "all") {
       query = query.eq("moderation_status", statusFilter);
     }
 
@@ -164,6 +171,27 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
     };
   }, [supabase, loadVideos, refreshGlobalRanks]);
 
+  async function markVideoReviewed(videoId: string) {
+    if (!supabase || !user) return;
+
+    setMessage(null);
+    setError(null);
+
+    const { error: updateError } = await supabase
+      .from("videos")
+      .update({ admin_review_pending: false })
+      .eq("id", videoId);
+
+    if (updateError) {
+      setError(updateError.message);
+      return;
+    }
+
+    setMessage(t.admin.saved);
+    notifyAdminReviewCountsChanged();
+    await loadVideos();
+  }
+
   async function moderateVideo(
     videoId: string,
     moderationStatus: ModerationStatus,
@@ -176,12 +204,22 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
 
     const previousStatus = videos.find((video) => video.id === videoId)?.moderation_status ?? null;
 
+    const updatePayload: {
+      moderation_status: ModerationStatus;
+      rejection_reason: string | null;
+      admin_review_pending?: boolean;
+    } = {
+      moderation_status: moderationStatus,
+      rejection_reason: rejectionReason ?? null,
+    };
+
+    if (moderationStatus === "approved") {
+      updatePayload.admin_review_pending = false;
+    }
+
     const { error: updateError } = await supabase
       .from("videos")
-      .update({
-        moderation_status: moderationStatus,
-        rejection_reason: rejectionReason ?? null,
-      })
+      .update(updatePayload)
       .eq("id", videoId);
 
     if (updateError) {
@@ -251,7 +289,11 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
                 : "border border-zinc-700 text-zinc-300 hover:border-zinc-500"
             }`}
           >
-            {status === "all" ? t.admin.allStatuses : getModerationStatusLabel(status, t.moderation)}
+            {status === "all"
+              ? t.admin.allStatuses
+              : status === "awaiting_review"
+                ? t.admin.awaitingAdminReview
+                : getModerationStatusLabel(status, t.moderation)}
           </button>
         ))}
       </div>
@@ -283,6 +325,11 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
                       ? getModerationStatusLabel(video.moderation_status, t.moderation)
                       : t.moderation.statusPending}
                   </span>
+                  {video.admin_review_pending ? (
+                    <span className="rounded-full bg-amber-500/20 px-2 py-1 text-[10px] font-semibold uppercase text-amber-200">
+                      {t.admin.awaitingAdminReview}
+                    </span>
+                  ) : null}
                 </div>
                 <p className="text-sm text-zinc-400">
                   @{video.owner_username ?? "unknown"} · {formatDateTime(video.created_at)}
@@ -293,7 +340,7 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
                 </p>
                 {video.moderation_status === "approved" && globalRanks[video.id] ? (
                   <p className="text-xs text-accent">
-                    {t.admin.globalRank}: #{globalRanks[video.id]}
+                    {t.admin.clashRank}: #{globalRanks[video.id]}
                     {isInClashTop(globalRanks[video.id]) ? ` · ${t.admin.inClashTop}` : ""}
                   </p>
                 ) : null}
@@ -311,6 +358,15 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
               </div>
 
               <div className="flex flex-wrap gap-2 lg:flex-col lg:items-stretch">
+                {video.admin_review_pending ? (
+                  <button
+                    type="button"
+                    onClick={() => markVideoReviewed(video.id)}
+                    className="rounded-lg bg-amber-500 px-3 py-2 text-xs font-semibold text-black hover:bg-amber-400"
+                  >
+                    {t.admin.markReviewed}
+                  </button>
+                ) : null}
                 <button
                   type="button"
                   onClick={() => moderateVideo(video.id, "approved")}

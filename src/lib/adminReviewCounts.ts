@@ -70,7 +70,7 @@ export async function fetchAdminReviewCounts(
       supabase
         .from("videos")
         .select("*", { count: "exact", head: true })
-        .in("moderation_status", ["review", "pending"]),
+        .eq("admin_review_pending", true),
     ),
     countQuery(
       supabase.from("content_reports").select("*", { count: "exact", head: true }).eq("status", "open"),

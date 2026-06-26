@@ -9,7 +9,7 @@ import {
 import { getActiveAnimeReleaseClashes, getAnimeSeoCatalog } from "@/lib/animeTracker.server";
 import { getActiveClashSeason } from "@/lib/clashSeasons.server";
 import { getHallOfLegends } from "@/lib/hallOfLegends";
-import { getClashArenaStats, getClashVideos, getGloballyRankedVideos } from "@/lib/videos";
+import { getApprovedVideoPool, getClashArenaStats, getClashVideos } from "@/lib/videos";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +22,7 @@ export default async function Home() {
   const [, rankedPool, activeSeason, arenaStats, legendSeasons, activeReleaseClashes] =
     await Promise.all([
       getClashVideos(),
-      getGloballyRankedVideos(),
+      getApprovedVideoPool(),
       getActiveClashSeason(),
       getClashArenaStats(),
       getHallOfLegends(4),
