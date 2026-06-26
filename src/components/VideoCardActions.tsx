@@ -61,15 +61,19 @@ export function VideoCardActions({
   const actionButtonClass = compact
     ? "inline-flex items-center gap-0.5 rounded-full border px-1.5 py-0.5 text-[9px] font-semibold transition-colors disabled:opacity-60"
     : isOverlay
-      ? "inline-flex flex-col items-center justify-center gap-1 rounded-2xl border px-2.5 py-2.5 text-[11px] font-bold leading-none transition-colors disabled:opacity-60 min-w-[3.25rem]"
+      ? "inline-flex flex-col items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-semibold leading-none text-white transition-opacity hover:opacity-80 disabled:opacity-60"
       : "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors disabled:opacity-60";
+  const iconWrapClass = isOverlay
+    ? "flex h-11 w-11 items-center justify-center rounded-full bg-zinc-900/75 text-white backdrop-blur-sm"
+    : "";
   const iconClass = compact ? "h-2.5 w-2.5" : isOverlay ? "h-5 w-5" : "h-3.5 w-3.5";
   const buttonClass = isOverlay
-    ? "border-white/35 bg-black/45 text-white shadow-[0_8px_24px_rgba(0,0,0,0.45)] backdrop-blur-sm hover:border-white/60 hover:text-white"
+    ? ""
     : "border-zinc-300 text-zinc-700 hover:border-accent/40 hover:text-accent dark:border-zinc-700 dark:text-zinc-200";
   const likedClass = isOverlay
-    ? "border-accent bg-accent/25 text-accent shadow-[0_8px_24px_rgba(0,0,0,0.45)] backdrop-blur-sm"
+    ? "text-white"
     : "border-accent bg-accent/10 text-accent";
+  const likedIconWrapClass = isOverlay ? "bg-accent text-white" : "";
 
   useEffect(() => {
     setLikesCount(initialLikes);
@@ -191,7 +195,7 @@ export function VideoCardActions({
       <div
         className={
           isOverlay
-            ? "flex flex-col items-center gap-2.5"
+            ? "flex flex-col items-center gap-4 pb-2"
             : `flex flex-wrap items-center ${compact ? "gap-1" : "gap-2"}`
         }
       >
@@ -203,16 +207,18 @@ export function VideoCardActions({
           aria-label={liked ? t.video.unlike : t.video.like}
           className={`${actionButtonClass} ${liked ? likedClass : buttonClass}`}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className={iconClass}
-            aria-hidden
-          >
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-          </svg>
-          {formatNumber(likesCount)}
+          <span className={`${iconWrapClass} ${liked ? likedIconWrapClass : ""}`}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className={iconClass}
+              aria-hidden
+            >
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+            </svg>
+          </span>
+          {isOverlay ? <span>{formatNumber(likesCount)}</span> : formatNumber(likesCount)}
         </button>
 
         <button
@@ -221,18 +227,20 @@ export function VideoCardActions({
           aria-label={t.video.comments}
           className={`${actionButtonClass} ${buttonClass}`}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            className={iconClass}
-            aria-hidden
-          >
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-          </svg>
-          {formatNumber(commentsCount)}
+          <span className={iconWrapClass}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              className={iconClass}
+              aria-hidden
+            >
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+          </span>
+          {isOverlay ? <span>{formatNumber(commentsCount)}</span> : formatNumber(commentsCount)}
         </button>
 
         <button
@@ -241,31 +249,30 @@ export function VideoCardActions({
           aria-label={t.video.share}
           className={`${actionButtonClass} ${buttonClass}`}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            className={iconClass}
-            aria-hidden
-          >
-            <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" />
-            <path d="M16 6l-4-4-4 4" />
-            <path d="M12 2v14" />
-          </svg>
-          {formatNumber(sharesCount)}
+          <span className={iconWrapClass}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              className={iconClass}
+              aria-hidden
+            >
+              <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" />
+              <path d="M16 6l-4-4-4 4" />
+              <path d="M12 2v14" />
+            </svg>
+          </span>
+          {isOverlay ? <span>{formatNumber(sharesCount)}</span> : formatNumber(sharesCount)}
         </button>
 
+        {!isOverlay ? (
         <button
           type="button"
           onClick={handleReport}
           aria-label={t.video.report}
-          className={`${actionButtonClass} ${
-            isOverlay
-              ? "border-white/30 text-white/80 hover:border-red-400/50 hover:text-red-300"
-              : "border-zinc-300 text-zinc-600 hover:border-red-400/50 hover:text-red-500 dark:border-zinc-700 dark:text-zinc-200"
-          }`}
+          className={`${actionButtonClass} border-zinc-300 text-zinc-600 hover:border-red-400/50 hover:text-red-500 dark:border-zinc-700 dark:text-zinc-200`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -280,6 +287,7 @@ export function VideoCardActions({
             <path d="M4 22v-7" />
           </svg>
         </button>
+        ) : null}
       </div>
 
       {(shareStatus || error) && (

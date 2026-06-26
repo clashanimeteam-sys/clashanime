@@ -13,6 +13,7 @@ type VideoSettingsMenuProps = {
   videoId: string;
   title: string;
   disabled?: boolean;
+  embedded?: boolean;
 };
 
 export function VideoSettingsMenu({
@@ -20,6 +21,7 @@ export function VideoSettingsMenu({
   videoId,
   title,
   disabled = false,
+  embedded = false,
 }: VideoSettingsMenuProps) {
   const { t } = useLocale();
   const { user } = useAuth();
@@ -118,13 +120,18 @@ export function VideoSettingsMenu({
   if (disabled) return null;
 
   return (
-    <div ref={menuRef} className="absolute end-4 top-4 z-30">
+    <div ref={menuRef} className={embedded ? "relative" : "absolute end-4 top-4 z-30"}>
       <button
         type="button"
-        onClick={() => setOpen((value) => !value)}
+        onClick={(event) => {
+          event.stopPropagation();
+          setOpen((value) => !value);
+        }}
         aria-expanded={open}
         aria-label={t.video.settings}
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-sm transition-colors hover:bg-black/80"
+        className={`flex items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-sm transition-colors hover:bg-black/80 ${
+          embedded ? "h-9 w-9" : "h-10 w-10"
+        }`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

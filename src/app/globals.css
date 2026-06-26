@@ -1551,3 +1551,56 @@ html[lang="ar-u-nu-latn"] {
 .public-video-player::-webkit-media-controls-volume-slider {
   filter: brightness(1.45) contrast(1.1);
 }
+
+.shorts-progress {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 0.2rem;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    #ffffff 0%,
+    #ffffff var(--progress, 0%),
+    rgba(255, 255, 255, 0.35) var(--progress, 0%),
+    rgba(255, 255, 255, 0.35) 100%
+  );
+  cursor: pointer;
+}
+
+.shorts-progress::-webkit-slider-runnable-track {
+  height: 0.2rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.shorts-progress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-top: -0.28rem;
+  border-radius: 9999px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.shorts-progress::-moz-range-track {
+  height: 0.2rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.shorts-progress::-moz-range-progress {
+  height: 0.2rem;
+  border-radius: 9999px;
+  background: #ffffff;
+}
+
+.shorts-progress::-moz-range-thumb {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: none;
+  cursor: pointer;
+}

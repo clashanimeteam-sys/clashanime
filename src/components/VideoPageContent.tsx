@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { VideoSlide } from "@/components/VideoSlide";
 import { CLASH_TOP_COUNT } from "@/lib/videoRanking";
+import { useLocale } from "@/providers/LocaleProvider";
 import type { Video } from "@/lib/types";
 
 export type VideoFeedMode = "clash" | "catalog";
@@ -45,6 +46,7 @@ function buildFeed(current: Video, feed: Video[], feedMode: VideoFeedMode): Vide
 
 export function VideoPageContent({ video, feed, feedMode }: VideoPageContentProps) {
   const router = useRouter();
+  const { t } = useLocale();
   const containerRef = useRef<HTMLDivElement>(null);
   const loopFeed = feedMode === "clash";
 
@@ -151,6 +153,51 @@ export function VideoPageContent({ video, feed, feedMode }: VideoPageContentProp
 
   return (
     <div className="relative h-[calc(100dvh-3.5rem)] w-full bg-black">
+      {videos.length > 1 ? (
+        <div className="pointer-events-none absolute inset-y-0 start-2 z-30 hidden items-center lg:flex">
+          <div className="flex flex-col gap-3">
+            <button
+              type="button"
+              onClick={() => goToIndex(activeIndex - 1)}
+              disabled={!loopFeed && activeIndex <= 0}
+              aria-label={t.video.previousInFeed}
+              className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full bg-zinc-900/80 text-white shadow-lg backdrop-blur-sm transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className="h-5 w-5"
+                aria-hidden
+              >
+                <path d="M12 19l7-7H5l7 7z" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={() => goToIndex(activeIndex + 1)}
+              disabled={!loopFeed && activeIndex >= videos.length - 1}
+              aria-label={t.video.nextInFeed}
+              className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full bg-zinc-900/80 text-white shadow-lg backdrop-blur-sm transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className="h-5 w-5"
+                aria-hidden
+              >
+                <path d="M12 5l-7 7h14l-7-7z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      ) : null}
+
       {showSwipeHint && videos.length > 1 ? (
         <div
           className="pointer-events-none absolute start-1/2 top-16 z-20 flex -translate-x-1/2 flex-col items-center gap-0.5 text-white/90 transition-opacity duration-300"

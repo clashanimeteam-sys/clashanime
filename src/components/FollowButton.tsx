@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRequireSubscription } from "@/hooks/useRequireSubscription";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
@@ -11,6 +11,7 @@ type FollowButtonProps = {
   initialFollowing: boolean;
   initialFollowerCount: number;
   onFollowerCountChange?: (count: number) => void;
+  compact?: boolean;
 };
 
 export function FollowButton({
@@ -18,6 +19,7 @@ export function FollowButton({
   initialFollowing,
   initialFollowerCount,
   onFollowerCountChange,
+  compact = false,
 }: FollowButtonProps) {
   const { requireSubscription } = useRequireSubscription();
   const { user } = useAuth();
@@ -27,6 +29,14 @@ export function FollowButton({
   const [isFollowing, setIsFollowing] = useState(initialFollowing);
   const [followerCount, setFollowerCount] = useState(initialFollowerCount);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setIsFollowing(initialFollowing);
+  }, [initialFollowing]);
+
+  useEffect(() => {
+    setFollowerCount(initialFollowerCount);
+  }, [initialFollowerCount]);
 
   function updateCount(next: number) {
     setFollowerCount(next);
@@ -64,6 +74,27 @@ export function FollowButton({
     }
 
     setLoading(false);
+  }
+
+  if (compact) {
+    return (
+      <button
+        type="button"
+        onClick={toggleFollow}
+        disabled={loading || user?.id === channelId}
+        className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+          isFollowing
+            ? "border border-white/35 bg-white/10 text-white hover:bg-white/20"
+            : "bg-white text-black hover:bg-zinc-100"
+        }`}
+      >
+        {loading
+          ? t.profile.followingLoading
+          : isFollowing
+            ? t.profile.unfollow
+            : t.profile.follow}
+      </button>
+    );
   }
 
   return (

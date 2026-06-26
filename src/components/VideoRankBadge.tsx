@@ -6,6 +6,7 @@ type VideoRankBadgeProps = {
   rank: number;
   compact?: boolean;
   overlay?: boolean;
+  embedded?: boolean;
 };
 
 type MedalTier = "gold" | "silver" | "bronze" | null;
@@ -35,16 +36,25 @@ const medalStyles: Record<
   },
 };
 
-export function VideoRankBadge({ rank, compact = false, overlay = false }: VideoRankBadgeProps) {
+export function VideoRankBadge({
+  rank,
+  compact = false,
+  overlay = false,
+  embedded = false,
+}: VideoRankBadgeProps) {
   const { t } = useLocale();
   const medal = getMedalTier(rank);
-  const positionClass = overlay
+  const positionClass = embedded
     ? compact
-      ? "start-3 top-3"
-      : "start-4 top-4"
-    : compact
       ? "start-2 top-2"
-      : "start-3 top-3";
+      : "start-3 top-3"
+    : overlay
+      ? compact
+        ? "start-3 top-3"
+        : "start-4 top-4"
+      : compact
+        ? "start-2 top-2"
+        : "start-3 top-3";
 
   if (medal) {
     const style = medalStyles[medal];
