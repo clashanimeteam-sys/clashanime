@@ -42,10 +42,15 @@ function RadioOrLoungeMiniBar() {
   );
 }
 
+function isVideoRoute(pathname: string) {
+  return pathname.startsWith("/video/");
+}
+
 export function Providers({ children }: ProvidersProps) {
   const pathname = usePathname();
   const authRoute = isAuthRoute(pathname);
   const adminRoute = isAdminRoute(pathname);
+  const videoRoute = isVideoRoute(pathname);
 
   return (
     <ThemeProvider>
@@ -62,7 +67,7 @@ export function Providers({ children }: ProvidersProps) {
               children
             ) : (
               <>
-                <MobileHeader />
+                {!videoRoute ? <MobileHeader /> : null}
                 <AppShell>{children}</AppShell>
                 <AnimeRadioController />
                 <RadioOrLoungeMiniBar />

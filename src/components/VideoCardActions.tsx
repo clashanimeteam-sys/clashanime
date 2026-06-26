@@ -295,7 +295,7 @@ export function VideoCardActions({
       {isOverlay && preview?.channel ? (
         <Link
           href={`/channel/${preview.channel.username}`}
-          className="mx-auto mt-1 block max-md:mt-0"
+          className="mx-auto mt-1 hidden md:mt-0 md:block"
           aria-label={preview.channel.display_name ?? preview.channel.username}
         >
           <span className="relative block h-10 w-10 overflow-hidden rounded-full ring-2 ring-white max-md:h-9 max-md:w-9">

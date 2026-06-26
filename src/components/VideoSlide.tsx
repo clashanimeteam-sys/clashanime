@@ -350,10 +350,10 @@ export function VideoSlide({ video, isActive, showRank = false }: VideoSlideProp
           <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/55 to-transparent px-3 pb-10 pt-20 max-md:pe-16 md:bottom-3 md:pb-8 md:pt-16">
             <div className="pointer-events-auto space-y-2 md:space-y-2.5">
               {video.channel ? (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5">
                   <Link
                     href={`/channel/${video.channel.username}`}
-                    className="relative hidden h-9 w-9 shrink-0 overflow-hidden rounded-full bg-zinc-800 ring-2 ring-white/20 md:block"
+                    className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-zinc-800 ring-2 ring-white/25"
                   >
                     {video.channel.avatar_url ? (
                       <Image
