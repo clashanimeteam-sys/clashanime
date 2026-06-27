@@ -1,7 +1,12 @@
+import { buildSummer2026SeasonalLineup } from "@/lib/animeNews/summer2026Lineup";
 import { FEATURED_SEASONAL_GUIDE } from "@/lib/animeNews/seasonalGuide";
 import { createServiceRoleClient } from "@/lib/supabase/admin";
 
-export async function syncFeaturedSeasonalGuide(): Promise<{ upserted: boolean; slug: string }> {
+export async function syncFeaturedSeasonalGuide(): Promise<{
+  upserted: boolean;
+  slug: string;
+  lineupCount: number;
+}> {
   const serviceRole = createServiceRoleClient();
   if (!serviceRole) {
     throw new Error("Service role not configured");
@@ -9,6 +14,7 @@ export async function syncFeaturedSeasonalGuide(): Promise<{ upserted: boolean; 
 
   const guide = FEATURED_SEASONAL_GUIDE;
   const syncedAt = new Date().toISOString();
+  const seasonalLineup = buildSummer2026SeasonalLineup();
 
   const { error } = await serviceRole.from("anime_news_articles").upsert(
     {
@@ -32,6 +38,7 @@ export async function syncFeaturedSeasonalGuide(): Promise<{ upserted: boolean; 
       story_en: guide.locales.en.story,
       story_ar: guide.locales.ar.story,
       story_ja: guide.locales.ja.story,
+      seasonal_lineup: seasonalLineup,
       feed_synced_at: syncedAt,
       updated_at: syncedAt,
     },
@@ -42,5 +49,5 @@ export async function syncFeaturedSeasonalGuide(): Promise<{ upserted: boolean; 
     throw new Error(error.message);
   }
 
-  return { upserted: true, slug: guide.slug };
+  return { upserted: true, slug: guide.slug, lineupCount: seasonalLineup.length };
 }

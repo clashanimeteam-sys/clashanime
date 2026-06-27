@@ -3,8 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BlogPageShell } from "@/components/blog/BlogPageShell";
+import { SeasonalLineupGrid } from "@/components/blog/SeasonalLineupGrid";
 import type { AnimeNewsArticle } from "@/lib/animeNews/types";
-import { getAnimeNewsCopy } from "@/lib/animeNews/types";
+import { getAnimeNewsCopy, getSeasonalLineup } from "@/lib/animeNews/types";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
 
@@ -16,6 +17,7 @@ type AnimeNewsArticleContentProps = {
 export function AnimeNewsArticleContent({ article, related }: AnimeNewsArticleContentProps) {
   const { t, locale, formatDateTime } = useLocale();
   const copy = getAnimeNewsCopy(article, locale);
+  const lineup = getSeasonalLineup(article);
 
   usePageTitle(copy.title);
 
@@ -79,6 +81,12 @@ export function AnimeNewsArticleContent({ article, related }: AnimeNewsArticleCo
                 <p key={index}>{paragraph.trim()}</p>
               ))}
             </div>
+          </section>
+        ) : null}
+
+        {lineup.length > 0 ? (
+          <section className="mt-8 rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-5 sm:p-6">
+            <SeasonalLineupGrid entries={lineup} />
           </section>
         ) : null}
 

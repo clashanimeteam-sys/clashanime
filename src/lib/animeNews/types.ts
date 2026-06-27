@@ -1,4 +1,6 @@
 import type { Locale } from "@/lib/types";
+import type { SeasonalLineupEntry } from "@/lib/animeNews/seasonalLineupTypes";
+import { parseSeasonalLineup } from "@/lib/animeNews/seasonalLineupTypes";
 
 export type AnimeNewsStatus = "draft" | "published";
 
@@ -24,6 +26,7 @@ export type AnimeNewsArticle = {
   story_en: string | null;
   story_ar: string | null;
   story_ja: string | null;
+  seasonal_lineup?: SeasonalLineupEntry[];
   feed_synced_at: string | null;
   created_at: string;
   updated_at: string;
@@ -61,6 +64,10 @@ export function getAnimeNewsCopy(article: AnimeNewsArticle, locale: Locale): Ani
     article.story_ja;
 
   return { title, excerpt, story };
+}
+
+export function getSeasonalLineup(article: AnimeNewsArticle): SeasonalLineupEntry[] {
+  return parseSeasonalLineup(article.seasonal_lineup);
 }
 
 export function isAnimeNewsPublishReady(article: AnimeNewsArticle): boolean {

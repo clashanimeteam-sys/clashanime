@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { createBrowserClient } from "@/lib/supabase/client";
 import type { AnimeNewsArticle, AnimeNewsStatus } from "@/lib/animeNews/types";
-import { isAnimeNewsPublishReady } from "@/lib/animeNews/types";
+import { getSeasonalLineup, isAnimeNewsPublishReady } from "@/lib/animeNews/types";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type SyncMeta = {
@@ -64,6 +64,7 @@ export function AdminAnimeNewsPanel() {
         inserted?: number;
         updated?: number;
         featuredGuideSlug?: string | null;
+        featuredLineupCount?: number;
       };
       if (!response.ok) {
         throw new Error(payload.error ?? "Sync failed");
@@ -76,6 +77,14 @@ export function AdminAnimeNewsPanel() {
       if (payload.featuredGuideSlug) {
         parts.push(
           t.admin.animeNews.featuredGuideSynced.replace("{slug}", payload.featuredGuideSlug),
+        );
+      }
+      if (payload.featuredLineupCount) {
+        parts.push(
+          t.admin.animeNews.featuredLineupSynced.replace(
+            "{count}",
+            String(payload.featuredLineupCount),
+          ),
         );
       }
       setMessage(parts.join(" · "));
@@ -187,6 +196,7 @@ export function AdminAnimeNewsPanel() {
             .map((article) => {
             const expanded = expandedId === article.id;
             const ready = isAnimeNewsPublishReady(article);
+            const lineup = getSeasonalLineup(article);
 
             return (
               <div
@@ -210,6 +220,11 @@ export function AdminAnimeNewsPanel() {
                           {t.admin.animeNews.featuredBadge}
                         </span>
                       ) : null}
+                      {lineup.length > 0 ? (
+                        <span className="rounded-full bg-zinc-500/15 px-2 py-0.5 text-[10px] font-bold uppercase text-zinc-600 dark:text-zinc-300">
+                          {t.admin.animeNews.lineupCount.replace("{count}", String(lineup.length))}
+                        </span>
+                      ) : null}
                       {!ready ? (
                         <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">
                           {t.admin.animeNews.needsTranslation}
@@ -221,6 +236,9 @@ export function AdminAnimeNewsPanel() {
                       {formatDateTime(article.published_at, { dateStyle: "medium" })}
                       {" · "}
                       /blog/anime-news/{article.slug}
+                      {lineup.length > 0
+                        ? ` · ${t.admin.animeNews.lineupCount.replace("{count}", String(lineup.length))}`
+                        : ""}
                     </p>
                   </div>
 
@@ -313,6 +331,32 @@ export function AdminAnimeNewsPanel() {
                         placeholder="anime-news, latest-news"
                       />
                     </div>
+
+                    {lineup.length > 0 ? (
+                      <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-900/50">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                          {t.admin.animeNews.lineupPreview}
+                        </p>
+                        <ul className="mt-2 max-h-40 space-y-1 overflow-y-auto text-xs text-zinc-700 dark:text-zinc-300">
+                          {lineup.slice(0, 12).map((entry) => (
+                            <li key={entry.title}>
+                              {entry.title}
+                              {entry.premiereDate && entry.premiereDate !== "coming-soon"
+                                ? ` · ${entry.premiereDate}`
+                                : ""}
+                            </li>
+                          ))}
+                          {lineup.length > 12 ? (
+                            <li className="text-zinc-500">
+                              {t.admin.animeNews.lineupMore.replace(
+                                "{count}",
+                                String(lineup.length - 12),
+                              )}
+                            </li>
+                          ) : null}
+                        </ul>
+                      </div>
+                    ) : null}
 
                     <div className="flex flex-wrap gap-2">
                       <button

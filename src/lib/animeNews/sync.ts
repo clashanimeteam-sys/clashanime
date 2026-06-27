@@ -14,6 +14,7 @@ export type AnimeNewsSyncResult = {
   updated: number;
   skipped: number;
   featuredGuideSlug: string | null;
+  featuredLineupCount: number;
   syncedAt: string;
 };
 
@@ -112,9 +113,11 @@ export async function runAnimeNewsSync(limit = 30): Promise<AnimeNewsSyncResult>
   }
 
   let featuredGuideSlug: string | null = null;
+  let featuredLineupCount = 0;
   try {
     const featured = await syncFeaturedSeasonalGuide();
     featuredGuideSlug = featured.slug;
+    featuredLineupCount = featured.lineupCount;
   } catch (error) {
     console.error("syncFeaturedSeasonalGuide", error);
   }
@@ -125,6 +128,7 @@ export async function runAnimeNewsSync(limit = 30): Promise<AnimeNewsSyncResult>
     updated,
     skipped,
     featuredGuideSlug,
+    featuredLineupCount,
     syncedAt,
   };
 }

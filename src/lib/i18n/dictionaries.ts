@@ -181,6 +181,15 @@ export type Dictionary = {
       badge: string;
       sourceNote: string;
       readFullGuide: string;
+      lineupHeading: string;
+      lineupCount: string;
+      categoryNew: string;
+      categoryReturning: string;
+      categoryContinuing: string;
+      categoryComingSoon: string;
+      comingSoon: string;
+      weeklySimulcast: string;
+      moreTitles: string;
     };
   };
   pages: {
@@ -1377,6 +1386,7 @@ export type Dictionary = {
       syncing: string;
       syncSuccess: string;
       featuredGuideSynced: string;
+      featuredLineupSynced: string;
       featuredBadge: string;
       viewOnBlog: string;
       saved: string;
@@ -1397,6 +1407,9 @@ export type Dictionary = {
       excerptPlaceholder: string;
       storyPlaceholder: string;
       topics: string;
+      lineupCount: string;
+      lineupPreview: string;
+      lineupMore: string;
     };
     hashtags: {
       title: string;
@@ -1674,6 +1687,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
         badge: "Seasonal guide",
         sourceNote: "Crunchyroll Summer 2026 lineup",
         readFullGuide: "Read full seasonal guide",
+        lineupHeading: "Full simulcast lineup",
+        lineupCount: "{count} titles",
+        categoryNew: "New premieres",
+        categoryReturning: "Returning seasons",
+        categoryContinuing: "Continuing from spring",
+        categoryComingSoon: "Coming soon",
+        comingSoon: "Coming soon",
+        weeklySimulcast: "Weekly simulcast",
+        moreTitles: "+{count} more titles in the full guide",
       },
     },
     pages: {
@@ -2969,6 +2991,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         syncing: "Syncing...",
         syncSuccess: "RSS sync complete — {inserted} new, {updated} updated.",
         featuredGuideSynced: "Seasonal guide synced: {slug}",
+        featuredLineupSynced: "{count} lineup titles synced",
         featuredBadge: "Featured · Blog spotlight",
         viewOnBlog: "View on blog",
         saved: "Article saved.",
@@ -2989,6 +3012,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         excerptPlaceholder: "Short summary in your own words (2–4 sentences)",
         storyPlaceholder: "Full anime story / news body (multiple paragraphs)",
         topics: "Topics (comma separated)",
+        lineupCount: "{count} lineup titles",
+        lineupPreview: "Seasonal lineup (auto-synced daily)",
+        lineupMore: "+{count} more titles",
       },
       hashtags: {
         title: "Top hashtags",
@@ -3264,6 +3290,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
         badge: "季節ガイド",
         sourceNote: "Crunchyroll 2026年夏ラインナップ",
         readFullGuide: "季節ガイド全文を読む",
+        lineupHeading: "Simulcast全作品",
+        lineupCount: "{count}作品",
+        categoryNew: "新作",
+        categoryReturning: "続編",
+        categoryContinuing: "春から継続",
+        categoryComingSoon: "近日公開",
+        comingSoon: "近日公開",
+        weeklySimulcast: "週次配信",
+        moreTitles: "他 {count} 作品は全文ガイドへ",
       },
     },
     pages: {
@@ -4543,6 +4578,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         syncing: "同期中...",
         syncSuccess: "RSS同期完了 — 新規 {inserted}、更新 {updated}。",
         featuredGuideSynced: "季節ガイド同期: {slug}",
+        featuredLineupSynced: "ラインナップ {count} 作品を同期",
         featuredBadge: "注目 · ブログスポット",
         viewOnBlog: "ブログで見る",
         saved: "記事を保存しました。",
@@ -4563,6 +4599,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         excerptPlaceholder: "独自の短い要約（2〜4文）",
         storyPlaceholder: "アニメのストーリー / 本文（複数段落）",
         topics: "トピック（カンマ区切り）",
+        lineupCount: "ラインナップ {count} 作品",
+        lineupPreview: "季節ラインナップ（毎日自動同期）",
+        lineupMore: "他 {count} 作品",
       },
       hashtags: {
         title: "人気ハッシュタグ",
@@ -4838,6 +4877,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
         badge: "دليل موسمي",
         sourceNote: "تشكيلة Crunchyroll — صيف 2026",
         readFullGuide: "اقرأ الدليل الموسمي كاملاً",
+        lineupHeading: "تشكيلة البث المباشر الكاملة",
+        lineupCount: "{count} عنوان",
+        categoryNew: "انطلاقات جديدة",
+        categoryReturning: "مواسم عائدة",
+        categoryContinuing: "مستمرة من الربيع",
+        categoryComingSoon: "قريباً",
+        comingSoon: "قريباً",
+        weeklySimulcast: "بث أسبوعي",
+        moreTitles: "+{count} عنوان إضافي في الدليل الكامل",
       },
     },
     pages: {
@@ -6121,6 +6169,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         syncing: "جاري المزامنة...",
         syncSuccess: "اكتملت المزامنة — {inserted} جديد، {updated} محدّث.",
         featuredGuideSynced: "تمت مزامنة الدليل الموسمي: {slug}",
+        featuredLineupSynced: "تمت مزامنة {count} عنوان من التشكيلة",
         featuredBadge: "مميز · ظهور في البلوج",
         viewOnBlog: "عرض في البلوج",
         saved: "تم حفظ المقالة.",
@@ -6141,6 +6190,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         excerptPlaceholder: "ملخص قصير بكلماتك (2–4 جمل)",
         storyPlaceholder: "قصة الأنمي / نص الخبر (فقرات متعددة)",
         topics: "المواضيع (مفصولة بفاصلة)",
+        lineupCount: "{count} عنوان في التشكيلة",
+        lineupPreview: "تشكيلة الموسم (مزامنة يومية تلقائية)",
+        lineupMore: "+{count} عنوان إضافي",
       },
       hashtags: {
         title: "أبرز الهاشتاغات",

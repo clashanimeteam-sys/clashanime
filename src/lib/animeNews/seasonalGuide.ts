@@ -1,4 +1,5 @@
 import type { AnimeNewsArticle } from "@/lib/animeNews/types";
+import { buildSummer2026SeasonalLineup } from "@/lib/animeNews/summer2026Lineup";
 
 export const FEATURED_SEASONAL_GUIDE_SLUG = "summer-anime-2026-crunchyroll";
 
@@ -108,6 +109,7 @@ export function featuredGuideToArticle(): AnimeNewsArticle {
     story_en: guide.locales.en.story,
     story_ar: guide.locales.ar.story,
     story_ja: guide.locales.ja.story,
+    seasonal_lineup: buildSummer2026SeasonalLineup(),
     feed_synced_at: now,
     created_at: now,
     updated_at: now,

@@ -3,13 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import {
-  FEATURED_SEASONAL_GUIDE,
-  FEATURED_SEASONAL_HIGHLIGHTS,
-  featuredGuideToArticle,
-} from "@/lib/animeNews/seasonalGuide";
+import { SeasonalLineupGrid } from "@/components/blog/SeasonalLineupGrid";
+import { FEATURED_SEASONAL_GUIDE, featuredGuideToArticle } from "@/lib/animeNews/seasonalGuide";
 import type { AnimeNewsArticle } from "@/lib/animeNews/types";
-import { getAnimeNewsCopy } from "@/lib/animeNews/types";
+import { getAnimeNewsCopy, getSeasonalLineup } from "@/lib/animeNews/types";
 import { useLocale } from "@/providers/LocaleProvider";
 
 export function BlogSeasonalGuideSpotlight() {
@@ -36,17 +33,12 @@ export function BlogSeasonalGuideSpotlight() {
   }, []);
 
   const copy = getAnimeNewsCopy(article, locale);
-  const highlights =
-    locale === "ar"
-      ? FEATURED_SEASONAL_HIGHLIGHTS.ar
-      : locale === "ja"
-        ? FEATURED_SEASONAL_HIGHLIGHTS.ja
-        : FEATURED_SEASONAL_HIGHLIGHTS.en;
+  const lineup = getSeasonalLineup(article);
 
   const storyPreview =
     copy.story
       ?.split(/\n{2,}/)
-      .slice(0, 3)
+      .slice(0, 2)
       .map((paragraph) => paragraph.trim())
       .filter(Boolean) ?? [];
 
@@ -111,17 +103,6 @@ export function BlogSeasonalGuideSpotlight() {
               </div>
             ) : null}
 
-            <div className="mt-5 flex flex-wrap gap-2">
-              {highlights.map((label) => (
-                <span
-                  key={label}
-                  className="rounded-full border border-zinc-700/80 bg-zinc-900/80 px-3 py-1 text-[11px] font-semibold text-zinc-200"
-                >
-                  {label}
-                </span>
-              ))}
-            </div>
-
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 href={`/blog/anime-news/${article.slug}`}
@@ -140,6 +121,12 @@ export function BlogSeasonalGuideSpotlight() {
             </div>
           </div>
         </div>
+
+        {lineup.length > 0 ? (
+          <div className="border-t border-orange-500/15 bg-black/40 p-5 sm:p-7">
+            <SeasonalLineupGrid entries={lineup} compact maxItems={24} />
+          </div>
+        ) : null}
       </div>
     </section>
   );
