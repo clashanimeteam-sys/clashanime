@@ -3115,7 +3115,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     blog: {
       hubBadge: "ナレッジハブ",
-      hubLearnMore: "詳しく見る",
       hubTitle: "英雄アリーナガイド",
       hubSubtitle:
         "ガイド、レーダー分析、勝者ストーリー、アップデート、賞金、FAQ — ClashAnimeで順位アップと収益化のための記事。",
@@ -4638,7 +4637,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     blog: {
       hubBadge: "مركز المعرفة",
-      hubLearnMore: "معرفة المزيد",
       hubTitle: "دليل الأبطال",
       hubSubtitle:
         "شروحات، تحليلات الرادار، قصص الفائزين، تحديثات المنصة، الجوائز، وأسئلة شائعة — لترتيب أعلى وربح على ClashAnime.",
