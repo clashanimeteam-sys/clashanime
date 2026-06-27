@@ -16,7 +16,7 @@ export async function syncFeaturedSeasonalGuide(): Promise<{
   const syncedAt = new Date().toISOString();
   const seasonalLineup = buildSummer2026SeasonalLineup();
 
-  const { error } = await serviceRole.from("anime_news_articles").upsert(
+  const { error: upsertError } = await serviceRole.from("anime_news_articles").upsert(
     {
       slug: guide.slug,
       source_guid: guide.sourceGuid,
@@ -38,15 +38,23 @@ export async function syncFeaturedSeasonalGuide(): Promise<{
       story_en: guide.locales.en.story,
       story_ar: guide.locales.ar.story,
       story_ja: guide.locales.ja.story,
-      seasonal_lineup: seasonalLineup,
       feed_synced_at: syncedAt,
       updated_at: syncedAt,
     },
     { onConflict: "source_guid" },
   );
 
-  if (error) {
-    throw new Error(error.message);
+  if (upsertError) {
+    throw new Error(upsertError.message);
+  }
+
+  const { error: lineupError } = await serviceRole
+    .from("anime_news_articles")
+    .update({ seasonal_lineup: seasonalLineup, feed_synced_at: syncedAt, updated_at: syncedAt })
+    .eq("source_guid", guide.sourceGuid);
+
+  if (lineupError) {
+    throw new Error(`Lineup update failed: ${lineupError.message}`);
   }
 
   return { upserted: true, slug: guide.slug, lineupCount: seasonalLineup.length };

@@ -1,6 +1,7 @@
 import type { Locale } from "@/lib/types";
 import type { SeasonalLineupEntry } from "@/lib/animeNews/seasonalLineupTypes";
 import { parseSeasonalLineup } from "@/lib/animeNews/seasonalLineupTypes";
+import { buildSummer2026SeasonalLineup } from "@/lib/animeNews/summer2026Lineup";
 
 export type AnimeNewsStatus = "draft" | "published";
 
@@ -67,7 +68,17 @@ export function getAnimeNewsCopy(article: AnimeNewsArticle, locale: Locale): Ani
 }
 
 export function getSeasonalLineup(article: AnimeNewsArticle): SeasonalLineupEntry[] {
-  return parseSeasonalLineup(article.seasonal_lineup);
+  const parsed = parseSeasonalLineup(article.seasonal_lineup);
+  if (parsed.length > 0) return parsed;
+
+  if (
+    article.slug === "summer-anime-2026-crunchyroll" ||
+    article.source_guid === "clashanime:featured:summer-anime-2026-crunchyroll"
+  ) {
+    return buildSummer2026SeasonalLineup();
+  }
+
+  return [];
 }
 
 export function isAnimeNewsPublishReady(article: AnimeNewsArticle): boolean {
