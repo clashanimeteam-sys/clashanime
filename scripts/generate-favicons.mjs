@@ -4,27 +4,32 @@ import sharp from "sharp";
 
 const source = "public/logo2.png";
 const canvas = 1024;
-const faviconZoom = 1.34;
+/** Fit full logo inside icon (Facebook-style), no tail crop. */
+const fillRatio = 0.84;
 
 if (!existsSync(source)) {
   throw new Error("Missing public/logo2.png");
 }
 
-const meta = await sharp(source).metadata();
-const width = meta.width ?? canvas;
-const height = meta.height ?? canvas;
+const targetSize = Math.round(canvas * fillRatio);
 
-const scaledW = Math.round(width * faviconZoom);
-const scaledH = Math.round(height * faviconZoom);
+const fitted = await sharp(source)
+  .resize(targetSize, targetSize, {
+    fit: "contain",
+    background: { r: 0, g: 0, b: 0, alpha: 0 },
+  })
+  .png()
+  .toBuffer();
 
-const icon = await sharp(source)
-  .resize(scaledW, scaledH, { fit: "fill", kernel: sharp.kernel.lanczos3 })
-  .extract({
-    left: Math.floor((scaledW - canvas) / 2),
-    top: Math.floor((scaledH - canvas) / 2),
+const icon = await sharp({
+  create: {
     width: canvas,
     height: canvas,
-  })
+    channels: 4,
+    background: { r: 0, g: 0, b: 0, alpha: 0 },
+  },
+})
+  .composite([{ input: fitted, gravity: "center" }])
   .png()
   .toBuffer();
 
@@ -51,4 +56,6 @@ execSync(
 
 copyFileSync("public/favicon.ico", "src/app/favicon.ico");
 
-console.log(`Icons generated from logo2.png at ${Math.round(faviconZoom * 100)}% favicon zoom (${canvas}x${canvas}).`);
+console.log(
+  `Icons generated from logo2.png with ${Math.round(fillRatio * 100)}% contain fit (${canvas}x${canvas}, no crop).`,
+);
