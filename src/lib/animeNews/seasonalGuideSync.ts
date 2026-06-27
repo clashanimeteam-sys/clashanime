@@ -1,4 +1,5 @@
 import { buildSummer2026SeasonalLineup } from "@/lib/animeNews/summer2026Lineup";
+import { enrichSeasonalLineup } from "@/lib/animeNews/seasonalLineupEnrich";
 import { FEATURED_SEASONAL_GUIDE } from "@/lib/animeNews/seasonalGuide";
 import { createServiceRoleClient } from "@/lib/supabase/admin";
 
@@ -6,6 +7,7 @@ export async function syncFeaturedSeasonalGuide(): Promise<{
   upserted: boolean;
   slug: string;
   lineupCount: number;
+  lineupEnriched: number;
 }> {
   const serviceRole = createServiceRoleClient();
   if (!serviceRole) {
@@ -14,7 +16,7 @@ export async function syncFeaturedSeasonalGuide(): Promise<{
 
   const guide = FEATURED_SEASONAL_GUIDE;
   const syncedAt = new Date().toISOString();
-  const seasonalLineup = buildSummer2026SeasonalLineup();
+  const seasonalLineup = await enrichSeasonalLineup(buildSummer2026SeasonalLineup());
 
   const { error: upsertError } = await serviceRole.from("anime_news_articles").upsert(
     {
@@ -55,8 +57,18 @@ export async function syncFeaturedSeasonalGuide(): Promise<{
 
   if (lineupError) {
     console.error("syncFeaturedSeasonalGuide lineup", lineupError.message);
-    return { upserted: true, slug: guide.slug, lineupCount: 0 };
+    return {
+      upserted: true,
+      slug: guide.slug,
+      lineupCount: seasonalLineup.length,
+      lineupEnriched: seasonalLineup.filter((entry) => entry.posterUrl && entry.story).length,
+    };
   }
 
-  return { upserted: true, slug: guide.slug, lineupCount: seasonalLineup.length };
+  return {
+    upserted: true,
+    slug: guide.slug,
+    lineupCount: seasonalLineup.length,
+    lineupEnriched: seasonalLineup.filter((entry) => entry.posterUrl && entry.story).length,
+  };
 }

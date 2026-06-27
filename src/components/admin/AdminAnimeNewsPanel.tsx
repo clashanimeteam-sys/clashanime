@@ -337,13 +337,26 @@ export function AdminAnimeNewsPanel() {
                         <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
                           {t.admin.animeNews.lineupPreview}
                         </p>
-                        <ul className="mt-2 max-h-40 space-y-1 overflow-y-auto text-xs text-zinc-700 dark:text-zinc-300">
+                        <ul className="mt-2 max-h-48 space-y-2 overflow-y-auto text-xs text-zinc-700 dark:text-zinc-300">
                           {lineup.slice(0, 12).map((entry) => (
-                            <li key={entry.title}>
-                              {entry.title}
-                              {entry.premiereDate && entry.premiereDate !== "coming-soon"
-                                ? ` · ${entry.premiereDate}`
-                                : ""}
+                            <li key={entry.title} className="flex gap-2">
+                              {entry.posterUrl ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img
+                                  src={entry.posterUrl}
+                                  alt=""
+                                  className="h-12 w-8 shrink-0 rounded object-cover"
+                                />
+                              ) : null}
+                              <span>
+                                {entry.title}
+                                {entry.premiereDate && entry.premiereDate !== "coming-soon"
+                                  ? ` · ${entry.premiereDate}`
+                                  : ""}
+                                {entry.story ? (
+                                  <span className="mt-0.5 block line-clamp-2 text-zinc-500">{entry.story}</span>
+                                ) : null}
+                              </span>
                             </li>
                           ))}
                           {lineup.length > 12 ? (

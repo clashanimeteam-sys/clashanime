@@ -2,10 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { BlogPageShell } from "@/components/blog/BlogPageShell";
 import { SeasonalLineupGrid } from "@/components/blog/SeasonalLineupGrid";
+import { FEATURED_SEASONAL_GUIDE_SLUG } from "@/lib/animeNews/seasonalGuide";
+import type { SeasonalLineupEntry } from "@/lib/animeNews/seasonalLineupTypes";
 import type { AnimeNewsArticle } from "@/lib/animeNews/types";
-import { getAnimeNewsCopy, getSeasonalLineup } from "@/lib/animeNews/types";
+import { getAnimeNewsCopy } from "@/lib/animeNews/types";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
 
@@ -17,13 +20,32 @@ type AnimeNewsArticleContentProps = {
 export function AnimeNewsArticleContent({ article, related }: AnimeNewsArticleContentProps) {
   const { t, locale, formatDateTime } = useLocale();
   const copy = getAnimeNewsCopy(article, locale);
-  const lineup = getSeasonalLineup(article);
+  const isSeasonalGuide = article.slug === FEATURED_SEASONAL_GUIDE_SLUG;
+  const [lineup, setLineup] = useState<SeasonalLineupEntry[]>([]);
+
+  useEffect(() => {
+    if (!isSeasonalGuide) return;
+
+    let cancelled = false;
+    void fetch("/api/anime-news/lineup")
+      .then((response) => (response.ok ? response.json() : { lineup: [] }))
+      .then((payload: { lineup?: SeasonalLineupEntry[] }) => {
+        if (!cancelled) setLineup(payload.lineup ?? []);
+      })
+      .catch(() => {
+        /* optional grid */
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isSeasonalGuide]);
 
   usePageTitle(copy.title);
 
   return (
     <BlogPageShell heroCompact articleTitle={copy.title}>
-      <article className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
+      <article className={`mx-auto px-4 py-8 sm:px-6 sm:py-10 ${isSeasonalGuide ? "max-w-6xl" : "max-w-3xl"}`}>
         <Link
           href="/blog/anime-news"
           className="inline-flex items-center gap-2 text-sm font-medium text-zinc-400 transition hover:text-orange-300"
@@ -84,9 +106,9 @@ export function AnimeNewsArticleContent({ article, related }: AnimeNewsArticleCo
           </section>
         ) : null}
 
-        {lineup.length > 0 ? (
+        {isSeasonalGuide && lineup.length > 0 ? (
           <section className="mt-8 rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-5 sm:p-6">
-            <SeasonalLineupGrid entries={lineup} />
+            <SeasonalLineupGrid entries={lineup} showFullStory />
           </section>
         ) : null}
 

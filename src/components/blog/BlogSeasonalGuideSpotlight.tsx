@@ -4,14 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { SeasonalLineupGrid } from "@/components/blog/SeasonalLineupGrid";
+import type { SeasonalLineupEntry } from "@/lib/animeNews/seasonalLineupTypes";
 import { FEATURED_SEASONAL_GUIDE, featuredGuideToArticle } from "@/lib/animeNews/seasonalGuide";
 import type { AnimeNewsArticle } from "@/lib/animeNews/types";
-import { getAnimeNewsCopy, getSeasonalLineup } from "@/lib/animeNews/types";
+import { getAnimeNewsCopy } from "@/lib/animeNews/types";
 import { useLocale } from "@/providers/LocaleProvider";
 
 export function BlogSeasonalGuideSpotlight() {
   const { t, locale, formatDateTime } = useLocale();
   const [article, setArticle] = useState<AnimeNewsArticle>(() => featuredGuideToArticle());
+  const [lineup, setLineup] = useState<SeasonalLineupEntry[]>([]);
+  const [lineupLoading, setLineupLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -27,13 +30,24 @@ export function BlogSeasonalGuideSpotlight() {
         /* keep static fallback */
       });
 
+    void fetch("/api/anime-news/lineup")
+      .then((response) => (response.ok ? response.json() : { lineup: [] }))
+      .then((payload: { lineup?: SeasonalLineupEntry[] }) => {
+        if (!cancelled) {
+          setLineup(payload.lineup ?? []);
+          setLineupLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setLineupLoading(false);
+      });
+
     return () => {
       cancelled = true;
     };
   }, []);
 
   const copy = getAnimeNewsCopy(article, locale);
-  const lineup = getSeasonalLineup(article);
 
   const storyPreview =
     copy.story
@@ -122,9 +136,13 @@ export function BlogSeasonalGuideSpotlight() {
           </div>
         </div>
 
-        {lineup.length > 0 ? (
+        {lineupLoading ? (
+          <div className="border-t border-orange-500/15 bg-black/40 p-8 text-center text-sm text-zinc-500">
+            {t.blog.seasonalGuide.lineupLoading}
+          </div>
+        ) : lineup.length > 0 ? (
           <div className="border-t border-orange-500/15 bg-black/40 p-5 sm:p-7">
-            <SeasonalLineupGrid entries={lineup} compact maxItems={24} />
+            <SeasonalLineupGrid entries={lineup} compact maxItems={20} />
           </div>
         ) : null}
       </div>

@@ -190,6 +190,7 @@ export type Dictionary = {
       comingSoon: string;
       weeklySimulcast: string;
       moreTitles: string;
+      lineupLoading: string;
     };
   };
   pages: {
@@ -1696,6 +1697,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         comingSoon: "Coming soon",
         weeklySimulcast: "Weekly simulcast",
         moreTitles: "+{count} more titles in the full guide",
+        lineupLoading: "Loading posters and anime stories from Jikan…",
       },
     },
     pages: {
@@ -3299,6 +3301,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         comingSoon: "近日公開",
         weeklySimulcast: "週次配信",
         moreTitles: "他 {count} 作品は全文ガイドへ",
+        lineupLoading: "Jikanからポスターとストーリーを読み込み中…",
       },
     },
     pages: {
@@ -4886,6 +4889,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         comingSoon: "قريباً",
         weeklySimulcast: "بث أسبوعي",
         moreTitles: "+{count} عنوان إضافي في الدليل الكامل",
+        lineupLoading: "جاري تحميل الصور وقصص الأنمي من Jikan…",
       },
     },
     pages: {

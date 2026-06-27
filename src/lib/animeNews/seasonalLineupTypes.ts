@@ -5,6 +5,10 @@ export type SeasonalLineupEntry = {
   premiereDate: string | null;
   category: SeasonalLineupCategory;
   weekday?: string | null;
+  posterUrl?: string | null;
+  story?: string | null;
+  malId?: number | null;
+  malUrl?: string | null;
 };
 
 export function parseSeasonalLineup(raw: unknown): SeasonalLineupEntry[] {
@@ -34,6 +38,11 @@ export function parseSeasonalLineup(raw: unknown): SeasonalLineupEntry[] {
         category: validCategory,
         weekday:
           typeof row.weekday === "string" && row.weekday.trim() ? row.weekday.trim() : null,
+        posterUrl:
+          typeof row.posterUrl === "string" && row.posterUrl.trim() ? row.posterUrl.trim() : null,
+        story: typeof row.story === "string" && row.story.trim() ? row.story.trim() : null,
+        malId: typeof row.malId === "number" ? row.malId : null,
+        malUrl: typeof row.malUrl === "string" && row.malUrl.trim() ? row.malUrl.trim() : null,
       } satisfies SeasonalLineupEntry;
     })
     .filter((item): item is SeasonalLineupEntry => item !== null);
