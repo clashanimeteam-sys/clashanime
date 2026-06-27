@@ -4,9 +4,9 @@ import sharp from "sharp";
 
 const source = "public/logo2.png";
 const canvas = 1024;
-const fillRatio = 1.16;
-/** Nudge logo down in tab — align visual center with Gmail-style icons. */
-const verticalShiftDown = 52;
+const fillRatio = 1.18;
+/** Move logo down in tab (lower crop top = logo sits lower in icon). */
+const verticalShiftDown = 72;
 
 if (!existsSync(source)) {
   throw new Error("Missing public/logo2.png");
@@ -24,7 +24,7 @@ const staged = await sharp(trimmed)
   .toBuffer();
 
 const cropOffset = Math.floor((stageSize - canvas) / 2);
-const cropTop = Math.min(cropOffset + verticalShiftDown, stageSize - canvas);
+const cropTop = Math.max(0, cropOffset - verticalShiftDown);
 
 const icon = await sharp(staged)
   .extract({
@@ -60,5 +60,5 @@ execSync(
 copyFileSync("public/favicon.ico", "src/app/favicon.ico");
 
 console.log(
-  `Icons generated: trim + ${Math.round(fillRatio * 100)}% scale, shift down ${verticalShiftDown}px (${canvas}x${canvas}).`,
+  `Icons generated: ${Math.round(fillRatio * 100)}% scale, cropTop ${cropTop} (${canvas}x${canvas}).`,
 );
