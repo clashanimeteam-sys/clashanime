@@ -7,6 +7,8 @@ const canvas = 1024;
 const fillRatio = 1.18;
 /** Move logo down in tab (lower crop top = logo sits lower in icon). */
 const verticalShiftDown = 72;
+/** Move logo left in tab (higher crop left = logo sits left in icon). */
+const horizontalShiftLeft = 22;
 
 if (!existsSync(source)) {
   throw new Error("Missing public/logo2.png");
@@ -25,10 +27,11 @@ const staged = await sharp(trimmed)
 
 const cropOffset = Math.floor((stageSize - canvas) / 2);
 const cropTop = Math.max(0, cropOffset - verticalShiftDown);
+const cropLeft = Math.min(stageSize - canvas, cropOffset + horizontalShiftLeft);
 
 const icon = await sharp(staged)
   .extract({
-    left: cropOffset,
+    left: cropLeft,
     top: cropTop,
     width: canvas,
     height: canvas,
@@ -60,5 +63,5 @@ execSync(
 copyFileSync("public/favicon.ico", "src/app/favicon.ico");
 
 console.log(
-  `Icons generated: ${Math.round(fillRatio * 100)}% scale, cropTop ${cropTop} (${canvas}x${canvas}).`,
+  `Icons generated: ${Math.round(fillRatio * 100)}% scale, crop ${cropLeft},${cropTop} (${canvas}x${canvas}).`,
 );
