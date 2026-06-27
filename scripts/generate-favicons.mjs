@@ -4,7 +4,9 @@ import sharp from "sharp";
 
 const source = "public/logo2.png";
 const canvas = 1024;
-const fillRatio = 1.08;
+const fillRatio = 1.1;
+/** Nudge logo down in tab (px at 1024 canvas). */
+const verticalShiftDown = 18;
 
 if (!existsSync(source)) {
   throw new Error("Missing public/logo2.png");
@@ -22,11 +24,12 @@ const staged = await sharp(trimmed)
   .toBuffer();
 
 const cropOffset = Math.floor((stageSize - canvas) / 2);
+const cropTop = Math.min(cropOffset + verticalShiftDown, stageSize - canvas);
 
 const icon = await sharp(staged)
   .extract({
     left: cropOffset,
-    top: cropOffset,
+    top: cropTop,
     width: canvas,
     height: canvas,
   })
@@ -57,5 +60,5 @@ execSync(
 copyFileSync("public/favicon.ico", "src/app/favicon.ico");
 
 console.log(
-  `Icons generated: trim + ${Math.round(fillRatio * 100)}% scale (${canvas}x${canvas}).`,
+  `Icons generated: trim + ${Math.round(fillRatio * 100)}% scale, shift down ${verticalShiftDown}px (${canvas}x${canvas}).`,
 );
