@@ -4,9 +4,9 @@ import sharp from "sharp";
 
 const source = "public/logo2.png";
 const canvas = 1024;
-const fillRatio = 1.1;
-/** Nudge logo down in tab (px at 1024 canvas). */
-const verticalShiftDown = 18;
+const fillRatio = 1.16;
+/** Nudge logo down in tab — align visual center with Gmail-style icons. */
+const verticalShiftDown = 52;
 
 if (!existsSync(source)) {
   throw new Error("Missing public/logo2.png");
