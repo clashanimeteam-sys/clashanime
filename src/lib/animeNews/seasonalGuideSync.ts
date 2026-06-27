@@ -54,7 +54,8 @@ export async function syncFeaturedSeasonalGuide(): Promise<{
     .eq("source_guid", guide.sourceGuid);
 
   if (lineupError) {
-    throw new Error(`Lineup update failed: ${lineupError.message}`);
+    console.error("syncFeaturedSeasonalGuide lineup", lineupError.message);
+    return { upserted: true, slug: guide.slug, lineupCount: 0 };
   }
 
   return { upserted: true, slug: guide.slug, lineupCount: seasonalLineup.length };
