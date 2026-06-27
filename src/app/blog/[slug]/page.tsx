@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/JsonLd";
 import { BlogPostContent } from "@/components/blog/BlogPostContent";
-import { getBlogPost, getBlogPostCopy, getBlogSlugs } from "@/lib/blog/posts";
-import { buildPageMetadata } from "@/lib/seoMetadata";
+import { getBlogPost, getBlogSlugs } from "@/lib/blog/posts";
+import {
+  buildBlogAlternateHeadlines,
+  buildBlogPostKeywords,
+  buildBlogTrilingualDescription,
+  buildBlogTrilingualHeadline,
+} from "@/lib/blog/seo";
+import { absoluteSiteUrl } from "@/lib/siteSeo";
+import { buildBlogPostingJsonLd, buildPageMetadata } from "@/lib/seoMetadata";
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
@@ -15,17 +23,22 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = getBlogPost(slug);
-  const copy = getBlogPostCopy(slug, "en");
 
-  if (!post || !copy) {
+  if (!post) {
     return { title: "Article not found" };
   }
 
+  const headline = buildBlogTrilingualHeadline(post);
+  const description = buildBlogTrilingualDescription(post);
+
   return buildPageMetadata("blog", {
-    title: copy.title,
-    description: copy.excerpt,
+    title: headline,
+    description,
     path: `/blog/${slug}`,
     ogType: "article",
+    publishedTime: post.publishedAt,
+    tags: [post.category],
+    extraKeywords: buildBlogPostKeywords(post),
   });
 }
 
@@ -35,12 +48,29 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   if (!post) notFound();
 
+  const url = absoluteSiteUrl(`/blog/${slug}`);
+  const headline = buildBlogTrilingualHeadline(post);
+  const description = buildBlogTrilingualDescription(post);
+
   return (
-    <BlogPostContent
-      slug={slug}
-      category={post.category}
-      publishedAt={post.publishedAt}
-      readingMinutes={post.readingMinutes}
-    />
+    <>
+      <JsonLd
+        data={buildBlogPostingJsonLd({
+          headline,
+          alternateHeadlines: buildBlogAlternateHeadlines(post),
+          description,
+          url,
+          datePublished: post.publishedAt,
+          keywords: buildBlogPostKeywords(post),
+          articleSection: post.category,
+        })}
+      />
+      <BlogPostContent
+        slug={slug}
+        category={post.category}
+        publishedAt={post.publishedAt}
+        readingMinutes={post.readingMinutes}
+      />
+    </>
   );
 }

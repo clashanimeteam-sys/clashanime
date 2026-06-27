@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/JsonLd";
 import { AnimeNewsArticleContent } from "@/components/blog/AnimeNewsArticleContent";
+import {
+  buildAnimeNewsAlternateHeadlines,
+  buildAnimeNewsArticleKeywords,
+  buildAnimeNewsTrilingualDescription,
+  buildAnimeNewsTrilingualHeadline,
+} from "@/lib/animeNews/seo";
 import {
   getPublishedAnimeNewsBySlug,
   listPublishedAnimeNews,
@@ -9,8 +16,8 @@ import {
   FEATURED_SEASONAL_GUIDE_SLUG,
   featuredGuideToArticle,
 } from "@/lib/animeNews/seasonalGuide";
-import { getAnimeNewsCopy } from "@/lib/animeNews/types";
-import { buildPageMetadata } from "@/lib/seoMetadata";
+import { absoluteSiteUrl } from "@/lib/siteSeo";
+import { buildBlogHubJsonLd, buildNewsArticleJsonLd, buildPageMetadata, PAGE_SEO } from "@/lib/seoMetadata";
 
 export const dynamic = "force-dynamic";
 
@@ -32,14 +39,21 @@ export async function generateMetadata({ params }: AnimeNewsArticlePageProps): P
     return { title: "Article not found" };
   }
 
-  const copy = getAnimeNewsCopy(article, "en");
+  const headline = buildAnimeNewsTrilingualHeadline(article);
+  const description = buildAnimeNewsTrilingualDescription(article);
+  const keywords = buildAnimeNewsArticleKeywords(article);
 
   return buildPageMetadata("animeNews", {
-    title: copy.title,
-    description: copy.excerpt ?? undefined,
+    title: headline,
+    description,
     path: `/blog/anime-news/${slug}`,
     ogType: "article",
     image: article.cover_image_url ?? undefined,
+    publishedTime: article.published_at,
+    modifiedTime: article.updated_at,
+    authors: article.source_author ? [article.source_author, "Clash Anime"] : ["Clash Anime"],
+    tags: article.topics,
+    extraKeywords: keywords,
   });
 }
 
@@ -52,5 +66,26 @@ export default async function AnimeNewsArticlePage({ params }: AnimeNewsArticleP
   const all = await listPublishedAnimeNews(12, 0);
   const related = all.filter((item) => item.slug !== slug).slice(0, 6);
 
-  return <AnimeNewsArticleContent article={article} related={related} />;
+  const url = absoluteSiteUrl(`/blog/anime-news/${slug}`);
+  const headline = buildAnimeNewsTrilingualHeadline(article);
+  const description = buildAnimeNewsTrilingualDescription(article);
+
+  return (
+    <>
+      <JsonLd
+        data={buildNewsArticleJsonLd({
+          headline,
+          alternateHeadlines: buildAnimeNewsAlternateHeadlines(article),
+          description,
+          url,
+          datePublished: article.published_at,
+          dateModified: article.updated_at,
+          image: article.cover_image_url,
+          keywords: buildAnimeNewsArticleKeywords(article),
+          authorName: article.source_author,
+        })}
+      />
+      <AnimeNewsArticleContent article={article} related={related} />
+    </>
+  );
 }

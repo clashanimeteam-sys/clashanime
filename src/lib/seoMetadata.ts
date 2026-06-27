@@ -29,7 +29,7 @@ type PageSeoKey =
   | "blog"
   | "animeNews";
 
-const PAGE_SEO: Record<
+export const PAGE_SEO: Record<
   PageSeoKey,
   { title: string; description: string; path: string }
 > = {
@@ -97,7 +97,22 @@ type BuildPageMetadataOptions = {
   path?: string;
   ogType?: "website" | "article";
   image?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  authors?: string[];
+  tags?: string[];
 };
+
+function buildOpenGraphArticleFields(options: BuildPageMetadataOptions) {
+  if (options.ogType !== "article") return {};
+
+  return {
+    publishedTime: options.publishedTime,
+    modifiedTime: options.modifiedTime ?? options.publishedTime,
+    authors: options.authors,
+    tags: options.tags,
+  };
+}
 
 export function buildPageMetadata(
   page: PageSeoKey,
@@ -109,6 +124,10 @@ export function buildPageMetadata(
   const path = options.path ?? config.path;
   const canonical = absoluteSiteUrl(path);
   const keywords = buildSeoKeywords(options.extraKeywords ?? [], options.dbAnime);
+  const imageUrl = options.image ?? "/logo2.png";
+  const ogImage = options.image?.startsWith("http")
+    ? options.image
+    : absoluteSiteUrl(imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`);
 
   return {
     title,
@@ -141,12 +160,13 @@ export function buildPageMetadata(
       type: options.ogType ?? "website",
       locale: "en_US",
       alternateLocale: ["ar_SA", "ja_JP"],
+      ...buildOpenGraphArticleFields(options),
       images: [
         {
-          url: options.image ?? "/logo2.png",
+          url: ogImage,
           width: 1024,
           height: 1024,
-          alt: SITE_NAME,
+          alt: title,
         },
       ],
     },
@@ -154,7 +174,7 @@ export function buildPageMetadata(
       card: "summary_large_image",
       title,
       description,
-      images: [options.image ?? "/logo2.png"],
+      images: [ogImage],
     },
   };
 }
@@ -234,5 +254,100 @@ export function buildAnimeClashJsonLd(input: {
       url: SITE_URL,
     },
     image: input.image ? absoluteSiteUrl(input.image) : absoluteSiteUrl("/logo2.png"),
+  };
+}
+
+const PUBLISHER_JSON_LD = {
+  "@type": "Organization" as const,
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: {
+    "@type": "ImageObject" as const,
+    url: absoluteSiteUrl("/logo2.png"),
+  },
+};
+
+export function buildBlogPostingJsonLd(input: {
+  headline: string;
+  alternateHeadlines?: string[];
+  description: string;
+  url: string;
+  datePublished: string;
+  dateModified?: string;
+  image?: string | null;
+  keywords?: string[];
+  articleSection?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: input.headline,
+    ...(input.alternateHeadlines?.length
+      ? { alternativeHeadline: input.alternateHeadlines }
+      : {}),
+    description: input.description,
+    url: input.url,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": input.url,
+    },
+    datePublished: input.datePublished,
+    dateModified: input.dateModified ?? input.datePublished,
+    author: PUBLISHER_JSON_LD,
+    publisher: PUBLISHER_JSON_LD,
+    inLanguage: ["en", "ar", "ja"],
+    isAccessibleForFree: true,
+    ...(input.keywords?.length ? { keywords: input.keywords.join(", ") } : {}),
+    ...(input.articleSection ? { articleSection: input.articleSection } : {}),
+    image: input.image ? absoluteSiteUrl(input.image) : absoluteSiteUrl("/logo2.png"),
+  };
+}
+
+export function buildNewsArticleJsonLd(input: {
+  headline: string;
+  alternateHeadlines?: string[];
+  description: string;
+  url: string;
+  datePublished: string;
+  dateModified?: string;
+  image?: string | null;
+  keywords?: string[];
+  authorName?: string | null;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: input.headline,
+    ...(input.alternateHeadlines?.length
+      ? { alternativeHeadline: input.alternateHeadlines }
+      : {}),
+    description: input.description,
+    url: input.url,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": input.url,
+    },
+    datePublished: input.datePublished,
+    dateModified: input.dateModified ?? input.datePublished,
+    author: input.authorName
+      ? { "@type": "Person", name: input.authorName }
+      : PUBLISHER_JSON_LD,
+    publisher: PUBLISHER_JSON_LD,
+    inLanguage: ["en", "ar", "ja"],
+    isAccessibleForFree: true,
+    ...(input.keywords?.length ? { keywords: input.keywords.join(", ") } : {}),
+    image: input.image ? absoluteSiteUrl(input.image) : absoluteSiteUrl("/logo2.png"),
+  };
+}
+
+export function buildBlogHubJsonLd(input: { title: string; description: string; url: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: input.title,
+    description: input.description,
+    url: input.url,
+    publisher: PUBLISHER_JSON_LD,
+    inLanguage: ["en", "ar", "ja"],
   };
 }
