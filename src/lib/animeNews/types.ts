@@ -13,6 +13,8 @@ export type AnimeNewsArticle = {
   topics: string[];
   published_at: string;
   status: AnimeNewsStatus;
+  is_featured?: boolean;
+  featured_order?: number;
   title_en: string;
   title_ar: string | null;
   title_ja: string | null;

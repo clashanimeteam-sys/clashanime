@@ -46,3 +46,20 @@ export async function listPublishedAnimeNewsSlugs(limit = 100): Promise<string[]
   const articles = await listPublishedAnimeNews(limit, 0);
   return articles.map((article) => article.slug);
 }
+
+export async function getFeaturedSeasonalGuide(): Promise<AnimeNewsArticle | null> {
+  try {
+    const supabase = createPublicSupabaseClient();
+    if (!supabase) return null;
+
+    const { data, error } = await supabase.rpc("get_featured_seasonal_guide");
+
+    if (error || !data) {
+      return null;
+    }
+
+    return data as AnimeNewsArticle;
+  } catch {
+    return null;
+  }
+}

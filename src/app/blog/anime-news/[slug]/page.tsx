@@ -5,6 +5,10 @@ import {
   getPublishedAnimeNewsBySlug,
   listPublishedAnimeNews,
 } from "@/lib/animeNews.server";
+import {
+  FEATURED_SEASONAL_GUIDE_SLUG,
+  featuredGuideToArticle,
+} from "@/lib/animeNews/seasonalGuide";
 import { getAnimeNewsCopy } from "@/lib/animeNews/types";
 import { buildPageMetadata } from "@/lib/seoMetadata";
 
@@ -14,9 +18,16 @@ type AnimeNewsArticlePageProps = {
   params: Promise<{ slug: string }>;
 };
 
+async function resolveArticle(slug: string) {
+  const article = await getPublishedAnimeNewsBySlug(slug);
+  if (article) return article;
+  if (slug === FEATURED_SEASONAL_GUIDE_SLUG) return featuredGuideToArticle();
+  return null;
+}
+
 export async function generateMetadata({ params }: AnimeNewsArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const article = await getPublishedAnimeNewsBySlug(slug);
+  const article = await resolveArticle(slug);
   if (!article) {
     return { title: "Article not found" };
   }
@@ -34,7 +45,7 @@ export async function generateMetadata({ params }: AnimeNewsArticlePageProps): P
 
 export default async function AnimeNewsArticlePage({ params }: AnimeNewsArticlePageProps) {
   const { slug } = await params;
-  const article = await getPublishedAnimeNewsBySlug(slug);
+  const article = await resolveArticle(slug);
 
   if (!article) notFound();
 

@@ -175,6 +175,13 @@ export type Dictionary = {
       viewAll: string;
       storyHeading: string;
     };
+    seasonalGuide: {
+      hubTitle: string;
+      hubSubtitle: string;
+      badge: string;
+      sourceNote: string;
+      readFullGuide: string;
+    };
   };
   pages: {
     videosTitle: string;
@@ -1369,6 +1376,9 @@ export type Dictionary = {
       syncNow: string;
       syncing: string;
       syncSuccess: string;
+      featuredGuideSynced: string;
+      featuredBadge: string;
+      viewOnBlog: string;
       saved: string;
       saving: string;
       saveDraft: string;
@@ -1656,6 +1666,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         empty: "No published anime news yet. Open Admin → Anime news and run Sync RSS now.",
         viewAll: "View all anime news",
         storyHeading: "Anime story",
+      },
+      seasonalGuide: {
+        hubTitle: "Seasonal anime guide",
+        hubSubtitle:
+          "Full simulcast lineup and release calendar — curated from Crunchyroll's Summer 2026 seasonal guide.",
+        badge: "Seasonal guide",
+        sourceNote: "Crunchyroll Summer 2026 lineup",
+        readFullGuide: "Read full seasonal guide",
       },
     },
     pages: {
@@ -2950,6 +2968,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         syncNow: "Sync RSS now",
         syncing: "Syncing...",
         syncSuccess: "RSS sync complete — {inserted} new, {updated} updated.",
+        featuredGuideSynced: "Seasonal guide synced: {slug}",
+        featuredBadge: "Featured · Blog spotlight",
+        viewOnBlog: "View on blog",
         saved: "Article saved.",
         saving: "Saving...",
         saveDraft: "Save draft",
@@ -3235,6 +3256,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         empty: "公開中のニュースはまだありません。管理画面 → アニメニュース で RSS 同期を実行してください。",
         viewAll: "すべてのニュースを見る",
         storyHeading: "アニメのストーリー",
+      },
+      seasonalGuide: {
+        hubTitle: "季節アニメガイド",
+        hubSubtitle:
+          "Simulcastラインナップと配信カレンダー — Crunchyroll 2026年夏シーズンガイドより。",
+        badge: "季節ガイド",
+        sourceNote: "Crunchyroll 2026年夏ラインナップ",
+        readFullGuide: "季節ガイド全文を読む",
       },
     },
     pages: {
@@ -4513,6 +4542,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         syncNow: "RSSを同期",
         syncing: "同期中...",
         syncSuccess: "RSS同期完了 — 新規 {inserted}、更新 {updated}。",
+        featuredGuideSynced: "季節ガイド同期: {slug}",
+        featuredBadge: "注目 · ブログスポット",
+        viewOnBlog: "ブログで見る",
         saved: "記事を保存しました。",
         saving: "保存中...",
         saveDraft: "下書き保存",
@@ -4798,6 +4830,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
         empty: "لا توجد أخبار منشورة بعد. افتح Admin → أخبار الأنمي واضغط Sync RSS now.",
         viewAll: "عرض كل الأخبار",
         storyHeading: "قصة الأنمي",
+      },
+      seasonalGuide: {
+        hubTitle: "الدليل الموسمي",
+        hubSubtitle:
+          "دليل البث المباشر وتقويم الإصدارات — من دليل Crunchyroll لموسم صيف 2026.",
+        badge: "دليل موسمي",
+        sourceNote: "تشكيلة Crunchyroll — صيف 2026",
+        readFullGuide: "اقرأ الدليل الموسمي كاملاً",
       },
     },
     pages: {
@@ -6080,6 +6120,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
         syncNow: "مزامنة RSS الآن",
         syncing: "جاري المزامنة...",
         syncSuccess: "اكتملت المزامنة — {inserted} جديد، {updated} محدّث.",
+        featuredGuideSynced: "تمت مزامنة الدليل الموسمي: {slug}",
+        featuredBadge: "مميز · ظهور في البلوج",
+        viewOnBlog: "عرض في البلوج",
         saved: "تم حفظ المقالة.",
         saving: "جاري الحفظ...",
         saveDraft: "حفظ مسودة",

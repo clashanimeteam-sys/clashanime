@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BlogPageShell } from "@/components/blog/BlogPageShell";
+import { BlogSeasonalGuideSpotlight } from "@/components/blog/BlogSeasonalGuideSpotlight";
+import { FEATURED_SEASONAL_GUIDE_SLUG } from "@/lib/animeNews/seasonalGuide";
 import type { AnimeNewsArticle } from "@/lib/animeNews/types";
 import { getAnimeNewsCopy } from "@/lib/animeNews/types";
 import type { BlogCategory } from "@/lib/blog/types";
@@ -68,7 +70,9 @@ export function BlogIndexContent({ latestNews: initialLatestNews = [] }: BlogInd
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">
-              {latestNews.map((article) => {
+              {latestNews
+                .filter((article) => article.slug !== FEATURED_SEASONAL_GUIDE_SLUG)
+                .map((article) => {
                 const copy = getAnimeNewsCopy(article, locale);
                 return (
                   <Link
@@ -102,6 +106,9 @@ export function BlogIndexContent({ latestNews: initialLatestNews = [] }: BlogInd
             </div>
           </section>
         ) : null}
+
+        <BlogSeasonalGuideSpotlight />
+
         {BLOG_CATEGORIES.map((category) => {
           const categoryPosts = posts.filter((post) => post.category === category);
           if (categoryPosts.length === 0) return null;

@@ -59,15 +59,26 @@ export function AdminAnimeNewsPanel() {
     setError(null);
     try {
       const response = await fetch("/api/admin/anime-news/sync", { method: "POST" });
-      const payload = (await response.json()) as { error?: string; inserted?: number; updated?: number };
+      const payload = (await response.json()) as {
+        error?: string;
+        inserted?: number;
+        updated?: number;
+        featuredGuideSlug?: string | null;
+      };
       if (!response.ok) {
         throw new Error(payload.error ?? "Sync failed");
       }
-      setMessage(
+      const parts = [
         t.admin.animeNews.syncSuccess
           .replace("{inserted}", String(payload.inserted ?? 0))
           .replace("{updated}", String(payload.updated ?? 0)),
-      );
+      ];
+      if (payload.featuredGuideSlug) {
+        parts.push(
+          t.admin.animeNews.featuredGuideSynced.replace("{slug}", payload.featuredGuideSlug),
+        );
+      }
+      setMessage(parts.join(" · "));
       await loadArticles();
     } catch (syncError) {
       setError(syncError instanceof Error ? syncError.message : "Sync failed");
@@ -166,7 +177,14 @@ export function AdminAnimeNewsPanel() {
         </p>
       ) : (
         <div className="space-y-4">
-          {articles.map((article) => {
+          {[...articles]
+            .sort((a, b) => {
+              const aFeatured = a.is_featured ? 1 : 0;
+              const bFeatured = b.is_featured ? 1 : 0;
+              if (aFeatured !== bFeatured) return bFeatured - aFeatured;
+              return new Date(b.published_at).getTime() - new Date(a.published_at).getTime();
+            })
+            .map((article) => {
             const expanded = expandedId === article.id;
             const ready = isAnimeNewsPublishReady(article);
 
@@ -187,6 +205,11 @@ export function AdminAnimeNewsPanel() {
                       >
                         {article.status}
                       </span>
+                      {article.is_featured ? (
+                        <span className="rounded-full bg-orange-500/15 px-2 py-0.5 text-[10px] font-bold uppercase text-orange-700 dark:text-orange-300">
+                          {t.admin.animeNews.featuredBadge}
+                        </span>
+                      ) : null}
                       {!ready ? (
                         <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">
                           {t.admin.animeNews.needsTranslation}
@@ -210,12 +233,22 @@ export function AdminAnimeNewsPanel() {
                       {expanded ? t.admin.animeNews.collapse : t.admin.animeNews.edit}
                     </button>
                     {article.status === "published" ? (
-                      <Link
-                        href={`/blog/anime-news/${article.slug}`}
-                        className="rounded-lg border border-zinc-300 px-3 py-1.5 text-xs font-semibold dark:border-zinc-700"
-                      >
-                        {t.admin.animeNews.viewOnSite}
-                      </Link>
+                      <>
+                        <Link
+                          href={`/blog/anime-news/${article.slug}`}
+                          className="rounded-lg border border-zinc-300 px-3 py-1.5 text-xs font-semibold dark:border-zinc-700"
+                        >
+                          {t.admin.animeNews.viewOnSite}
+                        </Link>
+                        {article.is_featured ? (
+                          <Link
+                            href="/blog#seasonal-guide"
+                            className="rounded-lg border border-orange-500/40 bg-orange-500/10 px-3 py-1.5 text-xs font-semibold text-orange-700 dark:text-orange-300"
+                          >
+                            {t.admin.animeNews.viewOnBlog}
+                          </Link>
+                        ) : null}
+                      </>
                     ) : null}
                   </div>
                 </div>

@@ -5,6 +5,7 @@ import {
   storyTextFromRssItem,
   topicsFromRssItem,
 } from "@/lib/animeNews/rss";
+import { syncFeaturedSeasonalGuide } from "@/lib/animeNews/seasonalGuideSync";
 import { createServiceRoleClient } from "@/lib/supabase/admin";
 
 export type AnimeNewsSyncResult = {
@@ -12,6 +13,7 @@ export type AnimeNewsSyncResult = {
   inserted: number;
   updated: number;
   skipped: number;
+  featuredGuideSlug: string | null;
   syncedAt: string;
 };
 
@@ -109,11 +111,20 @@ export async function runAnimeNewsSync(limit = 30): Promise<AnimeNewsSyncResult>
     updated += 1;
   }
 
+  let featuredGuideSlug: string | null = null;
+  try {
+    const featured = await syncFeaturedSeasonalGuide();
+    featuredGuideSlug = featured.slug;
+  } catch (error) {
+    console.error("syncFeaturedSeasonalGuide", error);
+  }
+
   return {
     fetched: items.length,
     inserted,
     updated,
     skipped,
+    featuredGuideSlug,
     syncedAt,
   };
 }
