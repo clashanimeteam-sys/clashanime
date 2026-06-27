@@ -128,15 +128,9 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
             {!compact ? (
               <a
                 href="#user-guide"
-                className="group mt-5 inline-flex items-center gap-2 rounded-full border border-orange-500/35 bg-black/60 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-orange-200 transition hover:border-orange-400/55 hover:bg-orange-500/10 hover:text-orange-100 sm:mt-6 sm:px-4 sm:py-2 sm:text-[11px]"
+                className="mt-5 inline-flex rounded-full border border-orange-500/35 bg-black/60 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-orange-200 transition hover:border-orange-400/55 hover:bg-orange-500/10 hover:text-orange-100 sm:mt-6 sm:px-4 sm:py-2 sm:text-[11px]"
               >
-                <span>{t.blog.hubBadge}</span>
-                <span className="inline-flex items-center gap-1 normal-case tracking-normal text-orange-300/90 group-hover:text-orange-200">
-                  {t.blog.hubLearnMore}
-                  <span aria-hidden className="transition group-hover:translate-y-0.5">
-                    ↓
-                  </span>
-                </span>
+                {t.blog.hubBadge}
               </a>
             ) : null}
           </div>

@@ -136,7 +136,6 @@ export type Dictionary = {
   };
   blog: {
     hubBadge: string;
-    hubLearnMore: string;
     hubTitle: string;
     hubSubtitle: string;
     heroTagline: string;
@@ -1578,7 +1577,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     blog: {
       hubBadge: "Knowledge hub",
-      hubLearnMore: "Learn more",
       hubTitle: "Heroes' Arena Guide",
       hubSubtitle:
         "Guides, radar analysis, winner stories, platform updates, prizes, and FAQ — built to help you rank higher and earn on ClashAnime.",
