@@ -2,6 +2,7 @@ import {
   fetchCrunchyrollNewsFeed,
   parseRssPubDate,
   slugFromCrunchyrollUrl,
+  storyTextFromRssItem,
   topicsFromRssItem,
 } from "@/lib/animeNews/rss";
 import { createServiceRoleClient } from "@/lib/supabase/admin";
@@ -31,9 +32,11 @@ export async function runAnimeNewsSync(limit = 30): Promise<AnimeNewsSyncResult>
     const publishedAt = parseRssPubDate(item.pubDate);
     const topics = topicsFromRssItem(item);
 
+    const storyEn = storyTextFromRssItem(item) || null;
+
     const { data: existing } = await serviceRole
       .from("anime_news_articles")
-      .select("id, status, title_ar, title_ja, excerpt_ar, excerpt_ja")
+      .select("id, status, title_ar, title_ja, excerpt_ar, excerpt_ja, story_ar, story_ja")
       .eq("source_guid", item.guid)
       .maybeSingle();
 
@@ -52,6 +55,7 @@ export async function runAnimeNewsSync(limit = 30): Promise<AnimeNewsSyncResult>
         status: canPublish ? "published" : "draft",
         title_en: item.title,
         excerpt_en: item.description || null,
+        story_en: storyEn,
         feed_synced_at: syncedAt,
         updated_at: syncedAt,
       });
@@ -87,6 +91,10 @@ export async function runAnimeNewsSync(limit = 30): Promise<AnimeNewsSyncResult>
       if (item.title.trim() && item.description.trim()) {
         patch.status = "published";
       }
+    }
+
+    if (!existing.story_ar && !existing.story_ja) {
+      patch.story_en = storyEn;
     }
 
     const { error } = await serviceRole

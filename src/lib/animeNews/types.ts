@@ -19,6 +19,9 @@ export type AnimeNewsArticle = {
   excerpt_en: string | null;
   excerpt_ar: string | null;
   excerpt_ja: string | null;
+  story_en: string | null;
+  story_ar: string | null;
+  story_ja: string | null;
   feed_synced_at: string | null;
   created_at: string;
   updated_at: string;
@@ -27,6 +30,7 @@ export type AnimeNewsArticle = {
 export type AnimeNewsCopy = {
   title: string;
   excerpt: string | null;
+  story: string | null;
 };
 
 export function getAnimeNewsCopy(article: AnimeNewsArticle, locale: Locale): AnimeNewsCopy {
@@ -44,7 +48,17 @@ export function getAnimeNewsCopy(article: AnimeNewsArticle, locale: Locale): Ani
     article.excerpt_ar ??
     article.excerpt_ja;
 
-  return { title, excerpt };
+  const story =
+    (locale === "ar"
+      ? article.story_ar
+      : locale === "ja"
+        ? article.story_ja
+        : article.story_en) ??
+    article.story_en ??
+    article.story_ar ??
+    article.story_ja;
+
+  return { title, excerpt, story };
 }
 
 export function isAnimeNewsPublishReady(article: AnimeNewsArticle): boolean {

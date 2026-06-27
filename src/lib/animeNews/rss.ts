@@ -4,6 +4,7 @@ export const CRUNCHYROLL_NEWS_RSS_URL =
 export type CrunchyrollRssItem = {
   title: string;
   description: string;
+  contentEncoded: string;
   link: string;
   guid: string;
   pubDate: string;
@@ -27,6 +28,41 @@ function decodeXmlEntities(value: string): string {
 function extractTag(block: string, tag: string): string {
   const match = block.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i"));
   return match ? decodeXmlEntities(match[1]) : "";
+}
+
+function stripHtml(html: string): string {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/<style[\s\S]*?<\/style>/gi, "")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/p>/gi, "\n\n")
+    .replace(/<\/div>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/[ \t]+\n/g, "\n")
+    .trim();
+}
+
+function truncateAtSentence(text: string, maxLength = 1400): string {
+  if (text.length <= maxLength) return text;
+
+  const slice = text.slice(0, maxLength);
+  const lastBreak = Math.max(slice.lastIndexOf(". "), slice.lastIndexOf(".\n"), slice.lastIndexOf("\n\n"));
+
+  if (lastBreak > maxLength * 0.55) {
+    return slice.slice(0, lastBreak + 1).trim();
+  }
+
+  return `${slice.trim()}…`;
+}
+
+export function storyTextFromRssItem(item: Pick<CrunchyrollRssItem, "contentEncoded" | "description">): string {
+  const raw = item.contentEncoded.trim() || item.description.trim();
+  if (!raw) return "";
+
+  const plain = stripHtml(raw);
+  return truncateAtSentence(plain);
 }
 
 function extractMediaThumbnail(block: string): string | null {
@@ -74,6 +110,7 @@ export function parseCrunchyrollRss(xml: string): CrunchyrollRssItem[] {
     items.push({
       title,
       description: extractTag(block, "description"),
+      contentEncoded: extractTag(block, "content:encoded"),
       link,
       guid,
       pubDate: extractTag(block, "pubDate"),

@@ -68,9 +68,18 @@ export function AnimeNewsArticleContent({ article, related }: AnimeNewsArticleCo
         ) : null}
 
         {copy.excerpt ? (
-          <p className="mt-6 rounded-2xl border border-zinc-700/80 bg-zinc-900/90 p-5 text-sm leading-relaxed text-zinc-200 sm:text-base">
-            {copy.excerpt}
-          </p>
+          <p className="mt-6 text-base leading-relaxed text-zinc-300 sm:text-lg">{copy.excerpt}</p>
+        ) : null}
+
+        {copy.story ? (
+          <section className="mt-8 rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-5 sm:p-6">
+            <h2 className="font-display text-lg font-bold text-white sm:text-xl">{t.blog.animeNews.storyHeading}</h2>
+            <div className="mt-4 space-y-4 text-sm leading-relaxed text-zinc-300 sm:text-base">
+              {copy.story.split(/\n{2,}/).map((paragraph, index) => (
+                <p key={index}>{paragraph.trim()}</p>
+              ))}
+            </div>
+          </section>
         ) : null}
 
         <div className="mt-8 rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-5">

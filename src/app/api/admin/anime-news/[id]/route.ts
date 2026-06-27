@@ -13,6 +13,9 @@ type UpdateBody = {
   excerptEn?: string;
   excerptAr?: string;
   excerptJa?: string;
+  storyEn?: string;
+  storyAr?: string;
+  storyJa?: string;
   topics?: string[];
   status?: AnimeNewsStatus;
 };
@@ -61,6 +64,9 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
   if (body.excerptEn !== undefined) patch.excerpt_en = body.excerptEn.trim() || null;
   if (body.excerptAr !== undefined) patch.excerpt_ar = body.excerptAr.trim() || null;
   if (body.excerptJa !== undefined) patch.excerpt_ja = body.excerptJa.trim() || null;
+  if (body.storyEn !== undefined) patch.story_en = body.storyEn.trim() || null;
+  if (body.storyAr !== undefined) patch.story_ar = body.storyAr.trim() || null;
+  if (body.storyJa !== undefined) patch.story_ja = body.storyJa.trim() || null;
   if (body.topics !== undefined) {
     patch.topics = body.topics
       .map((topic) => topic.trim().replace(/^#/, "").toLowerCase())

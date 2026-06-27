@@ -92,6 +92,9 @@ export function AdminAnimeNewsPanel() {
           excerptEn: article.excerpt_en ?? "",
           excerptAr: article.excerpt_ar ?? "",
           excerptJa: article.excerpt_ja ?? "",
+          storyEn: article.story_en ?? "",
+          storyAr: article.story_ar ?? "",
+          storyJa: article.story_ja ?? "",
           topics: article.topics,
           status: status ?? article.status,
         }),
@@ -224,6 +227,8 @@ export function AdminAnimeNewsPanel() {
                         lang === "en" ? "title_en" : lang === "ar" ? "title_ar" : "title_ja";
                       const excerptKey =
                         lang === "en" ? "excerpt_en" : lang === "ar" ? "excerpt_ar" : "excerpt_ja";
+                      const storyKey =
+                        lang === "en" ? "story_en" : lang === "ar" ? "story_ar" : "story_ja";
 
                       return (
                         <div key={lang} className="grid gap-2">
@@ -243,9 +248,18 @@ export function AdminAnimeNewsPanel() {
                             onChange={(event) =>
                               updateLocal(article.id, { [excerptKey]: event.target.value })
                             }
-                            rows={3}
+                            rows={2}
                             className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
                             placeholder={t.admin.animeNews.excerptPlaceholder}
+                          />
+                          <textarea
+                            value={article[storyKey] ?? ""}
+                            onChange={(event) =>
+                              updateLocal(article.id, { [storyKey]: event.target.value })
+                            }
+                            rows={6}
+                            className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+                            placeholder={t.admin.animeNews.storyPlaceholder}
                           />
                         </div>
                       );

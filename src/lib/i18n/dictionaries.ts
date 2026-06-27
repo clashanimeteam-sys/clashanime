@@ -173,6 +173,7 @@ export type Dictionary = {
       latestHeading: string;
       empty: string;
       viewAll: string;
+      storyHeading: string;
     };
   };
   pages: {
@@ -1384,6 +1385,7 @@ export type Dictionary = {
       needsTranslation: string;
       titlePlaceholder: string;
       excerptPlaceholder: string;
+      storyPlaceholder: string;
       topics: string;
     };
     hashtags: {
@@ -1653,6 +1655,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         latestHeading: "More latest anime news",
         empty: "No published anime news yet. Open Admin → Anime news and run Sync RSS now.",
         viewAll: "View all anime news",
+        storyHeading: "Anime story",
       },
     },
     pages: {
@@ -2963,6 +2966,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         needsTranslation: "Add optional AR/JA translations",
         titlePlaceholder: "Headline",
         excerptPlaceholder: "Short summary in your own words (2–4 sentences)",
+        storyPlaceholder: "Full anime story / news body (multiple paragraphs)",
         topics: "Topics (comma separated)",
       },
       hashtags: {
@@ -3230,6 +3234,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         latestHeading: "その他の最新ニュース",
         empty: "公開中のニュースはまだありません。管理画面 → アニメニュース で RSS 同期を実行してください。",
         viewAll: "すべてのニュースを見る",
+        storyHeading: "アニメのストーリー",
       },
     },
     pages: {
@@ -4524,6 +4529,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         needsTranslation: "AR/JA翻訳は任意",
         titlePlaceholder: "見出し",
         excerptPlaceholder: "独自の短い要約（2〜4文）",
+        storyPlaceholder: "アニメのストーリー / 本文（複数段落）",
         topics: "トピック（カンマ区切り）",
       },
       hashtags: {
@@ -4791,6 +4797,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         latestHeading: "المزيد من آخر أخبار الأنمي",
         empty: "لا توجد أخبار منشورة بعد. افتح Admin → أخبار الأنمي واضغط Sync RSS now.",
         viewAll: "عرض كل الأخبار",
+        storyHeading: "قصة الأنمي",
       },
     },
     pages: {
@@ -6086,9 +6093,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
         empty: "لا مقالات بعد. شغّل مزامنة RSS لاستيراد مسودات.",
         meta: "{drafts} مسودات · {published} منشورة",
         lastSync: "آخر مزامنة:",
-        needsTranslation: "تحتاج نص EN/AR/JA",
+        needsTranslation: "ترجمة AR/JA اختيارية",
         titlePlaceholder: "العنوان",
         excerptPlaceholder: "ملخص قصير بكلماتك (2–4 جمل)",
+        storyPlaceholder: "قصة الأنمي / نص الخبر (فقرات متعددة)",
         topics: "المواضيع (مفصولة بفاصلة)",
       },
       hashtags: {
