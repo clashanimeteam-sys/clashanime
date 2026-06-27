@@ -9,13 +9,13 @@ type BlogHeroBannerProps = {
 };
 
 export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBannerProps) {
-  const { t, locale, dir } = useLocale();
+  const { t, dir } = useLocale();
 
   return (
     <section
       dir="ltr"
       className={`relative overflow-hidden border-b border-zinc-800 ${
-        compact ? "min-h-[220px]" : "min-h-[340px] sm:min-h-[420px] lg:min-h-[460px]"
+        compact ? "min-h-[240px]" : "min-h-[380px] sm:min-h-[480px] lg:min-h-[520px]"
       }`}
       aria-label={t.blog.hubTitle}
     >
@@ -23,7 +23,7 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
 
       {/* Center arena spotlight — keeps text lane clear of characters */}
       <div
-        className="absolute inset-0 bg-[radial-gradient(ellipse_42%_72%_at_50%_48%,rgba(18,18,22,0.97),rgba(9,9,11,0.88)_52%,rgba(9,9,11,1)_100%)]"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_36%_68%_at_50%_48%,rgba(18,18,22,0.96),rgba(9,9,11,0.82)_50%,rgba(9,9,11,1)_100%)]"
         aria-hidden
       />
       <div
@@ -33,10 +33,10 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
 
       {/* Left — Demon Slayer (physical left, not flipped in RTL) */}
       <div
-        className={`pointer-events-none absolute bottom-0 left-0 ${
+        className={`pointer-events-none absolute bottom-0 left-0 top-[8%] ${
           compact
-            ? "h-[78%] w-[34%] max-w-[160px]"
-            : "h-[88%] w-[min(34vw,420px)] max-w-[420px] sm:h-[90%] lg:w-[min(30vw,440px)]"
+            ? "w-[42%] max-w-[200px]"
+            : "w-[min(46vw,620px)] max-w-[620px] sm:top-[4%] lg:w-[min(42vw,680px)] lg:max-w-[680px]"
         }`}
         aria-hidden
       >
@@ -45,18 +45,18 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
           alt=""
           fill
           priority={!compact}
-          className="object-contain object-bottom object-left"
-          sizes="(max-width: 640px) 34vw, 420px"
+          className="origin-bottom scale-[1.08] object-contain object-bottom object-left sm:scale-110 lg:scale-[1.15]"
+          sizes="(max-width: 640px) 46vw, 680px"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/20 via-transparent to-zinc-950/95" />
+        <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/10 via-transparent to-zinc-950/80" />
       </div>
 
       {/* Right — Solo Leveling */}
       <div
-        className={`pointer-events-none absolute bottom-0 right-0 ${
+        className={`pointer-events-none absolute bottom-0 right-0 top-[8%] ${
           compact
-            ? "h-[78%] w-[34%] max-w-[160px]"
-            : "h-[88%] w-[min(34vw,420px)] max-w-[420px] sm:h-[90%] lg:w-[min(30vw,440px)]"
+            ? "w-[42%] max-w-[200px]"
+            : "w-[min(46vw,620px)] max-w-[620px] sm:top-[4%] lg:w-[min(42vw,680px)] lg:max-w-[680px]"
         }`}
         aria-hidden
       >
@@ -65,15 +65,15 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
           alt=""
           fill
           priority={!compact}
-          className="object-contain object-bottom object-right"
-          sizes="(max-width: 640px) 34vw, 420px"
+          className="origin-bottom scale-[1.08] object-contain object-bottom object-right sm:scale-110 lg:scale-[1.15]"
+          sizes="(max-width: 640px) 46vw, 680px"
         />
-        <div className="absolute inset-0 bg-gradient-to-l from-zinc-950/20 via-transparent to-zinc-950/95" />
+        <div className="absolute inset-0 bg-gradient-to-l from-zinc-950/10 via-transparent to-zinc-950/80" />
       </div>
 
       {/* Side vignettes + vertical depth */}
       <div
-        className="absolute inset-0 bg-[linear-gradient(90deg,rgba(9,9,11,0.72)_0%,rgba(9,9,11,0.08)_24%,rgba(9,9,11,0.08)_76%,rgba(9,9,11,0.72)_100%)]"
+        className="absolute inset-0 bg-[linear-gradient(90deg,rgba(9,9,11,0.55)_0%,rgba(9,9,11,0.05)_20%,rgba(9,9,11,0.05)_80%,rgba(9,9,11,0.55)_100%)]"
         aria-hidden
       />
       <div
@@ -89,7 +89,7 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
       ) : null}
 
       {/* Text column — fixed center lane between characters */}
-      <div className="relative z-10 flex min-h-[inherit] items-center justify-center px-[max(1rem,12vw)] py-10 sm:px-[max(1.5rem,18vw)] sm:py-12 lg:px-[max(2rem,22vw)] lg:py-14">
+      <div className="relative z-10 flex min-h-[inherit] items-center justify-center px-[max(0.75rem,10vw)] py-10 sm:px-[max(1.25rem,16vw)] sm:py-12 lg:px-[max(1.5rem,20vw)] lg:py-14">
         <div
           dir={dir}
           className={`w-full text-center ${
