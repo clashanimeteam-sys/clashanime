@@ -9,32 +9,34 @@ type BlogHeroBannerProps = {
 };
 
 export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBannerProps) {
-  const { t } = useLocale();
+  const { t, locale, dir } = useLocale();
 
   return (
     <section
+      dir="ltr"
       className={`relative overflow-hidden border-b border-zinc-800 ${
-        compact ? "min-h-[220px]" : "min-h-[320px] sm:min-h-[400px] lg:min-h-[440px]"
+        compact ? "min-h-[220px]" : "min-h-[340px] sm:min-h-[420px] lg:min-h-[460px]"
       }`}
       aria-label={t.blog.hubTitle}
     >
-      {/* Dark arena base */}
       <div className="absolute inset-0 bg-zinc-950" aria-hidden />
 
-      {/* Center atmospheric glow — confrontation arena */}
+      {/* Center arena spotlight — keeps text lane clear of characters */}
       <div
-        className="absolute inset-0 bg-[radial-gradient(ellipse_55%_80%_at_50%_45%,rgba(30,30,35,0.9),rgba(9,9,11,1)_70%)]"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_42%_72%_at_50%_48%,rgba(18,18,22,0.97),rgba(9,9,11,0.88)_52%,rgba(9,9,11,1)_100%)]"
         aria-hidden
       />
       <div
-        className="absolute inset-0 bg-[radial-gradient(ellipse_40%_60%_at_50%_50%,rgba(249,115,22,0.12),transparent_70%)]"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_28%_50%_at_50%_50%,rgba(249,115,22,0.14),transparent_72%)]"
         aria-hidden
       />
 
-      {/* Left — Demon Slayer */}
+      {/* Left — Demon Slayer (physical left, not flipped in RTL) */}
       <div
-        className={`pointer-events-none absolute bottom-0 start-0 ${
-          compact ? "h-[85%] w-[42%] max-w-[200px]" : "h-[92%] w-[38%] max-w-[320px] sm:max-w-[380px] lg:max-w-[440px]"
+        className={`pointer-events-none absolute bottom-0 left-0 ${
+          compact
+            ? "h-[78%] w-[34%] max-w-[160px]"
+            : "h-[88%] w-[min(34vw,420px)] max-w-[420px] sm:h-[90%] lg:w-[min(30vw,440px)]"
         }`}
         aria-hidden
       >
@@ -43,16 +45,18 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
           alt=""
           fill
           priority={!compact}
-          className="object-contain object-bottom"
-          sizes="(max-width: 640px) 42vw, 440px"
+          className="object-contain object-bottom object-left"
+          sizes="(max-width: 640px) 34vw, 420px"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-zinc-950/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/20 via-transparent to-zinc-950/95" />
       </div>
 
       {/* Right — Solo Leveling */}
       <div
-        className={`pointer-events-none absolute bottom-0 end-0 ${
-          compact ? "h-[85%] w-[42%] max-w-[200px]" : "h-[92%] w-[38%] max-w-[320px] sm:max-w-[380px] lg:max-w-[440px]"
+        className={`pointer-events-none absolute bottom-0 right-0 ${
+          compact
+            ? "h-[78%] w-[34%] max-w-[160px]"
+            : "h-[88%] w-[min(34vw,420px)] max-w-[420px] sm:h-[90%] lg:w-[min(30vw,440px)]"
         }`}
         aria-hidden
       >
@@ -61,58 +65,71 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
           alt=""
           fill
           priority={!compact}
-          className="object-contain object-bottom"
-          sizes="(max-width: 640px) 42vw, 440px"
+          className="object-contain object-bottom object-right"
+          sizes="(max-width: 640px) 34vw, 420px"
         />
-        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-zinc-950/90" />
+        <div className="absolute inset-0 bg-gradient-to-l from-zinc-950/20 via-transparent to-zinc-950/95" />
       </div>
 
-      {/* Top/bottom vignette for readability */}
+      {/* Side vignettes + vertical depth */}
       <div
-        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,9,11,0.55)_0%,rgba(9,9,11,0.15)_35%,rgba(9,9,11,0.2)_65%,rgba(9,9,11,0.95)_100%)]"
+        className="absolute inset-0 bg-[linear-gradient(90deg,rgba(9,9,11,0.72)_0%,rgba(9,9,11,0.08)_24%,rgba(9,9,11,0.08)_76%,rgba(9,9,11,0.72)_100%)]"
         aria-hidden
       />
       <div
-        className="absolute inset-0 bg-[linear-gradient(90deg,rgba(9,9,11,0.35)_0%,transparent_22%,transparent_78%,rgba(9,9,11,0.35)_100%)]"
+        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,9,11,0.45)_0%,transparent_30%,transparent_70%,rgba(9,9,11,0.92)_100%)]"
         aria-hidden
       />
 
-      {/* VS energy line */}
       {!compact ? (
         <div
-          className="pointer-events-none absolute start-1/2 top-1/2 h-32 w-px -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-transparent via-orange-500/40 to-transparent sm:h-48"
+          className="pointer-events-none absolute left-1/2 top-[42%] h-28 w-px -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-transparent via-orange-500/35 to-transparent sm:top-1/2 sm:h-40"
           aria-hidden
         />
       ) : null}
 
-      <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center justify-center px-4 py-10 text-center sm:px-6 sm:py-14 lg:py-16">
-        {!compact ? (
-          <p className="max-w-2xl font-display text-lg font-bold leading-snug text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] sm:text-2xl md:text-3xl lg:text-4xl">
-            {t.blog.heroTagline}
-          </p>
-        ) : null}
-
-        <h1
-          className={`font-display font-black uppercase italic tracking-[0.08em] drop-shadow-[0_2px_16px_rgba(0,0,0,0.9)] ${
-            compact
-              ? "mt-2 text-2xl text-white sm:text-3xl"
-              : "mt-4 bg-gradient-to-br from-white via-orange-100 to-orange-300 bg-clip-text text-transparent text-3xl sm:mt-5 sm:text-4xl md:text-5xl lg:text-6xl"
+      {/* Text column — fixed center lane between characters */}
+      <div className="relative z-10 flex min-h-[inherit] items-center justify-center px-[max(1rem,12vw)] py-10 sm:px-[max(1.5rem,18vw)] sm:py-12 lg:px-[max(2rem,22vw)] lg:py-14">
+        <div
+          dir={dir}
+          className={`w-full text-center ${
+            compact ? "max-w-xl" : "max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl"
           }`}
         >
-          {articleTitle ?? t.blog.hubTitle}
-        </h1>
+          <div
+            className={`rounded-2xl border border-white/10 bg-black/45 px-5 py-7 shadow-[0_8px_40px_rgba(0,0,0,0.55)] backdrop-blur-md sm:px-8 sm:py-8 ${
+              compact ? "py-5" : ""
+            }`}
+          >
+            {!compact ? (
+              <p className="font-display text-base font-bold leading-relaxed text-white sm:text-xl md:text-2xl lg:leading-snug">
+                {t.blog.heroTagline}
+              </p>
+            ) : null}
 
-        {!compact ? (
-          <p className="mt-4 max-w-xl text-sm leading-relaxed text-zinc-200 drop-shadow-md sm:text-base">
-            {t.blog.hubSubtitle}
-          </p>
-        ) : null}
+            <h1
+              className={`font-display font-black uppercase italic tracking-[0.06em] text-white ${
+                compact
+                  ? "mt-1 text-xl sm:text-2xl"
+                  : "mt-3 bg-gradient-to-br from-white via-orange-100 to-amber-200 bg-clip-text text-transparent text-2xl sm:mt-4 sm:text-3xl md:text-4xl lg:text-5xl"
+              }`}
+            >
+              {articleTitle ?? t.blog.hubTitle}
+            </h1>
 
-        {!compact ? (
-          <p className="mt-6 inline-flex rounded-full border border-orange-500/40 bg-black/50 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-orange-200 backdrop-blur-sm">
-            {t.blog.hubBadge}
-          </p>
-        ) : null}
+            {!compact ? (
+              <p className="mx-auto mt-3 max-w-prose text-xs leading-relaxed text-zinc-300 sm:mt-4 sm:text-sm md:text-[0.9375rem]">
+                {t.blog.hubSubtitle}
+              </p>
+            ) : null}
+
+            {!compact ? (
+              <p className="mt-5 inline-flex rounded-full border border-orange-500/35 bg-black/60 px-3.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-orange-200 sm:mt-6 sm:px-4 sm:py-1.5 sm:text-[11px]">
+                {t.blog.hubBadge}
+              </p>
+            ) : null}
+          </div>
+        </div>
       </div>
     </section>
   );
