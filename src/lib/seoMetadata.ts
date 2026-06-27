@@ -26,7 +26,8 @@ type PageSeoKey =
   | "exclusives"
   | "music"
   | "about"
-  | "blog";
+  | "blog"
+  | "animeNews";
 
 const PAGE_SEO: Record<
   PageSeoKey,
@@ -79,6 +80,12 @@ const PAGE_SEO: Record<
     description:
       "Guides to anime clashes, Anime Radar trends, winner stories, platform updates, prizes, ClashCoins, and FAQ. Learn how to rank and earn on ClashAnime — دليل الأبطال وSEO — 英雄アリーナガイド.",
     path: "/blog",
+  },
+  animeNews: {
+    title: "Latest Anime News — ClashAnime Editorial Hub",
+    description:
+      "Curated anime headlines in English, Arabic, and Japanese. Summaries by ClashAnime with links to Crunchyroll sources — آخر أخبار الأنمي — 最新アニメニュース.",
+    path: "/blog/anime-news",
   },
 };
 

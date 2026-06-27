@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getActiveAnimeReleaseClashes } from "@/lib/animeTracker.server";
+import { listPublishedAnimeNewsSlugs } from "@/lib/animeNews.server";
 import { getBlogSlugs } from "@/lib/blog/posts";
 import { createServerClient } from "@/lib/supabase/server";
 import { absoluteSiteUrl, PUBLIC_STATIC_PATHS } from "@/lib/siteSeo";
@@ -93,6 +94,15 @@ export async function buildSitemapEntries(): Promise<MetadataRoute.Sitemap> {
 
   for (const slug of getBlogSlugs()) {
     addEntry(`/blog/${slug}`, null, 0.7);
+  }
+
+  try {
+    const newsSlugs = await listPublishedAnimeNewsSlugs(100);
+    for (const slug of newsSlugs) {
+      addEntry(`/blog/anime-news/${slug}`, null, 0.72);
+    }
+  } catch {
+    // Ignore if anime news table is not migrated yet.
   }
 
   return entries;

@@ -162,6 +162,18 @@ export type Dictionary = {
       "earnings-prizes": string;
       faq: string;
     };
+    animeNews: {
+      hubTitle: string;
+      hubSubtitle: string;
+      sourceNote: string;
+      badge: string;
+      backToNews: string;
+      sourceLabel: string;
+      readOnCrunchyroll: string;
+      latestHeading: string;
+      empty: string;
+      viewAll: string;
+    };
   };
   pages: {
     videosTitle: string;
@@ -1170,6 +1182,7 @@ export type Dictionary = {
       beatsLounge: string;
       animeTracker: string;
       blog: string;
+      animeNews: string;
       contact: string;
       emails: string;
       referrals: string;
@@ -1348,6 +1361,30 @@ export type Dictionary = {
       readingTime: string;
       viewOnSite: string;
       openHub: string;
+    };
+    animeNews: {
+      title: string;
+      subtitle: string;
+      syncNow: string;
+      syncing: string;
+      syncSuccess: string;
+      saved: string;
+      saving: string;
+      saveDraft: string;
+      publish: string;
+      edit: string;
+      collapse: string;
+      viewOnSite: string;
+      sourceLink: string;
+      openHub: string;
+      loading: string;
+      empty: string;
+      meta: string;
+      lastSync: string;
+      needsTranslation: string;
+      titlePlaceholder: string;
+      excerptPlaceholder: string;
+      topics: string;
     };
     hashtags: {
       title: string;
@@ -1603,6 +1640,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "platform-updates": "New features like instant 24-hour episode clashes.",
         "earnings-prizes": "Points, ClashCoins, seasons, and payouts explained.",
         faq: "Global availability, KYC, taxes, and common questions.",
+      },
+      animeNews: {
+        hubTitle: "Latest anime news",
+        hubSubtitle:
+          "Curated headlines from the anime world — rewritten for ClashAnime in English, Arabic, and Japanese.",
+        sourceNote: "Headlines sourced from Crunchyroll News. Summaries are editorial on ClashAnime.",
+        badge: "Anime news",
+        backToNews: "Back to anime news",
+        sourceLabel: "Original source",
+        readOnCrunchyroll: "Read full story on Crunchyroll",
+        latestHeading: "More latest anime news",
+        empty: "No published anime news yet. Check back soon.",
+        viewAll: "View all anime news",
       },
     },
     pages: {
@@ -2708,6 +2758,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         beatsLounge: "Anime Beats Lounge",
         animeTracker: "Anime Tracker",
         blog: "Arena Guide",
+        animeNews: "Anime news",
         contact: "Contact inbox",
         emails: "Emails",
         referrals: "Referrals",
@@ -2888,6 +2939,31 @@ export const dictionaries: Record<Locale, Dictionary> = {
         readingTime: "Reading time",
         viewOnSite: "View on site",
         openHub: "Open guide hub",
+      },
+      animeNews: {
+        title: "Anime news hub",
+        subtitle:
+          "Sync Crunchyroll RSS drafts, write EN/AR/JA summaries in our voice, add topics, then publish on /blog/anime-news.",
+        syncNow: "Sync RSS now",
+        syncing: "Syncing...",
+        syncSuccess: "RSS sync complete — {inserted} new, {updated} updated.",
+        saved: "Article saved.",
+        saving: "Saving...",
+        saveDraft: "Save draft",
+        publish: "Publish",
+        edit: "Edit",
+        collapse: "Collapse",
+        viewOnSite: "View on site",
+        sourceLink: "Crunchyroll source",
+        openHub: "Open public hub",
+        loading: "Loading articles...",
+        empty: "No articles yet. Run RSS sync to import drafts.",
+        meta: "{drafts} drafts · {published} published",
+        lastSync: "Last sync:",
+        needsTranslation: "Needs EN/AR/JA copy",
+        titlePlaceholder: "Headline",
+        excerptPlaceholder: "Short summary in your own words (2–4 sentences)",
+        topics: "Topics (comma separated)",
       },
       hashtags: {
         title: "Top hashtags",
@@ -3141,6 +3217,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "platform-updates": "24時間インスタントエピソードクラッシュなど。",
         "earnings-prizes": "ポイント、ClashCoins、シーズン賞。",
         faq: "全世界、KYC、税金、よくある質問。",
+      },
+      animeNews: {
+        hubTitle: "最新アニメニュース",
+        hubSubtitle:
+          "アニメ界の最新ヘッドライン — ClashAnime向けに英語・アラビア語・日本語で編集。",
+        sourceNote: "見出しはCrunchyroll News由来。要約はClashAnimeの編集です。",
+        badge: "アニメニュース",
+        backToNews: "ニュース一覧へ",
+        sourceLabel: "原典",
+        readOnCrunchyroll: "Crunchyrollで全文を読む",
+        latestHeading: "その他の最新ニュース",
+        empty: "公開中のニュースはまだありません。",
+        viewAll: "すべてのニュースを見る",
       },
     },
     pages: {
@@ -4231,6 +4320,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         beatsLounge: "アニメ・ビーツ・ラウンジ",
         animeTracker: "新作アニメレーダー",
         blog: "アリーナガイド",
+        animeNews: "アニメニュース",
         contact: "お問い合わせ受信箱",
         emails: "メール",
         referrals: "招待プログラム",
@@ -4410,6 +4500,31 @@ export const dictionaries: Record<Locale, Dictionary> = {
         readingTime: "読了時間",
         viewOnSite: "サイトで見る",
         openHub: "ガイド一覧",
+      },
+      animeNews: {
+        title: "アニメニュースハブ",
+        subtitle:
+          "Crunchyroll RSSを同期し、EN/AR/JAの要約とトピックを書いて /blog/anime-news に公開します。",
+        syncNow: "RSSを同期",
+        syncing: "同期中...",
+        syncSuccess: "RSS同期完了 — 新規 {inserted}、更新 {updated}。",
+        saved: "記事を保存しました。",
+        saving: "保存中...",
+        saveDraft: "下書き保存",
+        publish: "公開",
+        edit: "編集",
+        collapse: "閉じる",
+        viewOnSite: "サイトで見る",
+        sourceLink: "Crunchyroll原典",
+        openHub: "公開ハブを開く",
+        loading: "記事を読み込み中...",
+        empty: "記事がありません。RSS同期を実行してください。",
+        meta: "下書き {drafts} · 公開 {published}",
+        lastSync: "最終同期:",
+        needsTranslation: "EN/AR/JAの文案が必要",
+        titlePlaceholder: "見出し",
+        excerptPlaceholder: "独自の短い要約（2〜4文）",
+        topics: "トピック（カンマ区切り）",
       },
       hashtags: {
         title: "人気ハッシュタグ",
@@ -4663,6 +4778,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
         "platform-updates": "ميزات جديدة مثل نزال الحلقة الفوري 24 ساعة.",
         "earnings-prizes": "النقاط و ClashCoins والمواسم والسحب.",
         faq: "التوفر العالمي و KYC والضرائب وأسئلة شائعة.",
+      },
+      animeNews: {
+        hubTitle: "آخر أخبار الأنمي",
+        hubSubtitle:
+          "عناوين مختارة من عالم الأنمي — بصياغة ClashAnime بالعربية والإنجليزية واليابانية.",
+        sourceNote: "العناوين من Crunchyroll News. الملخصات تحرير ClashAnime.",
+        badge: "أخبار الأنمي",
+        backToNews: "العودة لآخر الأخبار",
+        sourceLabel: "المصدر الأصلي",
+        readOnCrunchyroll: "اقرأ التفاصيل على Crunchyroll",
+        latestHeading: "المزيد من آخر أخبار الأنمي",
+        empty: "لا توجد أخبار منشورة بعد.",
+        viewAll: "عرض كل الأخبار",
       },
     },
     pages: {
@@ -5757,6 +5885,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         beatsLounge: "صالة إيقاعات الأنمي",
         animeTracker: "رادار الأنمي الجديد",
         blog: "دليل الأبطال",
+        animeNews: "أخبار الأنمي",
         contact: "صندوق التواصل",
         emails: "الإيميلات",
         referrals: "برنامج الدعوة",
@@ -5936,6 +6065,31 @@ export const dictionaries: Record<Locale, Dictionary> = {
         readingTime: "وقت القراءة",
         viewOnSite: "عرض في الموقع",
         openHub: "فتح دليل الأبطال",
+      },
+      animeNews: {
+        title: "مركز أخبار الأنمي",
+        subtitle:
+          "زامِن RSS من Crunchyroll، اكتب ملخصات EN/AR/JA بأسلوبنا، أضف المواضيع، ثم انشر على /blog/anime-news.",
+        syncNow: "مزامنة RSS الآن",
+        syncing: "جاري المزامنة...",
+        syncSuccess: "اكتملت المزامنة — {inserted} جديد، {updated} محدّث.",
+        saved: "تم حفظ المقالة.",
+        saving: "جاري الحفظ...",
+        saveDraft: "حفظ مسودة",
+        publish: "نشر",
+        edit: "تحرير",
+        collapse: "إخفاء",
+        viewOnSite: "عرض في الموقع",
+        sourceLink: "مصدر Crunchyroll",
+        openHub: "فتح الصفحة العامة",
+        loading: "جاري تحميل المقالات...",
+        empty: "لا مقالات بعد. شغّل مزامنة RSS لاستيراد مسودات.",
+        meta: "{drafts} مسودات · {published} منشورة",
+        lastSync: "آخر مزامنة:",
+        needsTranslation: "تحتاج نص EN/AR/JA",
+        titlePlaceholder: "العنوان",
+        excerptPlaceholder: "ملخص قصير بكلماتك (2–4 جمل)",
+        topics: "المواضيع (مفصولة بفاصلة)",
       },
       hashtags: {
         title: "أبرز الهاشتاغات",

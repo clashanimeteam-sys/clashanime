@@ -113,9 +113,19 @@ export function BlogArenaNav() {
             );
           })}
           <Link
+            href="/blog/anime-news"
+            className={`shrink-0 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+              pathname === "/blog/anime-news" || pathname.startsWith("/blog/anime-news/")
+                ? "bg-orange-500/15 text-orange-300"
+                : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
+            }`}
+          >
+            {t.blog.animeNews.hubTitle}
+          </Link>
+          <Link
             href="/blog"
             className={`shrink-0 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
-              pathname === "/blog" || pathname.startsWith("/blog/")
+              pathname === "/blog"
                 ? "bg-orange-500/15 text-orange-300"
                 : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
             }`}

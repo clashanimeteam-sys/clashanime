@@ -19,6 +19,7 @@ export const PUBLIC_STATIC_PATHS = [
   "/community-guidelines",
   "/report",
   "/blog",
+  "/blog/anime-news",
 ] as const;
 
 /** Paths that should never be crawled or listed in the sitemap. */
