@@ -31,44 +31,44 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
         aria-hidden
       />
 
-      {/* Left — Demon Slayer (crop empty black on right of asset) */}
+      {/* Left — Demon Slayer */}
       <div
-        className={`pointer-events-none absolute bottom-0 left-0 top-[6%] overflow-hidden ${
-          compact ? "w-[34%] max-w-[150px]" : "w-[min(24vw,300px)] max-w-[300px] sm:max-w-[320px]"
+        className={`pointer-events-none absolute bottom-0 left-0 top-[6%] ${
+          compact
+            ? "w-[38%] max-w-[170px]"
+            : "w-[min(38vw,560px)] max-w-[560px] lg:w-[min(34vw,580px)] lg:max-w-[580px]"
         }`}
         aria-hidden
       >
-        <div className="relative h-full w-[158%]">
-          <Image
-            src="/blog/hero-demon-slayer-left.png"
-            alt=""
-            fill
-            priority={!compact}
-            className="object-cover object-left object-bottom scale-[1.04] sm:scale-[1.06]"
-            sizes="(max-width: 640px) 34vw, 320px"
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-zinc-950" />
+        <Image
+          src="/blog/hero-demon-slayer-left.png"
+          alt=""
+          fill
+          priority={!compact}
+          className="origin-bottom-left object-contain object-bottom object-left scale-[1.02] sm:scale-105 lg:scale-[1.08]"
+          sizes="(max-width: 640px) 38vw, 580px"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/15 via-transparent to-zinc-950/85" />
       </div>
 
-      {/* Right — Solo Leveling (crop empty black on left of asset) */}
+      {/* Right — Solo Leveling */}
       <div
-        className={`pointer-events-none absolute bottom-0 right-0 top-[6%] overflow-hidden ${
-          compact ? "w-[34%] max-w-[150px]" : "w-[min(24vw,300px)] max-w-[300px] sm:max-w-[320px]"
+        className={`pointer-events-none absolute bottom-0 right-0 top-[6%] ${
+          compact
+            ? "w-[38%] max-w-[170px]"
+            : "w-[min(38vw,560px)] max-w-[560px] lg:w-[min(34vw,580px)] lg:max-w-[580px]"
         }`}
         aria-hidden
       >
-        <div className="relative ms-auto h-full w-[158%]">
-          <Image
-            src="/blog/hero-solo-leveling-right.png"
-            alt=""
-            fill
-            priority={!compact}
-            className="object-cover object-right object-bottom scale-[1.04] sm:scale-[1.06]"
-            sizes="(max-width: 640px) 34vw, 320px"
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-zinc-950" />
+        <Image
+          src="/blog/hero-solo-leveling-right.png"
+          alt=""
+          fill
+          priority={!compact}
+          className="origin-bottom-right object-contain object-bottom object-right scale-[1.02] sm:scale-105 lg:scale-[1.08]"
+          sizes="(max-width: 640px) 38vw, 580px"
+        />
+        <div className="absolute inset-0 bg-gradient-to-l from-zinc-950/15 via-transparent to-zinc-950/85" />
       </div>
 
       {/* Side vignettes + vertical depth */}
