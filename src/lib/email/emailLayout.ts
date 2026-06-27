@@ -1,8 +1,8 @@
 import type { Locale } from "@/lib/types";
 
 const SITE_URL = "https://www.clashanime.com";
-const LOGO_LIGHT_URL = `${SITE_URL}/logo2.png`;
-const LOGO_DARK_URL = `${SITE_URL}/logo.jpg`;
+const LOGO_LIGHT_URL = `${SITE_URL}/logo-light.png`;
+const LOGO_DARK_URL = `${SITE_URL}/logo-dark.png`;
 const BRAND_RED = "#E33124";
 
 function escapeHtml(value: string): string {

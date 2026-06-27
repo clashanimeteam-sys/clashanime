@@ -37,22 +37,18 @@ export function BrandLogo({
         compact
           ? ""
           : isDark
-            ? "drop-shadow-[0_0_20px_rgba(220,38,38,0.42)]"
+            ? "drop-shadow-[0_0_18px_rgba(227,49,36,0.35)]"
             : "drop-shadow-[0_4px_10px_rgba(0,0,0,0.12)]"
       }`}
     >
       <Image
-        src={isDark ? "/logo-dark.png" : "/logo-light.png"}
+        src="/logo2.png"
         alt={compact ? "" : "Clash Anime"}
         fill
         priority={priority}
         sizes={compact ? "20px" : "(max-width: 768px) 72px, 112px"}
         aria-hidden={compact ? true : undefined}
-        className={
-          compact
-            ? "object-contain"
-            : "object-contain brightness-[1.04] contrast-[1.06] saturate-[1.1]"
-        }
+        className="object-contain"
       />
     </div>
   );

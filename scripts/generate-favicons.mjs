@@ -1,5 +1,5 @@
 import { execSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { copyFileSync, existsSync } from "node:fs";
 import sharp from "sharp";
 
 const source = "public/logo2.png";
@@ -47,5 +47,7 @@ execSync(
   "magick public/icon.png -define icon:auto-resize=256,128,64,48,32,16 public/favicon.ico",
   { stdio: "inherit" },
 );
+
+copyFileSync("public/favicon.ico", "src/app/favicon.ico");
 
 console.log(`Icons generated from logo2.png at ${Math.round(zoom * 100)}% zoom (${canvas}x${canvas}).`);
