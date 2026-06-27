@@ -33,10 +33,10 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
 
       {/* Left — Demon Slayer (physical left, not flipped in RTL) */}
       <div
-        className={`pointer-events-none absolute bottom-0 left-0 top-[8%] ${
+        className={`pointer-events-none absolute bottom-0 left-0 top-0 ${
           compact
-            ? "w-[42%] max-w-[200px]"
-            : "w-[min(46vw,620px)] max-w-[620px] sm:top-[4%] lg:w-[min(42vw,680px)] lg:max-w-[680px]"
+            ? "w-[48%] max-w-[220px]"
+            : "w-[min(54vw,820px)] max-w-[820px] lg:w-[min(50vw,900px)] lg:max-w-[900px]"
         }`}
         aria-hidden
       >
@@ -45,10 +45,10 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
           alt=""
           fill
           priority={!compact}
-          className="origin-bottom scale-[1.08] object-contain object-bottom object-left sm:scale-110 lg:scale-[1.15]"
-          sizes="(max-width: 640px) 46vw, 680px"
+          className="origin-bottom-left scale-[1.22] object-contain object-bottom object-left sm:scale-[1.32] lg:scale-[1.42]"
+          sizes="(max-width: 640px) 54vw, 900px"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/10 via-transparent to-zinc-950/80" />
+        <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/5 via-transparent to-zinc-950/75" />
       </div>
 
       {/* Right — Solo Leveling */}
