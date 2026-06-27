@@ -4,34 +4,32 @@ import sharp from "sharp";
 
 const source = "public/logo2.png";
 const canvas = 1024;
-/** Match standard tab icons (Instagram/Crunchyroll) — fill ~98% after trim. */
-const fillRatio = 0.98;
+const fillRatio = 1.08;
 
 if (!existsSync(source)) {
   throw new Error("Missing public/logo2.png");
 }
 
 const trimmed = await sharp(source).trim({ threshold: 8 }).png().toBuffer();
+const stageSize = Math.round(canvas * fillRatio);
 
-const targetSize = Math.round(canvas * fillRatio);
-
-const fitted = await sharp(trimmed)
-  .resize(targetSize, targetSize, {
+const staged = await sharp(trimmed)
+  .resize(stageSize, stageSize, {
     fit: "contain",
     background: { r: 0, g: 0, b: 0, alpha: 0 },
   })
   .png()
   .toBuffer();
 
-const icon = await sharp({
-  create: {
+const cropOffset = Math.floor((stageSize - canvas) / 2);
+
+const icon = await sharp(staged)
+  .extract({
+    left: cropOffset,
+    top: cropOffset,
     width: canvas,
     height: canvas,
-    channels: 4,
-    background: { r: 0, g: 0, b: 0, alpha: 0 },
-  },
-})
-  .composite([{ input: fitted, gravity: "center" }])
+  })
   .png()
   .toBuffer();
 
@@ -59,5 +57,5 @@ execSync(
 copyFileSync("public/favicon.ico", "src/app/favicon.ico");
 
 console.log(
-  `Icons generated: trim + ${Math.round(fillRatio * 100)}% contain (${canvas}x${canvas}, no crop).`,
+  `Icons generated: trim + ${Math.round(fillRatio * 100)}% scale (${canvas}x${canvas}).`,
 );
