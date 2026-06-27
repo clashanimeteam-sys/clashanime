@@ -25,7 +25,7 @@ export function BlogIndexContent() {
           if (categoryPosts.length === 0) return null;
 
           return (
-            <section key={category} className="mb-12 last:mb-0">
+            <section key={category} id={category} className="mb-12 scroll-mt-28 last:mb-0">
               <div className="mb-5 border-s-4 border-orange-500 ps-4">
                 <h2 className="font-display text-xl font-bold text-white sm:text-2xl">
                   {categoryLabel(category, t)}

@@ -8,11 +8,15 @@ import { NotificationBell } from "@/components/NotificationBell";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
+import { getBlogPost } from "@/lib/blog/posts";
+import type { BlogCategory } from "@/lib/blog/types";
+
 const NAV_LINKS = [
   { key: "home" as const, href: "/" },
   { key: "clash" as const, href: "/" },
   { key: "community" as const, href: "/community" },
   { key: "clashCoins" as const, href: "/profile#wallet" },
+  { key: "userGuide" as const, href: "/blog#user-guide", category: "user-guide" as BlogCategory },
 ] as const;
 
 function UserAvatar({ name, avatarUrl }: { name: string; avatarUrl?: string | null }) {
@@ -62,7 +66,21 @@ export function BlogArenaNav() {
   const labelFor = (key: (typeof NAV_LINKS)[number]["key"]) => {
     if (key === "home") return t.blog.navHome;
     if (key === "clashCoins") return t.nav.clashCoins;
+    if (key === "userGuide") return t.blog.categories["user-guide"];
     return t.nav[key];
+  };
+
+  const isNavActive = (item: (typeof NAV_LINKS)[number]) => {
+    if (item.key === "home") return pathname === "/";
+    if (item.key === "clash") return pathname === "/" || pathname.startsWith("/tracker");
+    if (item.key === "userGuide") {
+      if (pathname.startsWith("/blog/")) {
+        const slug = pathname.slice("/blog/".length);
+        return getBlogPost(slug)?.category === "user-guide";
+      }
+      return false;
+    }
+    return pathname === item.href || pathname.startsWith(`${item.href}/`);
   };
 
   return (
@@ -74,22 +92,17 @@ export function BlogArenaNav() {
         />
 
         <nav
-          className="hidden items-center gap-1 md:flex"
+          className="hidden min-w-0 flex-1 items-center justify-center gap-1 overflow-x-auto md:flex"
           aria-label={t.blog.hubTitle}
         >
           {NAV_LINKS.map((item) => {
-            const active =
-              item.key === "home"
-                ? pathname === "/"
-                : item.key === "clash"
-                  ? pathname === "/" || pathname.startsWith("/tracker")
-                  : pathname === item.href || pathname.startsWith(`${item.href}/`);
+            const active = isNavActive(item);
 
             return (
               <Link
                 key={item.key}
                 href={item.href}
-                className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+                className={`shrink-0 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
                   active
                     ? "bg-orange-500/15 text-orange-300"
                     : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
@@ -101,8 +114,8 @@ export function BlogArenaNav() {
           })}
           <Link
             href="/blog"
-            className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
-              pathname.startsWith("/blog")
+            className={`shrink-0 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+              pathname === "/blog" || pathname.startsWith("/blog/")
                 ? "bg-orange-500/15 text-orange-300"
                 : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
             }`}
