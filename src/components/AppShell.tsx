@@ -24,9 +24,11 @@ export function AppShell({ children }: AppShellProps) {
     <ProfileSectionProvider>
       <PageTitleProvider>
         <div className="flex h-dvh overflow-hidden bg-white dark:bg-black">
-          <div className="hidden h-dvh shrink-0 md:flex">
-            <Sidebar />
-          </div>
+          {!isBlogPage ? (
+            <div className="hidden h-dvh shrink-0 md:flex">
+              <Sidebar />
+            </div>
+          ) : null}
           <div
             className={`flex min-h-0 flex-1 flex-col bg-white dark:bg-black ${
               isVideoPage ? "max-md:h-dvh max-md:overflow-hidden md:overflow-y-auto" : "overflow-y-auto"
