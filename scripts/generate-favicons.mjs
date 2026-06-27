@@ -8,7 +8,7 @@ const fillRatio = 1.18;
 /** Move logo down in tab (lower crop top = logo sits lower in icon). */
 const verticalShiftDown = 72;
 /** Move logo left in tab (higher crop left = logo sits left in icon). */
-const horizontalShiftLeft = 22;
+const horizontalShiftLeft = 36;
 
 if (!existsSync(source)) {
   throw new Error("Missing public/logo2.png");
