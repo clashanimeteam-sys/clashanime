@@ -4,16 +4,18 @@ import sharp from "sharp";
 
 const source = "public/logo2.png";
 const canvas = 1024;
-/** Fit full logo inside icon (Facebook-style), no tail crop. */
-const fillRatio = 0.84;
+/** Logo fills this much of the icon canvas after trimming empty padding. */
+const fillRatio = 0.93;
 
 if (!existsSync(source)) {
   throw new Error("Missing public/logo2.png");
 }
 
+const trimmed = await sharp(source).trim({ threshold: 8 }).png().toBuffer();
+
 const targetSize = Math.round(canvas * fillRatio);
 
-const fitted = await sharp(source)
+const fitted = await sharp(trimmed)
   .resize(targetSize, targetSize, {
     fit: "contain",
     background: { r: 0, g: 0, b: 0, alpha: 0 },
@@ -57,5 +59,5 @@ execSync(
 copyFileSync("public/favicon.ico", "src/app/favicon.ico");
 
 console.log(
-  `Icons generated from logo2.png with ${Math.round(fillRatio * 100)}% contain fit (${canvas}x${canvas}, no crop).`,
+  `Icons generated: trim + ${Math.round(fillRatio * 100)}% contain (${canvas}x${canvas}, no crop).`,
 );
