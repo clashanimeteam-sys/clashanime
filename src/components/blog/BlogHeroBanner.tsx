@@ -15,7 +15,7 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
     <section
       dir="ltr"
       className={`relative overflow-hidden border-b border-zinc-800 ${
-        compact ? "min-h-[240px]" : "min-h-[380px] sm:min-h-[480px] lg:min-h-[520px]"
+        compact ? "min-h-[220px]" : "min-h-[360px] sm:min-h-[420px] lg:min-h-[440px]"
       }`}
       aria-label={t.blog.hubTitle}
     >
@@ -23,7 +23,7 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
 
       {/* Center arena spotlight — keeps text lane clear of characters */}
       <div
-        className="absolute inset-0 bg-[radial-gradient(ellipse_36%_68%_at_50%_48%,rgba(18,18,22,0.96),rgba(9,9,11,0.82)_50%,rgba(9,9,11,1)_100%)]"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_38%_70%_at_50%_48%,rgba(18,18,22,0.97),rgba(9,9,11,0.85)_52%,rgba(9,9,11,1)_100%)]"
         aria-hidden
       />
       <div
@@ -31,12 +31,12 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
         aria-hidden
       />
 
-      {/* Left — Demon Slayer (physical left, not flipped in RTL) */}
+      {/* Left — Demon Slayer */}
       <div
-        className={`pointer-events-none absolute bottom-0 left-0 top-0 ${
+        className={`pointer-events-none absolute bottom-0 left-0 top-[6%] ${
           compact
-            ? "w-[48%] max-w-[220px]"
-            : "w-[min(54vw,820px)] max-w-[820px] lg:w-[min(50vw,900px)] lg:max-w-[900px]"
+            ? "w-[38%] max-w-[170px]"
+            : "w-[min(38vw,560px)] max-w-[560px] lg:w-[min(34vw,580px)] lg:max-w-[580px]"
         }`}
         aria-hidden
       >
@@ -45,18 +45,18 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
           alt=""
           fill
           priority={!compact}
-          className="origin-bottom-left scale-[1.22] object-contain object-bottom object-left sm:scale-[1.32] lg:scale-[1.42]"
-          sizes="(max-width: 640px) 54vw, 900px"
+          className="origin-bottom-left object-contain object-bottom object-left scale-[1.02] sm:scale-105 lg:scale-[1.08]"
+          sizes="(max-width: 640px) 38vw, 580px"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/5 via-transparent to-zinc-950/75" />
+        <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/15 via-transparent to-zinc-950/85" />
       </div>
 
       {/* Right — Solo Leveling */}
       <div
-        className={`pointer-events-none absolute bottom-0 right-0 top-[8%] ${
+        className={`pointer-events-none absolute bottom-0 right-0 top-[6%] ${
           compact
-            ? "w-[42%] max-w-[200px]"
-            : "w-[min(46vw,620px)] max-w-[620px] sm:top-[4%] lg:w-[min(42vw,680px)] lg:max-w-[680px]"
+            ? "w-[38%] max-w-[170px]"
+            : "w-[min(38vw,560px)] max-w-[560px] lg:w-[min(34vw,580px)] lg:max-w-[580px]"
         }`}
         aria-hidden
       >
@@ -65,10 +65,10 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
           alt=""
           fill
           priority={!compact}
-          className="origin-bottom scale-[1.08] object-contain object-bottom object-right sm:scale-110 lg:scale-[1.15]"
-          sizes="(max-width: 640px) 46vw, 680px"
+          className="origin-bottom-right object-contain object-bottom object-right scale-[1.02] sm:scale-105 lg:scale-[1.08]"
+          sizes="(max-width: 640px) 38vw, 580px"
         />
-        <div className="absolute inset-0 bg-gradient-to-l from-zinc-950/10 via-transparent to-zinc-950/80" />
+        <div className="absolute inset-0 bg-gradient-to-l from-zinc-950/15 via-transparent to-zinc-950/85" />
       </div>
 
       {/* Side vignettes + vertical depth */}
@@ -89,7 +89,7 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
       ) : null}
 
       {/* Text column — fixed center lane between characters */}
-      <div className="relative z-10 flex min-h-[inherit] items-center justify-center px-[max(0.75rem,10vw)] py-10 sm:px-[max(1.25rem,16vw)] sm:py-12 lg:px-[max(1.5rem,20vw)] lg:py-14">
+      <div className="relative z-10 flex min-h-[inherit] items-center justify-center px-[max(1rem,14vw)] py-10 sm:px-[max(1.5rem,18vw)] sm:py-11 lg:px-[max(2rem,20vw)] lg:py-12">
         <div
           dir={dir}
           className={`w-full text-center ${
