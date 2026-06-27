@@ -48,12 +48,5 @@ export function getAnimeNewsCopy(article: AnimeNewsArticle, locale: Locale): Ani
 }
 
 export function isAnimeNewsPublishReady(article: AnimeNewsArticle): boolean {
-  return Boolean(
-    article.title_en?.trim() &&
-      article.title_ar?.trim() &&
-      article.title_ja?.trim() &&
-      article.excerpt_en?.trim() &&
-      article.excerpt_ar?.trim() &&
-      article.excerpt_ja?.trim(),
-  );
+  return Boolean(article.title_en?.trim() && article.excerpt_en?.trim());
 }

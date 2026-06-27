@@ -72,7 +72,7 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
 
   if (body.status === "published" && !isAnimeNewsPublishReady(merged as typeof existing)) {
     return NextResponse.json(
-      { error: "Fill title and excerpt in EN, AR, and JA before publishing." },
+      { error: "Add an English title and excerpt before publishing." },
       { status: 400 },
     );
   }

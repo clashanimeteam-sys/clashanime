@@ -38,6 +38,8 @@ export async function runAnimeNewsSync(limit = 30): Promise<AnimeNewsSyncResult>
       .maybeSingle();
 
     if (!existing) {
+      const canPublish = Boolean(item.title.trim() && item.description.trim());
+
       const { error } = await serviceRole.from("anime_news_articles").insert({
         slug,
         source_guid: item.guid,
@@ -47,7 +49,7 @@ export async function runAnimeNewsSync(limit = 30): Promise<AnimeNewsSyncResult>
         cover_image_url: item.thumbnailUrl,
         topics,
         published_at: publishedAt,
-        status: "draft",
+        status: canPublish ? "published" : "draft",
         title_en: item.title,
         excerpt_en: item.description || null,
         feed_synced_at: syncedAt,
@@ -82,6 +84,9 @@ export async function runAnimeNewsSync(limit = 30): Promise<AnimeNewsSyncResult>
         patch.excerpt_en = item.description || null;
       }
       patch.topics = topics;
+      if (item.title.trim() && item.description.trim()) {
+        patch.status = "published";
+      }
     }
 
     const { error } = await serviceRole
