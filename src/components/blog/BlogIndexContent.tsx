@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { BlogPageShell } from "@/components/blog/BlogPageShell";
 import type { AnimeNewsArticle } from "@/lib/animeNews/types";
 import { getAnimeNewsCopy } from "@/lib/animeNews/types";
@@ -18,11 +19,33 @@ type BlogIndexContentProps = {
   latestNews?: AnimeNewsArticle[];
 };
 
-export function BlogIndexContent({ latestNews = [] }: BlogIndexContentProps) {
+export function BlogIndexContent({ latestNews: initialLatestNews = [] }: BlogIndexContentProps) {
   const { t, locale, formatDateTime } = useLocale();
   const posts = getAllBlogPosts();
+  const [latestNews, setLatestNews] = useState<AnimeNewsArticle[]>(initialLatestNews);
 
   usePageTitle(t.blog.hubTitle);
+
+  useEffect(() => {
+    if (initialLatestNews.length > 0) return;
+
+    let cancelled = false;
+
+    void fetch("/api/anime-news/published?limit=3")
+      .then((response) => (response.ok ? response.json() : { articles: [] }))
+      .then((payload: { articles?: AnimeNewsArticle[] }) => {
+        if (!cancelled) {
+          setLatestNews(payload.articles ?? []);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setLatestNews([]);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [initialLatestNews.length]);
 
   return (
     <BlogPageShell>

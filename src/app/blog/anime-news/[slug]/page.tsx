@@ -4,21 +4,15 @@ import { AnimeNewsArticleContent } from "@/components/blog/AnimeNewsArticleConte
 import {
   getPublishedAnimeNewsBySlug,
   listPublishedAnimeNews,
-  listPublishedAnimeNewsSlugs,
 } from "@/lib/animeNews.server";
 import { getAnimeNewsCopy } from "@/lib/animeNews/types";
 import { buildPageMetadata } from "@/lib/seoMetadata";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 type AnimeNewsArticlePageProps = {
   params: Promise<{ slug: string }>;
 };
-
-export async function generateStaticParams() {
-  const slugs = await listPublishedAnimeNewsSlugs(100);
-  return slugs.map((slug) => ({ slug }));
-}
 
 export async function generateMetadata({ params }: AnimeNewsArticlePageProps): Promise<Metadata> {
   const { slug } = await params;

@@ -2,7 +2,7 @@ import { AnimeNewsIndexContent } from "@/components/blog/AnimeNewsIndexContent";
 import { listPublishedAnimeNews } from "@/lib/animeNews.server";
 import { buildPageMetadata } from "@/lib/seoMetadata";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
   return buildPageMetadata("animeNews");
