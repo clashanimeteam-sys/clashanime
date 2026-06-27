@@ -4,8 +4,8 @@ import sharp from "sharp";
 
 const source = "public/logo2.png";
 const canvas = 1024;
-/** Logo fills this much of the icon canvas after trimming empty padding. */
-const fillRatio = 0.93;
+/** Match standard tab icons (Instagram/Crunchyroll) — fill ~98% after trim. */
+const fillRatio = 0.98;
 
 if (!existsSync(source)) {
   throw new Error("Missing public/logo2.png");
