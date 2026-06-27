@@ -265,6 +265,24 @@ export type JikanAnimeDetail = {
 
 const SYNOPSIS_FETCH_DELAY_MS = 350;
 
+function parseYoutubeIdFromTrailer(trailer: {
+  youtube_id?: string | null;
+  embed_url?: string | null;
+  url?: string | null;
+} | null | undefined): string | null {
+  const direct = trailer?.youtube_id?.trim();
+  if (direct) return direct;
+
+  const sources = [trailer?.embed_url, trailer?.url];
+  for (const source of sources) {
+    if (!source) continue;
+    const match = source.match(/(?:embed\/|v=|youtu\.be\/)([A-Za-z0-9_-]{6,})/);
+    if (match?.[1]) return match[1];
+  }
+
+  return null;
+}
+
 function mapJikanDetail(row: NonNullable<JikanAnimeDetailResponse["data"]>): JikanAnimeDetail {
   const malId = row.mal_id ?? 0;
   const title = row.title_english?.trim() || row.title?.trim() || row.title_japanese?.trim() || "Unknown";
@@ -285,7 +303,7 @@ function mapJikanDetail(row: NonNullable<JikanAnimeDetailResponse["data"]>): Jik
       row.title_japanese ?? "",
     ].filter(Boolean)),
     malUrl: row.url ?? `https://myanimelist.net/anime/${malId}`,
-    youtubeId: row.trailer?.youtube_id?.trim() || null,
+    youtubeId: parseYoutubeIdFromTrailer(row.trailer),
   };
 }
 
