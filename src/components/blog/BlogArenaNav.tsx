@@ -1,0 +1,152 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { BrandMark } from "@/components/BrandMark";
+import { NotificationBell } from "@/components/NotificationBell";
+import { useAuth } from "@/providers/AuthProvider";
+import { useLocale } from "@/providers/LocaleProvider";
+
+const NAV_LINKS = [
+  { key: "home" as const, href: "/" },
+  { key: "clash" as const, href: "/" },
+  { key: "community" as const, href: "/community" },
+  { key: "clashCoins" as const, href: "/profile#wallet" },
+] as const;
+
+function UserAvatar({ name, avatarUrl }: { name: string; avatarUrl?: string | null }) {
+  if (avatarUrl) {
+    return (
+      <Image
+        src={avatarUrl}
+        alt={name}
+        width={32}
+        height={32}
+        className="h-8 w-8 rounded-full object-cover ring-2 ring-zinc-700"
+        unoptimized
+      />
+    );
+  }
+
+  const initials = name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("");
+
+  return (
+    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-800 text-xs font-semibold text-white ring-2 ring-zinc-700">
+      {initials || "CA"}
+    </span>
+  );
+}
+
+export function BlogArenaNav() {
+  const pathname = usePathname();
+  const { user, profile, loading } = useAuth();
+  const { t } = useLocale();
+
+  const displayName =
+    profile?.display_name ??
+    user?.user_metadata?.full_name ??
+    user?.email ??
+    "Clash Anime";
+
+  const avatarUrl =
+    profile?.avatar_url ??
+    user?.user_metadata?.avatar_url ??
+    user?.user_metadata?.picture ??
+    null;
+
+  const labelFor = (key: (typeof NAV_LINKS)[number]["key"]) => {
+    if (key === "home") return t.blog.navHome;
+    if (key === "clashCoins") return t.nav.clashCoins;
+    return t.nav[key];
+  };
+
+  return (
+    <header className="sticky top-0 z-40 border-b border-zinc-800/80 bg-zinc-950/95 backdrop-blur-md">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+        <BrandMark
+          className="shrink-0 [&_.text-brand]:text-orange-400 [&_span]:text-white"
+          showLabel
+        />
+
+        <nav
+          className="hidden items-center gap-1 md:flex"
+          aria-label={t.blog.hubTitle}
+        >
+          {NAV_LINKS.map((item) => {
+            const active =
+              item.key === "home"
+                ? pathname === "/"
+                : item.key === "clash"
+                  ? pathname === "/" || pathname.startsWith("/tracker")
+                  : pathname === item.href || pathname.startsWith(`${item.href}/`);
+
+            return (
+              <Link
+                key={item.key}
+                href={item.href}
+                className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+                  active
+                    ? "bg-orange-500/15 text-orange-300"
+                    : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                }`}
+              >
+                {labelFor(item.key)}
+              </Link>
+            );
+          })}
+          <Link
+            href="/blog"
+            className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+              pathname.startsWith("/blog")
+                ? "bg-orange-500/15 text-orange-300"
+                : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
+            }`}
+          >
+            {t.footer.arenaGuide}
+          </Link>
+        </nav>
+
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          {loading ? (
+            <span className="h-9 w-20 animate-pulse rounded-lg bg-zinc-800" />
+          ) : user ? (
+            <>
+              <NotificationBell />
+              <Link
+                href="/profile"
+                className="hidden items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white transition hover:border-zinc-600 sm:inline-flex"
+                aria-label={t.profile.customize}
+              >
+                <UserAvatar name={displayName} avatarUrl={avatarUrl} />
+                <span className="max-w-[120px] truncate">{t.blog.navAccount}</span>
+              </Link>
+              <Link href="/profile" className="sm:hidden" aria-label={t.profile.customize}>
+                <UserAvatar name={displayName} avatarUrl={avatarUrl} />
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login?next=%2Fblog"
+                className="text-sm font-medium text-zinc-300 transition hover:text-white"
+              >
+                {t.auth.logIn}
+              </Link>
+              <Link
+                href="/signup?next=%2Fblog"
+                className="rounded-lg border border-zinc-600 bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-zinc-800"
+              >
+                {t.auth.signUp}
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
+    </header>
+  );
+}

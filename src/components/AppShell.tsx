@@ -15,6 +15,7 @@ type AppShellProps = {
 export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
   const isVideoPage = pathname.startsWith("/video/");
+  const isBlogPage = pathname.startsWith("/blog");
   const { hasStarted } = useAnimeRadio();
   const reserveMiniBarSpace =
     hasStarted && pathname !== "/music" && !pathname.startsWith("/video/");
@@ -31,17 +32,17 @@ export function AppShell({ children }: AppShellProps) {
               isVideoPage ? "max-md:h-dvh max-md:overflow-hidden md:overflow-y-auto" : "overflow-y-auto"
             }`}
           >
-            <div className={isVideoPage ? "hidden md:block" : ""}>
-              <AuthTopBar />
+            <div className={isVideoPage || isBlogPage ? "hidden md:block" : ""}>
+              {!isBlogPage ? <AuthTopBar /> : null}
             </div>
             <main
-              className={`flex-1 bg-white dark:bg-black ${isVideoPage ? "overflow-hidden max-md:h-dvh max-md:min-h-0" : ""} ${
+              className={`flex-1 ${isBlogPage ? "bg-zinc-950" : "bg-white dark:bg-black"} ${isVideoPage ? "overflow-hidden max-md:h-dvh max-md:min-h-0" : ""} ${
                 reserveMiniBarSpace ? "pb-20 sm:pb-24" : ""
               }`}
             >
               {children}
             </main>
-            {!isVideoPage && <Footer />}
+            {!isVideoPage && !isBlogPage && <Footer />}
           </div>
         </div>
       </PageTitleProvider>

@@ -138,6 +138,9 @@ export type Dictionary = {
     hubBadge: string;
     hubTitle: string;
     hubSubtitle: string;
+    heroTagline: string;
+    navHome: string;
+    navAccount: string;
     backToGuide: string;
     published: string;
     minRead: string;
@@ -1577,6 +1580,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       hubTitle: "Heroes' Arena Guide",
       hubSubtitle:
         "Guides, radar analysis, winner stories, platform updates, prizes, and FAQ — built to help you rank higher and earn on ClashAnime.",
+      heroTagline: "Enter the arena. Raise your clash. Become the legend.",
+      navHome: "Home",
+      navAccount: "Account",
       backToGuide: "Back to Arena Guide",
       published: "Published",
       minRead: "{minutes} min read",
@@ -3112,6 +3118,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       hubTitle: "英雄アリーナガイド",
       hubSubtitle:
         "ガイド、レーダー分析、勝者ストーリー、アップデート、賞金、FAQ — ClashAnimeで順位アップと収益化のための記事。",
+      heroTagline: "アリーナへ。クラッシュを上げろ。伝説になれ。",
+      navHome: "ホーム",
+      navAccount: "アカウント",
       backToGuide: "ガイド一覧へ",
       published: "公開日",
       minRead: "約{minutes}分",
@@ -4631,6 +4640,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       hubTitle: "دليل الأبطال",
       hubSubtitle:
         "شروحات، تحليلات الرادار، قصص الفائزين، تحديثات المنصة، الجوائز، وأسئلة شائعة — لترتيب أعلى وربح على ClashAnime.",
+      heroTagline: "أدخل الساحة. ارفع نزالك. كُن الأسطورة.",
+      navHome: "الرئيسية",
+      navAccount: "الحساب",
       backToGuide: "العودة لدليل الأبطال",
       published: "نُشر",
       minRead: "{minutes} دقائق قراءة",
