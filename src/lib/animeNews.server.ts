@@ -63,3 +63,17 @@ export async function getFeaturedSeasonalGuide(): Promise<AnimeNewsArticle | nul
     return null;
   }
 }
+
+export async function getStoredAnimeSpotlightCatalog(): Promise<unknown> {
+  try {
+    const supabase = createPublicSupabaseClient();
+    if (!supabase) return [];
+
+    const { data, error } = await supabase.rpc("get_anime_spotlight_catalog");
+
+    if (error || !data) return [];
+    return data;
+  } catch {
+    return [];
+  }
+}

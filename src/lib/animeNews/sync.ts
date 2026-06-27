@@ -5,6 +5,7 @@ import {
   storyTextFromRssItem,
   topicsFromRssItem,
 } from "@/lib/animeNews/rss";
+import { syncFeaturedAnimeCatalog } from "@/lib/animeNews/featuredAnimeSync";
 import { syncFeaturedSeasonalGuide } from "@/lib/animeNews/seasonalGuideSync";
 import { createServiceRoleClient } from "@/lib/supabase/admin";
 
@@ -16,6 +17,8 @@ export type AnimeNewsSyncResult = {
   featuredGuideSlug: string | null;
   featuredLineupCount: number;
   featuredLineupEnriched: number;
+  spotlightCount: number;
+  spotlightEnriched: number;
   syncedAt: string;
 };
 
@@ -125,6 +128,16 @@ export async function runAnimeNewsSync(limit = 30): Promise<AnimeNewsSyncResult>
     console.error("syncFeaturedSeasonalGuide", error);
   }
 
+  let spotlightCount = 0;
+  let spotlightEnriched = 0;
+  try {
+    const spotlight = await syncFeaturedAnimeCatalog();
+    spotlightCount = spotlight.count;
+    spotlightEnriched = spotlight.enriched;
+  } catch (error) {
+    console.error("syncFeaturedAnimeCatalog", error);
+  }
+
   return {
     fetched: items.length,
     inserted,
@@ -133,6 +146,8 @@ export async function runAnimeNewsSync(limit = 30): Promise<AnimeNewsSyncResult>
     featuredGuideSlug,
     featuredLineupCount,
     featuredLineupEnriched,
+    spotlightCount,
+    spotlightEnriched,
     syncedAt,
   };
 }

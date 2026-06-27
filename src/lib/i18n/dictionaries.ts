@@ -171,9 +171,27 @@ export type Dictionary = {
       sourceLabel: string;
       readOnCrunchyroll: string;
       latestHeading: string;
+      topNewsHeading: string;
+      relatedHeading: string;
       empty: string;
       viewAll: string;
       storyHeading: string;
+      watchNowHeading: string;
+      watchNowCta: string;
+      openTracker: string;
+      watchTrailer: string;
+      hideTrailer: string;
+      spotlightHeading: string;
+      spotlightSubtitle: string;
+      spotlightCategories: {
+        legends: string;
+        action: string;
+        mystery: string;
+        isekai: string;
+        sports: string;
+        romance: string;
+        classics: string;
+      };
     };
     seasonalGuide: {
       hubTitle: string;
@@ -1388,6 +1406,7 @@ export type Dictionary = {
       syncSuccess: string;
       featuredGuideSynced: string;
       featuredLineupSynced: string;
+      spotlightSynced: string;
       featuredBadge: string;
       viewOnBlog: string;
       saved: string;
@@ -1677,9 +1696,28 @@ export const dictionaries: Record<Locale, Dictionary> = {
         sourceLabel: "Original source",
         readOnCrunchyroll: "Read full story on Crunchyroll",
         latestHeading: "More latest anime news",
+        topNewsHeading: "Top news",
+        relatedHeading: "Related articles",
         empty: "No published anime news yet. Open Admin → Anime news and run Sync RSS now.",
         viewAll: "View all anime news",
         storyHeading: "Anime story",
+        watchNowHeading: "Watch now",
+        watchNowCta: "Start watching",
+        openTracker: "Open anime tracker →",
+        watchTrailer: "Watch trailer",
+        hideTrailer: "Hide trailer",
+        spotlightHeading: "Essential anime spotlight",
+        spotlightSubtitle:
+          "Legendary series, modern hits, and fan favorites — always updated with posters and trailers.",
+        spotlightCategories: {
+          legends: "Legends & long-running hits",
+          action: "Action & new generation",
+          mystery: "Mystery, mind games & thrillers",
+          isekai: "Isekai & fantasy adventures",
+          sports: "Sports anime",
+          romance: "Romance, slice of life & drama",
+          classics: "Classics & timeless masterpieces",
+        },
       },
       seasonalGuide: {
         hubTitle: "Seasonal anime guide",
@@ -2994,6 +3032,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         syncSuccess: "RSS sync complete — {inserted} new, {updated} updated.",
         featuredGuideSynced: "Seasonal guide synced: {slug}",
         featuredLineupSynced: "{count} lineup titles synced",
+        spotlightSynced: "{count} spotlight titles synced ({enriched} with posters)",
         featuredBadge: "Featured · Blog spotlight",
         viewOnBlog: "View on blog",
         saved: "Article saved.",
@@ -3281,9 +3320,28 @@ export const dictionaries: Record<Locale, Dictionary> = {
         sourceLabel: "原典",
         readOnCrunchyroll: "Crunchyrollで全文を読む",
         latestHeading: "その他の最新ニュース",
+        topNewsHeading: "注目ニュース",
+        relatedHeading: "関連記事",
         empty: "公開中のニュースはまだありません。管理画面 → アニメニュース で RSS 同期を実行してください。",
         viewAll: "すべてのニュースを見る",
         storyHeading: "アニメのストーリー",
+        watchNowHeading: "今すぐ視聴",
+        watchNowCta: "視聴を始める",
+        openTracker: "アニメトラッカーを開く →",
+        watchTrailer: "予告を見る",
+        hideTrailer: "予告を隠す",
+        spotlightHeading: "定番アニメスポットライト",
+        spotlightSubtitle:
+          "伝説的作品から最新ヒットまで — ポスターと予告付きで常に更新。",
+        spotlightCategories: {
+          legends: "伝説 & 長編ヒット",
+          action: "アクション & 新世代",
+          mystery: "ミステリー・頭脳戦・スリラー",
+          isekai: "異世界 & ファンタジー",
+          sports: "スポーツアニメ",
+          romance: "恋愛・日常・ドラマ",
+          classics: "クラシック & 不朽の名作",
+        },
       },
       seasonalGuide: {
         hubTitle: "季節アニメガイド",
@@ -4582,6 +4640,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         syncSuccess: "RSS同期完了 — 新規 {inserted}、更新 {updated}。",
         featuredGuideSynced: "季節ガイド同期: {slug}",
         featuredLineupSynced: "ラインナップ {count} 作品を同期",
+        spotlightSynced: "スポットライト {count} 作品を同期（ポスター {enriched}）",
         featuredBadge: "注目 · ブログスポット",
         viewOnBlog: "ブログで見る",
         saved: "記事を保存しました。",
@@ -4869,9 +4928,28 @@ export const dictionaries: Record<Locale, Dictionary> = {
         sourceLabel: "المصدر الأصلي",
         readOnCrunchyroll: "اقرأ التفاصيل على Crunchyroll",
         latestHeading: "المزيد من آخر أخبار الأنمي",
+        topNewsHeading: "أهم الأخبار",
+        relatedHeading: "مقالات ذات صلة",
         empty: "لا توجد أخبار منشورة بعد. افتح Admin → أخبار الأنمي واضغط Sync RSS now.",
         viewAll: "عرض كل الأخبار",
         storyHeading: "قصة الأنمي",
+        watchNowHeading: "شاهد الآن",
+        watchNowCta: "ابدأ المشاهدة",
+        openTracker: "افتح متتبع الأنمي ←",
+        watchTrailer: "شاهد الإعلان",
+        hideTrailer: "إخفاء الإعلان",
+        spotlightHeading: "أهم الأنميات دائماً",
+        spotlightSubtitle:
+          "أساطير الأنمي والأعمال الرائجة — محدّثة باستمرار مع الغلافات والفيديوهات القصيرة.",
+        spotlightCategories: {
+          legends: "أساطير الأنمي والمسلسلات الطويلة",
+          action: "أكشن والجيل الجديد",
+          mystery: "غموض وذكاء وإثارة",
+          isekai: "إيسكاي ومغامرات فانتازيا",
+          sports: "أنميات رياضية",
+          romance: "رومانسية وحياة يومية ودراما",
+          classics: "كلاسيكيات وروائع خالدة",
+        },
       },
       seasonalGuide: {
         hubTitle: "الدليل الموسمي",
@@ -6174,6 +6252,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         syncSuccess: "اكتملت المزامنة — {inserted} جديد، {updated} محدّث.",
         featuredGuideSynced: "تمت مزامنة الدليل الموسمي: {slug}",
         featuredLineupSynced: "تمت مزامنة {count} عنوان من التشكيلة",
+        spotlightSynced: "تمت مزامنة {count} عنوان في السبوتلايت ({enriched} مع غلاف)",
         featuredBadge: "مميز · ظهور في البلوج",
         viewOnBlog: "عرض في البلوج",
         saved: "تم حفظ المقالة.",

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { runAnimeNewsSync } from "@/lib/animeNews/sync";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 120;
+export const maxDuration = 300;
 
 function authorizeCron(request: Request): boolean {
   const secret = process.env.CRON_SECRET?.trim();

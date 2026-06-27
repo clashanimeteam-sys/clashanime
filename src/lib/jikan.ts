@@ -240,6 +240,7 @@ type JikanAnimeDetailResponse = {
     episodes?: number | null;
     status?: string | null;
     broadcast?: { string?: string | null };
+    trailer?: { youtube_id?: string | null; url?: string | null };
     images?: {
       jpg?: { large_image_url?: string | null; image_url?: string | null };
     };
@@ -259,6 +260,7 @@ export type JikanAnimeDetail = {
   broadcastLabel: string | null;
   matchTags: string[];
   malUrl: string;
+  youtubeId: string | null;
 };
 
 const SYNOPSIS_FETCH_DELAY_MS = 350;
@@ -283,6 +285,7 @@ function mapJikanDetail(row: NonNullable<JikanAnimeDetailResponse["data"]>): Jik
       row.title_japanese ?? "",
     ].filter(Boolean)),
     malUrl: row.url ?? `https://myanimelist.net/anime/${malId}`,
+    youtubeId: row.trailer?.youtube_id?.trim() || null,
   };
 }
 

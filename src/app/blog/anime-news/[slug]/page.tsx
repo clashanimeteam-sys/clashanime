@@ -49,8 +49,8 @@ export default async function AnimeNewsArticlePage({ params }: AnimeNewsArticleP
 
   if (!article) notFound();
 
-  const all = await listPublishedAnimeNews(6, 0);
-  const related = all.filter((item) => item.slug !== slug).slice(0, 4);
+  const all = await listPublishedAnimeNews(12, 0);
+  const related = all.filter((item) => item.slug !== slug).slice(0, 6);
 
   return <AnimeNewsArticleContent article={article} related={related} />;
 }

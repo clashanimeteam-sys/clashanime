@@ -2,7 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { AnimeNewsTopSidebar } from "@/components/blog/AnimeNewsTopSidebar";
+import { AnimeWatchNowRow } from "@/components/blog/AnimeWatchNowRow";
 import { BlogPageShell } from "@/components/blog/BlogPageShell";
+import { FeaturedAnimeSpotlightSections } from "@/components/blog/FeaturedAnimeSpotlightSections";
+import type { FeaturedAnimeEntry } from "@/lib/animeNews/featuredAnimeCatalog";
+import { FEATURED_SEASONAL_GUIDE_SLUG } from "@/lib/animeNews/seasonalGuide";
 import type { AnimeNewsArticle } from "@/lib/animeNews/types";
 import { getAnimeNewsCopy } from "@/lib/animeNews/types";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -12,10 +18,151 @@ type AnimeNewsIndexContentProps = {
   articles: AnimeNewsArticle[];
 };
 
+function NewsCard({ article }: { article: AnimeNewsArticle }) {
+  const { locale, formatDateTime } = useLocale();
+  const copy = getAnimeNewsCopy(article, locale);
+
+  return (
+    <Link
+      href={`/blog/anime-news/${article.slug}`}
+      className="group flex flex-col overflow-hidden rounded-2xl border border-zinc-700/80 bg-zinc-900/95 shadow-lg shadow-black/30 transition hover:-translate-y-0.5 hover:border-orange-500/50 hover:shadow-orange-950/20"
+    >
+      <div className="relative aspect-[16/9] bg-zinc-950">
+        {article.cover_image_url ? (
+          <Image
+            src={article.cover_image_url}
+            alt=""
+            fill
+            className="object-cover transition duration-300 group-hover:scale-[1.02]"
+            sizes="(max-width: 640px) 100vw, 400px"
+            unoptimized
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-zinc-950 to-black" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent" />
+      </div>
+
+      <div className="flex flex-1 flex-col p-5">
+        <div className="flex flex-wrap gap-1.5">
+          {article.topics.slice(0, 3).map((topic) => (
+            <span
+              key={topic}
+              className="rounded-full bg-orange-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-orange-200 ring-1 ring-orange-500/20"
+            >
+              #{topic}
+            </span>
+          ))}
+        </div>
+
+        <h2 className="mt-3 font-display text-lg font-bold leading-snug text-white group-hover:text-orange-200">
+          {copy.title}
+        </h2>
+
+        {copy.excerpt ? (
+          <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-zinc-400 group-hover:text-zinc-300">
+            {copy.excerpt}
+          </p>
+        ) : null}
+
+        <p className="mt-4 text-xs text-zinc-500">
+          {formatDateTime(article.published_at, { dateStyle: "medium" })}
+        </p>
+      </div>
+    </Link>
+  );
+}
+
+function FeaturedHero({ articles }: { articles: AnimeNewsArticle[] }) {
+  const { locale, formatDateTime } = useLocale();
+  const [index, setIndex] = useState(0);
+  const heroArticles = articles.slice(0, 4);
+
+  if (heroArticles.length === 0) return null;
+
+  const article = heroArticles[index] ?? heroArticles[0];
+  const copy = getAnimeNewsCopy(article, locale);
+
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950">
+      <Link href={`/blog/anime-news/${article.slug}`} className="group block">
+        <div className="relative aspect-[21/9] min-h-[220px] bg-zinc-900 sm:min-h-[280px]">
+          {article.cover_image_url ? (
+            <Image
+              src={article.cover_image_url}
+              alt=""
+              fill
+              className="object-cover transition duration-500 group-hover:scale-[1.02]"
+              sizes="(max-width: 1024px) 100vw, 900px"
+              priority
+              unoptimized
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-zinc-950 to-black" />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-8">
+            <h2 className="max-w-3xl font-display text-xl font-bold leading-snug text-white sm:text-3xl group-hover:text-orange-100">
+              {copy.title}
+            </h2>
+            <p className="mt-2 text-xs text-zinc-400 sm:text-sm">
+              {formatDateTime(article.published_at, { dateStyle: "medium" })}
+            </p>
+          </div>
+        </div>
+      </Link>
+
+      {heroArticles.length > 1 ? (
+        <>
+          <button
+            type="button"
+            aria-label="Previous"
+            onClick={() => setIndex((current) => (current - 1 + heroArticles.length) % heroArticles.length)}
+            className="absolute start-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white transition hover:bg-orange-600"
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            aria-label="Next"
+            onClick={() => setIndex((current) => (current + 1) % heroArticles.length)}
+            className="absolute end-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white transition hover:bg-orange-600"
+          >
+            ›
+          </button>
+        </>
+      ) : null}
+    </div>
+  );
+}
+
 export function AnimeNewsIndexContent({ articles }: AnimeNewsIndexContentProps) {
-  const { t, locale, formatDateTime } = useLocale();
+  const { t } = useLocale();
+  const [spotlight, setSpotlight] = useState<FeaturedAnimeEntry[]>([]);
 
   usePageTitle(t.blog.animeNews.hubTitle);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    void fetch("/api/anime-news/spotlight")
+      .then((response) => (response.ok ? response.json() : { catalog: [] }))
+      .then((payload: { catalog?: FeaturedAnimeEntry[] }) => {
+        if (!cancelled) setSpotlight(payload.catalog ?? []);
+      })
+      .catch(() => {
+        /* optional spotlight */
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const feedArticles = articles.filter((article) => article.slug !== FEATURED_SEASONAL_GUIDE_SLUG);
+  const latestArticles = feedArticles;
+  const topNewsArticles = feedArticles.slice(0, 8);
+  const gridArticles = feedArticles.slice(1);
 
   return (
     <BlogPageShell>
@@ -30,68 +177,44 @@ export function AnimeNewsIndexContent({ articles }: AnimeNewsIndexContentProps) 
           <p className="mt-3 text-xs text-zinc-500">{t.blog.animeNews.sourceNote}</p>
         </div>
 
-        {articles.length === 0 ? (
+        {latestArticles.length === 0 ? (
           <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 px-6 py-12 text-center text-zinc-400">
             {t.blog.animeNews.empty}
           </div>
         ) : (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {articles.map((article) => {
-              const copy = getAnimeNewsCopy(article, locale);
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
+            <div className="min-w-0 space-y-8">
+              <FeaturedHero articles={latestArticles} />
 
-              return (
-                <Link
-                  key={article.id}
-                  href={`/blog/anime-news/${article.slug}`}
-                  className="group flex flex-col overflow-hidden rounded-2xl border border-zinc-700/80 bg-zinc-900/95 shadow-lg shadow-black/30 transition hover:-translate-y-0.5 hover:border-orange-500/50 hover:shadow-orange-950/20"
-                >
-                  <div className="relative aspect-[16/9] bg-zinc-950">
-                    {article.cover_image_url ? (
-                      <Image
-                        src={article.cover_image_url}
-                        alt=""
-                        fill
-                        className="object-cover transition duration-300 group-hover:scale-[1.02]"
-                        sizes="(max-width: 640px) 100vw, 400px"
-                        unoptimized
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-zinc-950 to-black" />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent" />
-                  </div>
+              <section>
+                <h2 className="mb-4 font-display text-lg font-bold text-white">
+                  {t.blog.animeNews.latestHeading}
+                </h2>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  {gridArticles.map((article) => (
+                    <NewsCard key={article.id} article={article} />
+                  ))}
+                </div>
+              </section>
+            </div>
 
-                  <div className="flex flex-1 flex-col p-5">
-                    <div className="flex flex-wrap gap-1.5">
-                      {article.topics.slice(0, 3).map((topic) => (
-                        <span
-                          key={topic}
-                          className="rounded-full bg-orange-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-orange-200 ring-1 ring-orange-500/20"
-                        >
-                          #{topic}
-                        </span>
-                      ))}
-                    </div>
-
-                    <h2 className="mt-3 font-display text-lg font-bold leading-snug text-white group-hover:text-orange-200">
-                      {copy.title}
-                    </h2>
-
-                    {copy.excerpt ? (
-                      <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-zinc-400 group-hover:text-zinc-300">
-                        {copy.excerpt}
-                      </p>
-                    ) : null}
-
-                    <p className="mt-4 text-xs text-zinc-500">
-                      {formatDateTime(article.published_at, { dateStyle: "medium" })}
-                    </p>
-                  </div>
-                </Link>
-              );
-            })}
+            <div className="space-y-6 lg:sticky lg:top-24 lg:self-start">
+              <AnimeNewsTopSidebar articles={topNewsArticles} />
+              <div className="rounded-2xl border border-zinc-800/80 bg-zinc-950/80 p-4 sm:p-5">
+                <AnimeWatchNowRow entries={spotlight} limit={8} compact />
+              </div>
+            </div>
           </div>
         )}
+
+        {spotlight.length > 0 ? (
+          <section className="mt-14 border-t border-zinc-800 pt-12">
+            <FeaturedAnimeSpotlightSections catalog={spotlight} />
+            <div className="mt-10 rounded-2xl border border-zinc-800/80 bg-zinc-950/80 p-5 sm:p-6">
+              <AnimeWatchNowRow entries={spotlight} limit={16} />
+            </div>
+          </section>
+        ) : null}
 
         <div className="mt-10 text-center">
           <Link

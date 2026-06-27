@@ -65,6 +65,8 @@ export function AdminAnimeNewsPanel() {
         updated?: number;
         featuredGuideSlug?: string | null;
         featuredLineupCount?: number;
+        spotlightCount?: number;
+        spotlightEnriched?: number;
       };
       if (!response.ok) {
         throw new Error(payload.error ?? "Sync failed");
@@ -85,6 +87,13 @@ export function AdminAnimeNewsPanel() {
             "{count}",
             String(payload.featuredLineupCount),
           ),
+        );
+      }
+      if (payload.spotlightCount) {
+        parts.push(
+          t.admin.animeNews.spotlightSynced
+            .replace("{count}", String(payload.spotlightCount))
+            .replace("{enriched}", String(payload.spotlightEnriched ?? 0)),
         );
       }
       setMessage(parts.join(" · "));
