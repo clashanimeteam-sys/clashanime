@@ -7,13 +7,16 @@ export const DOTLOTTIE_WC_SCRIPT_SRC =
 /** Display size in the sidebar / header (source animation is larger). */
 export const THEME_TOGGLE_LOTTIE_SIZE_PX = 48;
 
-/** Frame 0 = day / light, last frame = night / dark. */
-export const THEME_TOGGLE_LIGHT_FRAME = 0;
+/**
+ * Frame map from the Lottie timeline (481 frames @ 60fps):
+ * - 115–300: moon / night (knob left)
+ * - 385–480: sun / day (knob right)
+ */
+export const THEME_TOGGLE_LIGHT_FRAME = 385;
+export const THEME_TOGGLE_DARK_FRAME = 300;
+export const THEME_TOGGLE_TRANSITION_START = 115;
+export const THEME_TOGGLE_TRANSITION_END = 385;
 
-export function getThemeToggleDarkFrame(totalFrames: number) {
-  return Math.max(THEME_TOGGLE_LIGHT_FRAME, totalFrames - 1);
-}
-
-export function getThemeToggleFrame(totalFrames: number, isDark: boolean) {
-  return isDark ? getThemeToggleDarkFrame(totalFrames) : THEME_TOGGLE_LIGHT_FRAME;
+export function getThemeToggleFrame(isDark: boolean) {
+  return isDark ? THEME_TOGGLE_DARK_FRAME : THEME_TOGGLE_LIGHT_FRAME;
 }

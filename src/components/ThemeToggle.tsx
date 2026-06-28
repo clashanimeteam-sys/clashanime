@@ -5,10 +5,12 @@ import { useTheme } from "next-themes";
 import { useCallback, useEffect, useRef, useSyncExternalStore } from "react";
 import {
   DOTLOTTIE_WC_SCRIPT_SRC,
+  THEME_TOGGLE_DARK_FRAME,
   THEME_TOGGLE_LIGHT_FRAME,
   THEME_TOGGLE_LOTTIE_SIZE_PX,
   THEME_TOGGLE_LOTTIE_SRC,
-  getThemeToggleDarkFrame,
+  THEME_TOGGLE_TRANSITION_END,
+  THEME_TOGGLE_TRANSITION_START,
   getThemeToggleFrame,
 } from "@/lib/themeToggleLottie";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -59,9 +61,9 @@ type DotLottiePlayer = {
   setMode: (mode: DotLottieMode) => void;
   setFrame: (frame: number) => void;
   setSegment: (start: number, end: number) => void;
-  resetSegment?: () => void;
+  freeze?: () => void;
+  unfreeze?: () => void;
   totalFrames: number;
-  isPlaying: boolean;
   addEventListener: (event: string, listener: () => void) => void;
   removeEventListener: (event: string, listener: () => void) => void;
 };
@@ -80,16 +82,20 @@ function waitForDotLottiePlayer(
     onReady(player);
     return;
   }
-  if (attempts < 40) {
+  if (attempts < 60) {
     requestAnimationFrame(() => waitForDotLottiePlayer(element, onReady, attempts + 1));
   }
 }
 
 function holdThemeFrame(player: DotLottiePlayer, isDark: boolean) {
+  const frame = getThemeToggleFrame(isDark);
+  player.unfreeze?.();
   player.setLoop(false);
   player.setMode("forward");
-  player.setFrame(getThemeToggleFrame(player.totalFrames, isDark));
+  player.setSegment(frame, frame);
+  player.setFrame(frame);
   player.pause();
+  player.freeze?.();
 }
 
 function playThemeTransition(
@@ -103,26 +109,24 @@ function playThemeTransition(
   }
 
   waitForDotLottiePlayer(element, (player) => {
-    const darkFrame = getThemeToggleDarkFrame(player.totalFrames);
     const onComplete = () => {
       player.removeEventListener("complete", onComplete);
-      player.setFrame(getThemeToggleFrame(player.totalFrames, toDark));
-      player.pause();
-      player.resetSegment?.();
+      holdThemeFrame(player, toDark);
       onDone();
     };
 
+    player.unfreeze?.();
     player.removeEventListener("complete", onComplete);
     player.addEventListener("complete", onComplete);
     player.setLoop(false);
-    player.setSegment(THEME_TOGGLE_LIGHT_FRAME, darkFrame);
+    player.setSegment(THEME_TOGGLE_TRANSITION_START, THEME_TOGGLE_TRANSITION_END);
 
     if (toDark) {
-      player.setMode("forward");
+      player.setMode("reverse");
       player.setFrame(THEME_TOGGLE_LIGHT_FRAME);
     } else {
-      player.setMode("reverse");
-      player.setFrame(darkFrame);
+      player.setMode("forward");
+      player.setFrame(THEME_TOGGLE_DARK_FRAME);
     }
 
     player.play();
@@ -140,6 +144,7 @@ export function ThemeToggle() {
     getDotlottieSnapshot,
     getDotlottieServerSnapshot,
   );
+  const themeReady = resolvedTheme !== undefined;
   const isDark = resolvedTheme === "dark";
   const isDarkRef = useRef(isDark);
   isDarkRef.current = isDark;
@@ -156,15 +161,29 @@ export function ThemeToggle() {
   const setLottieRef = useCallback((node: DotLottieElement | null) => {
     lottieRef.current = node;
     if (!node) return;
-    waitForDotLottiePlayer(node, (player) => {
-      if (isAnimatingRef.current) return;
-      holdThemeFrame(player, isDarkRef.current);
-    });
-  }, []);
+
+    const sync = () => {
+      if (!themeReady || isAnimatingRef.current) return;
+      waitForDotLottiePlayer(node, (player) => {
+        if (isAnimatingRef.current) return;
+        holdThemeFrame(player, isDarkRef.current);
+      });
+    };
+
+    node.addEventListener("ready", sync);
+    node.addEventListener("load", sync);
+    sync();
+
+    return () => {
+      node.removeEventListener("ready", sync);
+      node.removeEventListener("load", sync);
+    };
+  }, [themeReady]);
 
   useEffect(() => {
+    if (!themeReady) return;
     syncStaticFrame(isDark);
-  }, [isDark, syncStaticFrame]);
+  }, [isDark, themeReady, syncStaticFrame]);
 
   const handleToggle = useCallback(() => {
     const nextDark = !isDark;
