@@ -46,23 +46,51 @@ function markDotlottieReady() {
   dotlottieListeners.forEach((listener) => listener());
 }
 
-type DotLottieElement = HTMLElement & {
-  dotLottie?: {
-    play: () => void;
-    stop: () => void;
-  };
+type DotLottiePlayer = {
+  play: () => void;
+  stop: () => void;
+  setLoop: (loop: boolean) => void;
+  addEventListener: (event: string, listener: () => void) => void;
+  removeEventListener: (event: string, listener: () => void) => void;
 };
 
-function playDotLottieAnimation(element: DotLottieElement | null, attempts = 0) {
-  const player = element?.dotLottie;
-  if (player) {
+type DotLottieElement = HTMLElement & {
+  dotLottie?: DotLottiePlayer;
+};
+
+function configureDotLottiePlayer(player: DotLottiePlayer) {
+  player.setLoop(false);
+
+  const onComplete = () => {
     player.stop();
-    player.play();
+  };
+
+  player.removeEventListener("complete", onComplete);
+  player.addEventListener("complete", onComplete);
+}
+
+function waitForDotLottiePlayer(
+  element: DotLottieElement,
+  onReady: (player: DotLottiePlayer) => void,
+  attempts = 0,
+) {
+  if (element.dotLottie) {
+    onReady(element.dotLottie);
     return;
   }
-  if (element && attempts < 12) {
-    requestAnimationFrame(() => playDotLottieAnimation(element, attempts + 1));
+  if (attempts < 20) {
+    requestAnimationFrame(() => waitForDotLottiePlayer(element, onReady, attempts + 1));
   }
+}
+
+function playDotLottieOnce(element: DotLottieElement | null) {
+  if (!element) return;
+
+  waitForDotLottiePlayer(element, (player) => {
+    configureDotLottiePlayer(player);
+    player.stop();
+    player.play();
+  });
 }
 
 export function ThemeToggle() {
@@ -77,9 +105,15 @@ export function ThemeToggle() {
   );
   const isDark = resolvedTheme === "dark";
 
+  const setLottieRef = useCallback((node: DotLottieElement | null) => {
+    lottieRef.current = node;
+    if (!node) return;
+    waitForDotLottiePlayer(node, configureDotLottiePlayer);
+  }, []);
+
   const handleToggle = useCallback(() => {
     setTheme(isDark ? "light" : "dark");
-    playDotLottieAnimation(lottieRef.current);
+    playDotLottieOnce(lottieRef.current);
   }, [isDark, setTheme]);
 
   if (!mounted) {
@@ -115,8 +149,9 @@ export function ThemeToggle() {
       >
         {dotlottieReady ? (
           <dotlottie-wc
-            ref={lottieRef}
+            ref={setLottieRef}
             src={THEME_TOGGLE_LOTTIE_SRC}
+            loop={false}
             style={{ width: size, height: size }}
           />
         ) : (
