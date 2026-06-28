@@ -6,3 +6,14 @@ export const DOTLOTTIE_WC_SCRIPT_SRC =
 
 /** Display size in the sidebar / header (source animation is larger). */
 export const THEME_TOGGLE_LOTTIE_SIZE_PX = 48;
+
+/** Frame 0 = day / light, last frame = night / dark. */
+export const THEME_TOGGLE_LIGHT_FRAME = 0;
+
+export function getThemeToggleDarkFrame(totalFrames: number) {
+  return Math.max(THEME_TOGGLE_LIGHT_FRAME, totalFrames - 1);
+}
+
+export function getThemeToggleFrame(totalFrames: number, isDark: boolean) {
+  return isDark ? getThemeToggleDarkFrame(totalFrames) : THEME_TOGGLE_LIGHT_FRAME;
+}
