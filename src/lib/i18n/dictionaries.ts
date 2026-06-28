@@ -583,8 +583,19 @@ export type Dictionary = {
     channelLinkCopied: string;
     channelShareFailed: string;
     profileCountry: string;
-    profileYoutubeChannel: string;
-    profileYoutubePlaceholder: string;
+    profileSocialLink: string;
+    profileSocialPlaceholder: string;
+    profileSocialHint: string;
+    profileSocialDetected: string;
+    profileSocialSavedLinks: string;
+    profileSocialRemove: string;
+    socialPlatforms: {
+      youtube: string;
+      instagram: string;
+      tiktok: string;
+      twitter: string;
+      website: string;
+    };
     profileCountryRequired: string;
     completeProfileTitle: string;
     completeProfileDesc: string;
@@ -1017,6 +1028,10 @@ export type Dictionary = {
     channelHasCover: string;
     channelHasBio: string;
     channelHasYoutube: string;
+    channelHasInstagram: string;
+    channelHasTiktok: string;
+    channelHasTwitter: string;
+    channelHasWebsite: string;
     suspicionScore: string;
     globalRank: string;
     clashRank: string;
@@ -2130,8 +2145,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelLinkCopied: "Channel link copied.",
       channelShareFailed: "Could not share the channel.",
       profileCountry: "Country",
-      profileYoutubeChannel: "YouTube channel link",
-      profileYoutubePlaceholder: "https://youtube.com/@yourchannel",
+      profileSocialLink: "Social media link",
+      profileSocialPlaceholder: "https://youtube.com/@channel, instagram.com/you, tiktok.com/@you…",
+      profileSocialHint: "Paste any link — YouTube, Instagram, TikTok, X, or your website. We detect the platform automatically.",
+      profileSocialDetected: "Detected: {platform}",
+      profileSocialSavedLinks: "Saved links",
+      profileSocialRemove: "Remove",
+      socialPlatforms: {
+        youtube: "YouTube",
+        instagram: "Instagram",
+        tiktok: "TikTok",
+        twitter: "X (Twitter)",
+        website: "Website",
+      },
       profileCountryRequired: "Please select your country.",
       completeProfileTitle: "Complete your profile",
       completeProfileDesc: "Choose your country so it appears on your public channel.",
@@ -2640,6 +2666,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelHasCover: "Cover",
       channelHasBio: "Bio",
       channelHasYoutube: "YouTube",
+      channelHasInstagram: "Instagram",
+      channelHasTiktok: "TikTok",
+      channelHasTwitter: "X",
+      channelHasWebsite: "Website",
       suspicionScore: "Suspicion score",
       globalRank: "Global rank",
       clashRank: "Clash rank",
@@ -3746,8 +3776,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelLinkCopied: "チャンネルリンクをコピーしました。",
       channelShareFailed: "チャンネルを共有できませんでした。",
       profileCountry: "国",
-      profileYoutubeChannel: "YouTube チャンネルリンク",
-      profileYoutubePlaceholder: "https://youtube.com/@yourchannel",
+      profileSocialLink: "SNSリンク",
+      profileSocialPlaceholder: "https://youtube.com/@channel、instagram.com/you、tiktok.com/@you…",
+      profileSocialHint: "YouTube、Instagram、TikTok、X、またはウェブサイトのURLを貼り付けてください。自動で判別します。",
+      profileSocialDetected: "検出: {platform}",
+      profileSocialSavedLinks: "保存済みリンク",
+      profileSocialRemove: "削除",
+      socialPlatforms: {
+        youtube: "YouTube",
+        instagram: "Instagram",
+        tiktok: "TikTok",
+        twitter: "X (Twitter)",
+        website: "Website",
+      },
       profileCountryRequired: "国を選択してください。",
       completeProfileTitle: "プロフィールを完成させる",
       completeProfileDesc: "公開チャンネルに表示する国を選択してください。",
@@ -4252,6 +4293,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelHasCover: "カバー",
       channelHasBio: "概要",
       channelHasYoutube: "YouTube",
+      channelHasInstagram: "Instagram",
+      channelHasTiktok: "TikTok",
+      channelHasTwitter: "X",
+      channelHasWebsite: "Website",
       suspicionScore: "疑わしさスコア",
       globalRank: "世界ランク",
       clashRank: "クラッシュ順位",
@@ -5357,8 +5402,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelLinkCopied: "تم نسخ رابط القناة.",
       channelShareFailed: "تعذّرت مشاركة القناة.",
       profileCountry: "البلد",
-      profileYoutubeChannel: "رابط قناة YouTube",
-      profileYoutubePlaceholder: "https://youtube.com/@yourchannel",
+      profileSocialLink: "رابط وسائل التواصل",
+      profileSocialPlaceholder: "https://youtube.com/@channel أو instagram.com/you أو tiktok.com/@you…",
+      profileSocialHint: "الصق أي رابط — YouTube أو Instagram أو TikTok أو X أو موقعك. نكتشف المنصة تلقائياً.",
+      profileSocialDetected: "تم التعرف: {platform}",
+      profileSocialSavedLinks: "الروابط المحفوظة",
+      profileSocialRemove: "إزالة",
+      socialPlatforms: {
+        youtube: "YouTube",
+        instagram: "Instagram",
+        tiktok: "TikTok",
+        twitter: "X (Twitter)",
+        website: "موقع",
+      },
       profileCountryRequired: "يرجى اختيار بلدك.",
       completeProfileTitle: "أكمل ملفك الشخصي",
       completeProfileDesc: "اختر بلدك ليظهر في قناتك العامة.",
@@ -5864,6 +5920,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelHasCover: "غلاف",
       channelHasBio: "نبذة",
       channelHasYoutube: "YouTube",
+      channelHasInstagram: "Instagram",
+      channelHasTiktok: "TikTok",
+      channelHasTwitter: "X",
+      channelHasWebsite: "Website",
       suspicionScore: "درجة الاشتباه",
       globalRank: "المركز العالمي",
       clashRank: "مركز النزال",

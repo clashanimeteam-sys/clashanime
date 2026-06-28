@@ -48,7 +48,7 @@ export function AdminUsersPanel() {
 
     const { data, error: fetchError } = await supabase
       .from("profiles")
-      .select("id, username, display_name, role, is_banned, is_verified, points, lifetime_points_earned, level, created_at, updated_at, avatar_url, banner_url, bio, country_code, country_name, youtube_url")
+      .select("id, username, display_name, role, is_banned, is_verified, points, lifetime_points_earned, level, created_at, updated_at, avatar_url, banner_url, bio, country_code, country_name, youtube_url, instagram_url, tiktok_url, twitter_url, website_url")
       .order("created_at", { ascending: false })
       .limit(200);
 
@@ -325,6 +325,26 @@ export function AdminUsersPanel() {
                           {user.youtube_url?.trim() ? (
                             <span className="rounded-full bg-red-500/15 px-2 py-0.5 text-[10px] font-semibold text-red-300">
                               {t.admin.channelHasYoutube}
+                            </span>
+                          ) : null}
+                          {user.instagram_url?.trim() ? (
+                            <span className="rounded-full bg-pink-500/15 px-2 py-0.5 text-[10px] font-semibold text-pink-300">
+                              {t.admin.channelHasInstagram}
+                            </span>
+                          ) : null}
+                          {user.tiktok_url?.trim() ? (
+                            <span className="rounded-full bg-fuchsia-500/15 px-2 py-0.5 text-[10px] font-semibold text-fuchsia-300">
+                              {t.admin.channelHasTiktok}
+                            </span>
+                          ) : null}
+                          {user.twitter_url?.trim() ? (
+                            <span className="rounded-full bg-sky-500/15 px-2 py-0.5 text-[10px] font-semibold text-sky-300">
+                              {t.admin.channelHasTwitter}
+                            </span>
+                          ) : null}
+                          {user.website_url?.trim() ? (
+                            <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold text-amber-300">
+                              {t.admin.channelHasWebsite}
                             </span>
                           ) : null}
                         </div>

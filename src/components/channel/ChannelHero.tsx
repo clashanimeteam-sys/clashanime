@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { ProfileSocialLinksRow } from "@/components/channel/ProfileSocialLinksRow";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { getReferralAvatarFrameClass, getReferralNameClass } from "@/lib/referrals";
@@ -99,6 +100,7 @@ export function ChannelHero({
                 </span>
               </div>
               <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{statsLine}</p>
+              <ProfileSocialLinksRow profile={profile} compact />
             </div>
           </div>
 

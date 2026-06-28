@@ -11,7 +11,9 @@ import { DeleteAccountSection } from "@/components/DeleteAccountSection";
 import { MentionHashtagTextarea } from "@/components/MentionHashtagTextarea";
 import { OwnVideoCard } from "@/components/profile/OwnVideoCard";
 import { ProfileChannelPreview } from "@/components/profile/ProfileChannelPreview";
+import { ProfileSocialLinksEditor, applySocialLinkInput, getProfileSocialUrls, profileSocialUrlsEqual } from "@/components/profile/ProfileSocialLinksEditor";
 import { ProfileCountrySetupModal } from "@/components/profile/ProfileCountrySetupModal";
+import type { ProfileSocialUrls } from "@/lib/socialLinks";
 import type { ChannelCommunityPost } from "@/components/channel/ChannelCommunityPosts";
 import { KYC_COUNTRIES, DEFAULT_KYC_COUNTRY, getKycCountryByCode, getKycCountryLabel } from "@/lib/kycCountries";
 import { VideoCard } from "@/components/VideoCard";
@@ -83,7 +85,14 @@ export function ProfileContent() {
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [countryCode, setCountryCode] = useState(DEFAULT_KYC_COUNTRY.code);
-  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [socialUrls, setSocialUrls] = useState<ProfileSocialUrls>({
+    youtube_url: null,
+    instagram_url: null,
+    tiktok_url: null,
+    twitter_url: null,
+    website_url: null,
+  });
+  const [socialLinkInput, setSocialLinkInput] = useState("");
   const [showCountrySetup, setShowCountrySetup] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -106,11 +115,17 @@ export function ProfileContent() {
   const bioChanged = profile !== null && bio.trim() !== (profile.bio ?? "");
   const countryChanged =
     profile !== null && countryCode !== (profile.country_code ?? DEFAULT_KYC_COUNTRY.code);
-  const youtubeChanged = profile !== null && youtubeUrl.trim() !== (profile.youtube_url ?? "");
+  const savedSocialUrls = profile !== null ? getProfileSocialUrls(profile) : null;
+  const socialChanged =
+    savedSocialUrls !== null &&
+    (!profileSocialUrlsEqual(socialUrls, savedSocialUrls) || socialLinkInput.trim().length > 0);
 
   const previewProfile = useMemo(() => {
     if (!profile) return null;
     const country = getKycCountryByCode(countryCode);
+    const previewSocialUrls = socialLinkInput.trim()
+      ? applySocialLinkInput(socialUrls, socialLinkInput)
+      : socialUrls;
     return {
       ...profile,
       display_name: displayName.trim() || profile.username,
@@ -118,9 +133,9 @@ export function ProfileContent() {
       bio: bio.trim(),
       country_code: countryCode,
       country_name: country ? getKycCountryLabel(country, locale) : profile.country_name,
-      youtube_url: youtubeUrl.trim() || null,
+      ...previewSocialUrls,
     };
-  }, [profile, displayName, username, bio, countryCode, youtubeUrl, locale]);
+  }, [profile, displayName, username, bio, countryCode, socialUrls, socialLinkInput, locale]);
 
   const approvedChannelVideos = useMemo(
     () => videos.filter((video) => video.moderation_status === "approved"),
@@ -133,7 +148,7 @@ export function ProfileContent() {
       (usernameChanged && canChangeUsername) ||
       bioChanged ||
       countryChanged ||
-      youtubeChanged);
+      socialChanged);
 
   const userId = user?.id;
 
@@ -218,7 +233,8 @@ export function ProfileContent() {
       setUsername(profileData.username);
       setBio(profileData.bio ?? "");
       setCountryCode(profileData.country_code ?? DEFAULT_KYC_COUNTRY.code);
-      setYoutubeUrl(profileData.youtube_url ?? "");
+      setSocialUrls(getProfileSocialUrls(profileData));
+      setSocialLinkInput("");
       setShowCountrySetup(!profileData.country_code);
     }
     if (profileData.display_name_changed_at) {
@@ -333,7 +349,7 @@ export function ProfileContent() {
     const nextBio = bio.trim();
     const nextUsername = normalizeUsernameInput(username) || profile.username;
     const nextCountry = getKycCountryByCode(countryCode) ?? DEFAULT_KYC_COUNTRY;
-    const nextYoutube = youtubeUrl.trim();
+    const nextSocialUrls = applySocialLinkInput(socialUrls, socialLinkInput);
     const nameChanged = nextDisplayName !== (profile.display_name ?? profile.username);
     const handleChanged = nextUsername !== profile.username;
 
@@ -372,7 +388,11 @@ export function ProfileContent() {
       p_username: handleChanged ? nextUsername : null,
       p_country_code: nextCountry.code,
       p_country_name: getKycCountryLabel(nextCountry, locale),
-      p_youtube_url: nextYoutube,
+      p_youtube_url: nextSocialUrls.youtube_url ?? "",
+      p_instagram_url: nextSocialUrls.instagram_url ?? "",
+      p_tiktok_url: nextSocialUrls.tiktok_url ?? "",
+      p_twitter_url: nextSocialUrls.twitter_url ?? "",
+      p_website_url: nextSocialUrls.website_url ?? "",
     });
 
     if (!rpcResult.error && rpcResult.data) {
@@ -477,7 +497,8 @@ export function ProfileContent() {
     setUsername(savedProfile.username);
     setBio(savedProfile.bio ?? "");
     setCountryCode(savedProfile.country_code ?? DEFAULT_KYC_COUNTRY.code);
-    setYoutubeUrl(savedProfile.youtube_url ?? "");
+    setSocialUrls(getProfileSocialUrls(savedProfile));
+    setSocialLinkInput("");
     setShowCountrySetup(!savedProfile.country_code);
     setSaving(false);
     setMessage(t.profile.saved);
@@ -724,20 +745,20 @@ export function ProfileContent() {
                 ))}
               </select>
             </label>
-            <label className="block sm:col-span-2">
-              <span className="mb-1 block text-sm font-medium text-black dark:text-white">
-                {t.profile.profileYoutubeChannel}
-              </span>
-              <input
-                value={youtubeUrl}
-                onChange={(event) => {
-                  setYoutubeUrl(event.target.value);
+            <div className="sm:col-span-2">
+              <ProfileSocialLinksEditor
+                socialUrls={socialUrls}
+                socialLinkInput={socialLinkInput}
+                onSocialLinkInputChange={(value) => {
+                  setSocialLinkInput(value);
                   setMessage(null);
                 }}
-                placeholder={t.profile.profileYoutubePlaceholder}
-                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-black dark:text-white"
+                onSocialUrlsChange={(urls) => {
+                  setSocialUrls(urls);
+                  setMessage(null);
+                }}
               />
-            </label>
+            </div>
             <label className="block sm:col-span-2">
               <span className="mb-1 block text-sm font-medium text-black dark:text-white">
                 {t.profile.bio}

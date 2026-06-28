@@ -12,6 +12,10 @@ export type Profile = {
   country_code?: string | null;
   country_name?: string | null;
   youtube_url?: string | null;
+  instagram_url?: string | null;
+  tiktok_url?: string | null;
+  twitter_url?: string | null;
+  website_url?: string | null;
   role?: UserRole;
   is_banned?: boolean;
   is_verified?: boolean;

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useMemo, useState, type ReactNode } from "react";
+import { ProfileSocialLinksRow } from "@/components/channel/ProfileSocialLinksRow";
 import { getKycCountryByCode, getKycCountryLabel } from "@/lib/kycCountries";
 import { absoluteSiteUrl } from "@/lib/siteSeo";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -19,12 +20,6 @@ type ChannelAboutSectionProps = {
   showReportAction?: boolean;
 };
 
-function normalizeExternalUrl(value: string) {
-  const trimmed = value.trim();
-  if (!trimmed) return "";
-  if (/^https?:\/\//i.test(trimmed)) return trimmed;
-  return `https://${trimmed}`;
-}
 
 function AboutRow({
   icon,
@@ -65,7 +60,6 @@ export function ChannelAboutSection({ profile, stats, showReportAction = true }:
   }, [profile.country_code, profile.country_name, locale]);
 
   const channelUrl = absoluteSiteUrl(`/channel/${profile.username}`);
-  const youtubeUrl = profile.youtube_url?.trim() ? normalizeExternalUrl(profile.youtube_url) : null;
 
   const handleShare = useCallback(async () => {
     setShareMessage(null);
@@ -88,20 +82,10 @@ export function ChannelAboutSection({ profile, stats, showReportAction = true }:
     <div className="mt-5 max-w-2xl">
       <h3 className="text-base font-bold text-black dark:text-white">{t.profile.channelMoreInfo}</h3>
 
-      <div className="mt-3 divide-y divide-zinc-200 rounded-2xl border border-zinc-200 bg-zinc-50 px-4 dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-950">
-        {youtubeUrl ? (
-          <AboutRow
-            href={youtubeUrl}
-            icon={
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
-                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.7 15.5V8.5L15.8 12l-6.1 3.5z" />
-              </svg>
-            }
-          >
-            {youtubeUrl.replace(/^https?:\/\//, "")}
-          </AboutRow>
-        ) : null}
+      <div className="mt-3 rounded-2xl border border-zinc-200 bg-zinc-50 px-4 dark:border-zinc-800 dark:bg-zinc-950">
+        <ProfileSocialLinksRow profile={profile} />
 
+        <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
         {countryLabel ? (
           <AboutRow
             icon={
@@ -175,8 +159,8 @@ export function ChannelAboutSection({ profile, stats, showReportAction = true }:
             formatNumber(profile.lifetime_points_earned ?? profile.points ?? 0),
           )}
         </AboutRow>
+        </div>
       </div>
-
       <div className="mt-4 flex flex-wrap gap-2">
         <button
           type="button"
