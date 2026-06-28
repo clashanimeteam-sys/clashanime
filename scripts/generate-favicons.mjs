@@ -4,7 +4,7 @@ import sharp from "sharp";
 
 const source = "public/logo2.png";
 const canvas = 1024;
-const fillRatio = 1.18;
+const fillRatio = 1.22;
 /** Move logo down in tab (lower crop top = logo sits lower in icon). */
 const verticalShiftDown = 72;
 /** Move logo left in tab (higher crop left = logo sits left in icon). */
