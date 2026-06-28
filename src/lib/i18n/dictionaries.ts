@@ -8,6 +8,12 @@ export type Dictionary = {
   common: {
     back: string;
     backToHome: string;
+    pageNotFoundTitle: string;
+    pageNotFoundBadge: string;
+    pageNotFoundDesc: string;
+    unexpectedErrorTitle: string;
+    unexpectedErrorDesc: string;
+    tryAgain: string;
   };
   nav: {
     clash: string;
@@ -1544,6 +1550,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
     common: {
       back: "Back",
       backToHome: "Back to home",
+      pageNotFoundTitle: "Page not found",
+      pageNotFoundBadge: "404",
+      pageNotFoundDesc: "The page you are looking for does not exist or has been moved.",
+      unexpectedErrorTitle: "Something went wrong",
+      unexpectedErrorDesc: "An unexpected error occurred. Please try again or return to the home page.",
+      tryAgain: "Try again",
     },
     nav: {
       clash: "Clash",
@@ -3183,6 +3195,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
     common: {
       back: "戻る",
       backToHome: "ホームに戻る",
+      pageNotFoundTitle: "ページが見つかりません",
+      pageNotFoundBadge: "404",
+      pageNotFoundDesc: "お探しのページは存在しないか、移動されました。",
+      unexpectedErrorTitle: "問題が発生しました",
+      unexpectedErrorDesc: "予期しないエラーが発生しました。もう一度お試しいただくか、ホームに戻ってください。",
+      tryAgain: "再試行",
     },
     nav: {
       clash: "クラッシュ",
@@ -4806,6 +4824,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
     common: {
       back: "رجوع",
       backToHome: "العودة للرئيسية",
+      pageNotFoundTitle: "الصفحة غير موجودة",
+      pageNotFoundBadge: "404",
+      pageNotFoundDesc: "الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+      unexpectedErrorTitle: "حدث خطأ",
+      unexpectedErrorDesc: "حدث خطأ غير متوقع. حاول مرة أخرى أو عد إلى الصفحة الرئيسية.",
+      tryAgain: "حاول مرة أخرى",
     },
     nav: {
       clash: "النزالات",

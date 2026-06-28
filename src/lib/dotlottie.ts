@@ -6,6 +6,11 @@ export const LOADING_LOTTIE_SRC =
 
 export const LOADING_LOTTIE_SIZE = "300px";
 
+export const ERROR_LOTTIE_SRC =
+  "https://lottie.host/8906624d-fd32-427e-a9cd-ef6d8968e4b8/3tbhUZ0KWZ.lottie";
+
+export const ERROR_LOTTIE_SIZE = "300px";
+
 export const MAINTENANCE_LOTTIE_SRC =
   "https://lottie.host/fd923d47-038e-4e6c-897b-34b750dade77/GbFaV4meXd.lottie";
 
