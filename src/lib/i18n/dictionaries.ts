@@ -15,6 +15,15 @@ export type Dictionary = {
     unexpectedErrorDesc: string;
     tryAgain: string;
   };
+  adblock: {
+    welcome: string;
+    title: string;
+    body: string;
+    allowAds: string;
+    checking: string;
+    howTo: string;
+    howToSteps: string;
+  };
   nav: {
     clash: string;
     videos: string;
@@ -1556,6 +1565,16 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unexpectedErrorTitle: "Something went wrong",
       unexpectedErrorDesc: "An unexpected error occurred. Please try again or return to the home page.",
       tryAgain: "Try again",
+    },
+    adblock: {
+      welcome: "Welcome to ClashAnime",
+      title: "Please allow ads on our site",
+      body: "Looks like you're using an ad blocker. We rely on advertising to help fund ClashAnime and keep the platform free for creators.",
+      allowAds: "Allow ads",
+      checking: "Checking…",
+      howTo: "How to disable ad blocker",
+      howToSteps:
+        "1. Click the ad blocker icon in your browser toolbar.\n2. Pause or disable it for clashanime.com.\n3. Refresh this page or tap Allow ads.",
     },
     nav: {
       clash: "Clash",
@@ -3202,6 +3221,16 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unexpectedErrorDesc: "予期しないエラーが発生しました。もう一度お試しいただくか、ホームに戻ってください。",
       tryAgain: "再試行",
     },
+    adblock: {
+      welcome: "ClashAnime へようこそ",
+      title: "サイトの広告表示を許可してください",
+      body: "広告ブロッカーを使用しているようです。ClashAnime の運営と無料提供のために広告が必要です。",
+      allowAds: "広告を許可",
+      checking: "確認中…",
+      howTo: "広告ブロッカーの無効化方法",
+      howToSteps:
+        "1. ブラウザのツールバーで広告ブロッカーアイコンをクリック。\n2. clashanime.com で一時停止または無効化。\n3. ページを更新するか「広告を許可」をタップ。",
+    },
     nav: {
       clash: "クラッシュ",
       videos: "動画",
@@ -4830,6 +4859,16 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unexpectedErrorTitle: "حدث خطأ",
       unexpectedErrorDesc: "حدث خطأ غير متوقع. حاول مرة أخرى أو عد إلى الصفحة الرئيسية.",
       tryAgain: "حاول مرة أخرى",
+    },
+    adblock: {
+      welcome: "مرحباً بك في ClashAnime",
+      title: "يرجى السماح بالإعلانات على موقعنا",
+      body: "يبدو أنك تستخدم مانع إعلانات. نعتمد على الإعلانات لدعم ClashAnime وإبقاء المنصة مجانية للمبدعين.",
+      allowAds: "السماح بالإعلانات",
+      checking: "جاري التحقق…",
+      howTo: "كيفية إيقاف مانع الإعلانات",
+      howToSteps:
+        "1. اضغط على أيقونة مانع الإعلانات في شريط المتصفح.\n2. أوقفه مؤقتاً أو عطّله لموقع clashanime.com.\n3. حدّث الصفحة أو اضغط «السماح بالإعلانات».",
     },
     nav: {
       clash: "النزالات",

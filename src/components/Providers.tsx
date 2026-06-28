@@ -6,6 +6,7 @@ import { BeatsLoungeMiniBar } from "@/components/lounge/BeatsLoungeMiniBar";
 import { AnimeRadioController } from "@/components/radio/AnimeRadioController";
 import { AppShell } from "@/components/AppShell";
 import { MobileHeader } from "@/components/MobileHeader";
+import { AdblockGuardProvider } from "@/providers/AdblockGuardProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { BeatsLoungeProvider } from "@/providers/BeatsLoungeProvider";
 import { PointsWagerNotificationProvider } from "@/providers/PointsWagerNotificationProvider";
@@ -58,6 +59,7 @@ export function Providers({ children }: ProvidersProps) {
         <MaintenanceGate>
           <NavigationLoadingProvider>
           <AuthProvider>
+            <AdblockGuardProvider>
             <PointsWagerNotificationProvider>
             <AnimeRadioProvider>
             <BeatsLoungeProvider>
@@ -78,6 +80,7 @@ export function Providers({ children }: ProvidersProps) {
             </BeatsLoungeProvider>
             </AnimeRadioProvider>
             </PointsWagerNotificationProvider>
+            </AdblockGuardProvider>
           </AuthProvider>
           </NavigationLoadingProvider>
         </MaintenanceGate>
