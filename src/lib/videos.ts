@@ -71,6 +71,16 @@ const MOCK_VIDEOS: Video[] = [
   },
 ];
 
+const USE_MOCK_VIDEOS = process.env.NODE_ENV !== "production";
+
+function mockVideosWithTrending(): Video[] {
+  if (!USE_MOCK_VIDEOS) return [];
+  return MOCK_VIDEOS.map((video) => ({
+    ...video,
+    trending_score: calculateTrendingScore(video),
+  }));
+}
+
 export async function attachVideoChannels(
   supabase: NonNullable<Awaited<ReturnType<typeof createServerClient>>>,
   videos: Array<Omit<Video, "trending_score" | "channel"> & { user_id?: string | null }>,
@@ -129,10 +139,7 @@ async function fetchApprovedVideoPool(): Promise<Video[]> {
   const supabase = await createServerClient();
 
   if (!supabase) {
-    return MOCK_VIDEOS.map((video) => ({
-      ...video,
-      trending_score: calculateTrendingScore(video),
-    }));
+    return mockVideosWithTrending();
   }
 
   const { data, error } = await supabase
@@ -143,10 +150,7 @@ async function fetchApprovedVideoPool(): Promise<Video[]> {
     .limit(500);
 
   if (error || !data?.length) {
-    return MOCK_VIDEOS.map((video) => ({
-      ...video,
-      trending_score: calculateTrendingScore(video),
-    }));
+    return mockVideosWithTrending();
   }
 
   const withChannels = await attachVideoChannels(supabase, data);
@@ -191,20 +195,28 @@ export type ClashArenaStats = {
   heroesFighting: number;
 };
 
+function mockArenaStats(): ClashArenaStats {
+  if (!USE_MOCK_VIDEOS) {
+    return { activeBattles: 0, heroesFighting: 0 };
+  }
+
+  const engagement = MOCK_VIDEOS.reduce(
+    (sum, video) =>
+      sum +
+      video.likes_count +
+      video.comments_count +
+      (video.views_count ?? 0) +
+      (video.shares_count ?? 0),
+    0,
+  );
+  return { activeBattles: MOCK_VIDEOS.length, heroesFighting: engagement };
+}
+
 export async function getClashArenaStats(): Promise<ClashArenaStats> {
   const supabase = await createServerClient();
 
   if (!supabase) {
-    const engagement = MOCK_VIDEOS.reduce(
-      (sum, video) =>
-        sum +
-        video.likes_count +
-        video.comments_count +
-        (video.views_count ?? 0) +
-        (video.shares_count ?? 0),
-      0,
-    );
-    return { activeBattles: MOCK_VIDEOS.length, heroesFighting: engagement };
+    return mockArenaStats();
   }
 
   const { data, error, count } = await supabase
@@ -213,16 +225,7 @@ export async function getClashArenaStats(): Promise<ClashArenaStats> {
     .eq("moderation_status", "approved");
 
   if (error || !data) {
-    const engagement = MOCK_VIDEOS.reduce(
-      (sum, video) =>
-        sum +
-        video.likes_count +
-        video.comments_count +
-        (video.views_count ?? 0) +
-        (video.shares_count ?? 0),
-      0,
-    );
-    return { activeBattles: MOCK_VIDEOS.length, heroesFighting: engagement };
+    return mockArenaStats();
   }
 
   const heroesFighting = data.reduce(
@@ -332,6 +335,7 @@ export async function getVideoById(id: string): Promise<Video | null> {
   const supabase = await createServerClient();
 
   if (!supabase) {
+    if (!USE_MOCK_VIDEOS) return null;
     return MOCK_VIDEOS.find((video) => video.id === id) ?? null;
   }
 
