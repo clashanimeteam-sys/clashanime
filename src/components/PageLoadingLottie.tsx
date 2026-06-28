@@ -1,7 +1,7 @@
 "use client";
 
 import { DotLottiePlayer } from "@/components/DotLottiePlayer";
-import { LOADING_LOTTIE_SRC } from "@/lib/dotlottie";
+import { LOADING_LOTTIE_SIZE, LOADING_LOTTIE_SRC } from "@/lib/dotlottie";
 
 type PageLoadingLottieProps = {
   show?: boolean;
@@ -17,7 +17,11 @@ export function PageLoadingLottie({ show = true }: PageLoadingLottieProps) {
       aria-live="polite"
       aria-busy="true"
     >
-      <DotLottiePlayer src={LOADING_LOTTIE_SRC} className="flex items-center justify-center" />
+      <DotLottiePlayer
+        src={LOADING_LOTTIE_SRC}
+        size={LOADING_LOTTIE_SIZE}
+        className="flex items-center justify-center"
+      />
     </div>
   );
 }
