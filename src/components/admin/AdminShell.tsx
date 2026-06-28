@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { BrandLogo } from "@/components/BrandLogo";
+import { LocaleFlags } from "@/components/LocaleFlags";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { AdminNavBadge } from "@/components/admin/AdminNavBadge";
 import { PageBackLink } from "@/components/PageBackLink";
 import { isAdmin, isStaff } from "@/lib/admin";
@@ -244,12 +246,16 @@ function AdminShellLayout({
                 })}
             </nav>
 
-            <Link
-              href="/"
-              className="rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-300 hover:border-zinc-500"
-            >
-              {t.admin.backToSite}
-            </Link>
+            <div className="flex flex-wrap items-center gap-3">
+              <LocaleFlags />
+              <ThemeToggle />
+              <Link
+                href="/"
+                className="rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-300 hover:border-zinc-500"
+              >
+                {t.admin.backToSite}
+              </Link>
+            </div>
           </header>
 
           <main className="flex-1 px-4 py-6 sm:px-6">
