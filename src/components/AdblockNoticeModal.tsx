@@ -12,10 +12,13 @@ export function AdblockNoticeModal({ onRecheck, checking }: AdblockNoticeModalPr
 
   return (
     <div
-      className="fixed inset-0 z-[500] flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[500] flex items-center justify-center bg-black/80 px-4 backdrop-blur-md"
       role="dialog"
       aria-modal="true"
       aria-labelledby="adblock-notice-title"
+      onKeyDown={(event) => {
+        if (event.key === "Escape") event.preventDefault();
+      }}
     >
       <div className="w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-6 text-center shadow-2xl dark:border-zinc-800 dark:bg-zinc-950">
         <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">{t.adblock.welcome}</p>

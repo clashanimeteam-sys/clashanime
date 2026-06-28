@@ -4,10 +4,15 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { usePathname } from "next/navigation";
 import { AdblockNoticeModal } from "@/components/AdblockNoticeModal";
 import { isStaff } from "@/lib/admin";
-import { detectAdblock, isAdblockGuardEnabled, shouldSkipAdblockGuard } from "@/lib/adblockGuard";
+import {
+  detectAdblock,
+  isAdblockGuardEnabled,
+  shouldSkipAdblockGuard,
+  watchAdblockBaits,
+} from "@/lib/adblockGuard";
 import { useAuth } from "@/providers/AuthProvider";
 
-const RECHECK_MS = 45_000;
+const RECHECK_MS = 12_000;
 
 type AdblockGuardProviderProps = {
   children: ReactNode;
@@ -19,6 +24,7 @@ export function AdblockGuardProvider({ children }: AdblockGuardProviderProps) {
   const [blocked, setBlocked] = useState(false);
   const [checking, setChecking] = useState(false);
   const timerRef = useRef<number | null>(null);
+  const detectingRef = useRef(false);
 
   const guardActive =
     isAdblockGuardEnabled() &&
@@ -30,10 +36,16 @@ export function AdblockGuardProvider({ children }: AdblockGuardProviderProps) {
       setBlocked(false);
       return false;
     }
+    if (detectingRef.current) return false;
 
-    const detected = await detectAdblock();
-    setBlocked(detected);
-    return detected;
+    detectingRef.current = true;
+    try {
+      const detected = await detectAdblock();
+      setBlocked(detected);
+      return detected;
+    } finally {
+      detectingRef.current = false;
+    }
   }, [guardActive]);
 
   useEffect(() => {
@@ -52,25 +64,39 @@ export function AdblockGuardProvider({ children }: AdblockGuardProviderProps) {
       void runDetection();
     };
 
+    const stopWatchingBaits = watchAdblockBaits(() => {
+      setBlocked(true);
+      void runDetection();
+    });
+
     document.addEventListener("visibilitychange", handleFocus);
     window.addEventListener("focus", handleFocus);
 
     return () => {
       if (timerRef.current) window.clearInterval(timerRef.current);
+      stopWatchingBaits();
       document.removeEventListener("visibilitychange", handleFocus);
       window.removeEventListener("focus", handleFocus);
     };
   }, [guardActive, runDetection]);
 
   useEffect(() => {
+    if (!guardActive) return;
+    void runDetection();
+  }, [guardActive, pathname, runDetection]);
+
+  useEffect(() => {
     if (!blocked) {
       document.body.style.overflow = "";
+      document.body.removeAttribute("data-adblock-locked");
       return;
     }
 
     document.body.style.overflow = "hidden";
+    document.body.setAttribute("data-adblock-locked", "true");
     return () => {
       document.body.style.overflow = "";
+      document.body.removeAttribute("data-adblock-locked");
     };
   }, [blocked]);
 
@@ -85,7 +111,9 @@ export function AdblockGuardProvider({ children }: AdblockGuardProviderProps) {
 
   return (
     <>
-      {children}
+      <div aria-hidden={blocked} inert={blocked ? true : undefined}>
+        {children}
+      </div>
       {guardActive && blocked ? (
         <AdblockNoticeModal onRecheck={() => void handleRecheck()} checking={checking} />
       ) : null}
