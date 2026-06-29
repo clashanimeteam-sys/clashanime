@@ -67,19 +67,18 @@ export function MobileAppHeader() {
       className="sticky top-0 z-50 bg-white/95 backdrop-blur-md dark:bg-black/95 md:hidden"
       style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
     >
-      <div className="grid min-h-14 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 px-3 py-1.5">
-        <div aria-hidden />
-
+      <div className="flex min-h-14 items-center justify-between gap-2 px-3 py-1.5">
         <Link
           href="/"
-          className="col-start-2 flex max-w-[min(72vw,18.5rem)] items-center justify-center gap-2"
-          aria-label={`${t.home.titlePrimary}${t.home.titleSecondary}`}
+          dir="ltr"
+          className="flex min-w-0 items-center gap-2"
+          aria-label="Clash Anime"
         >
           <BrandLogo className="h-[3.85rem] w-[3.85rem] shrink-0" priority />
           <MobileHeaderBrandTitle />
         </Link>
 
-        <div className="col-start-3 flex items-center justify-end gap-1.5">
+        <div className="flex shrink-0 items-center gap-1.5">
           {loading ? (
             <span className="h-9 w-16 animate-pulse rounded-full bg-zinc-100 dark:bg-zinc-900" />
           ) : (
