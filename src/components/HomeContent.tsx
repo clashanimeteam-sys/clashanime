@@ -34,7 +34,7 @@ function HomeHeroTop({
 }) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-      <div className="-ms-4 self-start sm:-ms-6">
+      <div className="-ms-4 hidden self-start md:block sm:-ms-6">
         <LiveClashCounter initialStats={arenaStats} />
       </div>
       {activeSeason ? (

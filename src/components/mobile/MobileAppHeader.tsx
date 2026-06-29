@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
 import { ClashLiveBadge } from "@/components/clash/ClashLiveBadge";
+import { ElementalSiteTitle } from "@/components/ElementalSiteTitle";
 import { NotificationBell } from "@/components/NotificationBell";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -66,29 +67,34 @@ export function MobileAppHeader() {
       className="sticky top-0 z-50 border-b border-zinc-200/80 bg-white/95 backdrop-blur-md dark:border-zinc-800/80 dark:bg-black/95 md:hidden"
       style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
     >
-      <div className="flex h-14 items-center justify-between gap-2 px-3">
+      <div className="flex min-h-14 items-center justify-between gap-2 px-3 py-1.5">
         <div className="flex min-w-0 flex-1 items-center gap-2">
-          <Link href="/" className="shrink-0" aria-label="Clash Anime">
-            <BrandLogo className="h-11 w-11" priority />
+          <div className="flex shrink-0 flex-col items-center gap-1">
+            <Link href="/" aria-label="Clash Anime">
+              <BrandLogo className="h-[3.35rem] w-[3.35rem]" priority />
+            </Link>
+            {isHome ? <ClashLiveBadge compact /> : null}
+          </div>
+
+          <Link
+            href="/"
+            className="min-w-0 flex-1 self-center"
+            aria-label={`${t.home.titlePrimary}${t.home.titleSecondary}`}
+          >
+            <ElementalSiteTitle
+              primary={t.home.titlePrimary}
+              secondary={t.home.titleSecondary}
+              variant="mobile-header"
+            />
           </Link>
-          {isHome ? <ClashLiveBadge /> : null}
         </div>
 
         <div className="flex shrink-0 items-center gap-1.5">
           {loading ? (
-            <span className="h-9 w-20 animate-pulse rounded-full bg-zinc-100 dark:bg-zinc-900" />
+            <span className="h-9 w-16 animate-pulse rounded-full bg-zinc-100 dark:bg-zinc-900" />
           ) : (
             <>
               {user ? <NotificationBell /> : null}
-              <Link
-                href={user ? "/upload" : "/login?next=%2Fupload"}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-accent text-white shadow-md shadow-accent/30 transition-opacity hover:opacity-90"
-                aria-label={t.upload.create}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="h-5 w-5" aria-hidden>
-                  <path strokeLinecap="round" d="M12 5v14M5 12h14" />
-                </svg>
-              </Link>
               {user ? (
                 <Link href="/profile" className="rounded-full" aria-label={t.profile.customize}>
                   <UserAvatar name={displayName} avatarUrl={avatarUrl} />

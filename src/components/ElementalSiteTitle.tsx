@@ -11,6 +11,7 @@ const doodleFont = Fredoka({
 type ElementalSiteTitleProps = {
   primary: string;
   secondary: string;
+  variant?: "sidebar" | "mobile-header";
 };
 
 type MascotPlacement =
@@ -281,14 +282,22 @@ function DoodleLetter({
   );
 }
 
-export function ElementalSiteTitle({ primary, secondary }: ElementalSiteTitleProps) {
+export function ElementalSiteTitle({
+  primary,
+  secondary,
+  variant = "sidebar",
+}: ElementalSiteTitleProps) {
   const clashChars = [..."CLASH"];
   const animeChars = [..."ANIME"];
+  const wrapVariantClass =
+    variant === "mobile-header"
+      ? "doodle-logo-wrap-mobile-header"
+      : "doodle-logo-wrap-sidebar";
 
   return (
     <div
       dir="ltr"
-      className={`doodle-logo-ltr doodle-logo-wrap doodle-logo-wrap-sidebar doodle-logo-wrap-interactive ${doodleFont.className}`}
+      className={`doodle-logo-ltr doodle-logo-wrap doodle-logo-wrap-interactive ${wrapVariantClass} ${doodleFont.className}`}
     >
       <div className="doodle-logo-shadow" aria-hidden />
       <span className="doodle-fx doodle-fire-glow" aria-hidden />
