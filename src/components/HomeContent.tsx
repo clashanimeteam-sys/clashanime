@@ -12,6 +12,7 @@ import type { HallOfLegendsSeason } from "@/lib/hallOfLegends";
 import type { AnimeReleaseClash } from "@/lib/animeTracker";
 import type { ClashArenaStats } from "@/lib/videos";
 import { useLocale } from "@/providers/LocaleProvider";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { useLiveRankedVideos } from "@/hooks/useLiveRankedVideos";
 import type { Video } from "@/lib/types";
 
@@ -23,7 +24,8 @@ type HomeContentProps = {
   activeReleaseClashes: AnimeReleaseClash[];
 };
 
-const PODIUM_ORDER = [1, 2, 3] as const;
+const PODIUM_ORDER_DESKTOP = [1, 2, 3] as const;
+const PODIUM_ORDER_MOBILE = [1, 2, 3, 4] as const;
 
 function HomeHeroTop({
   activeSeason,
@@ -54,18 +56,20 @@ export function HomeContent({
   activeReleaseClashes,
 }: HomeContentProps) {
   const { t } = useLocale();
+  const isMobile = useIsMobile();
   const videos = useLiveRankedVideos(rankedPool, { mode: "clash" });
   const hasReleaseBanner = activeReleaseClashes.length > 0;
 
-  const podiumVideos = PODIUM_ORDER.map((rank) =>
-    videos.find((video) => video.global_rank === rank),
-  ).filter((video): video is Video => Boolean(video));
+  const podiumRanks = isMobile ? PODIUM_ORDER_MOBILE : PODIUM_ORDER_DESKTOP;
+  const podiumVideos = podiumRanks
+    .map((rank) => videos.find((video) => video.global_rank === rank))
+    .filter((video): video is Video => Boolean(video));
 
   const challengerVideos = videos
-    .filter((video) => video.global_rank !== undefined && video.global_rank > 3)
+    .filter((video) => video.global_rank !== undefined && video.global_rank > podiumRanks.length)
     .sort((a, b) => (a.global_rank ?? 0) - (b.global_rank ?? 0));
 
-  function renderClashCard(video: Video) {
+  function renderClashCard(video: Video, options?: { compact?: boolean }) {
     return (
       <VideoCard
         key={video.id}
@@ -74,6 +78,7 @@ export function HomeContent({
         clashMode
         showClashBadge
         feedMode="clash"
+        compact={options?.compact}
         className="live-ranked-card"
       />
     );
@@ -110,8 +115,8 @@ export function HomeContent({
                 <h2 className="mb-4 font-display text-sm font-bold uppercase tracking-[0.24em] text-amber-200">
                   {t.home.podiumLabel}
                 </h2>
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 sm:items-start">
-                  {podiumVideos.map((video) => renderClashCard(video))}
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 sm:items-start">
+                  {podiumVideos.map((video) => renderClashCard(video, { compact: isMobile }))}
                 </div>
               </section>
             ) : null}
@@ -121,8 +126,8 @@ export function HomeContent({
                 <h2 className="mb-4 font-display text-sm font-bold uppercase tracking-[0.24em] text-orange-200">
                   {t.home.challengersLabel}
                 </h2>
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                  {challengerVideos.map((video) => renderClashCard(video))}
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-5">
+                  {challengerVideos.map((video) => renderClashCard(video, { compact: isMobile }))}
                 </div>
               </section>
             ) : null}
@@ -134,9 +139,9 @@ export function HomeContent({
             {podiumVideos.length === 0 && challengerVideos.length === 0 && videos.length > 0 ? (
               <section
                 aria-label={t.home.gridLabel}
-                className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-5"
               >
-                {videos.map((video) => renderClashCard(video))}
+                {videos.map((video) => renderClashCard(video, { compact: isMobile }))}
               </section>
             ) : null}
           </div>
