@@ -45,8 +45,9 @@ function UserAvatar({
 
 export function MobileAppHeader() {
   const { user, profile, loading } = useAuth();
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
   const pathname = usePathname();
+  const isArabic = locale === "ar";
 
   const displayName =
     profile?.display_name ??
@@ -71,14 +72,14 @@ export function MobileAppHeader() {
         <Link
           href="/"
           dir="ltr"
-          className="flex min-w-0 items-center gap-2"
+          className={`order-1 flex min-w-0 items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
           aria-label="Clash Anime"
         >
           <BrandLogo className="h-[3.85rem] w-[3.85rem] shrink-0" priority />
           <MobileHeaderBrandTitle />
         </Link>
 
-        <div className="flex shrink-0 items-center gap-1.5">
+        <div className="order-2 flex shrink-0 items-center gap-1.5">
           {loading ? (
             <span className="h-9 w-16 animate-pulse rounded-full bg-zinc-100 dark:bg-zinc-900" />
           ) : (
@@ -102,7 +103,11 @@ export function MobileAppHeader() {
       </div>
 
       {isHome ? (
-        <div className="flex justify-center border-t border-b border-zinc-200/80 px-3 py-1 dark:border-zinc-800/80">
+        <div
+          className={`flex border-t border-b border-zinc-200/80 px-3 py-1 dark:border-zinc-800/80 ${
+            isArabic ? "justify-end" : "justify-start"
+          }`}
+        >
           <ClashLiveBadge compact />
         </div>
       ) : (
