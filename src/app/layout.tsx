@@ -1,6 +1,7 @@
 import { Cairo, Geist, Geist_Mono, Orbitron, Plus_Jakarta_Sans } from "next/font/google";
 import { Providers } from "@/components/Providers";
 import { AdblockBait } from "@/components/AdblockBait";
+import { DotLottieScript } from "@/components/DotLottieScript";
 import { buildRootLayoutMetadata } from "@/lib/seoMetadata";
 import "./globals.css";
 
@@ -58,6 +59,7 @@ export default function RootLayout({
     >
       <body className="min-h-full bg-white text-black dark:bg-black dark:text-white">
         <AdblockBait />
+        <DotLottieScript />
         <Providers>{children}</Providers>
         <div id="clashanime-portal" />
       </body>

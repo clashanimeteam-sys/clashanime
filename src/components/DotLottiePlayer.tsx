@@ -1,8 +1,12 @@
 "use client";
 
-import Script from "next/script";
-import { useEffect, useRef, useState } from "react";
-import { DOTLOTTIE_SCRIPT, DOTLOTTIE_SIZE } from "@/lib/dotlottie";
+import { useEffect, useRef, useSyncExternalStore } from "react";
+import { DOTLOTTIE_SIZE } from "@/lib/dotlottie";
+import {
+  getDotlottieServerSnapshot,
+  getDotlottieSnapshot,
+  subscribeDotlottie,
+} from "@/lib/dotlottieReady";
 
 type DotLottiePlayerProps = {
   src: string;
@@ -16,13 +20,11 @@ export function DotLottiePlayer({
   className,
 }: DotLottiePlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scriptReady, setScriptReady] = useState(false);
-
-  useEffect(() => {
-    if (customElements.get("dotlottie-wc")) {
-      setScriptReady(true);
-    }
-  }, []);
+  const scriptReady = useSyncExternalStore(
+    subscribeDotlottie,
+    getDotlottieSnapshot,
+    getDotlottieServerSnapshot,
+  );
 
   useEffect(() => {
     const container = containerRef.current;
@@ -42,22 +44,13 @@ export function DotLottiePlayer({
   }, [scriptReady, size, src]);
 
   return (
-    <>
-      <Script
-        id="dotlottie-wc"
-        src={DOTLOTTIE_SCRIPT}
-        type="module"
-        strategy="afterInteractive"
-        onReady={() => setScriptReady(true)}
-      />
-      <div ref={containerRef} className={className}>
-        {!scriptReady ? (
-          <div
-            className="animate-pulse rounded-full bg-zinc-200 dark:bg-zinc-800"
-            style={{ width: size, height: size }}
-          />
-        ) : null}
-      </div>
-    </>
+    <div ref={containerRef} className={className}>
+      {!scriptReady ? (
+        <div
+          className="animate-pulse rounded-full bg-zinc-200 dark:bg-zinc-800"
+          style={{ width: size, height: size }}
+        />
+      ) : null}
+    </div>
   );
 }

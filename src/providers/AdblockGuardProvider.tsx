@@ -118,7 +118,10 @@ export function AdblockGuardProvider({ children }: AdblockGuardProviderProps) {
 
   return (
     <>
-      <div aria-hidden={blocked} inert={blocked ? true : undefined}>
+      <div
+        aria-hidden={blocked}
+        className={blocked ? "pointer-events-none select-none" : undefined}
+      >
         {children}
       </div>
       {guardActive && blocked ? (

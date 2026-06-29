@@ -1,10 +1,13 @@
 "use client";
 
-import Script from "next/script";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useRef, useSyncExternalStore } from "react";
 import {
-  DOTLOTTIE_WC_SCRIPT_SRC,
+  getDotlottieServerSnapshot,
+  getDotlottieSnapshot,
+  subscribeDotlottie,
+} from "@/lib/dotlottieReady";
+import {
   THEME_TOGGLE_DARK_FRAME,
   THEME_TOGGLE_LIGHT_FRAME,
   THEME_TOGGLE_LOTTIE_SIZE_PX,
@@ -25,30 +28,6 @@ function getMountedSnapshot() {
 
 function getMountedServerSnapshot() {
   return false;
-}
-
-let dotlottieScriptReady = false;
-const dotlottieListeners = new Set<() => void>();
-
-function subscribeDotlottie(onStoreChange: () => void) {
-  dotlottieListeners.add(onStoreChange);
-  return () => {
-    dotlottieListeners.delete(onStoreChange);
-  };
-}
-
-function getDotlottieSnapshot() {
-  return dotlottieScriptReady;
-}
-
-function getDotlottieServerSnapshot() {
-  return false;
-}
-
-function markDotlottieReady() {
-  if (dotlottieScriptReady) return;
-  dotlottieScriptReady = true;
-  dotlottieListeners.forEach((listener) => listener());
 }
 
 type DotLottieMode = "forward" | "reverse" | "bounce" | "reverse-bounce";
@@ -207,14 +186,6 @@ export function ThemeToggle() {
 
   return (
     <>
-      <Script
-        id="dotlottie-wc"
-        src={DOTLOTTIE_WC_SCRIPT_SRC}
-        type="module"
-        strategy="afterInteractive"
-        onReady={markDotlottieReady}
-        onLoad={markDotlottieReady}
-      />
       <button
         type="button"
         role="switch"
