@@ -5,7 +5,7 @@ import { AnimeRadioMiniBar } from "@/components/AnimeRadioMiniBar";
 import { BeatsLoungeMiniBar } from "@/components/lounge/BeatsLoungeMiniBar";
 import { AnimeRadioController } from "@/components/radio/AnimeRadioController";
 import { AppShell } from "@/components/AppShell";
-import { MobileAppHeader } from "@/components/mobile/MobileAppHeader";
+import { MobileAppHeader } from "@/components/mobile/MobileChromeLazy";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { BeatsLoungeProvider } from "@/providers/BeatsLoungeProvider";
 import { PointsWagerNotificationProvider } from "@/providers/PointsWagerNotificationProvider";

@@ -1,12 +1,10 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { AdSenseScript } from "@/components/ads/AdSenseScript";
 import { AuthTopBar } from "@/components/AuthTopBar";
 import { Footer } from "@/components/Footer";
-import { MobileBottomNav } from "@/components/MobileBottomNav";
+import { MobileBottomNav } from "@/components/mobile/MobileChromeLazy";
 import { Sidebar } from "@/components/Sidebar";
-import { SiteAdBanner } from "@/components/ads/SiteAdBanner";
 import { PageTitleProvider } from "@/providers/PageTitleProvider";
 import { ProfileSectionProvider } from "@/providers/ProfileSectionProvider";
 import { useAnimeRadio } from "@/providers/AnimeRadioProvider";
@@ -35,7 +33,6 @@ export function AppShell({ children }: AppShellProps) {
   return (
     <ProfileSectionProvider>
       <PageTitleProvider>
-        <AdSenseScript />
         <div className="flex h-dvh overflow-hidden bg-white dark:bg-black">
           {!isBlogPage ? (
             <div className="hidden h-dvh shrink-0 md:flex">
@@ -58,15 +55,9 @@ export function AppShell({ children }: AppShellProps) {
               {children}
             </main>
             {!isVideoPage && !isBlogPage ? (
-              <>
-                <SiteAdBanner placement="desktop-inline" />
-                <div className="md:hidden">
-                  <SiteAdBanner placement="mobile-footer" />
-                </div>
-                <div className="hidden md:block">
-                  <Footer />
-                </div>
-              </>
+              <div className="hidden md:block">
+                <Footer />
+              </div>
             ) : null}
           </div>
         </div>

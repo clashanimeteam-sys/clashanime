@@ -1582,7 +1582,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unexpectedErrorDesc: "An unexpected error occurred. Please try again or return to the home page.",
       tryAgain: "Try again",
     },
-      nav: {
+    nav: {
       clash: "Clash",
       videos: "Videos",
       community: "Community",
@@ -3252,7 +3252,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unexpectedErrorDesc: "予期しないエラーが発生しました。もう一度お試しいただくか、ホームに戻ってください。",
       tryAgain: "再試行",
     },
-      nav: {
+    nav: {
       clash: "クラッシュ",
       videos: "動画",
       community: "コミュニティ",
@@ -4906,7 +4906,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unexpectedErrorDesc: "حدث خطأ غير متوقع. حاول مرة أخرى أو عد إلى الصفحة الرئيسية.",
       tryAgain: "حاول مرة أخرى",
     },
-      nav: {
+    nav: {
       clash: "النزالات",
       videos: "الفيديوهات",
       community: "المجتمع",

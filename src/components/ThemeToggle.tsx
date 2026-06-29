@@ -116,6 +116,7 @@ export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
   const { t } = useLocale();
   const lottieRef = useRef<DotLottieElement | null>(null);
+  const lottieContainerRef = useRef<HTMLDivElement | null>(null);
   const isAnimatingRef = useRef(false);
   const mounted = useSyncExternalStore(subscribeMounted, getMountedSnapshot, getMountedServerSnapshot);
   const dotlottieReady = useSyncExternalStore(
@@ -177,6 +178,34 @@ export function ThemeToggle() {
   const size = THEME_TOGGLE_LOTTIE_SIZE_PX;
   const showLottie = mounted && dotlottieReady;
 
+  useEffect(() => {
+    const container = lottieContainerRef.current;
+    if (!showLottie || !container) {
+      lottieRef.current = null;
+      return;
+    }
+
+    let detach: (() => void) | undefined;
+
+    try {
+      const node = document.createElement("dotlottie-wc") as DotLottieElement;
+      node.setAttribute("src", THEME_TOGGLE_LOTTIE_SRC);
+      node.setAttribute("loop", "false");
+      node.style.width = `${size}px`;
+      node.style.height = `${size}px`;
+      container.replaceChildren(node);
+      detach = setLottieRef(node) ?? undefined;
+    } catch {
+      lottieRef.current = null;
+    }
+
+    return () => {
+      detach?.();
+      lottieRef.current = null;
+      container.replaceChildren();
+    };
+  }, [setLottieRef, showLottie, size]);
+
   return (
     <button
       type="button"
@@ -191,10 +220,10 @@ export function ThemeToggle() {
       suppressHydrationWarning
     >
       {showLottie ? (
-        <dotlottie-wc
-          ref={setLottieRef}
-          src={THEME_TOGGLE_LOTTIE_SRC}
-          loop={false}
+        <div
+          ref={lottieContainerRef}
+          aria-hidden
+          className="inline-block"
           style={{ width: size, height: size }}
         />
       ) : (

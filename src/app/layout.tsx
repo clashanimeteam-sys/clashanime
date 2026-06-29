@@ -59,8 +59,8 @@ export default function RootLayout({
       className={`notranslate ${geistSans.variable} ${geistMono.variable} ${orbitron.variable} ${plusJakarta.variable} ${cairo.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-white text-black dark:bg-black dark:text-white">
-        <DotLottieScript />
         <ClientErrorBoundary>
+          <DotLottieScript />
           <Providers>{children}</Providers>
         </ClientErrorBoundary>
         <div id="clashanime-portal" />
