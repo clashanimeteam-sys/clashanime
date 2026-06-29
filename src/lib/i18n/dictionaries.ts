@@ -129,6 +129,9 @@ export type Dictionary = {
     menuSubtitle: string;
     closeMenu: string;
     preferences: string;
+    brandTitle: string;
+    brandWordClash: string;
+    brandWordAnime: string;
   };
   legalHub: {
     pageTitle: string;
@@ -1706,6 +1709,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       menuSubtitle: "All features in one place",
       closeMenu: "Close menu",
       preferences: "Language & theme",
+      brandTitle: "Clash Anime",
+      brandWordClash: "Clash",
+      brandWordAnime: "Anime",
     },
     legalHub: {
       pageTitle: "Information & Legal",
@@ -3384,6 +3390,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       menuSubtitle: "すべての機能にすぐアクセス",
       closeMenu: "メニューを閉じる",
       preferences: "言語とテーマ",
+      brandTitle: "Clash Anime",
+      brandWordClash: "Clash",
+      brandWordAnime: "Anime",
     },
     legalHub: {
       pageTitle: "情報・規約",
@@ -5046,6 +5055,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       menuSubtitle: "كل المزايا في مكان واحد",
       closeMenu: "إغلاق القائمة",
       preferences: "اللغة والمظهر",
+      brandTitle: "كلاش أنمي",
+      brandWordClash: "كلاش",
+      brandWordAnime: " أنمي",
     },
     legalHub: {
       pageTitle: "معلومات وقوانين",

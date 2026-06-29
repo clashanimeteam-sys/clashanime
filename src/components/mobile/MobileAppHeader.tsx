@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
 import { ClashLiveBadge } from "@/components/clash/ClashLiveBadge";
-import { ElementalSiteTitle } from "@/components/ElementalSiteTitle";
+import { MobileHeaderBrandTitle } from "@/components/mobile/MobileHeaderBrandTitle";
 import { NotificationBell } from "@/components/NotificationBell";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -64,39 +64,22 @@ export function MobileAppHeader() {
 
   return (
     <header
-      className="sticky top-0 z-50 border-b border-zinc-200/80 bg-white/95 backdrop-blur-md dark:border-zinc-800/80 dark:bg-black/95 md:hidden"
+      className="sticky top-0 z-50 bg-white/95 backdrop-blur-md dark:bg-black/95 md:hidden"
       style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
     >
-      <div className="flex min-h-14 items-center justify-between gap-2 px-3 py-1.5">
-        <div className="mobile-brand-header grid min-w-0 flex-1 grid-cols-[auto_minmax(0,1fr)] grid-rows-[auto_auto] items-center gap-x-2 gap-y-0.5">
-          <Link
-            href="/"
-            className="row-span-2 shrink-0 self-center"
-            aria-label="Clash Anime"
-          >
-            <BrandLogo className="h-[3.85rem] w-[3.85rem]" priority />
-          </Link>
+      <div className="grid min-h-14 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 px-3 py-1.5">
+        <div aria-hidden />
 
-          <Link
-            href="/"
-            className="col-start-2 row-start-1 min-w-0 self-center"
-            aria-label={`${t.home.titlePrimary}${t.home.titleSecondary}`}
-          >
-            <ElementalSiteTitle
-              primary={t.home.titlePrimary}
-              secondary={t.home.titleSecondary}
-              variant="mobile-header"
-            />
-          </Link>
+        <Link
+          href="/"
+          className="col-start-2 flex max-w-[min(72vw,18.5rem)] items-center justify-center gap-2"
+          aria-label={`${t.home.titlePrimary}${t.home.titleSecondary}`}
+        >
+          <BrandLogo className="h-[3.85rem] w-[3.85rem] shrink-0" priority />
+          <MobileHeaderBrandTitle />
+        </Link>
 
-          {isHome ? (
-            <div className="col-start-2 row-start-2">
-              <ClashLiveBadge compact />
-            </div>
-          ) : null}
-        </div>
-
-        <div className="flex shrink-0 items-center gap-1.5">
+        <div className="col-start-3 flex items-center justify-end gap-1.5">
           {loading ? (
             <span className="h-9 w-16 animate-pulse rounded-full bg-zinc-100 dark:bg-zinc-900" />
           ) : (
@@ -118,6 +101,14 @@ export function MobileAppHeader() {
           )}
         </div>
       </div>
+
+      {isHome ? (
+        <div className="flex justify-center border-t border-b border-zinc-200/80 px-3 py-1 dark:border-zinc-800/80">
+          <ClashLiveBadge compact />
+        </div>
+      ) : (
+        <div className="border-b border-zinc-200/80 dark:border-zinc-800/80" aria-hidden />
+      )}
     </header>
   );
 }
