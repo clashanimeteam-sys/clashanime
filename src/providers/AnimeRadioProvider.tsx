@@ -50,19 +50,25 @@ type AnimeRadioProviderProps = {
 
 export function AnimeRadioProvider({ children }: AnimeRadioProviderProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const persisted = useMemo(() => readPersistedRadioState(), []);
 
-  const [stationId, setStationId] = useState<RadioStationId>(
-    persisted?.stationId ?? "anime-ost",
-  );
+  const [stationId, setStationId] = useState<RadioStationId>("anime-ost");
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
-  const [pausedByUser, setPausedByUser] = useState(persisted?.pausedByUser ?? false);
-  const [volume, setVolumeState] = useState(persisted?.volume ?? DEFAULT_RADIO_VOLUME);
-  const [muted, setMuted] = useState(persisted?.muted ?? false);
+  const [pausedByUser, setPausedByUser] = useState(false);
+  const [volume, setVolumeState] = useState(DEFAULT_RADIO_VOLUME);
+  const [muted, setMuted] = useState(false);
   const [nowPlaying, setNowPlaying] = useState<RadioNowPlaying | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const persisted = readPersistedRadioState();
+    if (!persisted) return;
+    setStationId(persisted.stationId);
+    setPausedByUser(persisted.pausedByUser ?? false);
+    setVolumeState(persisted.volume);
+    setMuted(persisted.muted);
+  }, []);
 
   const station = useMemo(() => getRadioStation(stationId), [stationId]);
 
