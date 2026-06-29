@@ -1,5 +1,5 @@
 import { createServerClient } from "@/lib/supabase/server";
-import type { BeatsTrack } from "@/lib/animeBeatsLounge";
+import { mapBeatsPlaylistRow, type BeatsTrack } from "@/lib/animeBeatsLounge";
 
 export async function getAnimeBeatsPlaylist(): Promise<BeatsTrack[]> {
   const supabase = await createServerClient();
@@ -18,15 +18,5 @@ export async function getAnimeBeatsPlaylist(): Promise<BeatsTrack[]> {
     vote_count: number;
     sort_order: number;
     user_has_voted: boolean;
-  }>).map((row) => ({
-    id: row.id,
-    title: row.title,
-    artist: row.artist,
-    animeTitle: row.anime_title,
-    youtubeVideoId: row.youtube_video_id,
-    artworkUrl: row.artwork_url,
-    voteCount: Number(row.vote_count),
-    sortOrder: Number(row.sort_order),
-    userHasVoted: Boolean(row.user_has_voted),
-  }));
+  }>).map((row) => mapBeatsPlaylistRow(row));
 }

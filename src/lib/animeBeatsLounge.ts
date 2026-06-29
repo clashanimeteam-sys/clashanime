@@ -15,6 +15,69 @@ export type BeatsTrack = {
   userHasVoted: boolean;
 };
 
+export type BeatsMySubmission = {
+  id: string;
+  title: string;
+  artist: string;
+  animeTitle: string | null;
+  youtubeVideoId: string;
+  artworkUrl: string | null;
+  status: "pending" | "approved" | "rejected";
+  voteCount: number;
+  createdAt: string;
+  reviewNote: string | null;
+};
+
+export function mapBeatsPlaylistRow(row: {
+  id: string;
+  title: string;
+  artist: string;
+  anime_title: string | null;
+  youtube_video_id: string;
+  artwork_url: string | null;
+  vote_count: number;
+  sort_order: number;
+  user_has_voted: boolean;
+}): BeatsTrack {
+  return {
+    id: row.id,
+    title: row.title,
+    artist: row.artist,
+    animeTitle: row.anime_title,
+    youtubeVideoId: row.youtube_video_id,
+    artworkUrl: row.artwork_url,
+    voteCount: Number(row.vote_count),
+    sortOrder: Number(row.sort_order),
+    userHasVoted: Boolean(row.user_has_voted),
+  };
+}
+
+export function mapBeatsMySubmissionRow(row: {
+  id: string;
+  title: string;
+  artist: string;
+  anime_title: string | null;
+  youtube_video_id: string;
+  artwork_url: string | null;
+  status: string;
+  vote_count: number;
+  created_at: string;
+  review_note: string | null;
+}): BeatsMySubmission {
+  return {
+    id: row.id,
+    title: row.title,
+    artist: row.artist,
+    animeTitle: row.anime_title,
+    youtubeVideoId: row.youtube_video_id,
+    artworkUrl: row.artwork_url,
+    status: row.status as BeatsMySubmission["status"],
+    voteCount: Number(row.vote_count),
+    createdAt: row.created_at,
+    reviewNote: row.review_note,
+  };
+}
+
 export type BeatsCoverFileError = "invalid" | "tooLarge";
 
 export function validateBeatsCoverFile(file: File): BeatsCoverFileError | null {

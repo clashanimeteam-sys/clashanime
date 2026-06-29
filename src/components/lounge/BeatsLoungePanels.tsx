@@ -4,11 +4,13 @@ import Image from "next/image";
 import { FormEvent, useEffect, useRef, useState, type ReactNode } from "react";
 import {
   isValidArtworkUrl,
+  mapBeatsMySubmissionRow,
   mapBeatsSubmitError,
   trackArtwork,
   uploadBeatsCoverImage,
   validateBeatsCoverFile,
   validateBeatsSubmission,
+  type BeatsMySubmission,
   type BeatsTrack,
 } from "@/lib/animeBeatsLounge";
 import { getSupabaseConfig } from "@/lib/supabase/config";
@@ -165,7 +167,172 @@ export function BeatsPlaylistList({ onVote, onPlayTrack }: BeatsPlaylistListProp
   );
 }
 
-export function BeatsTrackSubmitForm() {
+export function BeatsMySubmissionsPanel({ refreshKey = 0 }: { refreshKey?: number }) {
+  const { t } = useLocale();
+  const { user } = useAuth();
+  const supabase = createBrowserClient();
+  const { removeTrackFromPlaylist, reloadPlaylist } = useBeatsLounge();
+  const [submissions, setSubmissions] = useState<BeatsMySubmission[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const statusLabel: Record<BeatsMySubmission["status"], string> = {
+    pending: t.lounge.statusPending,
+    approved: t.lounge.statusApproved,
+    rejected: t.lounge.statusRejected,
+  };
+
+  const statusClass: Record<BeatsMySubmission["status"], string> = {
+    pending: "border-amber-400/40 bg-amber-500/10 text-amber-200",
+    approved: "border-emerald-400/40 bg-emerald-500/10 text-emerald-200",
+    rejected: "border-red-400/40 bg-red-500/10 text-red-200",
+  };
+
+  useEffect(() => {
+    if (!user || !supabase) {
+      setSubmissions([]);
+      setLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+    setLoading(true);
+
+    void supabase.rpc("list_my_anime_beats_tracks").then(({ data, error: loadError }) => {
+      if (cancelled) return;
+      if (loadError) {
+        setError(t.lounge.deleteTrackFailed);
+        setSubmissions([]);
+      } else {
+        setSubmissions(
+          ((data ?? []) as Array<{
+            id: string;
+            title: string;
+            artist: string;
+            anime_title: string | null;
+            youtube_video_id: string;
+            artwork_url: string | null;
+            status: string;
+            vote_count: number;
+            created_at: string;
+            review_note: string | null;
+          }>).map(mapBeatsMySubmissionRow),
+        );
+        setError(null);
+      }
+      setLoading(false);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user, supabase, refreshKey, t.lounge.deleteTrackFailed]);
+
+  async function handleDelete(track: BeatsMySubmission) {
+    if (!user || !supabase) return;
+    if (!window.confirm(t.lounge.deleteTrackConfirm)) return;
+
+    setDeletingId(track.id);
+    setMessage(null);
+    setError(null);
+
+    const { error: deleteError } = await supabase.rpc("delete_my_anime_beats_track", {
+      p_id: track.id,
+    });
+
+    if (deleteError) {
+      setError(t.lounge.deleteTrackFailed);
+      setDeletingId(null);
+      return;
+    }
+
+    setSubmissions((current) => current.filter((item) => item.id !== track.id));
+    removeTrackFromPlaylist(track.id);
+    await reloadPlaylist();
+    setMessage(t.lounge.deleteTrackSuccess);
+    setDeletingId(null);
+  }
+
+  if (!user) return null;
+
+  return (
+    <section className="mt-4 rounded-2xl border-2 border-zinc-700 bg-zinc-950 p-4">
+      <h4 className="text-sm font-bold uppercase tracking-[0.16em] text-fuchsia-300">
+        {t.lounge.mySubmissionsTitle}
+      </h4>
+      <p className="mt-2 text-xs leading-relaxed text-zinc-400">{t.lounge.mySubmissionsDesc}</p>
+
+      {loading ? (
+        <p className="mt-4 text-sm text-zinc-500">{t.lounge.mySubmissionsLoading}</p>
+      ) : submissions.length === 0 ? (
+        <p className="mt-4 text-sm text-zinc-500">{t.lounge.mySubmissionsEmpty}</p>
+      ) : (
+        <div className="mt-4 space-y-2.5">
+          {submissions.map((track) => (
+            <div
+              key={track.id}
+              className="flex items-center gap-3 rounded-2xl border border-zinc-700 bg-zinc-900 p-3"
+            >
+              <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-xl ring-1 ring-white/10">
+                <Image
+                  src={trackArtwork(track)}
+                  alt=""
+                  fill
+                  className="object-cover"
+                  sizes="80px"
+                  unoptimized
+                />
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <p dir="auto" className="truncate text-sm font-bold text-white">
+                    {track.title}
+                  </p>
+                  <span
+                    className={`rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${statusClass[track.status]}`}
+                  >
+                    {statusLabel[track.status]}
+                  </span>
+                </div>
+                <p dir="auto" className="truncate text-xs text-zinc-300">
+                  {track.artist}
+                </p>
+                {track.reviewNote && track.status === "rejected" ? (
+                  <p className="mt-1 text-[11px] text-red-300">{track.reviewNote}</p>
+                ) : null}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => void handleDelete(track)}
+                disabled={deletingId === track.id}
+                className="shrink-0 rounded-full border border-red-400/40 bg-red-500/10 px-3 py-1.5 text-xs font-bold text-red-200 transition hover:bg-red-500/20 disabled:opacity-50"
+              >
+                {deletingId === track.id ? t.lounge.deletingTrack : t.lounge.deleteTrack}
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {message ? (
+        <p className="mt-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">
+          {message}
+        </p>
+      ) : null}
+      {error ? (
+        <p className="mt-3 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+          {error}
+        </p>
+      ) : null}
+    </section>
+  );
+}
+
+export function BeatsTrackSubmitForm({ onSubmitted }: { onSubmitted?: () => void }) {
   const { t } = useLocale();
   const { user } = useAuth();
   const supabase = createBrowserClient();
@@ -311,6 +478,7 @@ export function BeatsTrackSubmitForm() {
     setYoutubeUrl("");
     clearCoverSelection();
     setMessage(t.lounge.submitSuccess);
+    onSubmitted?.();
   }
 
   if (!user) {

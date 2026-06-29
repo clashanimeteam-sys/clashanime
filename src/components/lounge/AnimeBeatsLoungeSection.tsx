@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AnimeRadioArtwork } from "@/components/radio/AnimeRadioArtwork";
 import { AnimeRadioScene } from "@/components/radio/AnimeRadioScene";
 import { AnimeRadioVisualizer } from "@/components/radio/AnimeRadioVisualizer";
-import { BeatsPlaylistList, BeatsTrackSubmitForm } from "@/components/lounge/BeatsLoungePanels";
+import { BeatsPlaylistList, BeatsMySubmissionsPanel, BeatsTrackSubmitForm } from "@/components/lounge/BeatsLoungePanels";
 import { trackArtwork, type BeatsTrack } from "@/lib/animeBeatsLounge";
 import { useAnimeRadio } from "@/providers/AnimeRadioProvider";
 import { useBeatsLounge } from "@/providers/BeatsLoungeProvider";
@@ -16,6 +16,7 @@ type AnimeBeatsLoungeSectionProps = {
 
 export function AnimeBeatsLoungeSection({ initialPlaylist }: AnimeBeatsLoungeSectionProps) {
   const { t } = useLocale();
+  const [submissionsRefreshKey, setSubmissionsRefreshKey] = useState(0);
   const { pause: pauseRadio } = useAnimeRadio();
   const {
     playlist,
@@ -221,7 +222,8 @@ export function AnimeBeatsLoungeSection({ initialPlaylist }: AnimeBeatsLoungeSec
           </div>
         </section>
 
-        <BeatsTrackSubmitForm />
+        <BeatsTrackSubmitForm onSubmitted={() => setSubmissionsRefreshKey((key) => key + 1)} />
+        <BeatsMySubmissionsPanel refreshKey={submissionsRefreshKey} />
       </div>
     </div>
   );

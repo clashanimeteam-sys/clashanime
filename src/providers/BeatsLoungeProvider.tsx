@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import type { BeatsTrack } from "@/lib/animeBeatsLounge";
+import { mapBeatsPlaylistRow } from "@/lib/animeBeatsLounge";
 import { createBrowserClient } from "@/lib/supabase/client";
 
 export const BEATS_YOUTUBE_HOST_ID = "beats-lounge-youtube-host";
@@ -86,6 +87,8 @@ type BeatsLoungeContextValue = {
   toggleMute: () => void;
   unlockPlayback: () => void;
   refreshVote: (trackId: string, voteCount: number, userHasVoted: boolean) => void;
+  reloadPlaylist: () => Promise<void>;
+  removeTrackFromPlaylist: (trackId: string) => void;
   stopListening: () => void;
 };
 
@@ -528,6 +531,48 @@ export function BeatsLoungeProvider({
     );
   }, []);
 
+  const removeTrackFromPlaylist = useCallback((trackId: string) => {
+    setPlaylistState((prev) => {
+      const next = prev.filter((track) => track.id !== trackId);
+      playlistRef.current = next;
+      if (next.length === 0) {
+        setCurrentIndex(0);
+        currentIndexRef.current = 0;
+        return next;
+      }
+      if (currentIndexRef.current >= next.length) {
+        setCurrentIndex(0);
+        currentIndexRef.current = 0;
+      }
+      return next;
+    });
+  }, []);
+
+  const reloadPlaylist = useCallback(async () => {
+    const supabase = createBrowserClient();
+    if (!supabase) return;
+
+    const { data } = await supabase.rpc("get_anime_beats_playlist");
+    if (!data?.length) {
+      setPlaylist([]);
+      return;
+    }
+
+    setPlaylist(
+      (data as Array<{
+        id: string;
+        title: string;
+        artist: string;
+        anime_title: string | null;
+        youtube_video_id: string;
+        artwork_url: string | null;
+        vote_count: number;
+        sort_order: number;
+        user_has_voted: boolean;
+      }>).map(mapBeatsPlaylistRow),
+    );
+  }, [setPlaylist]);
+
   useEffect(() => {
     if (initialPlaylist.length > 0) {
       setPlaylist(initialPlaylist);
@@ -592,6 +637,8 @@ export function BeatsLoungeProvider({
       toggleMute,
       unlockPlayback,
       refreshVote,
+      reloadPlaylist,
+      removeTrackFromPlaylist,
       stopListening,
     }),
     [
@@ -615,6 +662,8 @@ export function BeatsLoungeProvider({
       toggleMute,
       unlockPlayback,
       refreshVote,
+      reloadPlaylist,
+      removeTrackFromPlaylist,
       stopListening,
     ],
   );

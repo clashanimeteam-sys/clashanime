@@ -471,6 +471,18 @@ export type Dictionary = {
     unlockAudio: string;
     audioSourceHint: string;
     playerLoading: string;
+    mySubmissionsTitle: string;
+    mySubmissionsDesc: string;
+    mySubmissionsEmpty: string;
+    mySubmissionsLoading: string;
+    deleteTrack: string;
+    deletingTrack: string;
+    deleteTrackConfirm: string;
+    deleteTrackSuccess: string;
+    deleteTrackFailed: string;
+    statusPending: string;
+    statusApproved: string;
+    statusRejected: string;
   };
   legal: {
     reportTitle: string;
@@ -2072,6 +2084,18 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unlockAudio: "Tap here to start audio",
       audioSourceHint: "If you don't hear sound, tap the unlock button above.",
       playerLoading: "Loading player…",
+      mySubmissionsTitle: "Your submissions",
+      mySubmissionsDesc: "Tracks you suggested. You can delete them anytime before or after review.",
+      mySubmissionsEmpty: "You have not submitted any tracks yet.",
+      mySubmissionsLoading: "Loading your tracks...",
+      deleteTrack: "Delete",
+      deletingTrack: "Deleting...",
+      deleteTrackConfirm: "Delete this track from your submissions?",
+      deleteTrackSuccess: "Track deleted.",
+      deleteTrackFailed: "Could not delete this track. Try again.",
+      statusPending: "Pending",
+      statusApproved: "Approved",
+      statusRejected: "Rejected",
     },
     legal: {
       reportTitle: "Report Content",
@@ -3747,6 +3771,18 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unlockAudio: "ここをタップして音声を開始",
       audioSourceHint: "音が出ない場合は上のボタンを押してください。",
       playerLoading: "プレイヤーを読み込み中…",
+      mySubmissionsTitle: "あなたの投稿",
+      mySubmissionsDesc: "提案した曲です。審査前後を問わずいつでも削除できます。",
+      mySubmissionsEmpty: "まだ曲を投稿していません。",
+      mySubmissionsLoading: "投稿を読み込み中...",
+      deleteTrack: "削除",
+      deletingTrack: "削除中...",
+      deleteTrackConfirm: "この曲を投稿一覧から削除しますか？",
+      deleteTrackSuccess: "曲を削除しました。",
+      deleteTrackFailed: "削除できませんでした。もう一度お試しください。",
+      statusPending: "審査中",
+      statusApproved: "承認済み",
+      statusRejected: "却下",
     },
     legal: {
       reportTitle: "コンテンツを報告",
@@ -5413,6 +5449,18 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unlockAudio: "اضغط هنا لتشغيل الصوت",
       audioSourceHint: "إذا لم يظهر صوت، اضغط زر تفعيل الصوت أعلاه.",
       playerLoading: "جارٍ تحميل المشغّل…",
+      mySubmissionsTitle: "مقاطعك المرفوعة",
+      mySubmissionsDesc: "المقاطع التي اقترحتها. يمكنك حذفها في أي وقت قبل أو بعد المراجعة.",
+      mySubmissionsEmpty: "لم ترفع أي مقطع بعد.",
+      mySubmissionsLoading: "جاري تحميل مقاطعك...",
+      deleteTrack: "حذف",
+      deletingTrack: "جاري الحذف...",
+      deleteTrackConfirm: "هل تريد حذف هذا المقطع من مقاطعك؟",
+      deleteTrackSuccess: "تم حذف المقطع.",
+      deleteTrackFailed: "تعذّر حذف المقطع. حاول مرة أخرى.",
+      statusPending: "قيد المراجعة",
+      statusApproved: "مقبول",
+      statusRejected: "مرفوض",
     },
     legal: {
       reportTitle: "تقرير المحتوى",
