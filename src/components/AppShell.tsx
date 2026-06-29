@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { AuthTopBar } from "@/components/AuthTopBar";
 import { Footer } from "@/components/Footer";
 import { MobileBottomNav } from "@/components/mobile/MobileChromeLazy";
+import { MobilePullToRefresh } from "@/components/mobile/MobilePullToRefresh";
 import { Sidebar } from "@/components/Sidebar";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { PageTitleProvider } from "@/providers/PageTitleProvider";
@@ -32,6 +33,10 @@ export function AppShell({ children }: AppShellProps) {
       ? "pb-20 sm:pb-24"
       : "";
 
+  const scrollClassName = `flex min-h-0 flex-1 flex-col bg-white dark:bg-black max-md:overflow-x-hidden max-md:max-w-full ${
+    isVideoPage ? "max-md:h-dvh max-md:overflow-hidden md:overflow-y-auto" : "overflow-y-auto"
+  }`;
+
   return (
     <ProfileSectionProvider>
       <PageTitleProvider>
@@ -41,10 +46,9 @@ export function AppShell({ children }: AppShellProps) {
               <Sidebar />
             </div>
           ) : null}
-          <div
-            className={`flex min-h-0 flex-1 flex-col bg-white dark:bg-black max-md:overflow-x-hidden max-md:max-w-full ${
-              isVideoPage ? "max-md:h-dvh max-md:overflow-hidden md:overflow-y-auto" : "overflow-y-auto"
-            }`}
+          <MobilePullToRefresh
+            enabled={showMobileChrome && isMobile}
+            className={scrollClassName}
           >
             {!isVideoPage && !isBlogPage ? (
               <div className="hidden md:block">
@@ -61,7 +65,7 @@ export function AppShell({ children }: AppShellProps) {
                 <Footer />
               </div>
             ) : null}
-          </div>
+          </MobilePullToRefresh>
         </div>
         {showMobileChrome ? <MobileBottomNav /> : null}
       </PageTitleProvider>

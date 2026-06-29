@@ -138,6 +138,9 @@ export type Dictionary = {
     installDismiss: string;
     installIosSteps: string;
     installShare: string;
+    pullToRefresh: string;
+    pullToRefreshRelease: string;
+    refreshing: string;
   };
   legalHub: {
     pageTitle: string;
@@ -1738,6 +1741,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       installIosSteps:
         'Tap {share}, then choose "Add to Home Screen".',
       installShare: "Share",
+      pullToRefresh: "Pull down to refresh",
+      pullToRefreshRelease: "Release to refresh",
+      refreshing: "Refreshing...",
     },
     legalHub: {
       pageTitle: "Information & Legal",
@@ -3439,6 +3445,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       installIosSteps:
         "{share} をタップし、「ホーム画面に追加」を選びます。",
       installShare: "共有",
+      pullToRefresh: "下に引いて更新",
+      pullToRefreshRelease: "離して更新",
+      refreshing: "更新中...",
     },
     legalHub: {
       pageTitle: "情報・規約",
@@ -5122,6 +5131,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
       installDismiss: "ليس الآن",
       installIosSteps: "اضغط {share} ثم اختر «إضافة إلى الشاشة الرئيسية».",
       installShare: "مشاركة",
+      pullToRefresh: "اسحب للأسفل للتحديث",
+      pullToRefreshRelease: "اترك للتحديث",
+      refreshing: "جاري التحديث...",
     },
     legalHub: {
       pageTitle: "معلومات وقوانين",
