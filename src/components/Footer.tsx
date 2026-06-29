@@ -71,9 +71,11 @@ export function Footer() {
   const { t } = useLocale();
 
   return (
-    <footer className="mt-auto border-t border-zinc-200 bg-white text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 md:py-12 lg:py-14">
-        <div className="grid gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-4 lg:gap-8">
+    <footer className="relative mt-auto overflow-hidden border-t border-zinc-200 bg-white text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
+      <div className="site-footer-watermark" aria-hidden />
+      <div className="relative z-[1]">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 md:py-12 lg:py-14">
+          <div className="grid gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-4 lg:gap-8">
           <div className="md:col-span-2 lg:col-span-1">
             <Link href="/" className="inline-flex flex-col gap-3">
               <BrandLogo className="h-12 w-12 md:h-14 md:w-14" />
@@ -147,15 +149,16 @@ export function Footer() {
               ))}
             </nav>
           </div>
+          </div>
         </div>
-      </div>
 
-      <div className="border-t border-zinc-200 dark:border-zinc-800/80">
-        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-5 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 dark:text-zinc-600">
-          <p dir="ltr" className="doodle-logo-ltr">
-            {t.brand.name.toLowerCase()}.com
-          </p>
-          <p>{t.footer.copyright}</p>
+        <div className="border-t border-zinc-200 dark:border-zinc-800/80">
+          <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-5 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 dark:text-zinc-600">
+            <p dir="ltr" className="doodle-logo-ltr">
+              {t.brand.name.toLowerCase()}.com
+            </p>
+            <p>{t.footer.copyright}</p>
+          </div>
         </div>
       </div>
     </footer>
