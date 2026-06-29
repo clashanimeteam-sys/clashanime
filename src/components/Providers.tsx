@@ -5,7 +5,7 @@ import { AnimeRadioMiniBar } from "@/components/AnimeRadioMiniBar";
 import { BeatsLoungeMiniBar } from "@/components/lounge/BeatsLoungeMiniBar";
 import { AnimeRadioController } from "@/components/radio/AnimeRadioController";
 import { AppShell } from "@/components/AppShell";
-import { MobileHeader } from "@/components/MobileHeader";
+import { MobileAppHeader } from "@/components/mobile/MobileAppHeader";
 import { AdblockGuardProvider } from "@/providers/AdblockGuardProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { BeatsLoungeProvider } from "@/providers/BeatsLoungeProvider";
@@ -69,7 +69,7 @@ export function Providers({ children }: ProvidersProps) {
               children
             ) : (
               <>
-                {!videoRoute ? <MobileHeader /> : null}
+                {!videoRoute ? <MobileAppHeader /> : null}
                 <AppShell>{children}</AppShell>
                 <AnimeRadioController />
                 <RadioOrLoungeMiniBar />

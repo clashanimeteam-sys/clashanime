@@ -41,6 +41,7 @@ export type Dictionary = {
     clashWallet: string;
     clashCoins: string;
     mobileBottomNav: string;
+    more: string;
   };
   home: {
     titlePrimary: string;
@@ -131,6 +132,12 @@ export type Dictionary = {
   };
   locale: {
     label: string;
+  };
+  mobileApp: {
+    menuTitle: string;
+    menuSubtitle: string;
+    closeMenu: string;
+    preferences: string;
   };
   footer: {
     tagline: string;
@@ -1613,6 +1620,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashWallet: "ClashCoins wallet",
       clashCoins: "ClashCoins",
       mobileBottomNav: "Main navigation",
+      more: "More",
     },
     home: {
       titlePrimary: "Clash",
@@ -1705,6 +1713,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     locale: {
       label: "Language",
+    },
+    mobileApp: {
+      menuTitle: "Explore Clash Anime",
+      menuSubtitle: "All features in one place",
+      closeMenu: "Close menu",
+      preferences: "Language & theme",
     },
     footer: {
       tagline: "Anime duels ranked by real-time community engagement.",
@@ -3288,6 +3302,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashWallet: "ClashCoinsウォレット",
       clashCoins: "ClashCoins",
       mobileBottomNav: "メインナビ",
+      more: "その他",
     },
     home: {
       titlePrimary: "Clash",
@@ -3380,6 +3395,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     locale: {
       label: "言語",
+    },
+    mobileApp: {
+      menuTitle: "Clash Anime を探索",
+      menuSubtitle: "すべての機能にすぐアクセス",
+      closeMenu: "メニューを閉じる",
+      preferences: "言語とテーマ",
     },
     footer: {
       tagline: "リアルタイムのコミュニティ参加でランク付けされるアニメデュエル。",
@@ -4947,6 +4968,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       clashWallet: "محفظة ClashCoins",
       clashCoins: "ClashCoins",
       mobileBottomNav: "التنقل الرئيسي",
+      more: "المزيد",
     },
     home: {
       titlePrimary: "Clash",
@@ -5039,6 +5061,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
     locale: {
       label: "اللغة",
+    },
+    mobileApp: {
+      menuTitle: "استكشف Clash Anime",
+      menuSubtitle: "كل المزايا في مكان واحد",
+      closeMenu: "إغلاق القائمة",
+      preferences: "اللغة والمظهر",
     },
     footer: {
       tagline: "نزالات أنمي مُرتَّبة حسب تفاعل المجتمع في الوقت الفعلي.",

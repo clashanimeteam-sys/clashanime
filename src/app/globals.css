@@ -1698,3 +1698,22 @@ html[lang="ar-u-nu-latn"] {
     transition: none;
   }
 }
+
+/* Mobile app shell */
+@media (max-width: 767px) {
+  html,
+  body {
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-app-main {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-bottom-nav a,
+  .mobile-bottom-nav button {
+    touch-action: manipulation;
+    min-height: 44px;
+  }
+}

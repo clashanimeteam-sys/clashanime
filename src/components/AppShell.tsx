@@ -26,8 +26,8 @@ export function AppShell({ children }: AppShellProps) {
 
   const mainBottomPadding = showMobileChrome
     ? reserveMiniBarSpace
-      ? "pb-36 sm:pb-40"
-      : "pb-[calc(4.5rem+env(safe-area-inset-bottom,0px))]"
+      ? "pb-40 sm:pb-44"
+      : "pb-[calc(5.25rem+env(safe-area-inset-bottom,0px))]"
     : reserveMiniBarSpace
       ? "pb-20 sm:pb-24"
       : "";
@@ -47,19 +47,25 @@ export function AppShell({ children }: AppShellProps) {
               isVideoPage ? "max-md:h-dvh max-md:overflow-hidden md:overflow-y-auto" : "overflow-y-auto"
             }`}
           >
-            <div className={isVideoPage || isBlogPage ? "hidden md:block" : ""}>
-              {!isBlogPage ? <AuthTopBar /> : null}
-            </div>
+            {!isVideoPage && !isBlogPage ? (
+              <div className="hidden md:block">
+                <AuthTopBar />
+              </div>
+            ) : null}
             <main
-              className={`flex-1 ${isBlogPage ? "bg-zinc-950" : "bg-white dark:bg-black"} ${isVideoPage ? "overflow-hidden max-md:h-dvh max-md:min-h-0" : ""} ${mainBottomPadding}`}
+              className={`mobile-app-main flex-1 ${isBlogPage ? "bg-zinc-950" : "bg-white dark:bg-black"} ${isVideoPage ? "overflow-hidden max-md:h-dvh max-md:min-h-0" : ""} ${mainBottomPadding}`}
             >
               {children}
             </main>
             {!isVideoPage && !isBlogPage ? (
               <>
                 <SiteAdBanner placement="desktop-inline" />
-                <SiteAdBanner placement="mobile-footer" />
-                <Footer />
+                <div className="md:hidden">
+                  <SiteAdBanner placement="mobile-footer" />
+                </div>
+                <div className="hidden md:block">
+                  <Footer />
+                </div>
               </>
             ) : null}
           </div>

@@ -188,6 +188,15 @@ export function buildRootLayoutMetadata(): Metadata {
       default: "Clash Anime",
       template: "%s | Clash Anime",
     },
+    manifest: "/manifest.webmanifest",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "black-translucent",
+      title: "Clash Anime",
+    },
+    other: {
+      "mobile-web-app-capable": "yes",
+    },
     icons: {
       icon: [
         { url: "/favicon.ico", sizes: "any" },
