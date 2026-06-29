@@ -2,31 +2,6 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-#adsbox,
-#clashanime-ad-bait-1,
-#clashanime-ad-bait-2,
-#clashanime-ad-bait-3,
-#google_ads_iframe_check {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0.01;
-  pointer-events: none;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-}
-
-body[data-adblock-locked="true"] #adsbox,
-body[data-adblock-locked="true"] #clashanime-ad-bait-1,
-body[data-adblock-locked="true"] #clashanime-ad-bait-2,
-body[data-adblock-locked="true"] #clashanime-ad-bait-3,
-body[data-adblock-locked="true"] #google_ads_iframe_check {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 0.01 !important;
-}
-
 :root {
   --background: #ffffff;
   --foreground: #000000;

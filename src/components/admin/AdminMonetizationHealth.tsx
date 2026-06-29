@@ -6,7 +6,6 @@ import { useLocale } from "@/providers/LocaleProvider";
 
 type MonetizationHealth = {
   adsense: { configured: boolean; clientIdSet: boolean; slotSet: boolean };
-  adblockGuard: { enabled: boolean; requiresAdsense: boolean; envOverride: string };
 };
 
 export function AdminMonetizationHealth() {
@@ -35,13 +34,6 @@ export function AdminMonetizationHealth() {
       detail: health.adsense.configured
         ? t.admin.platformHealth.configured
         : t.admin.platformHealth.missingEnv,
-    },
-    {
-      label: t.admin.platformHealth.adblockGuard,
-      ok: health.adblockGuard.enabled,
-      detail: health.adblockGuard.enabled
-        ? t.admin.platformHealth.active
-        : t.admin.platformHealth.inactive,
     },
     {
       label: t.admin.platformHealth.databaseSchema,

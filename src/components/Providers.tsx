@@ -6,7 +6,6 @@ import { BeatsLoungeMiniBar } from "@/components/lounge/BeatsLoungeMiniBar";
 import { AnimeRadioController } from "@/components/radio/AnimeRadioController";
 import { AppShell } from "@/components/AppShell";
 import { MobileAppHeader } from "@/components/mobile/MobileAppHeader";
-import { AdblockGuardProvider } from "@/providers/AdblockGuardProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { BeatsLoungeProvider } from "@/providers/BeatsLoungeProvider";
 import { PointsWagerNotificationProvider } from "@/providers/PointsWagerNotificationProvider";
@@ -58,30 +57,28 @@ export function Providers({ children }: ProvidersProps) {
       <LocaleProvider>
         <MaintenanceGate>
           <NavigationLoadingProvider>
-          <AuthProvider>
-            <AdblockGuardProvider>
-            <PointsWagerNotificationProvider>
-            <AnimeRadioProvider>
-            <BeatsLoungeProvider>
-            <StickersProvider>
-              <VideoOverlayProvider>
-            {authRoute || adminRoute ? (
-              children
-            ) : (
-              <>
-                {!videoRoute ? <MobileAppHeader /> : null}
-                <AppShell>{children}</AppShell>
-                <AnimeRadioController />
-                <RadioOrLoungeMiniBar />
-              </>
-            )}
-              </VideoOverlayProvider>
-            </StickersProvider>
-            </BeatsLoungeProvider>
-            </AnimeRadioProvider>
-            </PointsWagerNotificationProvider>
-            </AdblockGuardProvider>
-          </AuthProvider>
+            <AuthProvider>
+              <PointsWagerNotificationProvider>
+                <AnimeRadioProvider>
+                  <BeatsLoungeProvider>
+                    <StickersProvider>
+                      <VideoOverlayProvider>
+                        {authRoute || adminRoute ? (
+                          children
+                        ) : (
+                          <>
+                            {!videoRoute ? <MobileAppHeader /> : null}
+                            <AppShell>{children}</AppShell>
+                            <AnimeRadioController />
+                            <RadioOrLoungeMiniBar />
+                          </>
+                        )}
+                      </VideoOverlayProvider>
+                    </StickersProvider>
+                  </BeatsLoungeProvider>
+                </AnimeRadioProvider>
+              </PointsWagerNotificationProvider>
+            </AuthProvider>
           </NavigationLoadingProvider>
         </MaintenanceGate>
       </LocaleProvider>

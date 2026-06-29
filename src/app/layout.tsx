@@ -1,6 +1,5 @@
 import { Cairo, Geist, Geist_Mono, Orbitron, Plus_Jakarta_Sans } from "next/font/google";
 import { Providers } from "@/components/Providers";
-import { AdblockBait } from "@/components/AdblockBait";
 import { ClientErrorBoundary } from "@/components/ClientErrorBoundary";
 import { DotLottieScript } from "@/components/DotLottieScript";
 import { buildRootLayoutMetadata } from "@/lib/seoMetadata";
@@ -60,7 +59,6 @@ export default function RootLayout({
       className={`notranslate ${geistSans.variable} ${geistMono.variable} ${orbitron.variable} ${plusJakarta.variable} ${cairo.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-white text-black dark:bg-black dark:text-white">
-        <AdblockBait />
         <DotLottieScript />
         <ClientErrorBoundary>
           <Providers>{children}</Providers>

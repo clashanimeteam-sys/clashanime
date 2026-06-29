@@ -36,7 +36,7 @@ export function AdSenseUnit({
       (window.adsbygoogle = window.adsbygoogle || []).push({});
       pushedRef.current = true;
     } catch {
-      // Ad blocker may block push — anti-adblock guard handles that separately.
+      // Ad blocker may block push.
     }
   }, [clientId, mounted, slotId]);
 

@@ -15,15 +15,6 @@ export type Dictionary = {
     unexpectedErrorDesc: string;
     tryAgain: string;
   };
-  adblock: {
-    welcome: string;
-    title: string;
-    body: string;
-    allowAds: string;
-    checking: string;
-    howTo: string;
-    howToSteps: string;
-  };
   nav: {
     clash: string;
     videos: string;
@@ -1515,13 +1506,11 @@ export type Dictionary = {
       title: string;
       subtitle: string;
       adsense: string;
-      adblockGuard: string;
       databaseSchema: string;
       configured: string;
       missingEnv: string;
       active: string;
       inactive: string;
-      offUntilAdsense: string;
       checking: string;
       healthy: string;
       needsMigration: string;
@@ -1593,17 +1582,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unexpectedErrorDesc: "An unexpected error occurred. Please try again or return to the home page.",
       tryAgain: "Try again",
     },
-    adblock: {
-      welcome: "Welcome to ClashAnime",
-      title: "Please allow ads on our site",
-      body: "Looks like you're using an ad blocker. We rely on advertising to help fund ClashAnime and keep the platform free for creators.",
-      allowAds: "Allow ads",
-      checking: "Checking…",
-      howTo: "How to disable ad blocker",
-      howToSteps:
-        "1. Click the ad blocker icon in your browser toolbar.\n2. Pause or disable it for clashanime.com.\n3. Refresh this page or tap Allow ads.",
-    },
-    nav: {
+      nav: {
       clash: "Clash",
       videos: "Videos",
       community: "Community",
@@ -3197,15 +3176,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       },
       platformHealth: {
         title: "Platform health",
-        subtitle: "AdSense, anti-adblock guard, and database migrations.",
+        subtitle: "AdSense configuration and database migrations.",
         adsense: "Google AdSense",
-        adblockGuard: "Anti-adblock guard",
         databaseSchema: "Database schema",
         configured: "Client ID and slot are set in Vercel.",
         missingEnv: "Set NEXT_PUBLIC_ADSENSE_CLIENT_ID and NEXT_PUBLIC_ADSENSE_SLOT.",
         active: "Active for visitors in production.",
         inactive: "Disabled via env override.",
-        offUntilAdsense: "Off when NEXT_PUBLIC_ADBLOCK_GUARD=false.",
         checking: "Checking…",
         healthy: "Latest migrations are applied.",
         needsMigration: "Run pending SQL from /api/health/schema.",
@@ -3275,17 +3252,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unexpectedErrorDesc: "予期しないエラーが発生しました。もう一度お試しいただくか、ホームに戻ってください。",
       tryAgain: "再試行",
     },
-    adblock: {
-      welcome: "ClashAnime へようこそ",
-      title: "サイトの広告表示を許可してください",
-      body: "広告ブロッカーを使用しているようです。ClashAnime の運営と無料提供のために広告が必要です。",
-      allowAds: "広告を許可",
-      checking: "確認中…",
-      howTo: "広告ブロッカーの無効化方法",
-      howToSteps:
-        "1. ブラウザのツールバーで広告ブロッカーアイコンをクリック。\n2. clashanime.com で一時停止または無効化。\n3. ページを更新するか「広告を許可」をタップ。",
-    },
-    nav: {
+      nav: {
       clash: "クラッシュ",
       videos: "動画",
       community: "コミュニティ",
@@ -4863,15 +4830,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       },
       platformHealth: {
         title: "プラットフォーム状態",
-        subtitle: "AdSense、広告ブロック検知、DBマイグレーション。",
+        subtitle: "AdSense設定とDBマイグレーション。",
         adsense: "Google AdSense",
-        adblockGuard: "広告ブロック検知",
         databaseSchema: "データベーススキーマ",
         configured: "Vercel にクライアントIDとスロットが設定済み。",
         missingEnv: "NEXT_PUBLIC_ADSENSE_CLIENT_ID と SLOT を設定してください。",
         active: "本番環境で訪問者向けに有効。",
         inactive: "環境変数で無効化されています。",
-        offUntilAdsense: "NEXT_PUBLIC_ADBLOCK_GUARD=false でオフ。",
         checking: "確認中…",
         healthy: "最新マイグレーション適用済み。",
         needsMigration: "/api/health/schema の SQL を実行してください。",
@@ -4941,17 +4906,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       unexpectedErrorDesc: "حدث خطأ غير متوقع. حاول مرة أخرى أو عد إلى الصفحة الرئيسية.",
       tryAgain: "حاول مرة أخرى",
     },
-    adblock: {
-      welcome: "مرحباً بك في ClashAnime",
-      title: "يرجى السماح بالإعلانات على موقعنا",
-      body: "يبدو أنك تستخدم مانع إعلانات. نعتمد على الإعلانات لدعم ClashAnime وإبقاء المنصة مجانية للمبدعين.",
-      allowAds: "السماح بالإعلانات",
-      checking: "جاري التحقق…",
-      howTo: "كيفية إيقاف مانع الإعلانات",
-      howToSteps:
-        "1. اضغط على أيقونة مانع الإعلانات في شريط المتصفح.\n2. أوقفه مؤقتاً أو عطّله لموقع clashanime.com.\n3. حدّث الصفحة أو اضغط «السماح بالإعلانات».",
-    },
-    nav: {
+      nav: {
       clash: "النزالات",
       videos: "الفيديوهات",
       community: "المجتمع",
@@ -6533,15 +6488,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       },
       platformHealth: {
         title: "صحة المنصة",
-        subtitle: "AdSense، حارس مانع الإعلانات، وترحيلات قاعدة البيانات.",
+        subtitle: "إعداد AdSense وترحيلات قاعدة البيانات.",
         adsense: "Google AdSense",
-        adblockGuard: "حارس مانع الإعلانات",
         databaseSchema: "مخطط قاعدة البيانات",
         configured: "معرّف العميل والفتحة مضبوطان في Vercel.",
         missingEnv: "اضبط NEXT_PUBLIC_ADSENSE_CLIENT_ID و NEXT_PUBLIC_ADSENSE_SLOT.",
         active: "مفعّل للزوار في الإنتاج.",
         inactive: "معطّل عبر متغير البيئة.",
-        offUntilAdsense: "متوقف عند NEXT_PUBLIC_ADBLOCK_GUARD=false.",
         checking: "جارٍ التحقق…",
         healthy: "آخر الترحيلات مطبّقة.",
         needsMigration: "نفّذ SQL من /api/health/schema.",
