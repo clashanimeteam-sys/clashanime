@@ -5,6 +5,7 @@ import { AuthTopBar } from "@/components/AuthTopBar";
 import { Footer } from "@/components/Footer";
 import { MobileBottomNav } from "@/components/mobile/MobileChromeLazy";
 import { Sidebar } from "@/components/Sidebar";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { PageTitleProvider } from "@/providers/PageTitleProvider";
 import { ProfileSectionProvider } from "@/providers/ProfileSectionProvider";
 import { useAnimeRadio } from "@/providers/AnimeRadioProvider";
@@ -15,6 +16,7 @@ type AppShellProps = {
 
 export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
+  const isMobile = useIsMobile();
   const isVideoPage = pathname.startsWith("/video/");
   const isBlogPage = pathname.startsWith("/blog");
   const showMobileChrome = !isVideoPage && !isBlogPage;
@@ -34,7 +36,7 @@ export function AppShell({ children }: AppShellProps) {
     <ProfileSectionProvider>
       <PageTitleProvider>
         <div className="flex h-dvh overflow-hidden bg-white dark:bg-black">
-          {!isBlogPage ? (
+          {!isBlogPage && !isMobile ? (
             <div className="hidden h-dvh shrink-0 md:flex">
               <Sidebar />
             </div>

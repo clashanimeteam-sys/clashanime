@@ -6,7 +6,7 @@ import { NavIcon } from "@/components/nav/NavIcon";
 import { ElementalSiteTitle } from "@/components/ElementalSiteTitle";
 import { BrandLogo } from "@/components/BrandLogo";
 import { LocaleFlags } from "@/components/LocaleFlags";
-import { ThemeToggle } from "@/components/ThemeToggleLazy";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { isStaff } from "@/lib/admin";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";

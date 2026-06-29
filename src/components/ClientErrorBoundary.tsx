@@ -49,6 +49,11 @@ export class ClientErrorBoundary extends Component<
             If Google Translate or Edge translation is enabled for this site, turn it off and use the
             AR language button inside ClashAnime instead.
           </p>
+          {this.state.error?.message ? (
+            <p className="mt-4 max-w-md break-all rounded-lg bg-zinc-100 px-3 py-2 font-mono text-[11px] text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+              {this.state.error.message}
+            </p>
+          ) : null}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <button
               type="button"

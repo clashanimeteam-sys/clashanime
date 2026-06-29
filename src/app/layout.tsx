@@ -4,7 +4,6 @@ import { AppBootSkeleton } from "@/components/AppBootSkeleton";
 import { BlockTranslateScript } from "@/components/BlockTranslateScript";
 import { ClientErrorBoundary } from "@/components/ClientErrorBoundary";
 import { ClientOnly } from "@/components/ClientOnly";
-import { DotLottieScript } from "@/components/DotLottieScript";
 import { buildRootLayoutMetadata } from "@/lib/seoMetadata";
 import "./globals.css";
 
@@ -69,7 +68,6 @@ export default function RootLayout({
         <BlockTranslateScript />
         <ClientErrorBoundary>
           <ClientOnly fallback={<AppBootSkeleton />}>
-            <DotLottieScript />
             <Providers>{children}</Providers>
           </ClientOnly>
         </ClientErrorBoundary>

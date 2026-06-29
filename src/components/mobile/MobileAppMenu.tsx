@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { LocaleFlags } from "@/components/LocaleFlags";
 import { NavIcon } from "@/components/nav/NavIcon";
-import { ThemeToggle } from "@/components/ThemeToggleLazy";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Locale } from "@/lib/types";

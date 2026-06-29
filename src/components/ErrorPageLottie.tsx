@@ -1,14 +1,12 @@
 "use client";
 
-import { DotLottiePlayer } from "@/components/DotLottiePlayer";
-import { ERROR_LOTTIE_SIZE, ERROR_LOTTIE_SRC } from "@/lib/dotlottie";
-
 export function ErrorPageLottie() {
   return (
-    <DotLottiePlayer
-      src={ERROR_LOTTIE_SRC}
-      size={ERROR_LOTTIE_SIZE}
-      className="flex items-center justify-center"
-    />
+    <div
+      className="flex h-40 w-40 items-center justify-center rounded-full bg-zinc-100 text-5xl dark:bg-zinc-900"
+      aria-hidden
+    >
+      🐱
+    </div>
   );
 }
