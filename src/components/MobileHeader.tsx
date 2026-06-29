@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeToggle } from "@/components/ThemeToggleLazy";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Locale } from "@/lib/types";

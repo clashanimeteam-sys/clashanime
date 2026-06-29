@@ -196,6 +196,7 @@ export function buildRootLayoutMetadata(): Metadata {
     },
     other: {
       "mobile-web-app-capable": "yes",
+      google: "notranslate",
     },
     icons: {
       icon: [

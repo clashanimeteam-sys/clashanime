@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { BrandLogo } from "@/components/BrandLogo";
 import { LocaleFlags } from "@/components/LocaleFlags";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeToggle } from "@/components/ThemeToggleLazy";
 import { AdminNavBadge } from "@/components/admin/AdminNavBadge";
 import { PageBackLink } from "@/components/PageBackLink";
 import { isAdmin, isStaff } from "@/lib/admin";

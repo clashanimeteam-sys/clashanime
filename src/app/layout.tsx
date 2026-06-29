@@ -54,8 +54,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      translate="no"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable} ${plusJakarta.variable} ${cairo.variable} h-full antialiased`}
+      className={`notranslate ${geistSans.variable} ${geistMono.variable} ${orbitron.variable} ${plusJakarta.variable} ${cairo.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-white text-black dark:bg-black dark:text-white">
         <AdblockBait />

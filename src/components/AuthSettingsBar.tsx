@@ -1,7 +1,7 @@
 "use client";
 
 import { LocaleFlags } from "@/components/LocaleFlags";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeToggle } from "@/components/ThemeToggleLazy";
 import { useLocale } from "@/providers/LocaleProvider";
 
 export function AuthSettingsBar() {
