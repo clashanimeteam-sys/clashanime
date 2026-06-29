@@ -179,11 +179,27 @@ export function watchAdblockBaits(onBlocked: () => void) {
     return () => {};
   }
 
-  const observer = new MutationObserver(() => {
-    if (detectStaticBaits() || detectDynamicBait()) {
-      onBlocked();
-    }
-  });
+  let debounceTimer: number | null = null;
+  let checking = false;
+
+  const scheduleCheck = () => {
+    if (debounceTimer !== null) return;
+    debounceTimer = window.setTimeout(() => {
+      debounceTimer = null;
+      if (checking) return;
+      checking = true;
+      try {
+        // Static baits only — detectDynamicBait() mutates the DOM and would re-fire this observer forever.
+        if (detectStaticBaits()) {
+          onBlocked();
+        }
+      } finally {
+        checking = false;
+      }
+    }, 300);
+  };
+
+  const observer = new MutationObserver(scheduleCheck);
 
   observer.observe(document.documentElement, {
     attributes: true,
@@ -192,5 +208,8 @@ export function watchAdblockBaits(onBlocked: () => void) {
     attributeFilter: ["style", "class", "hidden"],
   });
 
-  return () => observer.disconnect();
+  return () => {
+    if (debounceTimer !== null) window.clearTimeout(debounceTimer);
+    observer.disconnect();
+  };
 }
