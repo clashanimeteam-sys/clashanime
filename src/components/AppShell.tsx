@@ -56,11 +56,7 @@ export function AppShell({ children }: AppShellProps) {
             >
               {children}
             </main>
-            {!isVideoPage && !isBlogPage ? (
-              <div className="hidden md:block">
-                <Footer />
-              </div>
-            ) : null}
+            {!isVideoPage && !isBlogPage ? <Footer /> : null}
           </div>
         </div>
         {showMobileChrome ? <MobileBottomNav /> : null}

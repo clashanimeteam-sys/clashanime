@@ -29,7 +29,7 @@ export function LegalDocument({ title, updated, intro, sections }: LegalDocument
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
-      <PageBackLink href="/" label={t.common.backToHome} className="mb-4" />
+      <PageBackLink href="/legal" label={t.legalHub.pageTitle} className="mb-4" />
       <p className="text-xs text-zinc-500">{updated}</p>
 
       {intro ? (

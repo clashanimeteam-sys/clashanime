@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
+import { communicationLinks, informationLinks } from "@/lib/siteLinks";
 import { useLocale } from "@/providers/LocaleProvider";
 
 const discoverLinks = [
@@ -11,18 +12,6 @@ const discoverLinks = [
   { key: "music" as const, href: "/music" },
   { key: "exclusives" as const, href: "/exclusives" },
   { key: "animeTracker" as const, href: "/tracker" },
-] as const;
-
-const informationLinks = [
-  { key: "about" as const, href: "/about" },
-  { key: "privacy" as const, href: "/privacy" },
-  { key: "cookies" as const, href: "/cookies" },
-  { key: "disclaimer" as const, href: "/disclaimer" },
-  { key: "eula" as const, href: "/eula" },
-  { key: "terms" as const, href: "/terms" },
-  { key: "communityGuidelines" as const, href: "/community-guidelines" },
-  { key: "dmca" as const, href: "/dmca" },
-  { key: "reportContent" as const, href: "/report" },
 ] as const;
 
 function FooterColumnHeading({ children }: { children: React.ReactNode }) {
@@ -105,8 +94,13 @@ export function Footer() {
           </div>
 
           <div>
-            <FooterColumnHeading>{t.footer.informationHeading}</FooterColumnHeading>
+            <FooterColumnHeading>
+              <Link href="/legal" className="transition-colors hover:text-zinc-600 dark:hover:text-zinc-300">
+                {t.footer.informationHeading}
+              </Link>
+            </FooterColumnHeading>
             <nav className="flex flex-col gap-2.5" aria-label={t.footer.informationHeading}>
+              <FooterLink href="/legal">{t.legalHub.viewAll}</FooterLink>
               {informationLinks.map((item) => (
                 <FooterLink key={item.key} href={item.href}>
                   {t.footer[item.key]}
@@ -116,29 +110,22 @@ export function Footer() {
           </div>
 
           <div>
-            <FooterColumnHeading>{t.footer.socialHeading}</FooterColumnHeading>
+            <FooterColumnHeading>
+              <Link href="/legal#legal-hub-communication" className="transition-colors hover:text-zinc-600 dark:hover:text-zinc-300">
+                {t.footer.socialHeading}
+              </Link>
+            </FooterColumnHeading>
             <nav className="flex flex-col gap-2.5" aria-label={t.footer.socialHeading}>
-              <Link
-                href="/blog"
-                className="flex items-center gap-2.5 text-sm text-zinc-600 transition-colors hover:text-black dark:text-zinc-400 dark:hover:text-white"
-              >
-                <SocialIcon type="guide" />
-                {t.footer.arenaGuide}
-              </Link>
-              <Link
-                href="/contact"
-                className="flex items-center gap-2.5 text-sm text-zinc-600 transition-colors hover:text-black dark:text-zinc-400 dark:hover:text-white"
-              >
-                <SocialIcon type="mail" />
-                {t.footer.contact}
-              </Link>
-              <Link
-                href="/report"
-                className="flex items-center gap-2.5 text-sm text-zinc-600 transition-colors hover:text-black dark:text-zinc-400 dark:hover:text-white"
-              >
-                <SocialIcon type="report" />
-                {t.footer.reportContent}
-              </Link>
+              {communicationLinks.map((item) => (
+                <Link
+                  key={`${item.href}-${item.key}`}
+                  href={item.href}
+                  className="flex items-center gap-2.5 text-sm text-zinc-600 transition-colors hover:text-black dark:text-zinc-400 dark:hover:text-white"
+                >
+                  <SocialIcon type={item.icon} />
+                  {t.footer[item.key]}
+                </Link>
+              ))}
             </nav>
           </div>
         </div>

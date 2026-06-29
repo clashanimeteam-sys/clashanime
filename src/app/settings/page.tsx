@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { PageBackLink } from "@/components/PageBackLink";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
@@ -14,6 +15,12 @@ export default function SettingsPage() {
       <p className="text-sm text-zinc-600 dark:text-zinc-400">
         Theme and language controls are available in the sidebar.
       </p>
+      <Link
+        href="/legal"
+        className="mt-6 inline-flex rounded-xl border border-zinc-200 px-4 py-3 text-sm font-semibold text-zinc-800 transition-colors hover:border-accent hover:text-accent dark:border-zinc-800 dark:text-zinc-100"
+      >
+        {t.legalHub.pageTitle}
+      </Link>
     </div>
   );
 }

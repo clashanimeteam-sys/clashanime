@@ -130,6 +130,14 @@ export type Dictionary = {
     closeMenu: string;
     preferences: string;
   };
+  legalHub: {
+    pageTitle: string;
+    badge: string;
+    subtitle: string;
+    rulesIntro: string;
+    contactIntro: string;
+    viewAll: string;
+  };
   footer: {
     tagline: string;
     discoverHeading: string;
@@ -1698,6 +1706,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       menuSubtitle: "All features in one place",
       closeMenu: "Close menu",
       preferences: "Language & theme",
+    },
+    legalHub: {
+      pageTitle: "Information & Legal",
+      badge: "Policies",
+      subtitle: "Read our rules, privacy policies, and community guidelines in one place.",
+      rulesIntro: "Terms, privacy, cookies, DMCA, and platform rules.",
+      contactIntro: "Reach the team, report content, or browse the arena guide.",
+      viewAll: "View all policies",
     },
     footer: {
       tagline: "Anime duels ranked by real-time community engagement.",
@@ -3369,6 +3385,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       closeMenu: "メニューを閉じる",
       preferences: "言語とテーマ",
     },
+    legalHub: {
+      pageTitle: "情報・規約",
+      badge: "ポリシー",
+      subtitle: "利用規約、プライバシー、コミュニティガイドラインをまとめて確認できます。",
+      rulesIntro: "利用規約、プライバシー、クッキー、DMCA、プラットフォームルール。",
+      contactIntro: "お問い合わせ、コンテンツ報告、アリーナガイド。",
+      viewAll: "すべてのポリシーを見る",
+    },
     footer: {
       tagline: "リアルタイムのコミュニティ参加でランク付けされるアニメデュエル。",
       discoverHeading: "探索",
@@ -5022,6 +5046,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       menuSubtitle: "كل المزايا في مكان واحد",
       closeMenu: "إغلاق القائمة",
       preferences: "اللغة والمظهر",
+    },
+    legalHub: {
+      pageTitle: "معلومات وقوانين",
+      badge: "السياسات",
+      subtitle: "اقرأ القوانين وسياسات الخصوصية وإرشادات المجتمع في مكان واحد.",
+      rulesIntro: "شروط الاستخدام، الخصوصية، ملفات تعريف الارتباط، DMCA، وقواعد المنصة.",
+      contactIntro: "تواصل مع الفريق، أبلغ عن محتوى، أو تصفّح دليل الأبطال.",
+      viewAll: "عرض كل السياسات",
     },
     footer: {
       tagline: "نزالات أنمي مُرتَّبة حسب تفاعل المجتمع في الوقت الفعلي.",

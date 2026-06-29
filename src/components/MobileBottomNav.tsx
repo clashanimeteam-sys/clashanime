@@ -36,7 +36,11 @@ export function MobileBottomNav() {
     pathname.startsWith("/music") ||
     pathname.startsWith("/exclusives") ||
     pathname.startsWith("/profile") ||
-    pathname === "/settings";
+    pathname === "/settings" ||
+    pathname === "/legal" ||
+    pathname.startsWith("/terms") ||
+    pathname.startsWith("/privacy") ||
+    pathname.startsWith("/contact");
 
   return (
     <>

@@ -152,21 +152,30 @@ export function MobileAppMenu({ open, onClose }: MobileAppMenuProps) {
             </div>
           </div>
 
-          <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+          <div className="mt-3 grid grid-cols-1 gap-2 text-xs">
             <Link
-              href="/about"
+              href="/legal"
               onClick={onClose}
-              className="rounded-xl border border-zinc-200 px-3 py-2.5 font-medium text-zinc-600 dark:border-zinc-800 dark:text-zinc-300"
+              className="rounded-xl border border-accent/30 bg-accent/5 px-3 py-3 font-semibold text-accent dark:border-accent/40 dark:bg-accent/10"
             >
-              {t.footer.about}
+              {t.legalHub.pageTitle}
             </Link>
-            <Link
-              href="/contact"
-              onClick={onClose}
-              className="rounded-xl border border-zinc-200 px-3 py-2.5 font-medium text-zinc-600 dark:border-zinc-800 dark:text-zinc-300"
-            >
-              {t.footer.contact}
-            </Link>
+            <div className="grid grid-cols-2 gap-2">
+              <Link
+                href="/about"
+                onClick={onClose}
+                className="rounded-xl border border-zinc-200 px-3 py-2.5 font-medium text-zinc-600 dark:border-zinc-800 dark:text-zinc-300"
+              >
+                {t.footer.about}
+              </Link>
+              <Link
+                href="/contact"
+                onClick={onClose}
+                className="rounded-xl border border-zinc-200 px-3 py-2.5 font-medium text-zinc-600 dark:border-zinc-800 dark:text-zinc-300"
+              >
+                {t.footer.contact}
+              </Link>
+            </div>
           </div>
         </div>
       </div>
