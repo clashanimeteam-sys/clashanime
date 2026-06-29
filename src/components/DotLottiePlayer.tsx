@@ -30,17 +30,21 @@ export function DotLottiePlayer({
     const container = containerRef.current;
     if (!scriptReady || !container) return;
 
-    const player = document.createElement("dotlottie-wc");
-    player.setAttribute("src", src);
-    player.setAttribute("autoplay", "");
-    player.setAttribute("loop", "");
-    player.style.width = size;
-    player.style.height = size;
-    container.replaceChildren(player);
+    try {
+      const player = document.createElement("dotlottie-wc");
+      player.setAttribute("src", src);
+      player.setAttribute("autoplay", "");
+      player.setAttribute("loop", "");
+      player.style.width = size;
+      player.style.height = size;
+      container.replaceChildren(player);
 
-    return () => {
-      container.replaceChildren();
-    };
+      return () => {
+        container.replaceChildren();
+      };
+    } catch {
+      // Custom element may be unavailable if the script failed to load.
+    }
   }, [scriptReady, size, src]);
 
   return (

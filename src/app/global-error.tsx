@@ -1,7 +1,5 @@
 "use client";
 
-import { ErrorPageLottie } from "@/components/ErrorPageLottie";
-
 type GlobalErrorProps = {
   error: Error & { digest?: string };
   reset: () => void;
@@ -12,7 +10,12 @@ export default function GlobalError({ reset }: GlobalErrorProps) {
     <html lang="en">
       <body className="min-h-screen bg-white text-black antialiased dark:bg-black dark:text-white">
         <div className="flex min-h-screen flex-col items-center justify-center px-4 py-12 text-center">
-          <ErrorPageLottie />
+          <div
+            className="flex h-40 w-40 items-center justify-center rounded-full bg-zinc-100 text-5xl dark:bg-zinc-900"
+            aria-hidden
+          >
+            🐱
+          </div>
           <p className="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-[#e85d4c]">
             Error
           </p>

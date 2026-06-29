@@ -165,52 +165,45 @@ export function ThemeToggle() {
   }, [isDark, themeReady, syncStaticFrame]);
 
   const handleToggle = useCallback(() => {
+    if (!mounted || !themeReady) return;
     const nextDark = !isDark;
     isAnimatingRef.current = true;
     setTheme(nextDark ? "dark" : "light");
     playThemeTransition(lottieRef.current, nextDark, () => {
       isAnimatingRef.current = false;
     });
-  }, [isDark, setTheme]);
-
-  if (!mounted) {
-    return (
-      <div
-        aria-hidden
-        className="h-12 w-12 shrink-0 rounded-full bg-zinc-200 dark:bg-zinc-800"
-      />
-    );
-  }
+  }, [isDark, mounted, setTheme, themeReady]);
 
   const size = THEME_TOGGLE_LOTTIE_SIZE_PX;
+  const showLottie = mounted && dotlottieReady;
 
   return (
-    <>
-      <button
-        type="button"
-        role="switch"
-        aria-checked={isDark}
-        aria-label={isDark ? t.theme.light : t.theme.dark}
-        title={isDark ? t.theme.light : t.theme.dark}
-        onClick={handleToggle}
-        className="relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-transparent p-0 transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        style={{ width: size, height: size }}
-      >
-        {dotlottieReady ? (
-          <dotlottie-wc
-            ref={setLottieRef}
-            src={THEME_TOGGLE_LOTTIE_SRC}
-            loop={false}
-            style={{ width: size, height: size }}
-          />
-        ) : (
-          <span
-            aria-hidden
-            className="inline-block rounded-full bg-zinc-200 dark:bg-zinc-700"
-            style={{ width: size, height: size }}
-          />
-        )}
-      </button>
-    </>
+    <button
+      type="button"
+      role="switch"
+      aria-checked={themeReady ? isDark : false}
+      aria-label={isDark ? t.theme.light : t.theme.dark}
+      title={isDark ? t.theme.light : t.theme.dark}
+      onClick={handleToggle}
+      disabled={!mounted || !themeReady}
+      className="relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-transparent p-0 transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-80"
+      style={{ width: size, height: size }}
+      suppressHydrationWarning
+    >
+      {showLottie ? (
+        <dotlottie-wc
+          ref={setLottieRef}
+          src={THEME_TOGGLE_LOTTIE_SRC}
+          loop={false}
+          style={{ width: size, height: size }}
+        />
+      ) : (
+        <span
+          aria-hidden
+          className="inline-block rounded-full bg-zinc-200 dark:bg-zinc-700"
+          style={{ width: size, height: size }}
+        />
+      )}
+    </button>
   );
 }
