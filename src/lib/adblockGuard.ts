@@ -1,5 +1,3 @@
-import { isAdSenseEnabled } from "@/lib/adsense";
-
 const AD_SCRIPT_URL = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
 
 export const BAIT_IDS = [
@@ -9,14 +7,11 @@ export const BAIT_IDS = [
   "google_ads_iframe_check",
 ] as const;
 
-const MIN_STATIC_BAITS_BLOCKED = 2;
 const BAIT_STYLE =
   "position:absolute!important;width:1px!important;height:1px!important;opacity:0.01!important;top:0!important;left:0!important;pointer-events:none!important;overflow:hidden!important;";
 
-/** Guard runs only when AdSense is configured — no ads means no blocker prompt. */
 export function isAdblockGuardEnabled() {
   if (process.env.NEXT_PUBLIC_ADBLOCK_GUARD === "false") return false;
-  if (!isAdSenseEnabled()) return false;
   if (process.env.NEXT_PUBLIC_ADBLOCK_GUARD === "true") return true;
   return process.env.NODE_ENV === "production";
 }
@@ -43,10 +38,10 @@ function countStaticBaitsBlocked() {
 }
 
 function detectStaticBaitsBlocked() {
-  return countStaticBaitsBlocked() >= MIN_STATIC_BAITS_BLOCKED;
+  return countStaticBaitsBlocked() >= 1;
 }
 
-/** Compare ad-class bait vs neutral control — avoids mobile false positives from off-screen layout. */
+/** Compare ad-class bait vs neutral control — avoids mobile false positives from layout. */
 function detectDifferentialBait() {
   const control = document.createElement("div");
   control.style.cssText = BAIT_STYLE;
@@ -98,22 +93,30 @@ function detectAdScriptBlocked() {
 
     script.onload = () => finish(false);
     script.onerror = () => finish(true);
-    // Timeout is inconclusive on slow mobile networks — do not treat as blocked.
+    // Timeout is inconclusive on slow networks — not a blocker signal.
     window.setTimeout(() => finish(false), 4500);
     document.head.appendChild(script);
   });
 }
 
-/** Returns true only when an ad blocker is very likely active. */
+function waitForExtensionCss() {
+  return new Promise<void>((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+  });
+}
+
+/** Returns true when an ad blocker is likely active. */
 export async function detectAdblock() {
   if (typeof window === "undefined") return false;
+
+  await waitForExtensionCss();
 
   if (detectDifferentialBait()) return true;
   if (detectStaticBaitsBlocked()) return true;
   if (detectAdsByGoogleQueue()) return true;
 
   const scriptBlocked = await detectAdScriptBlocked();
-  if (scriptBlocked && countStaticBaitsBlocked() >= 1) return true;
+  if (scriptBlocked) return true;
 
   return false;
 }
@@ -137,7 +140,7 @@ export function watchAdblockBaits(onBlocked: () => void) {
       if (checking) return;
       checking = true;
       try {
-        if (detectStaticBaitsBlocked()) {
+        if (detectStaticBaitsBlocked() || detectDifferentialBait()) {
           onBlocked();
         }
       } finally {

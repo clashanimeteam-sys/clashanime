@@ -38,12 +38,10 @@ export function AdminMonetizationHealth() {
     },
     {
       label: t.admin.platformHealth.adblockGuard,
-      ok: !health.adblockGuard.enabled || health.adsense.configured,
+      ok: health.adblockGuard.enabled,
       detail: health.adblockGuard.enabled
         ? t.admin.platformHealth.active
-        : health.adsense.configured
-          ? t.admin.platformHealth.inactive
-          : t.admin.platformHealth.offUntilAdsense,
+        : t.admin.platformHealth.inactive,
     },
     {
       label: t.admin.platformHealth.databaseSchema,
