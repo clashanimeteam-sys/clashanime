@@ -33,14 +33,14 @@ export function AppShell({ children }: AppShellProps) {
       ? "pb-20 sm:pb-24"
       : "";
 
-  const scrollClassName = `flex min-h-0 flex-1 flex-col bg-white dark:bg-black max-md:overflow-x-hidden max-md:max-w-full ${
+  const scrollClassName = `flex min-h-0 flex-1 flex-col bg-transparent max-md:overflow-x-hidden max-md:max-w-full ${
     isVideoPage ? "max-md:h-dvh max-md:overflow-hidden md:overflow-y-auto" : "overflow-y-auto"
   }`;
 
   return (
     <ProfileSectionProvider>
       <PageTitleProvider>
-        <div className="flex h-dvh overflow-hidden bg-white dark:bg-black">
+        <div className="app-shell-root flex h-dvh overflow-hidden bg-transparent">
           {!isBlogPage && !isMobile ? (
             <div className="hidden h-dvh shrink-0 md:flex">
               <Sidebar />
@@ -56,7 +56,7 @@ export function AppShell({ children }: AppShellProps) {
               </div>
             ) : null}
             <main
-              className={`mobile-app-main flex-1 max-md:overflow-x-hidden max-md:max-w-full ${isBlogPage ? "bg-zinc-950" : "bg-white dark:bg-black"} ${isVideoPage ? "overflow-hidden max-md:h-dvh max-md:min-h-0" : ""} ${mainBottomPadding}`}
+              className={`mobile-app-main flex-1 max-md:overflow-x-hidden max-md:max-w-full ${isBlogPage ? "bg-zinc-950/90" : "bg-transparent"} ${isVideoPage ? "overflow-hidden max-md:h-dvh max-md:min-h-0" : ""} ${mainBottomPadding}`}
             >
               {children}
             </main>

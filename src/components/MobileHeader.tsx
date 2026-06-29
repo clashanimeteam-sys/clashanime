@@ -18,7 +18,7 @@ export function MobileHeader() {
   const { user, loading } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 bg-white dark:bg-black md:hidden">
+    <header className="sticky top-0 z-50 bg-black/70 backdrop-blur-md md:hidden">
       <div className="flex h-16 items-center justify-between gap-3 px-4">
         <Link href="/" className="flex items-center">
           <BrandLogo className="h-[4.5rem] w-[4.5rem]" priority />

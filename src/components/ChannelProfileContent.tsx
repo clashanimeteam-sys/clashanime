@@ -140,7 +140,7 @@ export function ChannelProfileContent({ username }: ChannelProfileContentProps) 
   }
 
   return (
-    <div className="mx-auto max-w-[1920px] bg-white px-4 pb-10 dark:bg-black sm:px-6">
+    <div className="mx-auto max-w-[1920px] bg-transparent px-4 pb-10 sm:px-6">
       <PageBackLink href="/videos" label={t.nav.videos} className="mb-4 pt-4" />
 
       <ChannelHero

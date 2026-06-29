@@ -61,7 +61,7 @@ export function MobileBottomNav() {
         aria-label={t.nav.mobileBottomNav}
         style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       >
-        <div className="border-t border-zinc-200/90 bg-white/95 backdrop-blur-xl dark:border-zinc-800/90 dark:bg-black/95">
+        <div className="border-t border-zinc-800/80 bg-black/70 backdrop-blur-xl">
           <ul className="relative mx-auto grid max-w-lg grid-cols-5 items-end px-1">
             {tabItems.slice(0, 2).map((item) => {
               const active = item.match(pathname);

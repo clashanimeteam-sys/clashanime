@@ -71,7 +71,7 @@ export function Footer() {
   const { t } = useLocale();
 
   return (
-    <footer className="mt-auto border-t border-zinc-200 bg-white text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
+    <footer className="mt-auto border-t border-zinc-800/80 bg-black/70 text-zinc-300 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 md:py-12 lg:py-14">
         <div className="grid gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-4 lg:gap-8">
           <div className="md:col-span-2 lg:col-span-1">
@@ -84,7 +84,7 @@ export function Footer() {
                 <span className="bg-gradient-to-br from-brand via-red-600 to-orange-500 bg-clip-text text-transparent">
                   {t.home.titlePrimary}
                 </span>
-                <span className="text-black dark:text-white">{t.home.titleSecondary}</span>
+                <span className="text-white">{t.home.titleSecondary}</span>
               </p>
             </Link>
             <p className="mt-3 max-w-xs text-xs leading-relaxed text-zinc-500 md:mt-4 md:text-sm">

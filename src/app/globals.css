@@ -57,6 +57,24 @@
     font-weight: inherit;
   }
 
+  body.site-brand-bg {
+    background-color: #000000;
+    color: #ffffff;
+  }
+
+  body.site-brand-bg::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-color: #000000;
+    background-image: url("/site-brand-background-wide.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+  }
+
   html[lang="ar"] body {
     font-family: var(--font-cairo), var(--font-sans), Arial, Helvetica, sans-serif;
   }
@@ -1333,6 +1351,10 @@
   color: #fafafa;
 }
 
+body.site-brand-bg .page-corner-title {
+  color: #fafafa;
+}
+
 @media (min-width: 640px) {
   .page-corner-title {
     max-width: 24rem;
@@ -1744,6 +1766,34 @@ html[lang="ar-u-nu-latn"] {
 @media (prefers-reduced-motion: reduce) {
   .live-ranked-card {
     transition: none;
+  }
+}
+
+/* Brand logo — straw hat overlay (Luffy-style) */
+.brand-logo-wrap {
+  isolation: isolate;
+}
+
+.brand-logo-hat {
+  position: absolute;
+  left: 50%;
+  top: -10%;
+  z-index: 20;
+  width: 118%;
+  height: 58%;
+  transform: translateX(-50%) rotate(-14deg);
+  transform-origin: 50% 88%;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.2));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .brand-logo-hat {
+    transition: transform 0.25s ease;
+  }
+
+  .brand-logo-wrap:hover .brand-logo-hat {
+    transform: translateX(-50%) rotate(-10deg) translateY(-2px) scale(1.02);
   }
 }
 
