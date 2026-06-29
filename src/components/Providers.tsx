@@ -5,7 +5,7 @@ import { AnimeRadioMiniBar } from "@/components/AnimeRadioMiniBar";
 import { BeatsLoungeMiniBar } from "@/components/lounge/BeatsLoungeMiniBar";
 import { AnimeRadioController } from "@/components/radio/AnimeRadioController";
 import { AppShell } from "@/components/AppShell";
-import { MobileAppHeader } from "@/components/mobile/MobileChromeLazy";
+import { MobileAppHeader, MobileBottomNav, MobileInstallPrompt, MobileViewportLock } from "@/components/mobile/MobileChromeLazy";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { BeatsLoungeProvider } from "@/providers/BeatsLoungeProvider";
 import { PointsWagerNotificationProvider } from "@/providers/PointsWagerNotificationProvider";
@@ -68,7 +68,9 @@ export function Providers({ children }: ProvidersProps) {
                         ) : (
                           <>
                             {!videoRoute ? <MobileAppHeader /> : null}
+                            <MobileViewportLock />
                             <AppShell>{children}</AppShell>
+                            {!videoRoute ? <MobileInstallPrompt /> : null}
                             <AnimeRadioController />
                             <RadioOrLoungeMiniBar />
                           </>

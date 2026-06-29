@@ -42,7 +42,7 @@ export function AppShell({ children }: AppShellProps) {
             </div>
           ) : null}
           <div
-            className={`flex min-h-0 flex-1 flex-col bg-white dark:bg-black ${
+            className={`flex min-h-0 flex-1 flex-col bg-white dark:bg-black max-md:overflow-x-hidden max-md:max-w-full ${
               isVideoPage ? "max-md:h-dvh max-md:overflow-hidden md:overflow-y-auto" : "overflow-y-auto"
             }`}
           >
@@ -52,7 +52,7 @@ export function AppShell({ children }: AppShellProps) {
               </div>
             ) : null}
             <main
-              className={`mobile-app-main flex-1 ${isBlogPage ? "bg-zinc-950" : "bg-white dark:bg-black"} ${isVideoPage ? "overflow-hidden max-md:h-dvh max-md:min-h-0" : ""} ${mainBottomPadding}`}
+              className={`mobile-app-main flex-1 max-md:overflow-x-hidden max-md:max-w-full ${isBlogPage ? "bg-zinc-950" : "bg-white dark:bg-black"} ${isVideoPage ? "overflow-hidden max-md:h-dvh max-md:min-h-0" : ""} ${mainBottomPadding}`}
             >
               {children}
             </main>

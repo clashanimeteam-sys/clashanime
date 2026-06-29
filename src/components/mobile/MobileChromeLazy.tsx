@@ -27,3 +27,19 @@ export const MobileBottomNav = dynamic(
   () => import("@/components/MobileBottomNav").then((module) => module.MobileBottomNav),
   { ssr: false, loading: MobileNavPlaceholder },
 );
+
+export const MobileInstallPrompt = dynamic(
+  () =>
+    import("@/components/mobile/MobileInstallPrompt").then(
+      (module) => module.MobileInstallPrompt,
+    ),
+  { ssr: false },
+);
+
+export const MobileViewportLock = dynamic(
+  () =>
+    import("@/components/mobile/MobileViewportLock").then(
+      (module) => module.MobileViewportLock,
+    ),
+  { ssr: false },
+);

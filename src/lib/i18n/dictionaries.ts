@@ -132,6 +132,12 @@ export type Dictionary = {
     brandTitle: string;
     brandWordClash: string;
     brandWordAnime: string;
+    installTitle: string;
+    installSubtitle: string;
+    installAction: string;
+    installDismiss: string;
+    installIosSteps: string;
+    installShare: string;
   };
   legalHub: {
     pageTitle: string;
@@ -1724,6 +1730,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       brandTitle: "Clash Anime",
       brandWordClash: "Clash",
       brandWordAnime: "Anime",
+      installTitle: "Install Clash Anime",
+      installSubtitle:
+        "Add the app to your home screen for faster access and a full-screen experience.",
+      installAction: "Install app",
+      installDismiss: "Not now",
+      installIosSteps:
+        'Tap {share}, then choose "Add to Home Screen".',
+      installShare: "Share",
     },
     legalHub: {
       pageTitle: "Information & Legal",
@@ -3417,6 +3431,14 @@ export const dictionaries: Record<Locale, Dictionary> = {
       brandTitle: "Clash Anime",
       brandWordClash: "Clash",
       brandWordAnime: "Anime",
+      installTitle: "Clash Anime をインストール",
+      installSubtitle:
+        "ホーム画面に追加すると、すぐに開けて全画面で楽しめます。",
+      installAction: "アプリをインストール",
+      installDismiss: "あとで",
+      installIosSteps:
+        "{share} をタップし、「ホーム画面に追加」を選びます。",
+      installShare: "共有",
     },
     legalHub: {
       pageTitle: "情報・規約",
@@ -5094,6 +5116,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       brandTitle: "كلاش أنمي",
       brandWordClash: "كلاش",
       brandWordAnime: " أنمي",
+      installTitle: "ثبّت Clash Anime",
+      installSubtitle: "أضف التطبيق إلى الشاشة الرئيسية للوصول السريع وتجربة ملء الشاشة.",
+      installAction: "تثبيت التطبيق",
+      installDismiss: "ليس الآن",
+      installIosSteps: "اضغط {share} ثم اختر «إضافة إلى الشاشة الرئيسية».",
+      installShare: "مشاركة",
     },
     legalHub: {
       pageTitle: "معلومات وقوانين",
