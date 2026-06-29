@@ -1,6 +1,6 @@
+import { isAdSenseEnabled } from "@/lib/adsense";
+
 const AD_SCRIPT_URL = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
-const AD_PIXEL_URL = "https://pagead2.googlesyndication.com/pagead/gen_204?id=clashanime";
-const DOUBLECLICK_PIXEL = "https://ad.doubleclick.net/favicon.ico";
 
 export const BAIT_IDS = [
   "clashanime-ad-bait-1",
@@ -9,94 +9,77 @@ export const BAIT_IDS = [
   "google_ads_iframe_check",
 ] as const;
 
-/** Minimum score (out of weighted checks) to treat ad blocker as active. */
-const BLOCK_SCORE_THRESHOLD = 2;
+const MIN_STATIC_BAITS_BLOCKED = 2;
+const BAIT_STYLE =
+  "position:absolute!important;width:1px!important;height:1px!important;opacity:0.01!important;top:0!important;left:0!important;pointer-events:none!important;overflow:hidden!important;";
 
+/** Guard runs only when AdSense is configured — no ads means no blocker prompt. */
 export function isAdblockGuardEnabled() {
   if (process.env.NEXT_PUBLIC_ADBLOCK_GUARD === "false") return false;
+  if (!isAdSenseEnabled()) return false;
   if (process.env.NEXT_PUBLIC_ADBLOCK_GUARD === "true") return true;
   return process.env.NODE_ENV === "production";
 }
 
-function isElementBlocked(element: HTMLElement | null) {
-  if (!element || !element.isConnected) return true;
-
+/** True when an element was hidden by an ad blocker, not our intentional bait styling. */
+function isHiddenByAdblock(element: HTMLElement) {
   const style = window.getComputedStyle(element);
-  if (
-    style.display === "none" ||
-    style.visibility === "hidden" ||
-    Number.parseFloat(style.opacity) === 0 ||
-    element.offsetParent === null ||
-    element.clientHeight === 0 ||
-    element.clientWidth === 0
-  ) {
-    return true;
-  }
+  if (style.display === "none") return true;
+  if (style.visibility === "hidden") return true;
+  if (Number.parseFloat(style.opacity) === 0) return true;
+
+  const rect = element.getBoundingClientRect();
+  if (rect.width === 0 && rect.height === 0) return true;
 
   return false;
 }
 
-function detectStaticBaits() {
-  return BAIT_IDS.some((id) => isElementBlocked(document.getElementById(id)));
+function countStaticBaitsBlocked() {
+  return BAIT_IDS.reduce((count, id) => {
+    const element = document.getElementById(id);
+    if (element && isHiddenByAdblock(element)) return count + 1;
+    return count;
+  }, 0);
 }
 
-function detectDynamicBait() {
+function detectStaticBaitsBlocked() {
+  return countStaticBaitsBlocked() >= MIN_STATIC_BAITS_BLOCKED;
+}
+
+/** Compare ad-class bait vs neutral control — avoids mobile false positives from off-screen layout. */
+function detectDifferentialBait() {
+  const control = document.createElement("div");
+  control.style.cssText = BAIT_STYLE;
+  control.setAttribute("aria-hidden", "true");
+
   const bait = document.createElement("div");
   bait.className =
     "adsbox adsbygoogle ad-banner text-ad textAd text_ads banner-ads ad-container sponsored-content pub_300x250 pub_728x90";
+  bait.style.cssText = BAIT_STYLE;
   bait.innerHTML = "&nbsp;";
   bait.setAttribute("aria-hidden", "true");
-  bait.style.cssText =
-    "position:absolute!important;left:-9999px!important;top:-9999px!important;width:1px!important;height:1px!important;";
 
+  document.body.appendChild(control);
   document.body.appendChild(bait);
-  const blocked = isElementBlocked(bait);
+
+  const baitBlocked = isHiddenByAdblock(bait);
+  const controlBlocked = isHiddenByAdblock(control);
+
+  control.remove();
   bait.remove();
-  return blocked;
+
+  return baitBlocked && !controlBlocked;
 }
 
-function detectIframeBait() {
-  return new Promise<boolean>((resolve) => {
-    const iframe = document.createElement("iframe");
-    iframe.setAttribute("aria-hidden", "true");
-    iframe.title = "advertisement";
-    iframe.src = "about:blank";
-    iframe.style.cssText =
-      "position:absolute!important;left:-9999px!important;top:-9999px!important;width:1px!important;height:1px!important;border:0!important;";
-
-    let settled = false;
-    const finish = (blocked: boolean) => {
-      if (settled) return;
-      settled = true;
-      iframe.remove();
-      resolve(blocked);
-    };
-
-    iframe.onload = () => {
-      window.setTimeout(() => finish(isElementBlocked(iframe)), 120);
-    };
-    iframe.onerror = () => finish(true);
-    window.setTimeout(() => finish(isElementBlocked(iframe)), 1200);
-    document.body.appendChild(iframe);
-  });
-}
-
-function detectResourceBlocked(url: string, timeoutMs = 2200) {
-  return new Promise<boolean>((resolve) => {
-    const img = new Image();
-    let settled = false;
-
-    const finish = (blocked: boolean) => {
-      if (settled) return;
-      settled = true;
-      resolve(blocked);
-    };
-
-    img.onload = () => finish(false);
-    img.onerror = () => finish(true);
-    img.src = `${url}?${Date.now()}`;
-    window.setTimeout(() => finish(true), timeoutMs);
-  });
+function detectAdsByGoogleQueue() {
+  try {
+    const queue = (window as Window & { adsbygoogle?: unknown[] }).adsbygoogle;
+    if (!Array.isArray(queue)) return false;
+    queue.push({});
+    return false;
+  } catch {
+    return true;
+  }
 }
 
 function detectAdScriptBlocked() {
@@ -115,59 +98,24 @@ function detectAdScriptBlocked() {
 
     script.onload = () => finish(false);
     script.onerror = () => finish(true);
-    window.setTimeout(() => finish(true), 2800);
+    // Timeout is inconclusive on slow mobile networks — do not treat as blocked.
+    window.setTimeout(() => finish(false), 4500);
     document.head.appendChild(script);
   });
 }
 
-function detectAdsByGoogleQueue() {
-  try {
-    const queue = (window as Window & { adsbygoogle?: unknown[] }).adsbygoogle;
-    if (!Array.isArray(queue)) return false;
-    queue.push({});
-    return false;
-  } catch {
-    return true;
-  }
-}
-
-type DetectionSignal = {
-  id: string;
-  weight: number;
-  blocked: boolean;
-};
-
-/** Returns true when an ad blocker is likely active. */
+/** Returns true only when an ad blocker is very likely active. */
 export async function detectAdblock() {
   if (typeof window === "undefined") return false;
 
-  const staticBaits = detectStaticBaits();
-  const dynamicBait = detectDynamicBait();
-  const adsQueueBlocked = detectAdsByGoogleQueue();
+  if (detectDifferentialBait()) return true;
+  if (detectStaticBaitsBlocked()) return true;
+  if (detectAdsByGoogleQueue()) return true;
 
-  if (staticBaits || dynamicBait || adsQueueBlocked) {
-    return true;
-  }
+  const scriptBlocked = await detectAdScriptBlocked();
+  if (scriptBlocked && countStaticBaitsBlocked() >= 1) return true;
 
-  const [iframeBait, adScript, adPixel, doubleClick] = await Promise.all([
-    detectIframeBait(),
-    detectAdScriptBlocked(),
-    detectResourceBlocked(AD_PIXEL_URL),
-    detectResourceBlocked(DOUBLECLICK_PIXEL),
-  ]);
-
-  const signals: DetectionSignal[] = [
-    { id: "static", weight: 3, blocked: staticBaits },
-    { id: "dynamic", weight: 3, blocked: dynamicBait },
-    { id: "iframe", weight: 2, blocked: iframeBait },
-    { id: "script", weight: 2, blocked: adScript },
-    { id: "pixel", weight: 2, blocked: adPixel },
-    { id: "doubleclick", weight: 2, blocked: doubleClick },
-    { id: "queue", weight: 2, blocked: adsQueueBlocked },
-  ];
-
-  const score = signals.reduce((total, signal) => total + (signal.blocked ? signal.weight : 0), 0);
-  return score >= BLOCK_SCORE_THRESHOLD;
+  return false;
 }
 
 export function shouldSkipAdblockGuard(pathname: string) {
@@ -189,8 +137,7 @@ export function watchAdblockBaits(onBlocked: () => void) {
       if (checking) return;
       checking = true;
       try {
-        // Static baits only — detectDynamicBait() mutates the DOM and would re-fire this observer forever.
-        if (detectStaticBaits()) {
+        if (detectStaticBaitsBlocked()) {
           onBlocked();
         }
       } finally {

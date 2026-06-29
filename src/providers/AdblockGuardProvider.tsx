@@ -54,7 +54,9 @@ export function AdblockGuardProvider({ children }: AdblockGuardProviderProps) {
       return;
     }
 
-    void runDetection();
+    const initialTimer = window.setTimeout(() => {
+      void runDetection();
+    }, 900);
 
     timerRef.current = window.setInterval(() => {
       void runDetection();
@@ -65,7 +67,6 @@ export function AdblockGuardProvider({ children }: AdblockGuardProviderProps) {
     };
 
     const stopWatchingBaits = watchAdblockBaits(() => {
-      setBlocked(true);
       void runDetection();
     });
 
@@ -73,6 +74,7 @@ export function AdblockGuardProvider({ children }: AdblockGuardProviderProps) {
     window.addEventListener("focus", handleFocus);
 
     return () => {
+      window.clearTimeout(initialTimer);
       if (timerRef.current) window.clearInterval(timerRef.current);
       stopWatchingBaits();
       document.removeEventListener("visibilitychange", handleFocus);

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { AdminMonetizationHealth } from "@/components/admin/AdminMonetizationHealth";
 import { AdminNavBadge } from "@/components/admin/AdminNavBadge";
 import { AdminTopHashtags } from "@/components/admin/AdminTopHashtags";
 import { AdminVideoOwnerEvents } from "@/components/admin/AdminVideoOwnerEvents";
@@ -311,6 +312,8 @@ export function AdminDashboard() {
         <h1 className="text-2xl font-bold text-white">{t.admin.dashboardTitle}</h1>
         <p className="mt-2 text-sm text-zinc-400">{t.admin.dashboardSubtitle}</p>
       </div>
+
+      <AdminMonetizationHealth />
 
       {loading ? (
         <p className="text-sm text-zinc-400">{t.admin.loading}</p>
