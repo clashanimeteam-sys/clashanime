@@ -16,17 +16,25 @@ const discoverLinks = [
 
 function FooterColumnHeading({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-400 dark:text-zinc-500">
+    <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-400 md:mb-4 dark:text-zinc-500">
       {children}
     </p>
   );
 }
 
-function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
+function FooterLink({
+  href,
+  children,
+  className = "",
+}: {
+  href: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <Link
       href={href}
-      className="block text-sm text-zinc-600 transition-colors hover:text-black dark:text-zinc-400 dark:hover:text-white"
+      className={`block text-xs leading-snug text-zinc-600 transition-colors hover:text-black md:text-sm dark:text-zinc-400 dark:hover:text-white ${className}`}
     >
       {children}
     </Link>
@@ -64,11 +72,11 @@ export function Footer() {
 
   return (
     <footer className="mt-auto border-t border-zinc-200 bg-white text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:py-14">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-          <div className="sm:col-span-2 lg:col-span-1">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 md:py-12 lg:py-14">
+        <div className="grid gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-4 lg:gap-8">
+          <div className="md:col-span-2 lg:col-span-1">
             <Link href="/" className="inline-flex flex-col gap-3">
-              <BrandLogo className="h-14 w-14" />
+              <BrandLogo className="h-12 w-12 md:h-14 md:w-14" />
               <p
                 dir="ltr"
                 className="doodle-logo-ltr font-display text-lg font-black uppercase italic leading-none tracking-[0.14em]"
@@ -79,10 +87,12 @@ export function Footer() {
                 <span className="text-black dark:text-white">{t.home.titleSecondary}</span>
               </p>
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-zinc-500">{t.footer.tagline}</p>
+            <p className="mt-3 max-w-xs text-xs leading-relaxed text-zinc-500 md:mt-4 md:text-sm">
+              {t.footer.tagline}
+            </p>
           </div>
 
-          <div>
+          <div className="hidden md:block">
             <FooterColumnHeading>{t.footer.discoverHeading}</FooterColumnHeading>
             <nav className="flex flex-col gap-2.5" aria-label={t.footer.discoverHeading}>
               {discoverLinks.map((item) => (
@@ -99,7 +109,10 @@ export function Footer() {
                 {t.footer.informationHeading}
               </Link>
             </FooterColumnHeading>
-            <nav className="flex flex-col gap-2.5" aria-label={t.footer.informationHeading}>
+            <nav
+              className="grid grid-cols-2 gap-x-3 gap-y-2.5 md:flex md:flex-col md:gap-2.5"
+              aria-label={t.footer.informationHeading}
+            >
               <FooterLink href="/legal">{t.legalHub.viewAll}</FooterLink>
               {informationLinks.map((item) => (
                 <FooterLink key={item.key} href={item.href}>
@@ -111,19 +124,25 @@ export function Footer() {
 
           <div>
             <FooterColumnHeading>
-              <Link href="/legal#legal-hub-communication" className="transition-colors hover:text-zinc-600 dark:hover:text-zinc-300">
+              <Link
+                href="/legal#legal-hub-communication"
+                className="transition-colors hover:text-zinc-600 dark:hover:text-zinc-300"
+              >
                 {t.footer.socialHeading}
               </Link>
             </FooterColumnHeading>
-            <nav className="flex flex-col gap-2.5" aria-label={t.footer.socialHeading}>
+            <nav
+              className="grid grid-cols-3 gap-2 md:flex md:flex-col md:gap-2.5"
+              aria-label={t.footer.socialHeading}
+            >
               {communicationLinks.map((item) => (
                 <Link
                   key={`${item.href}-${item.key}`}
                   href={item.href}
-                  className="flex items-center gap-2.5 text-sm text-zinc-600 transition-colors hover:text-black dark:text-zinc-400 dark:hover:text-white"
+                  className="flex flex-col items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-zinc-50 px-1.5 py-2.5 text-center text-[10px] font-medium leading-tight text-zinc-600 transition-colors hover:border-accent/30 hover:text-black md:flex-row md:items-center md:gap-2.5 md:rounded-none md:border-0 md:bg-transparent md:px-0 md:py-0 md:text-start md:text-sm md:font-normal dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-zinc-400 dark:hover:text-white md:dark:bg-transparent"
                 >
                   <SocialIcon type={item.icon} />
-                  {t.footer[item.key]}
+                  <span>{t.footer[item.key]}</span>
                 </Link>
               ))}
             </nav>
