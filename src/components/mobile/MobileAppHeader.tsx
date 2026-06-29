@@ -78,7 +78,7 @@ export function MobileAppHeader() {
 
           <Link
             href="/"
-            className="min-w-0 flex-1 self-center"
+            className="min-w-0 flex-1"
             aria-label={`${t.home.titlePrimary}${t.home.titleSecondary}`}
           >
             <ElementalSiteTitle
