@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MobileAppMenu } from "@/components/mobile/MobileAppMenu";
 import { NavIcon } from "@/components/nav/NavIcon";
 import { useAuth } from "@/providers/AuthProvider";
@@ -35,12 +35,24 @@ export function MobileBottomNav() {
     menuOpen ||
     pathname.startsWith("/music") ||
     pathname.startsWith("/exclusives") ||
+    pathname.startsWith("/tracker") ||
     pathname.startsWith("/profile") ||
     pathname === "/settings" ||
     pathname === "/legal" ||
     pathname.startsWith("/terms") ||
     pathname.startsWith("/privacy") ||
     pathname.startsWith("/contact");
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const closeMenu = () => setMenuOpen(false);
+    window.addEventListener("hashchange", closeMenu);
+    return () => window.removeEventListener("hashchange", closeMenu);
+  }, [menuOpen]);
 
   return (
     <>
