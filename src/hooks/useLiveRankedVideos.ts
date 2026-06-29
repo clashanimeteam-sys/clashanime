@@ -74,60 +74,66 @@ export function useLiveRankedVideos(initialVideos: Video[], { mode }: UseLiveRan
   useEffect(() => {
     if (!supabase) return;
 
-    const channel = supabase
-      .channel("live-video-ranking")
-      .on(
-        "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "videos" },
-        (payload) => {
-          const row = payload.new as {
-            id: string;
-            likes_count?: number;
-            comments_count?: number;
-            views_count?: number;
-            shares_count?: number;
-            moderation_status?: string;
-          };
+    let channel: ReturnType<typeof supabase.channel> | null = null;
 
-          if (row.moderation_status && row.moderation_status !== "approved") {
-            scheduleRefetch();
-            return;
-          }
+    try {
+      channel = supabase
+        .channel(`live-video-ranking:${crypto.randomUUID()}`)
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "videos" },
+          (payload) => {
+            if (payload.eventType === "UPDATE") {
+              const row = payload.new as {
+                id: string;
+                likes_count?: number;
+                comments_count?: number;
+                views_count?: number;
+                shares_count?: number;
+                moderation_status?: string;
+              };
 
-          if (poolRef.current.some((video) => video.id === row.id)) {
-            recompute(patchVideoFromRow(poolRef.current, row));
-            return;
-          }
+              if (row.moderation_status && row.moderation_status !== "approved") {
+                scheduleRefetch();
+                return;
+              }
 
-          scheduleRefetch();
-        },
-      )
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "videos" },
-        () => {
-          scheduleRefetch();
-        },
-      )
-      .on(
-        "postgres_changes",
-        { event: "DELETE", schema: "public", table: "videos" },
-        (payload) => {
-          const row = payload.old as { id?: string };
-          if (!row.id) {
-            scheduleRefetch();
-            return;
-          }
-          recompute(poolRef.current.filter((video) => video.id !== row.id));
-        },
-      )
-      .subscribe();
+              if (poolRef.current.some((video) => video.id === row.id)) {
+                recompute(patchVideoFromRow(poolRef.current, row));
+                return;
+              }
+
+              scheduleRefetch();
+              return;
+            }
+
+            if (payload.eventType === "INSERT") {
+              scheduleRefetch();
+              return;
+            }
+
+            if (payload.eventType === "DELETE") {
+              const row = payload.old as { id?: string };
+              if (!row.id) {
+                scheduleRefetch();
+                return;
+              }
+              recompute(poolRef.current.filter((video) => video.id !== row.id));
+            }
+          },
+        )
+        .subscribe();
+    } catch (error) {
+      console.warn("[useLiveRankedVideos] realtime subscription failed", error);
+    }
 
     return () => {
       if (refetchTimerRef.current !== null) {
         window.clearTimeout(refetchTimerRef.current);
       }
-      void supabase.removeChannel(channel);
+      if (channel) {
+        void supabase.removeChannel(channel);
+      }
     };
   }, [supabase, recompute, scheduleRefetch]);
 

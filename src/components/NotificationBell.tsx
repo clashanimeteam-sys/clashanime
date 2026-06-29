@@ -95,45 +95,52 @@ export function NotificationBell() {
   }, [user, loadNotifications]);
 
   useEffect(() => {
-    if (!supabase || !user) return;
+    if (!supabase || !user?.id) return;
 
-    const channel = supabase
-      .channel(`user-notifications:${user.id}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "user_notifications",
-          filter: `user_id=eq.${user.id}`,
-        },
-        (payload) => {
-          const next = payload.new as NotificationRow;
-          setRows((current) => {
-            if (current.some((row) => row.id === next.id)) return current;
-            return [next, ...current].slice(0, 50);
-          });
-        },
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "user_notifications",
-          filter: `user_id=eq.${user.id}`,
-        },
-        (payload) => {
-          const next = payload.new as NotificationRow;
-          setRows((current) => current.map((row) => (row.id === next.id ? next : row)));
-        },
-      )
-      .subscribe();
+    let active = true;
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+
+    try {
+      channel = supabase
+        .channel(`user-notifications:${user.id}:${crypto.randomUUID()}`)
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "user_notifications",
+            filter: `user_id=eq.${user.id}`,
+          },
+          (payload) => {
+            if (!active) return;
+
+            if (payload.eventType === "INSERT") {
+              const next = payload.new as NotificationRow;
+              setRows((current) => {
+                if (current.some((row) => row.id === next.id)) return current;
+                return [next, ...current].slice(0, 50);
+              });
+              return;
+            }
+
+            if (payload.eventType === "UPDATE") {
+              const next = payload.new as NotificationRow;
+              setRows((current) => current.map((row) => (row.id === next.id ? next : row)));
+            }
+          },
+        )
+        .subscribe();
+    } catch (error) {
+      console.warn("[NotificationBell] realtime subscription failed", error);
+    }
 
     return () => {
-      void supabase.removeChannel(channel);
+      active = false;
+      if (channel) {
+        void supabase.removeChannel(channel);
+      }
     };
-  }, [supabase, user]);
+  }, [supabase, user?.id]);
 
   useEffect(() => {
     function handlePointerDown(event: MouseEvent) {

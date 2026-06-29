@@ -93,24 +93,32 @@ export function PointsWagerNotificationProvider({ children }: PointsWagerNotific
   useEffect(() => {
     if (!supabase || !user?.id) return;
 
-    const channel = supabase
-      .channel(`points-wager-invites-${user.id}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "points_wager_duels",
-          filter: `opponent_id=eq.${user.id}`,
-        },
-        () => {
-          void refreshInvites();
-        },
-      )
-      .subscribe();
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+
+    try {
+      channel = supabase
+        .channel(`points-wager-invites-${user.id}:${crypto.randomUUID()}`)
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "points_wager_duels",
+            filter: `opponent_id=eq.${user.id}`,
+          },
+          () => {
+            void refreshInvites();
+          },
+        )
+        .subscribe();
+    } catch (error) {
+      console.warn("[PointsWagerNotificationProvider] realtime subscription failed", error);
+    }
 
     return () => {
-      void supabase.removeChannel(channel);
+      if (channel) {
+        void supabase.removeChannel(channel);
+      }
     };
   }, [refreshInvites, supabase, user?.id]);
 
