@@ -8,7 +8,6 @@ type BrandLogoProps = {
   className?: string;
   priority?: boolean;
   compact?: boolean;
-  withHat?: boolean;
 };
 
 function subscribe() {
@@ -27,16 +26,14 @@ export function BrandLogo({
   className = "h-28 w-28",
   priority = false,
   compact = false,
-  withHat = true,
 }: BrandLogoProps) {
   const { resolvedTheme } = useTheme();
   const mounted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const isDark = mounted && resolvedTheme === "dark";
-  const showHat = withHat && !compact;
 
   return (
     <div
-      className={`brand-logo-wrap relative overflow-visible ${className} ${
+      className={`relative ${className} ${
         compact
           ? ""
           : isDark
@@ -45,7 +42,7 @@ export function BrandLogo({
       }`}
     >
       <Image
-        src="/brand-logo-hinata-inner.png"
+        src="/logo2.png"
         alt={compact ? "" : "Clash Anime"}
         fill
         priority={priority}
@@ -53,18 +50,6 @@ export function BrandLogo({
         aria-hidden={compact ? true : undefined}
         className="object-contain"
       />
-      {showHat ? (
-        <div className="brand-logo-hat" aria-hidden>
-          <Image
-            src="/brand-straw-hat.png"
-            alt=""
-            fill
-            priority={priority}
-            sizes={compact ? "20px" : "(max-width: 768px) 72px, 112px"}
-            className="object-contain object-bottom"
-          />
-        </div>
-      ) : null}
     </div>
   );
 }

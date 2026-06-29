@@ -45,7 +45,7 @@ function navLinkClass(active: boolean) {
   return `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
     active
       ? "bg-accent/15 text-accent"
-      : "text-zinc-300 hover:bg-white/10 hover:text-white"
+      : "text-zinc-600 hover:bg-white hover:text-black dark:text-zinc-400 dark:hover:bg-black dark:hover:text-white"
   }`;
 }
 
@@ -58,9 +58,9 @@ export function Sidebar() {
   const showAdminLink = isStaff(profile);
 
   return (
-    <aside className="flex h-dvh w-56 shrink-0 flex-col border-e border-zinc-800/80 bg-black/70 backdrop-blur-md lg:w-60">
-      <div className="border-b border-zinc-800 px-2 pb-4 pt-5 sm:px-3">
-        <Link href="/" className="flex justify-center overflow-visible">
+    <aside className="flex h-dvh w-56 shrink-0 flex-col border-e border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black lg:w-60">
+      <div className="border-b border-zinc-200 px-2 py-4 dark:border-zinc-800 sm:px-3">
+        <Link href="/" className="flex justify-center">
           <BrandLogo priority />
         </Link>
 
@@ -131,7 +131,7 @@ export function Sidebar() {
         ) : null}
       </nav>
 
-      <div className="relative z-50 space-y-3 border-t border-zinc-800 p-3">
+      <div className="relative z-50 space-y-3 border-t border-zinc-200 p-3 dark:border-zinc-800">
         {showAdminLink ? (
           <Link
             href="/admin"

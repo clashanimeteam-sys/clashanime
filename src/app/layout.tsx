@@ -66,7 +66,7 @@ export default function RootLayout({
       <body
         translate="no"
         suppressHydrationWarning
-        className="site-brand-bg notranslate min-h-full text-white"
+        className="notranslate min-h-full bg-white text-black dark:bg-black dark:text-white"
       >
         <BlockTranslateScript />
         <ClientErrorBoundary>

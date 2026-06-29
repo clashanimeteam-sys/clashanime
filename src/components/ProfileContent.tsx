@@ -540,7 +540,7 @@ export function ProfileContent() {
 
   return (
     <div
-      className={`mx-auto bg-transparent px-4 pb-10 sm:px-6 ${
+      className={`mx-auto bg-white px-4 pb-10 dark:bg-black sm:px-6 ${
         activeSection === "my-videos" || activeSection === "channel" ? "max-w-[1920px]" : "max-w-6xl"
       }`}
     >

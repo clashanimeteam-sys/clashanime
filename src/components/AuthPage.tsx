@@ -39,7 +39,7 @@ export function AuthPage({ mode }: { mode: "login" | "signup" }) {
   const signupBlocked = !isLogin && !signupsAllowed;
 
   return (
-    <div className="flex min-h-screen flex-col bg-transparent">
+    <div className="flex min-h-screen flex-col bg-white dark:bg-black">
       <AuthShellHeader mode={mode} />
       <div className="flex flex-1 items-center justify-center px-4 py-10 pb-24">
         <div className="w-full max-w-sm">
