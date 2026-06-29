@@ -22,6 +22,10 @@ export default function GlobalError({ reset }: GlobalErrorProps) {
           <p className="mt-3 max-w-md text-sm text-zinc-600 dark:text-zinc-400">
             Something went wrong. Please try again or return to the home page.
           </p>
+          <p className="mt-4 max-w-md text-xs leading-relaxed text-zinc-500">
+            Disable Google Translate / Edge translation for clashanime.com. Use the AR button in the
+            site menu for Arabic.
+          </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <button
               type="button"

@@ -45,6 +45,10 @@ export class ClientErrorBoundary extends Component<
           <p className="mt-3 max-w-md text-sm text-zinc-600 dark:text-zinc-400">
             Something went wrong. Please try again or return to the home page.
           </p>
+          <p className="mt-4 max-w-md text-xs leading-relaxed text-zinc-500 dark:text-zinc-500">
+            If Google Translate or Edge translation is enabled for this site, turn it off and use the
+            AR language button inside ClashAnime instead.
+          </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <button
               type="button"

@@ -1,6 +1,9 @@
 import { Cairo, Geist, Geist_Mono, Orbitron, Plus_Jakarta_Sans } from "next/font/google";
 import { Providers } from "@/components/Providers";
+import { AppBootSkeleton } from "@/components/AppBootSkeleton";
+import { BlockTranslateScript } from "@/components/BlockTranslateScript";
 import { ClientErrorBoundary } from "@/components/ClientErrorBoundary";
+import { ClientOnly } from "@/components/ClientOnly";
 import { DotLottieScript } from "@/components/DotLottieScript";
 import { buildRootLayoutMetadata } from "@/lib/seoMetadata";
 import "./globals.css";
@@ -58,10 +61,17 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`notranslate ${geistSans.variable} ${geistMono.variable} ${orbitron.variable} ${plusJakarta.variable} ${cairo.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-white text-black dark:bg-black dark:text-white">
+      <body
+        translate="no"
+        suppressHydrationWarning
+        className="notranslate min-h-full bg-white text-black dark:bg-black dark:text-white"
+      >
+        <BlockTranslateScript />
         <ClientErrorBoundary>
-          <DotLottieScript />
-          <Providers>{children}</Providers>
+          <ClientOnly fallback={<AppBootSkeleton />}>
+            <DotLottieScript />
+            <Providers>{children}</Providers>
+          </ClientOnly>
         </ClientErrorBoundary>
         <div id="clashanime-portal" />
       </body>
