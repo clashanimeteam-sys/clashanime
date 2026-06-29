@@ -2,6 +2,7 @@
 export function AdblockBait() {
   return (
     <>
+      <div id="adsbox" className="adsbox adsbygoogle" aria-hidden="true" />
       <div
         id="clashanime-ad-bait-1"
         className="adsbygoogle ad-banner text-ad textAd text_ads banner-ads pub_300x250"

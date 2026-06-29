@@ -1,6 +1,8 @@
 const AD_SCRIPT_URL = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
+const AD_PIXEL_URL = "https://pagead2.googlesyndication.com/pagead/gen_204?id=clashanime";
 
 export const BAIT_IDS = [
+  "adsbox",
   "clashanime-ad-bait-1",
   "clashanime-ad-bait-2",
   "clashanime-ad-bait-3",
@@ -9,6 +11,8 @@ export const BAIT_IDS = [
 
 const BAIT_STYLE =
   "position:absolute!important;width:1px!important;height:1px!important;opacity:0.01!important;top:0!important;left:0!important;pointer-events:none!important;overflow:hidden!important;";
+
+const SCRIPT_PROBE_MS = 2_500;
 
 export function isAdblockGuardEnabled() {
   if (process.env.NEXT_PUBLIC_ADBLOCK_GUARD === "false") return false;
@@ -26,6 +30,9 @@ function isHiddenByAdblock(element: HTMLElement) {
   const rect = element.getBoundingClientRect();
   if (rect.width === 0 && rect.height === 0) return true;
 
+  // EasyList / AdBlock cosmetic filters often collapse ad-class nodes to zero height.
+  if (element.offsetHeight === 0 && element.offsetWidth === 0) return true;
+
   return false;
 }
 
@@ -39,6 +46,23 @@ function countStaticBaitsBlocked() {
 
 function detectStaticBaitsBlocked() {
   return countStaticBaitsBlocked() >= 1;
+}
+
+/**
+ * Classic #adsbox probe used by AdBlock, uBlock Origin, and EasyList-based extensions.
+ */
+function detectEasyListBait() {
+  const bait = document.createElement("div");
+  bait.id = "clashanime-probe-adsbox";
+  bait.className = "adsbox adsbygoogle";
+  bait.innerHTML = "&nbsp;";
+  bait.style.cssText = BAIT_STYLE;
+  bait.setAttribute("aria-hidden", "true");
+
+  document.body.appendChild(bait);
+  const blocked = isHiddenByAdblock(bait);
+  bait.remove();
+  return blocked;
 }
 
 /** Compare ad-class bait vs neutral control — avoids mobile false positives from layout. */
@@ -77,12 +101,14 @@ function detectAdsByGoogleQueue() {
   }
 }
 
+/** AdBlock and similar extensions block or stall the AdSense script request. */
 function detectAdScriptBlocked() {
   return new Promise<boolean>((resolve) => {
     const script = document.createElement("script");
     script.async = true;
     script.src = `${AD_SCRIPT_URL}?${Date.now()}`;
     let settled = false;
+    let loaded = false;
 
     const finish = (blocked: boolean) => {
       if (settled) return;
@@ -91,11 +117,40 @@ function detectAdScriptBlocked() {
       resolve(blocked);
     };
 
-    script.onload = () => finish(false);
+    script.onload = () => {
+      loaded = true;
+      finish(false);
+    };
     script.onerror = () => finish(true);
-    // Timeout is inconclusive on slow networks — not a blocker signal.
-    window.setTimeout(() => finish(false), 4500);
+    window.setTimeout(() => {
+      if (!loaded) finish(true);
+    }, SCRIPT_PROBE_MS);
     document.head.appendChild(script);
+  });
+}
+
+/** Network probe — AdBlock blocks requests to googlesyndication even when baits stay visible. */
+function detectAdPixelBlocked() {
+  return new Promise<boolean>((resolve) => {
+    const img = new Image();
+    let settled = false;
+    let loaded = false;
+
+    const finish = (blocked: boolean) => {
+      if (settled) return;
+      settled = true;
+      resolve(blocked);
+    };
+
+    img.onload = () => {
+      loaded = true;
+      finish(false);
+    };
+    img.onerror = () => finish(true);
+    img.src = `${AD_PIXEL_URL}&_=${Date.now()}`;
+    window.setTimeout(() => {
+      if (!loaded) finish(true);
+    }, SCRIPT_PROBE_MS);
   });
 }
 
@@ -111,12 +166,17 @@ export async function detectAdblock() {
 
   await waitForExtensionCss();
 
+  if (detectEasyListBait()) return true;
   if (detectDifferentialBait()) return true;
   if (detectStaticBaitsBlocked()) return true;
   if (detectAdsByGoogleQueue()) return true;
 
-  const scriptBlocked = await detectAdScriptBlocked();
-  if (scriptBlocked) return true;
+  const [scriptBlocked, pixelBlocked] = await Promise.all([
+    detectAdScriptBlocked(),
+    detectAdPixelBlocked(),
+  ]);
+
+  if (scriptBlocked || pixelBlocked) return true;
 
   return false;
 }
@@ -140,7 +200,11 @@ export function watchAdblockBaits(onBlocked: () => void) {
       if (checking) return;
       checking = true;
       try {
-        if (detectStaticBaitsBlocked() || detectDifferentialBait()) {
+        if (
+          detectEasyListBait() ||
+          detectStaticBaitsBlocked() ||
+          detectDifferentialBait()
+        ) {
           onBlocked();
         }
       } finally {

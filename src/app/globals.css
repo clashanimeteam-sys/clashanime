@@ -2,6 +2,7 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+#adsbox,
 #clashanime-ad-bait-1,
 #clashanime-ad-bait-2,
 #clashanime-ad-bait-3,
@@ -16,6 +17,7 @@
   overflow: hidden;
 }
 
+body[data-adblock-locked="true"] #adsbox,
 body[data-adblock-locked="true"] #clashanime-ad-bait-1,
 body[data-adblock-locked="true"] #clashanime-ad-bait-2,
 body[data-adblock-locked="true"] #clashanime-ad-bait-3,
