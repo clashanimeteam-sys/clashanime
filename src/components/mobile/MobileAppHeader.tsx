@@ -68,17 +68,18 @@ export function MobileAppHeader() {
       style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
     >
       <div className="flex min-h-14 items-center justify-between gap-2 px-3 py-1.5">
-        <div className="flex min-w-0 flex-1 items-center gap-2">
-          <div className="flex shrink-0 flex-col items-center gap-1">
-            <Link href="/" aria-label="Clash Anime">
-              <BrandLogo className="h-[3.35rem] w-[3.35rem]" priority />
-            </Link>
-            {isHome ? <ClashLiveBadge compact /> : null}
-          </div>
+        <div className="mobile-brand-header grid min-w-0 flex-1 grid-cols-[auto_minmax(0,1fr)] grid-rows-[auto_auto] items-center gap-x-2 gap-y-0.5">
+          <Link
+            href="/"
+            className="row-span-2 shrink-0 self-center"
+            aria-label="Clash Anime"
+          >
+            <BrandLogo className="h-[3.85rem] w-[3.85rem]" priority />
+          </Link>
 
           <Link
             href="/"
-            className="min-w-0 flex-1"
+            className="col-start-2 row-start-1 min-w-0 self-center"
             aria-label={`${t.home.titlePrimary}${t.home.titleSecondary}`}
           >
             <ElementalSiteTitle
@@ -87,6 +88,12 @@ export function MobileAppHeader() {
               variant="mobile-header"
             />
           </Link>
+
+          {isHome ? (
+            <div className="col-start-2 row-start-2">
+              <ClashLiveBadge compact />
+            </div>
+          ) : null}
         </div>
 
         <div className="flex shrink-0 items-center gap-1.5">
