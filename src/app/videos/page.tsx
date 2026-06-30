@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { VideosPageContent } from "@/components/VideosPageContent";
 import { getAnimeSeoCatalog, getAnimeTrackerUpcoming, getRecentAnimeReleases } from "@/lib/animeTracker.server";
 import { buildPageMetadata } from "@/lib/seoMetadata";
@@ -21,11 +22,13 @@ export default async function VideosPage() {
   ]);
 
   return (
-    <VideosPageContent
-      videos={videos}
-      recentAnimeReleases={recentAnimeReleases}
-      upcomingAnimeReleases={upcomingAnimeReleases}
-      recentDuels={recentDuels}
-    />
+    <Suspense fallback={null}>
+      <VideosPageContent
+        videos={videos}
+        recentAnimeReleases={recentAnimeReleases}
+        upcomingAnimeReleases={upcomingAnimeReleases}
+        recentDuels={recentDuels}
+      />
+    </Suspense>
   );
 }

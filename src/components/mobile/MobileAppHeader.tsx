@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
+import { AnimeSearchButton } from "@/components/AnimeSearchButton";
 import { ClashLiveBadge } from "@/components/clash/ClashLiveBadge";
 import { MobileHeaderBrandTitle } from "@/components/mobile/MobileHeaderBrandTitle";
 import { NotificationBell } from "@/components/NotificationBell";
@@ -84,6 +85,7 @@ export function MobileAppHeader() {
             <span className="h-9 w-16 animate-pulse rounded-full bg-zinc-100 dark:bg-zinc-900" />
           ) : (
             <>
+              <AnimeSearchButton />
               {user ? <NotificationBell /> : null}
               {user ? (
                 <Link href="/profile" className="rounded-full" aria-label={t.profile.customize}>

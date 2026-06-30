@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { AnimeReleaseShelfRow } from "@/components/videos/AnimeReleaseShelfRow";
 import { DuelShelfRow } from "@/components/videos/DuelShelfRow";
 import { VideoShelfRow } from "@/components/videos/VideoShelfRow";
@@ -28,7 +29,9 @@ export function VideosPageContent({
   recentDuels,
 }: VideosPageContentProps) {
   const { t } = useLocale();
-  const [query, setQuery] = useState("");
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams.get("q") ?? "";
+  const [query, setQuery] = useState(initialQuery);
   const videos = useLiveRankedVideos(initialVideos, { mode: "catalog" });
 
   usePageTitle(t.pages.videosTitle);

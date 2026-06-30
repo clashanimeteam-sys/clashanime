@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { BrandLogo } from "@/components/BrandLogo";
+import { AnimeSearchButton } from "@/components/AnimeSearchButton";
 import { LocaleFlags } from "@/components/LocaleFlags";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { AdminNavBadge } from "@/components/admin/AdminNavBadge";
@@ -247,6 +248,7 @@ function AdminShellLayout({
             </nav>
 
             <div className="flex flex-wrap items-center gap-3">
+              <AnimeSearchButton tone="dark" />
               <LocaleFlags />
               <ThemeToggle />
               <Link

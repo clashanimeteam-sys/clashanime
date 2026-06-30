@@ -344,3 +344,45 @@ export async function fetchJikanSynopsisMap(malIds: number[]): Promise<Map<numbe
 
   return map;
 }
+
+export type JikanAnimeSearchHit = {
+  malId: number;
+  title: string;
+  titleEnglish: string | null;
+  titleJapanese: string | null;
+  posterUrl: string | null;
+  score: number | null;
+  malUrl: string | null;
+};
+
+export async function searchJikanAnime(query: string, limit = 8): Promise<JikanAnimeSearchHit[]> {
+  const trimmed = query.trim();
+  if (trimmed.length < 2) return [];
+
+  const response = await fetch(
+    `${JIKAN_API}/anime?q=${encodeURIComponent(trimmed)}&limit=${Math.min(limit, 25)}&sfw`,
+    {
+      headers: { Accept: "application/json" },
+      cache: "no-store",
+    },
+  );
+
+  if (response.status === 429) {
+    await sleep(1200);
+    return searchJikanAnime(query, limit);
+  }
+
+  if (!response.ok) return [];
+
+  const payload = (await response.json()) as { data?: JikanAnimeRow[] };
+
+  return (payload.data ?? []).slice(0, limit).map((row) => ({
+    malId: row.mal_id,
+    title: pickTitle(row),
+    titleEnglish: row.title_english,
+    titleJapanese: row.title_japanese,
+    posterUrl: row.images?.jpg?.large_image_url ?? row.images?.jpg?.image_url ?? null,
+    score: row.score,
+    malUrl: row.url,
+  }));
+}

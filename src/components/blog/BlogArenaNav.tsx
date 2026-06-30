@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BrandMark } from "@/components/BrandMark";
+import { AnimeSearchButton } from "@/components/AnimeSearchButton";
 import { NotificationBell } from "@/components/NotificationBell";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -160,6 +161,7 @@ export function BlogArenaNav() {
             <span className="h-9 w-20 animate-pulse rounded-lg bg-zinc-800" />
           ) : user ? (
             <>
+              <AnimeSearchButton tone="dark" />
               <NotificationBell />
               <Link
                 href="/profile"
@@ -175,6 +177,7 @@ export function BlogArenaNav() {
             </>
           ) : (
             <>
+              <AnimeSearchButton tone="dark" />
               <Link
                 href="/login?next=%2Fblog"
                 className="text-sm font-medium text-zinc-300 transition hover:text-white"

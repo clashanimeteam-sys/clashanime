@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BrandMark } from "@/components/BrandMark";
+import { AnimeSearchButton } from "@/components/AnimeSearchButton";
 import { ClashLiveBadge } from "@/components/clash/ClashLiveBadge";
 import { NotificationBell } from "@/components/NotificationBell";
 import { useAuth } from "@/providers/AuthProvider";
@@ -71,6 +72,7 @@ export function AuthTopBar() {
     <span className="h-9 w-24 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-900" />
   ) : (
     <>
+      <AnimeSearchButton />
       {user ? <NotificationBell /> : null}
       <Link
         href={user ? "/upload" : "/login?next=%2Fupload"}
