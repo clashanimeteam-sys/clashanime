@@ -1,15 +1,14 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import { BlogHeroSlidePositionEditor } from "@/components/admin/BlogHeroSlidePositionEditor";
 import {
   DEFAULT_BLOG_HERO_DISPLAY,
   MAX_BLOG_HERO_SLIDES,
+  applyPresetToSlide,
   createEmptyHeroSlideSlots,
-  objectPositionClass,
   type BlogHeroDisplaySettings,
-  type BlogHeroObjectPosition,
   type BlogHeroSlide,
 } from "@/lib/blog/heroSlides";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -84,7 +83,11 @@ export function AdminBlogHeroSlidesPanel() {
         throw new Error(payload.error ?? "Upload failed");
       }
 
-      updateSlide(index, { imageUrl: payload.imageUrl, enabled: true });
+      updateSlide(index, {
+        imageUrl: payload.imageUrl,
+        enabled: true,
+        ...applyPresetToSlide("center"),
+      });
       setMessage(t.admin.blog.heroSlides.uploaded.replace("{n}", String(index + 1)));
     } catch (uploadError) {
       setError(uploadError instanceof Error ? uploadError.message : "Upload failed");
@@ -125,13 +128,6 @@ export function AdminBlogHeroSlidesPanel() {
   };
 
   const enabledCount = slides.filter((slide) => slide.enabled && slide.imageUrl).length;
-  const positionOptions: { value: BlogHeroObjectPosition; label: string }[] = [
-    { value: "center", label: t.admin.blog.heroSlides.objectCenter },
-    { value: "top", label: t.admin.blog.heroSlides.objectTop },
-    { value: "bottom", label: t.admin.blog.heroSlides.objectBottom },
-    { value: "left", label: t.admin.blog.heroSlides.objectLeft },
-    { value: "right", label: t.admin.blog.heroSlides.objectRight },
-  ];
 
   return (
     <section className="space-y-4 rounded-2xl border border-zinc-800 bg-zinc-950/50 p-5">
@@ -247,44 +243,20 @@ export function AdminBlogHeroSlidesPanel() {
                 </label>
               </div>
 
-              <div className="relative mb-3 aspect-[16/7] overflow-hidden rounded-lg border border-zinc-800 bg-zinc-950">
-                {slide.imageUrl ? (
-                  <Image
-                    src={slide.imageUrl}
-                    alt=""
-                    fill
-                    className={`object-cover ${objectPositionClass(slide.objectPosition)}`}
-                    sizes="(max-width: 768px) 100vw, 320px"
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center px-3 text-center text-xs text-zinc-500">
-                    {t.admin.blog.heroSlides.emptySlot}
-                  </div>
-                )}
-              </div>
-
               {slide.imageUrl ? (
-                <label className="mb-3 block text-xs text-zinc-400">
-                  {t.admin.blog.heroSlides.objectPosition}
-                  <select
-                    value={slide.objectPosition}
-                    onChange={(event) =>
-                      updateSlide(index, {
-                        objectPosition: event.target.value as BlogHeroObjectPosition,
-                      })
-                    }
-                    className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-2 py-1.5 text-sm text-zinc-200"
-                  >
-                    {positionOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              ) : null}
+                <BlogHeroSlidePositionEditor
+                  imageUrl={slide.imageUrl}
+                  focalX={slide.focalX}
+                  focalY={slide.focalY}
+                  onChange={(patch) => updateSlide(index, patch)}
+                />
+              ) : (
+                <div className="mb-3 flex aspect-[16/7] items-center justify-center rounded-lg border border-zinc-800 bg-zinc-950 px-3 text-center text-xs text-zinc-500">
+                  {t.admin.blog.heroSlides.emptySlot}
+                </div>
+              )}
 
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="mt-3 flex flex-wrap items-center gap-2">
                 <label className="cursor-pointer rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-200 hover:border-orange-500/40">
                   {uploadingIndex === index
                     ? t.admin.blog.heroSlides.uploading

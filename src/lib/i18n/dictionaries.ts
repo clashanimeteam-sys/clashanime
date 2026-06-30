@@ -1477,6 +1477,8 @@ export type Dictionary = {
         objectBottom: string;
         objectLeft: string;
         objectRight: string;
+        dragHint: string;
+        focalMeta: string;
         previewOnSite: string;
         save: string;
         saving: string;
@@ -3223,6 +3225,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
           objectBottom: "Bottom",
           objectLeft: "Left",
           objectRight: "Right",
+          dragHint: "Drag or use arrow keys to reposition the image",
+          focalMeta: "Position: {x}% horizontal · {y}% vertical",
           previewOnSite: "Preview on site",
           save: "Save carousel",
           saving: "Saving...",
@@ -4952,6 +4956,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
           objectBottom: "下",
           objectLeft: "左",
           objectRight: "右",
+          dragHint: "ドラッグまたは矢印キーで画像位置を調整",
+          focalMeta: "位置: 横 {x}% · 縦 {y}%",
           previewOnSite: "サイトでプレビュー",
           save: "スライダーを保存",
           saving: "保存中...",
@@ -6683,6 +6689,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
           objectBottom: "أسفل",
           objectLeft: "يسار",
           objectRight: "يمين",
+          dragHint: "اسحب الصورة أو استخدم مفاتيح الأسهم لضبط الموضع",
+          focalMeta: "الموضع: {x}% أفقي · {y}% عمودي",
           previewOnSite: "معاينة على الموقع",
           save: "حفظ السلايدر",
           saving: "جاري الحفظ...",

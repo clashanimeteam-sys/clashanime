@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { objectPositionClass, type BlogHeroSlide } from "@/lib/blog/heroSlides";
+import { slideObjectPositionStyle, type BlogHeroSlide } from "@/lib/blog/heroSlides";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type BlogHeroSliderProps = {
@@ -93,7 +93,8 @@ export function BlogHeroSlider({
             alt=""
             fill
             priority={index === 0}
-            className={`object-cover ${objectPositionClass(slide.objectPosition)}`}
+            className="object-cover"
+            style={{ objectPosition: slideObjectPositionStyle(slide) }}
             sizes="100vw"
           />
         </div>
