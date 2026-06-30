@@ -1483,6 +1483,9 @@ export type Dictionary = {
         rotationMeta: string;
         rotateLeft: string;
         rotateRight: string;
+        zoomIn: string;
+        zoomOut: string;
+        zoomMeta: string;
         imageUrlLabel: string;
         imageUrlPlaceholder: string;
         linkUrlLabel: string;
@@ -3239,6 +3242,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
           rotationMeta: "Rotation: {deg}°",
           rotateLeft: "Rotate left",
           rotateRight: "Rotate right",
+          zoomIn: "Zoom in",
+          zoomOut: "Zoom out",
+          zoomMeta: "Zoom: {zoom}%",
           imageUrlLabel: "Image URL",
           imageUrlPlaceholder: "https://example.com/image.jpg",
           linkUrlLabel: "Click-through link",
@@ -4978,6 +4984,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
           rotationMeta: "回転: {deg}°",
           rotateLeft: "左に回転",
           rotateRight: "右に回転",
+          zoomIn: "拡大",
+          zoomOut: "縮小",
+          zoomMeta: "ズーム: {zoom}%",
           imageUrlLabel: "画像URL",
           imageUrlPlaceholder: "https://example.com/image.jpg",
           linkUrlLabel: "クリック先リンク",
@@ -6719,6 +6728,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
           rotationMeta: "التدوير: {deg}°",
           rotateLeft: "تدوير يسار",
           rotateRight: "تدوير يمين",
+          zoomIn: "تكبير",
+          zoomOut: "تصغير",
+          zoomMeta: "التكبير: {zoom}%",
           imageUrlLabel: "رابط الصورة",
           imageUrlPlaceholder: "https://example.com/image.jpg",
           linkUrlLabel: "رابط عند الضغط على الصورة",

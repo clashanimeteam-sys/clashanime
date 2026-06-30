@@ -4,13 +4,17 @@ import Image from "next/image";
 import {
   isOptimizableHeroImageUrl,
   parseRotation,
+  parseZoom,
   slideImageTransformStyle,
   slideObjectPositionStyle,
   type BlogHeroSlide,
 } from "@/lib/blog/heroSlides";
 
 type BlogHeroSlideImageProps = {
-  slide: Pick<BlogHeroSlide, "imageUrl" | "focalX" | "focalY" | "objectPosition" | "rotation">;
+  slide: Pick<
+    BlogHeroSlide,
+    "imageUrl" | "focalX" | "focalY" | "objectPosition" | "rotation" | "zoom"
+  >;
   priority?: boolean;
   sizes: string;
   className?: string;
@@ -23,7 +27,8 @@ export function BlogHeroSlideImage({
   className = "object-cover",
 }: BlogHeroSlideImageProps) {
   const rotation = parseRotation(slide.rotation);
-  const transformStyle = slideImageTransformStyle(rotation);
+  const zoom = parseZoom(slide.zoom);
+  const transformStyle = slideImageTransformStyle(rotation, zoom);
   const objectPosition = slideObjectPositionStyle(slide);
   const useNextImage = isOptimizableHeroImageUrl(slide.imageUrl);
 

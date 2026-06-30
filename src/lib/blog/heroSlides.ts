@@ -11,6 +11,11 @@ export const BLOG_HERO_LIVE_FRAME_CLASS = `${BLOG_HERO_FRAME_CLASS} border-y bor
 export type BlogHeroObjectPosition = "center" | "top" | "bottom" | "left" | "right";
 export type BlogHeroRotation = 0 | 90 | 180 | 270;
 
+export const MIN_BLOG_HERO_ZOOM = 50;
+export const MAX_BLOG_HERO_ZOOM = 300;
+export const DEFAULT_BLOG_HERO_ZOOM = 100;
+export const BLOG_HERO_ZOOM_STEP = 10;
+
 export type BlogHeroSlide = {
   id: string;
   imageUrl: string;
@@ -21,6 +26,7 @@ export type BlogHeroSlide = {
   focalX: number;
   focalY: number;
   rotation: BlogHeroRotation;
+  zoom: number;
 };
 
 export type BlogHeroDisplaySettings = {
@@ -98,15 +104,37 @@ export function rotateSlideCounterClockwise(rotation: BlogHeroRotation): BlogHer
   return parseRotation(rotation - 90);
 }
 
-export function slideImageTransformStyle(rotation: BlogHeroRotation): { transform?: string } {
-  if (rotation === 0) {
+export function parseZoom(value: unknown): number {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return DEFAULT_BLOG_HERO_ZOOM;
+  }
+
+  return Math.min(MAX_BLOG_HERO_ZOOM, Math.max(MIN_BLOG_HERO_ZOOM, Math.round(value)));
+}
+
+export function zoomSlideIn(zoom: number): number {
+  return parseZoom(zoom + BLOG_HERO_ZOOM_STEP);
+}
+
+export function zoomSlideOut(zoom: number): number {
+  return parseZoom(zoom - BLOG_HERO_ZOOM_STEP);
+}
+
+export function slideImageTransformStyle(
+  rotation: BlogHeroRotation,
+  zoom: number = DEFAULT_BLOG_HERO_ZOOM,
+): { transform?: string } {
+  const zoomFactor = parseZoom(zoom) / 100;
+  const coverScale = BLOG_HERO_ASPECT_WIDTH / BLOG_HERO_ASPECT_HEIGHT;
+  const rotationScale = rotation === 90 || rotation === 270 ? coverScale : 1;
+  const totalScale = rotationScale * zoomFactor;
+
+  if (rotation === 0 && totalScale === 1) {
     return {};
   }
 
-  const coverScale = BLOG_HERO_ASPECT_WIDTH / BLOG_HERO_ASPECT_HEIGHT;
-  const scale = rotation === 180 ? 1 : coverScale;
   return {
-    transform: `rotate(${rotation}deg) scale(${scale})`,
+    transform: `rotate(${rotation}deg) scale(${totalScale})`,
   };
 }
 
@@ -172,6 +200,7 @@ export function createEmptyHeroSlideSlots(): BlogHeroSlide[] {
     focalX: 50,
     focalY: 50,
     rotation: 0,
+    zoom: DEFAULT_BLOG_HERO_ZOOM,
   }));
 }
 
@@ -202,6 +231,7 @@ export function parseBlogHeroSlides(value: unknown): BlogHeroSlide[] {
       focalX: focal.focalX,
       focalY: focal.focalY,
       rotation: parseRotation(row.rotation),
+      zoom: parseZoom(row.zoom),
     };
   });
 }
@@ -243,6 +273,7 @@ export function normalizeBlogHeroSlidesForSave(slides: BlogHeroSlide[]): BlogHer
       focalX: focal.focalX,
       focalY: focal.focalY,
       rotation: parseRotation(slide.rotation),
+      zoom: parseZoom(slide.zoom),
     };
   });
 }

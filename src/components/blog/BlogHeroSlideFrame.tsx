@@ -5,7 +5,10 @@ import { BlogHeroSlideImage } from "@/components/blog/BlogHeroSlideImage";
 import { BLOG_HERO_FRAME_CLASS, type BlogHeroSlide } from "@/lib/blog/heroSlides";
 
 type BlogHeroSlideFrameProps = {
-  slide: Pick<BlogHeroSlide, "imageUrl" | "focalX" | "focalY" | "objectPosition" | "rotation">;
+  slide: Pick<
+    BlogHeroSlide,
+    "imageUrl" | "focalX" | "focalY" | "objectPosition" | "rotation" | "zoom"
+  >;
   priority?: boolean;
   sizes?: string;
   className?: string;

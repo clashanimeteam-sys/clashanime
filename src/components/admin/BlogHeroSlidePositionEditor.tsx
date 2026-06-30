@@ -4,8 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { BlogHeroSlideFrame } from "@/components/blog/BlogHeroSlideFrame";
 import {
   clampFocal,
+  parseZoom,
   rotateSlideClockwise,
   rotateSlideCounterClockwise,
+  zoomSlideIn,
+  zoomSlideOut,
   type BlogHeroRotation,
 } from "@/lib/blog/heroSlides";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -15,7 +18,13 @@ type BlogHeroSlidePositionEditorProps = {
   focalX: number;
   focalY: number;
   rotation: BlogHeroRotation;
-  onChange: (patch: { focalX?: number; focalY?: number; rotation?: BlogHeroRotation }) => void;
+  zoom: number;
+  onChange: (patch: {
+    focalX?: number;
+    focalY?: number;
+    rotation?: BlogHeroRotation;
+    zoom?: number;
+  }) => void;
 };
 
 export function BlogHeroSlidePositionEditor({
@@ -23,6 +32,7 @@ export function BlogHeroSlidePositionEditor({
   focalX,
   focalY,
   rotation,
+  zoom,
   onChange,
 }: BlogHeroSlidePositionEditorProps) {
   const { t } = useLocale();
@@ -30,7 +40,8 @@ export function BlogHeroSlidePositionEditor({
   const dragRef = useRef<{ startX: number; startY: number; originX: number; originY: number } | null>(null);
   const [dragging, setDragging] = useState(false);
 
-  const slide = { imageUrl, focalX, focalY, objectPosition: "center" as const, rotation };
+  const slide = { imageUrl, focalX, focalY, objectPosition: "center" as const, rotation, zoom };
+  const zoomValue = parseZoom(zoom);
 
   const moveByPointer = useCallback(
     (clientX: number, clientY: number) => {
@@ -156,9 +167,27 @@ export function BlogHeroSlidePositionEditor({
           .replace("{y}", String(focalY))}
         {" · "}
         {t.admin.blog.heroSlides.rotationMeta.replace("{deg}", String(rotation))}
+        {" · "}
+        {t.admin.blog.heroSlides.zoomMeta.replace("{zoom}", String(zoomValue))}
       </p>
 
       <div className="flex flex-wrap gap-1.5">
+        <button
+          type="button"
+          onClick={() => onChange({ zoom: zoomSlideOut(zoomValue) })}
+          className="rounded-full border border-zinc-700 px-2.5 py-1 text-[11px] font-semibold text-zinc-300 transition hover:border-orange-500/40"
+          title={t.admin.blog.heroSlides.zoomOut}
+        >
+          − {t.admin.blog.heroSlides.zoomOut}
+        </button>
+        <button
+          type="button"
+          onClick={() => onChange({ zoom: zoomSlideIn(zoomValue) })}
+          className="rounded-full border border-zinc-700 px-2.5 py-1 text-[11px] font-semibold text-zinc-300 transition hover:border-orange-500/40"
+          title={t.admin.blog.heroSlides.zoomIn}
+        >
+          + {t.admin.blog.heroSlides.zoomIn}
+        </button>
         <button
           type="button"
           onClick={() => onChange({ rotation: rotateSlideCounterClockwise(rotation) })}
