@@ -216,6 +216,9 @@ export type Dictionary = {
       watchNowPageSubtitle: string;
       watchNowEmpty: string;
       openTrackerPage: string;
+      backToWatchNow: string;
+      watchNowStoryHeading: string;
+      watchNowTrailerHeading: string;
       watchTrailer: string;
       hideTrailer: string;
       spotlightHeading: string;
@@ -1825,6 +1828,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
           "Trailers, posters, and the full curated spotlight across legends, action, romance, and more.",
         watchNowEmpty: "The watch-now spotlight is loading. Check back shortly.",
         openTrackerPage: "Open anime tracker",
+        backToWatchNow: "Back to watch now",
+        watchNowStoryHeading: "Story",
+        watchNowTrailerHeading: "Trailer",
         watchTrailer: "Watch trailer",
         hideTrailer: "Hide trailer",
         spotlightHeading: "Essential anime spotlight",
@@ -3533,6 +3539,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
           "予告編、ポスター、伝説・アクション・恋愛などの厳選スポットライトをすべて表示します。",
         watchNowEmpty: "今すぐ視聴のスポットライトを読み込み中です。しばらくしてから再度お試しください。",
         openTrackerPage: "アニメトラッカーを開く",
+        backToWatchNow: "今すぐ視聴に戻る",
+        watchNowStoryHeading: "あらすじ",
+        watchNowTrailerHeading: "予告編",
         watchTrailer: "予告を見る",
         hideTrailer: "予告を隠す",
         spotlightHeading: "定番アニメスポットライト",
@@ -5223,6 +5232,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
           "الإعلانات والغلافات وقائمة الأنميات المختارة كاملةً — الأساطير والأكشن والرومانس والمزيد.",
         watchNowEmpty: "قائمة شاهد الآن قيد التحميل. حاول مرة أخرى بعد قليل.",
         openTrackerPage: "افتح متتبع الأنمي",
+        backToWatchNow: "العودة لشاهد الآن",
+        watchNowStoryHeading: "القصة",
+        watchNowTrailerHeading: "الإعلان",
         watchTrailer: "شاهد الإعلان",
         hideTrailer: "إخفاء الإعلان",
         spotlightHeading: "أهم الأنميات دائماً",

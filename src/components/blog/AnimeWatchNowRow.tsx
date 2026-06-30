@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import type { FeaturedAnimeEntry } from "@/lib/animeNews/featuredAnimeCatalog";
+import { watchNowAnimePath } from "@/lib/animeNews/watchNowPaths";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type AnimeWatchNowRowProps = {
@@ -28,30 +28,24 @@ function YoutubeEmbed({ youtubeId }: { youtubeId: string }) {
 
 export function AnimeWatchNowRow({ entries, limit = 12, compact = false }: AnimeWatchNowRowProps) {
   const { t } = useLocale();
-  const [activeKey, setActiveKey] = useState<string | null>(null);
   const items = entries.slice(0, limit);
 
   if (items.length === 0) return null;
 
-  const active = items.find((entry) => entry.key === activeKey) ?? items[0];
+  const featured = items[0];
 
   return (
     <section className={compact ? "space-y-3" : "space-y-4"}>
       <h2 className="font-display text-lg font-bold text-white">{t.blog.animeNews.watchNowHeading}</h2>
 
-      {!compact && active?.youtubeId ? <YoutubeEmbed youtubeId={active.youtubeId} /> : null}
+      {!compact && featured?.youtubeId ? <YoutubeEmbed youtubeId={featured.youtubeId} /> : null}
 
       <div className="flex gap-3 overflow-x-auto pb-2" data-allow-horizontal-scroll="true">
         {items.map((entry) => (
-          <button
+          <Link
             key={entry.key}
-            type="button"
-            onClick={() => setActiveKey(entry.key)}
-            className={`group w-[120px] shrink-0 text-start transition ${
-              activeKey === entry.key || (!activeKey && entry.key === items[0]?.key)
-                ? "opacity-100"
-                : "opacity-80 hover:opacity-100"
-            }`}
+            href={watchNowAnimePath(entry.key)}
+            className="group w-[120px] shrink-0 text-start transition hover:opacity-100"
           >
             <div className="relative aspect-[2/3] overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 group-hover:border-orange-500/40">
               {entry.posterUrl ? (
@@ -65,17 +59,19 @@ export function AnimeWatchNowRow({ entries, limit = 12, compact = false }: Anime
                 />
               ) : null}
             </div>
-            <p className="mt-2 line-clamp-2 text-xs font-semibold leading-snug text-zinc-200">{entry.title}</p>
+            <p className="mt-2 line-clamp-2 text-xs font-semibold leading-snug text-zinc-200 group-hover:text-orange-200">
+              {entry.title}
+            </p>
             <span className="mt-1 inline-flex items-center gap-1 text-[10px] font-semibold text-orange-300">
               <span aria-hidden>▶</span>
               {t.blog.animeNews.watchNowCta}
             </span>
-          </button>
+          </Link>
         ))}
       </div>
 
-      {!compact && active?.synopsis ? (
-        <p className="text-sm leading-relaxed text-zinc-400">{active.synopsis}</p>
+      {!compact && featured?.synopsis ? (
+        <p className="text-sm leading-relaxed text-zinc-400">{featured.synopsis}</p>
       ) : null}
 
       <Link

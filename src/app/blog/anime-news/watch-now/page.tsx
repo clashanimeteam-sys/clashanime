@@ -1,7 +1,6 @@
 import { AnimeWatchNowPageContent } from "@/components/blog/AnimeWatchNowPageContent";
 import { JsonLd } from "@/components/JsonLd";
-import { getFeaturedAnimeCatalog, parseFeaturedAnimeCatalog } from "@/lib/animeNews/featuredAnimeEnrich";
-import { getStoredAnimeSpotlightCatalog } from "@/lib/animeNews.server";
+import { loadWatchNowCatalog } from "@/lib/animeNews/watchNow.server";
 import { absoluteSiteUrl } from "@/lib/siteSeo";
 import { buildBlogHubJsonLd, buildPageMetadata } from "@/lib/seoMetadata";
 
@@ -20,9 +19,7 @@ export async function generateMetadata() {
 }
 
 export default async function AnimeWatchNowPage() {
-  const storedRaw = await getStoredAnimeSpotlightCatalog();
-  const stored = parseFeaturedAnimeCatalog(storedRaw);
-  const catalog = await getFeaturedAnimeCatalog(stored);
+  const catalog = await loadWatchNowCatalog();
 
   return (
     <>

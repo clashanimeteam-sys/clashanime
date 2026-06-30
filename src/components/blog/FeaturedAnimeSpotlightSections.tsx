@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import type { FeaturedAnimeCategory, FeaturedAnimeEntry } from "@/lib/animeNews/featuredAnimeCatalog";
+import { watchNowAnimePath } from "@/lib/animeNews/watchNowPaths";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type FeaturedAnimeSpotlightSectionsProps = {
@@ -22,10 +22,12 @@ const SECTION_ORDER: FeaturedAnimeCategory[] = [
 
 function SpotlightCard({ entry }: { entry: FeaturedAnimeEntry }) {
   const { t } = useLocale();
-  const [showVideo, setShowVideo] = useState(false);
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-xl border border-zinc-800/80 bg-zinc-950/80 transition hover:border-orange-500/35">
+    <Link
+      href={watchNowAnimePath(entry.key)}
+      className="group flex flex-col overflow-hidden rounded-xl border border-zinc-800/80 bg-zinc-950/80 transition hover:-translate-y-0.5 hover:border-orange-500/35"
+    >
       <div className="relative aspect-[2/3] bg-zinc-900">
         {entry.posterUrl ? (
           <Image
@@ -39,40 +41,18 @@ function SpotlightCard({ entry }: { entry: FeaturedAnimeEntry }) {
         ) : null}
       </div>
       <div className="flex flex-1 flex-col p-3">
-        <h3 className="font-display text-sm font-bold leading-snug text-white">{entry.title}</h3>
+        <h3 className="font-display text-sm font-bold leading-snug text-white group-hover:text-orange-200">
+          {entry.title}
+        </h3>
         {entry.synopsis ? (
           <p className="mt-2 line-clamp-4 flex-1 text-xs leading-relaxed text-zinc-400">{entry.synopsis}</p>
         ) : null}
-        <div className="mt-3 flex flex-wrap gap-2">
-          {entry.youtubeId ? (
-            <button
-              type="button"
-              onClick={() => setShowVideo((value) => !value)}
-              className="rounded-full border border-orange-500/40 px-3 py-1 text-[11px] font-semibold text-orange-200"
-            >
-              {showVideo ? t.blog.animeNews.hideTrailer : t.blog.animeNews.watchTrailer}
-            </button>
-          ) : null}
-          <Link
-            href="/tracker"
-            className="rounded-full border border-zinc-700 px-3 py-1 text-[11px] font-semibold text-zinc-300"
-          >
-            {t.blog.animeNews.watchNowCta}
-          </Link>
-        </div>
-        {showVideo && entry.youtubeId ? (
-          <div className="relative mt-3 aspect-video overflow-hidden rounded-lg bg-black">
-            <iframe
-              src={`https://www.youtube.com/embed/${entry.youtubeId}`}
-              title={entry.title}
-              className="absolute inset-0 h-full w-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        ) : null}
+        <span className="mt-3 inline-flex items-center gap-1 text-[11px] font-semibold text-orange-300">
+          <span aria-hidden>▶</span>
+          {t.blog.animeNews.watchNowCta}
+        </span>
       </div>
-    </article>
+    </Link>
   );
 }
 
