@@ -1,8 +1,12 @@
+import { buildMalIdToGuideKeyMap } from "@/lib/animeNews/heroGuideCatalogMap";
+import { resolveWatchNowGuidePath } from "@/lib/animeNews/heroGuidePaths";
+import { loadWatchNowCatalog } from "@/lib/animeNews/watchNow.server";
 import { searchJikanAnime, type JikanAnimeSearchHit } from "@/lib/jikan";
 import { createServerClient } from "@/lib/supabase/server";
 
 export type AnimeSearchResult = JikanAnimeSearchHit & {
   clashId: string | null;
+  guidePath: string;
 };
 
 async function loadClashIdsByMalId(malIds: number[]): Promise<Map<number, string>> {
@@ -32,10 +36,15 @@ export async function searchAnimeCatalog(query: string, limit = 8): Promise<Anim
   const hits = await searchJikanAnime(query, limit);
   if (hits.length === 0) return [];
 
-  const clashByMalId = await loadClashIdsByMalId(hits.map((hit) => hit.malId));
+  const [clashByMalId, catalog] = await Promise.all([
+    loadClashIdsByMalId(hits.map((hit) => hit.malId)),
+    loadWatchNowCatalog(),
+  ]);
+  const guideKeyByMalId = buildMalIdToGuideKeyMap(catalog);
 
   return hits.map((hit) => ({
     ...hit,
     clashId: clashByMalId.get(hit.malId) ?? null,
+    guidePath: resolveWatchNowGuidePath(hit.malId, guideKeyByMalId.get(hit.malId) ?? null),
   }));
 }

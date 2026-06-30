@@ -153,7 +153,12 @@ export function AnimeSearchButton({ tone = "default" }: AnimeSearchButtonProps) 
                       className="rounded-xl border border-transparent p-2 transition-colors hover:border-zinc-200 hover:bg-zinc-50 dark:hover:border-zinc-800 dark:hover:bg-zinc-900/80"
                     >
                       <div className="flex gap-3">
-                        <div className="relative h-16 w-11 shrink-0 overflow-hidden rounded-lg bg-zinc-200 dark:bg-zinc-800">
+                        <Link
+                          href={hit.guidePath}
+                          onClick={() => setOpen(false)}
+                          className="relative h-16 w-11 shrink-0 overflow-hidden rounded-lg bg-zinc-200 ring-1 ring-transparent transition hover:ring-orange-500/50 dark:bg-zinc-800"
+                          aria-label={`${t.animeSearch.openGuide}: ${title}`}
+                        >
                           {hit.posterUrl ? (
                             <Image
                               src={hit.posterUrl}
@@ -168,10 +173,16 @@ export function AnimeSearchButton({ tone = "default" }: AnimeSearchButtonProps) 
                               📺
                             </div>
                           )}
-                        </div>
+                        </Link>
 
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-semibold text-zinc-900 dark:text-white">{title}</p>
+                          <Link
+                            href={hit.guidePath}
+                            onClick={() => setOpen(false)}
+                            className="block truncate text-sm font-semibold text-zinc-900 transition hover:text-orange-500 dark:text-white dark:hover:text-orange-300"
+                          >
+                            {title}
+                          </Link>
                           {hit.score ? (
                             <p className="mt-0.5 text-xs text-zinc-500">
                               {t.animeSearch.scoreLabel.replace("{score}", formatNumber(hit.score))}
@@ -179,6 +190,13 @@ export function AnimeSearchButton({ tone = "default" }: AnimeSearchButtonProps) 
                           ) : null}
 
                           <div className="mt-2 flex flex-wrap gap-1.5">
+                            <Link
+                              href={hit.guidePath}
+                              onClick={() => setOpen(false)}
+                              className="rounded-full border border-orange-500/40 bg-orange-500/10 px-2.5 py-1 text-[11px] font-semibold text-orange-600 transition hover:bg-orange-500/20 dark:text-orange-300"
+                            >
+                              {t.animeSearch.openGuide}
+                            </Link>
                             <Link
                               href={clipsHref}
                               onClick={() => setOpen(false)}

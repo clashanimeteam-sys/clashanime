@@ -738,6 +738,7 @@ export type Dictionary = {
     viewClips: string;
     viewTracker: string;
     openClash: string;
+    openGuide: string;
     scoreLabel: string;
   };
   points: {
@@ -2488,6 +2489,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       viewClips: "Site clips",
       viewTracker: "Anime radar",
       openClash: "Release clash",
+      openGuide: "Heroes guide",
       scoreLabel: "Score {score}",
     },
     points: {
@@ -4249,6 +4251,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       viewClips: "サイトのクリップ",
       viewTracker: "新作レーダー",
       openClash: "リリースクラッシュ",
+      openGuide: "英雄ガイド",
       scoreLabel: "スコア {score}",
     },
     points: {
@@ -6004,6 +6007,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       viewClips: "مقاطع الموقع",
       viewTracker: "رادار الأنمي",
       openClash: "نزال الإصدار",
+      openGuide: "دليل الأبطال",
       scoreLabel: "التقييم {score}",
     },
     points: {
