@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { BlogArenaNav } from "@/components/blog/BlogArenaNav";
 import { BlogHeroBanner } from "@/components/blog/BlogHeroBanner";
+import { Footer } from "@/components/Footer";
 
 type BlogPageShellProps = {
   children: ReactNode;
@@ -16,6 +17,7 @@ export function BlogPageShell({ children, heroCompact = false, articleTitle }: B
       <BlogArenaNav />
       <BlogHeroBanner compact={heroCompact} articleTitle={articleTitle} />
       {children}
+      <Footer />
     </div>
   );
 }
