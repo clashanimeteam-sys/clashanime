@@ -24,7 +24,7 @@ export type BlogHeroDisplaySettings = {
 export const DEFAULT_BLOG_HERO_DISPLAY: BlogHeroDisplaySettings = {
   carouselEnabled: true,
   showTextOverlay: true,
-  overlayOpacity: 28,
+  overlayOpacity: 12,
   autoPlaySeconds: 5,
 };
 
