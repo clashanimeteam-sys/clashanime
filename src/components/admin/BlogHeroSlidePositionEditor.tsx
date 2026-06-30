@@ -3,11 +3,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { BlogHeroSlideFrame } from "@/components/blog/BlogHeroSlideFrame";
 import {
-  applyPresetToSlide,
   clampFocal,
   rotateSlideClockwise,
   rotateSlideCounterClockwise,
-  type BlogHeroObjectPosition,
   type BlogHeroRotation,
 } from "@/lib/blog/heroSlides";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -17,15 +15,8 @@ type BlogHeroSlidePositionEditorProps = {
   focalX: number;
   focalY: number;
   rotation: BlogHeroRotation;
-  onChange: (patch: {
-    focalX?: number;
-    focalY?: number;
-    rotation?: BlogHeroRotation;
-    objectPosition?: BlogHeroObjectPosition;
-  }) => void;
+  onChange: (patch: { focalX?: number; focalY?: number; rotation?: BlogHeroRotation }) => void;
 };
-
-const PRESETS: BlogHeroObjectPosition[] = ["center", "top", "bottom", "left", "right"];
 
 export function BlogHeroSlidePositionEditor({
   imageUrl,
@@ -40,11 +31,6 @@ export function BlogHeroSlidePositionEditor({
   const [dragging, setDragging] = useState(false);
 
   const slide = { imageUrl, focalX, focalY, objectPosition: "center" as const, rotation };
-
-  const applyPreset = (preset: BlogHeroObjectPosition) => {
-    const next = applyPresetToSlide(preset);
-    onChange(next);
-  };
 
   const moveByPointer = useCallback(
     (clientX: number, clientY: number) => {
@@ -123,21 +109,6 @@ export function BlogHeroSlidePositionEditor({
     return () => frame.removeEventListener("keydown", onKeyDown);
   }, [focalX, focalY, onChange]);
 
-  const presetLabel = (preset: BlogHeroObjectPosition) => {
-    switch (preset) {
-      case "top":
-        return t.admin.blog.heroSlides.objectTop;
-      case "bottom":
-        return t.admin.blog.heroSlides.objectBottom;
-      case "left":
-        return t.admin.blog.heroSlides.objectLeft;
-      case "right":
-        return t.admin.blog.heroSlides.objectRight;
-      default:
-        return t.admin.blog.heroSlides.objectCenter;
-    }
-  };
-
   return (
     <div className="space-y-2">
       <p className="text-xs text-zinc-400">{t.admin.blog.heroSlides.objectPosition}</p>
@@ -204,29 +175,6 @@ export function BlogHeroSlidePositionEditor({
         >
           ↻ {t.admin.blog.heroSlides.rotateRight}
         </button>
-      </div>
-
-      <div className="flex flex-wrap gap-1.5">
-        {PRESETS.map((preset) => {
-          const presetFocal = applyPresetToSlide(preset);
-          const isActive =
-            Math.abs(focalX - presetFocal.focalX) < 2 && Math.abs(focalY - presetFocal.focalY) < 2;
-
-          return (
-            <button
-              key={preset}
-              type="button"
-              onClick={() => applyPreset(preset)}
-              className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold transition ${
-                isActive
-                  ? "border-orange-400/60 bg-orange-950/50 text-orange-200"
-                  : "border-zinc-700 text-zinc-300 hover:border-orange-500/40"
-              }`}
-            >
-              {presetLabel(preset)}
-            </button>
-          );
-        })}
       </div>
     </div>
   );

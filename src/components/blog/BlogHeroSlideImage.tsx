@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import {
+  isOptimizableHeroImageUrl,
   parseRotation,
   slideImageTransformStyle,
   slideObjectPositionStyle,
@@ -23,20 +24,33 @@ export function BlogHeroSlideImage({
 }: BlogHeroSlideImageProps) {
   const rotation = parseRotation(slide.rotation);
   const transformStyle = slideImageTransformStyle(rotation);
+  const objectPosition = slideObjectPositionStyle(slide);
+  const useNextImage = isOptimizableHeroImageUrl(slide.imageUrl);
 
   return (
     <div className="relative h-full w-full overflow-hidden">
       <div className="relative h-full w-full origin-center" style={transformStyle}>
-        <Image
-          src={slide.imageUrl}
-          alt=""
-          fill
-          priority={priority}
-          draggable={false}
-          className={`${className} select-none`}
-          style={{ objectPosition: slideObjectPositionStyle(slide) }}
-          sizes={sizes}
-        />
+        {useNextImage ? (
+          <Image
+            src={slide.imageUrl}
+            alt=""
+            fill
+            priority={priority}
+            draggable={false}
+            className={`${className} select-none`}
+            style={{ objectPosition }}
+            sizes={sizes}
+          />
+        ) : (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={slide.imageUrl}
+            alt=""
+            draggable={false}
+            className={`absolute inset-0 h-full w-full ${className} select-none`}
+            style={{ objectPosition }}
+          />
+        )}
       </div>
     </div>
   );

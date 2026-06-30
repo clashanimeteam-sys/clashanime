@@ -4,7 +4,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { BlogHeroSlider } from "@/components/blog/BlogHeroSlider";
 import {
-  BLOG_HERO_FRAME_CLASS,
+  BLOG_HERO_LIVE_CONTAINER_CLASS,
+  BLOG_HERO_LIVE_FRAME_CLASS,
   DEFAULT_BLOG_HERO_DISPLAY,
   type BlogHeroDisplaySettings,
   type BlogHeroSlide,
@@ -145,23 +146,25 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
   if (hasCustomSlides) {
     return (
       <section className="border-b border-zinc-800" aria-label={t.blog.hubTitle}>
-        <div className={BLOG_HERO_FRAME_CLASS}>
-          <BlogHeroSlider slides={slides} autoPlaySeconds={display.autoPlaySeconds} />
+        <div className={BLOG_HERO_LIVE_CONTAINER_CLASS}>
+          <div className={BLOG_HERO_LIVE_FRAME_CLASS}>
+            <BlogHeroSlider slides={slides} autoPlaySeconds={display.autoPlaySeconds} />
 
-          {overlayOpacity > 0 ? (
-            <div
-              className="pointer-events-none absolute inset-0 z-[1]"
-              style={{
-                background: `linear-gradient(180deg, rgba(9,9,11,${overlayOpacity * 0.15}) 0%, transparent 35%, transparent 65%, rgba(9,9,11,${overlayOpacity * 0.55}) 100%)`,
-              }}
-              aria-hidden
-            />
-          ) : (
-            <div
-              className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-20 bg-gradient-to-t from-zinc-950/50 to-transparent"
-              aria-hidden
-            />
-          )}
+            {overlayOpacity > 0 ? (
+              <div
+                className="pointer-events-none absolute inset-0 z-[1] rounded-xl"
+                style={{
+                  background: `linear-gradient(180deg, rgba(9,9,11,${overlayOpacity * 0.15}) 0%, transparent 35%, transparent 65%, rgba(9,9,11,${overlayOpacity * 0.55}) 100%)`,
+                }}
+                aria-hidden
+              />
+            ) : (
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-16 rounded-b-xl bg-gradient-to-t from-zinc-950/50 to-transparent"
+                aria-hidden
+              />
+            )}
+          </div>
         </div>
 
         {showGuideText ? (

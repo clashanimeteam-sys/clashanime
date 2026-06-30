@@ -5,6 +5,9 @@ export const BLOG_HERO_ASPECT_WIDTH = 16;
 export const BLOG_HERO_ASPECT_HEIGHT = 7;
 export const BLOG_HERO_FRAME_CLASS =
   "relative w-full aspect-[16/7] overflow-hidden bg-zinc-950";
+export const BLOG_HERO_LIVE_CONTAINER_CLASS =
+  "mx-auto w-full max-w-4xl px-4 pt-4 sm:max-w-5xl";
+export const BLOG_HERO_LIVE_FRAME_CLASS = `${BLOG_HERO_FRAME_CLASS} rounded-xl border border-zinc-800`;
 
 export type BlogHeroObjectPosition = "center" | "top" | "bottom" | "left" | "right";
 export type BlogHeroRotation = 0 | 90 | 180 | 270;
@@ -12,6 +15,7 @@ export type BlogHeroRotation = 0 | 90 | 180 | 270;
 export type BlogHeroSlide = {
   id: string;
   imageUrl: string;
+  linkUrl: string;
   sortOrder: number;
   enabled: boolean;
   objectPosition: BlogHeroObjectPosition;
@@ -107,6 +111,48 @@ export function slideImageTransformStyle(rotation: BlogHeroRotation): { transfor
   };
 }
 
+export function parseImageUrl(value: unknown): string {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return "";
+  }
+
+  if (trimmed.startsWith("/")) {
+    return trimmed;
+  }
+
+  try {
+    const url = new URL(trimmed);
+    if (url.protocol === "https:" || url.protocol === "http:") {
+      return trimmed;
+    }
+  } catch {
+    return "";
+  }
+
+  return "";
+}
+
+export function parseSlideLinkUrl(value: unknown): string {
+  return parseImageUrl(value);
+}
+
+export function isOptimizableHeroImageUrl(imageUrl: string): boolean {
+  if (!imageUrl || imageUrl.startsWith("/")) {
+    return true;
+  }
+
+  try {
+    return new URL(imageUrl).hostname.endsWith(".supabase.co");
+  } catch {
+    return false;
+  }
+}
+
 export function slideObjectPositionStyle(slide: Pick<BlogHeroSlide, "focalX" | "focalY" | "objectPosition">): string {
   const { focalX, focalY } =
     typeof slide.focalX === "number" && typeof slide.focalY === "number"
@@ -120,6 +166,7 @@ export function createEmptyHeroSlideSlots(): BlogHeroSlide[] {
   return Array.from({ length: MAX_BLOG_HERO_SLIDES }, (_, index) => ({
     id: `slot-${index + 1}`,
     imageUrl: "",
+    linkUrl: "",
     sortOrder: index,
     enabled: false,
     objectPosition: "center" as const,
@@ -143,12 +190,13 @@ export function parseBlogHeroSlides(value: unknown): BlogHeroSlide[] {
     }
 
     const row = entry as Partial<BlogHeroSlide>;
-    const imageUrl = typeof row.imageUrl === "string" ? row.imageUrl.trim() : "";
+    const imageUrl = parseImageUrl(row.imageUrl);
     const focal = parseSlideFocal(row);
 
     return {
       id: typeof row.id === "string" && row.id ? row.id : slot.id,
       imageUrl,
+      linkUrl: parseSlideLinkUrl(row.linkUrl),
       sortOrder: index,
       enabled: row.enabled !== false && Boolean(imageUrl),
       objectPosition: parseObjectPosition(row.objectPosition),
@@ -188,7 +236,8 @@ export function normalizeBlogHeroSlidesForSave(slides: BlogHeroSlide[]): BlogHer
 
     return {
       id: slide.id || `slot-${index + 1}`,
-      imageUrl: slide.imageUrl.trim(),
+      imageUrl: parseImageUrl(slide.imageUrl),
+      linkUrl: parseSlideLinkUrl(slide.linkUrl),
       sortOrder: index,
       enabled: slide.enabled !== false && Boolean(slide.imageUrl.trim()),
       objectPosition: parseObjectPosition(slide.objectPosition),

@@ -80,17 +80,36 @@ export function BlogHeroSlider({
       aria-roledescription="carousel"
       aria-label={t.blog.heroCarouselLabel}
     >
-      {slides.map((slide, index) => (
-        <div
-          key={slide.id}
-          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-            index === activeIndex ? "opacity-100" : "pointer-events-none opacity-0"
-          }`}
-          aria-hidden={index !== activeIndex}
-        >
-          <BlogHeroSlideImage slide={slide} priority={index === 0} sizes="100vw" />
-        </div>
-      ))}
+      {slides.map((slide, index) => {
+        const isActive = index === activeIndex;
+        const slideContent = (
+          <BlogHeroSlideImage slide={slide} priority={index === 0} sizes="(max-width: 1024px) 100vw, 1024px" />
+        );
+
+        return (
+          <div
+            key={slide.id}
+            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+              isActive ? "opacity-100" : "pointer-events-none opacity-0"
+            }`}
+            aria-hidden={!isActive}
+          >
+            {slide.linkUrl?.trim() ? (
+              <a
+                href={slide.linkUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`relative block h-full w-full ${isActive ? "cursor-pointer" : ""}`}
+                aria-label={t.blog.heroSlideLink}
+              >
+                {slideContent}
+              </a>
+            ) : (
+              slideContent
+            )}
+          </div>
+        );
+      })}
 
       {count > 1 ? (
         <>

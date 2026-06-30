@@ -244,6 +244,35 @@ export function AdminBlogHeroSlidesPanel() {
                 </label>
               </div>
 
+              <div className="mb-3 space-y-2">
+                <label className="block text-xs text-zinc-400">
+                  {t.admin.blog.heroSlides.imageUrlLabel}
+                  <input
+                    type="url"
+                    value={slide.imageUrl}
+                    onChange={(event) => {
+                      const imageUrl = event.target.value;
+                      updateSlide(index, {
+                        imageUrl,
+                        enabled: imageUrl.trim() ? slide.enabled || true : false,
+                      });
+                    }}
+                    placeholder={t.admin.blog.heroSlides.imageUrlPlaceholder}
+                    className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-2 py-1.5 text-sm text-zinc-200"
+                  />
+                </label>
+                <label className="block text-xs text-zinc-400">
+                  {t.admin.blog.heroSlides.linkUrlLabel}
+                  <input
+                    type="url"
+                    value={slide.linkUrl ?? ""}
+                    onChange={(event) => updateSlide(index, { linkUrl: event.target.value })}
+                    placeholder={t.admin.blog.heroSlides.linkUrlPlaceholder}
+                    className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-2 py-1.5 text-sm text-zinc-200"
+                  />
+                </label>
+              </div>
+
               {slide.imageUrl ? (
                 <BlogHeroSlidePositionEditor
                   imageUrl={slide.imageUrl}
@@ -281,7 +310,7 @@ export function AdminBlogHeroSlidesPanel() {
                 {slide.imageUrl ? (
                   <button
                     type="button"
-                    onClick={() => updateSlide(index, { imageUrl: "", enabled: false })}
+                    onClick={() => updateSlide(index, { imageUrl: "", linkUrl: "", enabled: false })}
                     className="rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-300 hover:border-red-500/40 hover:text-red-200"
                   >
                     {t.admin.blog.heroSlides.remove}

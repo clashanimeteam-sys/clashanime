@@ -177,6 +177,7 @@ export type Dictionary = {
     heroPrev: string;
     heroNext: string;
     heroGoToSlide: string;
+    heroSlideLink: string;
     navHome: string;
     navAccount: string;
     backToGuide: string;
@@ -1482,6 +1483,10 @@ export type Dictionary = {
         rotationMeta: string;
         rotateLeft: string;
         rotateRight: string;
+        imageUrlLabel: string;
+        imageUrlPlaceholder: string;
+        linkUrlLabel: string;
+        linkUrlPlaceholder: string;
         previewOnSite: string;
         save: string;
         saving: string;
@@ -1825,6 +1830,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       heroPrev: "Previous slide",
       heroNext: "Next slide",
       heroGoToSlide: "Go to slide {n}",
+      heroSlideLink: "Open slide link",
       navHome: "Home",
       navAccount: "Account",
       backToGuide: "Back to Arena Guide",
@@ -3233,6 +3239,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
           rotationMeta: "Rotation: {deg}°",
           rotateLeft: "Rotate left",
           rotateRight: "Rotate right",
+          imageUrlLabel: "Image URL",
+          imageUrlPlaceholder: "https://example.com/image.jpg",
+          linkUrlLabel: "Click-through link",
+          linkUrlPlaceholder: "https://example.com/destination",
           previewOnSite: "Preview on site",
           save: "Save carousel",
           saving: "Saving...",
@@ -3575,6 +3585,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       heroPrev: "前のスライド",
       heroNext: "次のスライド",
       heroGoToSlide: "スライド {n} へ",
+      heroSlideLink: "スライドのリンクを開く",
       navHome: "ホーム",
       navAccount: "アカウント",
       backToGuide: "ガイド一覧へ",
@@ -4967,6 +4978,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
           rotationMeta: "回転: {deg}°",
           rotateLeft: "左に回転",
           rotateRight: "右に回転",
+          imageUrlLabel: "画像URL",
+          imageUrlPlaceholder: "https://example.com/image.jpg",
+          linkUrlLabel: "クリック先リンク",
+          linkUrlPlaceholder: "https://example.com/destination",
           previewOnSite: "サイトでプレビュー",
           save: "スライダーを保存",
           saving: "保存中...",
@@ -5307,6 +5322,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       heroPrev: "الشريحة السابقة",
       heroNext: "الشريحة التالية",
       heroGoToSlide: "الانتقال إلى الشريحة {n}",
+      heroSlideLink: "فتح رابط الشريحة",
       navHome: "الرئيسية",
       navAccount: "الحساب",
       backToGuide: "العودة لدليل الأبطال",
@@ -6703,6 +6719,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
           rotationMeta: "التدوير: {deg}°",
           rotateLeft: "تدوير يسار",
           rotateRight: "تدوير يمين",
+          imageUrlLabel: "رابط الصورة",
+          imageUrlPlaceholder: "https://example.com/image.jpg",
+          linkUrlLabel: "رابط عند الضغط على الصورة",
+          linkUrlPlaceholder: "https://example.com/destination",
           previewOnSite: "معاينة على الموقع",
           save: "حفظ السلايدر",
           saving: "جاري الحفظ...",
