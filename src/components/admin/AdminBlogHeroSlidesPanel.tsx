@@ -282,7 +282,7 @@ export function AdminBlogHeroSlidesPanel() {
                   onChange={(patch) => updateSlide(index, patch)}
                 />
               ) : (
-                <div className="mb-3 flex aspect-[21/9] items-center justify-center rounded-lg border border-zinc-800 bg-zinc-950 px-3 text-center text-xs text-zinc-500">
+                <div className="mb-3 flex aspect-[5/1] items-center justify-center rounded-lg border border-zinc-800 bg-zinc-950 px-3 text-center text-xs text-zinc-500">
                   {t.admin.blog.heroSlides.emptySlot}
                 </div>
               )}
