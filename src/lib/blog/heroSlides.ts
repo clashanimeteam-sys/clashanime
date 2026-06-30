@@ -1,13 +1,12 @@
 export const BLOG_HERO_SLIDES_KEY = "blog_hero_slides";
 export const BLOG_HERO_DISPLAY_KEY = "blog_hero_display";
 export const MAX_BLOG_HERO_SLIDES = 10;
-export const BLOG_HERO_ASPECT_WIDTH = 16;
-export const BLOG_HERO_ASPECT_HEIGHT = 7;
+export const BLOG_HERO_ASPECT_WIDTH = 21;
+export const BLOG_HERO_ASPECT_HEIGHT = 9;
 export const BLOG_HERO_FRAME_CLASS =
-  "relative w-full aspect-[16/7] overflow-hidden bg-zinc-950";
-export const BLOG_HERO_LIVE_CONTAINER_CLASS =
-  "mx-auto w-full max-w-4xl px-4 pt-4 sm:max-w-5xl";
-export const BLOG_HERO_LIVE_FRAME_CLASS = `${BLOG_HERO_FRAME_CLASS} rounded-xl border border-zinc-800`;
+  "relative w-full aspect-[21/9] overflow-hidden bg-zinc-950";
+export const BLOG_HERO_LIVE_CONTAINER_CLASS = "w-full pt-3 sm:pt-4";
+export const BLOG_HERO_LIVE_FRAME_CLASS = `${BLOG_HERO_FRAME_CLASS} border-y border-zinc-800 sm:rounded-xl sm:border`;
 
 export type BlogHeroObjectPosition = "center" | "top" | "bottom" | "left" | "right";
 export type BlogHeroRotation = 0 | 90 | 180 | 270;
