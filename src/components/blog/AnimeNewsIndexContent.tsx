@@ -208,7 +208,7 @@ export function AnimeNewsIndexContent({ articles }: AnimeNewsIndexContentProps) 
         )}
 
         {spotlight.length > 0 ? (
-          <section className="mt-14 border-t border-zinc-800 pt-12">
+          <section id="watch-now" className="mt-14 scroll-mt-28 border-t border-zinc-800 pt-12">
             <FeaturedAnimeSpotlightSections catalog={spotlight} />
             <div className="mt-10 rounded-2xl border border-zinc-800/80 bg-zinc-950/80 p-5 sm:p-6">
               <AnimeWatchNowRow entries={spotlight} limit={16} />

@@ -213,6 +213,9 @@ export type Dictionary = {
       watchNowHeading: string;
       watchNowCta: string;
       openTracker: string;
+      watchNowPageSubtitle: string;
+      watchNowEmpty: string;
+      openTrackerPage: string;
       watchTrailer: string;
       hideTrailer: string;
       spotlightHeading: string;
@@ -1817,7 +1820,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
         storyHeading: "Anime story",
         watchNowHeading: "Watch now",
         watchNowCta: "Start watching",
-        openTracker: "Open anime tracker →",
+        openTracker: "View all watch now →",
+        watchNowPageSubtitle:
+          "Trailers, posters, and the full curated spotlight across legends, action, romance, and more.",
+        watchNowEmpty: "The watch-now spotlight is loading. Check back shortly.",
+        openTrackerPage: "Open anime tracker",
         watchTrailer: "Watch trailer",
         hideTrailer: "Hide trailer",
         spotlightHeading: "Essential anime spotlight",
@@ -3521,7 +3528,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
         storyHeading: "アニメのストーリー",
         watchNowHeading: "今すぐ視聴",
         watchNowCta: "視聴を始める",
-        openTracker: "アニメトラッカーを開く →",
+        openTracker: "今すぐ視聴をすべて見る →",
+        watchNowPageSubtitle:
+          "予告編、ポスター、伝説・アクション・恋愛などの厳選スポットライトをすべて表示します。",
+        watchNowEmpty: "今すぐ視聴のスポットライトを読み込み中です。しばらくしてから再度お試しください。",
+        openTrackerPage: "アニメトラッカーを開く",
         watchTrailer: "予告を見る",
         hideTrailer: "予告を隠す",
         spotlightHeading: "定番アニメスポットライト",
@@ -5207,7 +5218,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
         storyHeading: "قصة الأنمي",
         watchNowHeading: "شاهد الآن",
         watchNowCta: "ابدأ المشاهدة",
-        openTracker: "افتح متتبع الأنمي ←",
+        openTracker: "عرض كل شاهد الآن ←",
+        watchNowPageSubtitle:
+          "الإعلانات والغلافات وقائمة الأنميات المختارة كاملةً — الأساطير والأكشن والرومانس والمزيد.",
+        watchNowEmpty: "قائمة شاهد الآن قيد التحميل. حاول مرة أخرى بعد قليل.",
+        openTrackerPage: "افتح متتبع الأنمي",
         watchTrailer: "شاهد الإعلان",
         hideTrailer: "إخفاء الإعلان",
         spotlightHeading: "أهم الأنميات دائماً",

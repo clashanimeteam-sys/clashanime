@@ -79,7 +79,7 @@ export function AnimeWatchNowRow({ entries, limit = 12, compact = false }: Anime
       ) : null}
 
       <Link
-        href="/tracker"
+        href="/blog/anime-news/watch-now"
         className="inline-flex text-xs font-semibold text-orange-300 hover:text-orange-200"
       >
         {t.blog.animeNews.openTracker}
