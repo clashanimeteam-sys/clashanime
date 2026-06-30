@@ -1,4 +1,5 @@
 import { Cairo, Geist, Geist_Mono, Orbitron, Plus_Jakarta_Sans } from "next/font/google";
+import { AdSenseScript } from "@/components/ads/AdSenseScript";
 import { Providers } from "@/components/Providers";
 import { AppBootSkeleton } from "@/components/AppBootSkeleton";
 import { BlockTranslateScript } from "@/components/BlockTranslateScript";
@@ -69,6 +70,7 @@ export default function RootLayout({
         className="notranslate min-h-full bg-white text-black dark:bg-black dark:text-white"
       >
         <BlockTranslateScript />
+        <AdSenseScript />
         <ClientErrorBoundary>
           <ClientOnly fallback={<AppBootSkeleton />}>
             <Providers>{children}</Providers>

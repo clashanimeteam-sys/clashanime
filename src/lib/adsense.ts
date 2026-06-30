@@ -1,5 +1,7 @@
+const ADSENSE_CLIENT_ID = "ca-pub-6393794735329275";
+
 export function getAdSenseClientId() {
-  return process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID?.trim() || null;
+  return process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID?.trim() || ADSENSE_CLIENT_ID;
 }
 
 export function getAdSenseSlotId(variant: "banner" | "sidebar" = "banner") {
@@ -7,6 +9,10 @@ export function getAdSenseSlotId(variant: "banner" | "sidebar" = "banner") {
     return process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR?.trim() || process.env.NEXT_PUBLIC_ADSENSE_SLOT?.trim() || null;
   }
   return process.env.NEXT_PUBLIC_ADSENSE_SLOT?.trim() || null;
+}
+
+export function isAdSenseScriptReady() {
+  return Boolean(getAdSenseClientId());
 }
 
 export function isAdSenseEnabled() {

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getAdSenseClientId } from "@/lib/adsense";
 import { absoluteSiteUrl, SITE_URL } from "@/lib/siteSeo";
 import {
   buildAnimeDynamicKeywords,
@@ -181,6 +182,7 @@ export function buildPageMetadata(
 
 export function buildRootLayoutMetadata(): Metadata {
   const home = buildPageMetadata("home");
+  const adSenseClientId = getAdSenseClientId();
   return {
     ...home,
     metadataBase: new URL(SITE_URL),
@@ -197,6 +199,7 @@ export function buildRootLayoutMetadata(): Metadata {
     other: {
       "mobile-web-app-capable": "yes",
       google: "notranslate",
+      ...(adSenseClientId ? { "google-adsense-account": adSenseClientId } : {}),
     },
     icons: {
       icon: [
