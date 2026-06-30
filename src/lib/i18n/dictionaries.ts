@@ -1465,6 +1465,19 @@ export type Dictionary = {
       heroSlides: {
         title: string;
         subtitle: string;
+        displayTitle: string;
+        displaySubtitle: string;
+        carouselEnabled: string;
+        showTextOverlay: string;
+        overlayOpacity: string;
+        autoPlaySeconds: string;
+        objectPosition: string;
+        objectCenter: string;
+        objectTop: string;
+        objectBottom: string;
+        objectLeft: string;
+        objectRight: string;
+        previewOnSite: string;
         save: string;
         saving: string;
         saved: string;
@@ -3198,6 +3211,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
           title: "Hero cover carousel",
           subtitle:
             "Upload up to 10 wide banner images for the Heroes Guide hub (/blog). Slides rotate automatically and can be changed manually on the site.",
+          displayTitle: "Cover display settings",
+          displaySubtitle: "Control whether the carousel appears on the site, text overlay visibility, and how dark the cover looks.",
+          carouselEnabled: "Show carousel on site",
+          showTextOverlay: "Show center text box",
+          overlayOpacity: "Dark overlay strength",
+          autoPlaySeconds: "Auto-advance interval",
+          objectPosition: "Image crop focus",
+          objectCenter: "Center",
+          objectTop: "Top",
+          objectBottom: "Bottom",
+          objectLeft: "Left",
+          objectRight: "Right",
+          previewOnSite: "Preview on site",
           save: "Save carousel",
           saving: "Saving...",
           saved: "Hero carousel saved.",
@@ -4914,6 +4940,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
           title: "ヒーローカバースライダー",
           subtitle:
             "英雄ガイド（/blog）用のワイドバナーを最大10枚アップロード。サイト上で自動・手動切り替えできます。",
+          displayTitle: "カバー表示設定",
+          displaySubtitle: "サイトでの表示、テキスト枠、暗いオーバーレイの強さを調整します。",
+          carouselEnabled: "サイトでスライダーを表示",
+          showTextOverlay: "中央テキスト枠を表示",
+          overlayOpacity: "暗いオーバーレイの強さ",
+          autoPlaySeconds: "自動切り替え間隔",
+          objectPosition: "画像のトリミング位置",
+          objectCenter: "中央",
+          objectTop: "上",
+          objectBottom: "下",
+          objectLeft: "左",
+          objectRight: "右",
+          previewOnSite: "サイトでプレビュー",
           save: "スライダーを保存",
           saving: "保存中...",
           saved: "ヒーロースライダーを保存しました。",
@@ -6632,6 +6671,19 @@ export const dictionaries: Record<Locale, Dictionary> = {
           title: "سلايدر غلاف دليل الأبطال",
           subtitle:
             "ارفع حتى 10 صور غلاف عريضة لصفحة دليل الأبطال (/blog). تتحرك تلقائياً ويمكن التنقل يدوياً في الموقع.",
+          displayTitle: "إعدادات عرض الغلاف",
+          displaySubtitle: "تحكم في ظهور السلايدر على الموقع، صندوق النص، ودرجة التعتيم فوق الصور.",
+          carouselEnabled: "عرض السلايدر على الموقع",
+          showTextOverlay: "إظهار صندوق النص في الوسط",
+          overlayOpacity: "قوة الطبقة الداكنة",
+          autoPlaySeconds: "مدة التبديل التلقائي",
+          objectPosition: "موضع قص الصورة",
+          objectCenter: "الوسط",
+          objectTop: "أعلى",
+          objectBottom: "أسفل",
+          objectLeft: "يسار",
+          objectRight: "يمين",
+          previewOnSite: "معاينة على الموقع",
           save: "حفظ السلايدر",
           saving: "جاري الحفظ...",
           saved: "تم حفظ سلايدر الغلاف.",

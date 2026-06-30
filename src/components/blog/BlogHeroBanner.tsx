@@ -3,7 +3,11 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { BlogHeroSlider } from "@/components/blog/BlogHeroSlider";
-import type { BlogHeroSlide } from "@/lib/blog/heroSlides";
+import {
+  DEFAULT_BLOG_HERO_DISPLAY,
+  type BlogHeroDisplaySettings,
+  type BlogHeroSlide,
+} from "@/lib/blog/heroSlides";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type BlogHeroBannerProps = {
@@ -14,6 +18,7 @@ type BlogHeroBannerProps = {
 export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBannerProps) {
   const { t, dir } = useLocale();
   const [slides, setSlides] = useState<BlogHeroSlide[]>([]);
+  const [display, setDisplay] = useState<BlogHeroDisplaySettings>(DEFAULT_BLOG_HERO_DISPLAY);
   const [slidesLoaded, setSlidesLoaded] = useState(false);
 
   useEffect(() => {
@@ -24,17 +29,19 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
 
     let cancelled = false;
 
-    void fetch("/api/blog/hero-slides")
+    void fetch("/api/blog/hero-slides", { cache: "no-store" })
       .then((response) => response.json())
-      .then((payload: { slides?: BlogHeroSlide[] }) => {
+      .then((payload: { slides?: BlogHeroSlide[]; display?: BlogHeroDisplaySettings }) => {
         if (!cancelled) {
           setSlides(payload.slides ?? []);
+          setDisplay(payload.display ?? DEFAULT_BLOG_HERO_DISPLAY);
           setSlidesLoaded(true);
         }
       })
       .catch(() => {
         if (!cancelled) {
           setSlides([]);
+          setDisplay(DEFAULT_BLOG_HERO_DISPLAY);
           setSlidesLoaded(true);
         }
       });
@@ -44,7 +51,9 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
     };
   }, [compact]);
 
-  const hasCustomSlides = !compact && slides.length > 0;
+  const hasCustomSlides = !compact && display.carouselEnabled && slides.length > 0;
+  const showTextOverlay = !compact && display.showTextOverlay;
+  const overlayOpacity = Math.min(80, Math.max(0, display.overlayOpacity)) / 100;
 
   return (
     <section
@@ -58,15 +67,20 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
 
       {hasCustomSlides ? (
         <>
-          <BlogHeroSlider slides={slides} />
+          <BlogHeroSlider slides={slides} autoPlaySeconds={display.autoPlaySeconds} />
           <div
-            className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_42%_72%_at_50%_48%,rgba(9,9,11,0.88),rgba(9,9,11,0.55)_55%,rgba(9,9,11,0.92)_100%)]"
+            className="pointer-events-none absolute inset-0 z-[1]"
+            style={{
+              background: `radial-gradient(ellipse 50% 80% at 50% 50%, rgba(9,9,11,${overlayOpacity * 0.75}) 0%, rgba(9,9,11,${overlayOpacity * 0.45}) 55%, rgba(9,9,11,${Math.min(0.92, overlayOpacity + 0.25)}) 100%)`,
+            }}
             aria-hidden
           />
-          <div
-            className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_30%_52%_at_50%_50%,rgba(249,115,22,0.12),transparent_72%)]"
-            aria-hidden
-          />
+          {showTextOverlay ? (
+            <div
+              className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_30%_52%_at_50%_50%,rgba(249,115,22,0.1),transparent_72%)]"
+              aria-hidden
+            />
+          ) : null}
         </>
       ) : (
         <>
@@ -139,51 +153,53 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
         />
       ) : null}
 
-      <div className="relative z-10 flex min-h-[inherit] items-center justify-center px-[max(1rem,14vw)] py-10 sm:px-[max(1.5rem,18vw)] sm:py-11 lg:px-[max(2rem,20vw)] lg:py-12">
-        <div
-          dir={dir}
-          className={`w-full text-center ${
-            compact ? "max-w-xl" : "max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl"
-          }`}
-        >
+      {showTextOverlay || compact ? (
+        <div className="relative z-10 flex min-h-[inherit] items-center justify-center px-[max(1rem,14vw)] py-10 sm:px-[max(1.5rem,18vw)] sm:py-11 lg:px-[max(2rem,20vw)] lg:py-12">
           <div
-            className={`rounded-2xl border border-white/10 bg-black/45 px-5 py-7 shadow-[0_8px_40px_rgba(0,0,0,0.55)] backdrop-blur-md sm:px-8 sm:py-8 ${
-              compact ? "py-5" : ""
+            dir={dir}
+            className={`w-full text-center ${
+              compact ? "max-w-xl" : "max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl"
             }`}
           >
-            {!compact ? (
-              <p className="font-display text-base font-bold leading-relaxed text-white sm:text-xl md:text-2xl lg:leading-snug">
-                {t.blog.heroTagline}
-              </p>
-            ) : null}
-
-            <h1
-              className={`font-display font-black uppercase italic tracking-[0.06em] text-white ${
-                compact
-                  ? "mt-1 text-xl sm:text-2xl"
-                  : "mt-3 bg-gradient-to-br from-white via-orange-100 to-amber-200 bg-clip-text text-transparent text-2xl sm:mt-4 sm:text-3xl md:text-4xl lg:text-5xl"
+            <div
+              className={`rounded-2xl border border-white/10 bg-black/45 px-5 py-7 shadow-[0_8px_40px_rgba(0,0,0,0.55)] backdrop-blur-md sm:px-8 sm:py-8 ${
+                compact ? "py-5" : ""
               }`}
             >
-              {articleTitle ?? t.blog.hubTitle}
-            </h1>
+              {!compact ? (
+                <p className="font-display text-base font-bold leading-relaxed text-white sm:text-xl md:text-2xl lg:leading-snug">
+                  {t.blog.heroTagline}
+                </p>
+              ) : null}
 
-            {!compact ? (
-              <p className="mx-auto mt-3 max-w-prose text-xs leading-relaxed text-zinc-300 sm:mt-4 sm:text-sm md:text-[0.9375rem]">
-                {t.blog.hubSubtitle}
-              </p>
-            ) : null}
-
-            {!compact ? (
-              <a
-                href="#user-guide"
-                className="mt-5 inline-flex rounded-full border border-orange-500/35 bg-black/60 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-orange-200 transition hover:border-orange-400/55 hover:bg-orange-500/10 hover:text-orange-100 sm:mt-6 sm:px-4 sm:py-2 sm:text-[11px]"
+              <h1
+                className={`font-display font-black uppercase italic tracking-[0.06em] text-white ${
+                  compact
+                    ? "mt-1 text-xl sm:text-2xl"
+                    : "mt-3 bg-gradient-to-br from-white via-orange-100 to-amber-200 bg-clip-text text-transparent text-2xl sm:mt-4 sm:text-3xl md:text-4xl lg:text-5xl"
+                }`}
               >
-                {t.blog.hubBadge}
-              </a>
-            ) : null}
+                {articleTitle ?? t.blog.hubTitle}
+              </h1>
+
+              {!compact ? (
+                <p className="mx-auto mt-3 max-w-prose text-xs leading-relaxed text-zinc-300 sm:mt-4 sm:text-sm md:text-[0.9375rem]">
+                  {t.blog.hubSubtitle}
+                </p>
+              ) : null}
+
+              {!compact ? (
+                <a
+                  href="#user-guide"
+                  className="mt-5 inline-flex rounded-full border border-orange-500/35 bg-black/60 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-orange-200 transition hover:border-orange-400/55 hover:bg-orange-500/10 hover:text-orange-100 sm:mt-6 sm:px-4 sm:py-2 sm:text-[11px]"
+                >
+                  {t.blog.hubBadge}
+                </a>
+              ) : null}
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
     </section>
   );
 }

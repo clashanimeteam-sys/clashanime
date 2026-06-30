@@ -1,10 +1,17 @@
 import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 import { getStaffUser } from "@/lib/adminAuth";
-import { loadBlogHeroSlides, saveBlogHeroSlides } from "@/lib/blog/heroSlides.server";
+import {
+  loadBlogHeroDisplaySettings,
+  loadBlogHeroSlides,
+  saveBlogHeroDisplaySettings,
+  saveBlogHeroSlides,
+} from "@/lib/blog/heroSlides.server";
 import {
   normalizeBlogHeroSlidesForSave,
+  parseBlogHeroDisplaySettings,
   parseBlogHeroSlides,
+  type BlogHeroDisplaySettings,
   type BlogHeroSlide,
 } from "@/lib/blog/heroSlides";
 import { createServerClient } from "@/lib/supabase/server";
@@ -27,12 +34,13 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const slides = await loadBlogHeroSlides();
-  return NextResponse.json({ slides });
+  const [slides, display] = await Promise.all([loadBlogHeroSlides(), loadBlogHeroDisplaySettings()]);
+  return NextResponse.json({ slides, display });
 }
 
 type SaveBody = {
   slides?: BlogHeroSlide[];
+  display?: BlogHeroDisplaySettings;
 };
 
 export async function PUT(request: Request) {
@@ -58,13 +66,18 @@ export async function PUT(request: Request) {
   }
 
   const slides = normalizeBlogHeroSlidesForSave(parseBlogHeroSlides(body.slides));
-  const ok = await saveBlogHeroSlides(slides, user.id);
+  const display = parseBlogHeroDisplaySettings(body.display);
 
-  if (!ok) {
-    return NextResponse.json({ error: "Failed to save slides" }, { status: 500 });
+  const [slidesOk, displayOk] = await Promise.all([
+    saveBlogHeroSlides(slides, user.id),
+    saveBlogHeroDisplaySettings(display, user.id),
+  ]);
+
+  if (!slidesOk || !displayOk) {
+    return NextResponse.json({ error: "Failed to save hero settings" }, { status: 500 });
   }
 
-  return NextResponse.json({ slides });
+  return NextResponse.json({ slides, display });
 }
 
 export async function POST(request: Request) {

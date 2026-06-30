@@ -2,23 +2,27 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { BlogHeroSlide } from "@/lib/blog/heroSlides";
+import { objectPositionClass, type BlogHeroSlide } from "@/lib/blog/heroSlides";
 import { useLocale } from "@/providers/LocaleProvider";
-
-const AUTO_ADVANCE_MS = 5000;
 
 type BlogHeroSliderProps = {
   slides: BlogHeroSlide[];
+  autoPlaySeconds?: number;
   className?: string;
 };
 
-export function BlogHeroSlider({ slides, className = "" }: BlogHeroSliderProps) {
+export function BlogHeroSlider({
+  slides,
+  autoPlaySeconds = 5,
+  className = "",
+}: BlogHeroSliderProps) {
   const { t } = useLocale();
   const [activeIndex, setActiveIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const count = slides.length;
+  const autoAdvanceMs = Math.min(15, Math.max(3, autoPlaySeconds)) * 1000;
 
   const goTo = useCallback(
     (index: number) => {
@@ -52,7 +56,7 @@ export function BlogHeroSlider({ slides, className = "" }: BlogHeroSliderProps) 
 
     timerRef.current = setInterval(() => {
       setActiveIndex((current) => (current + 1) % count);
-    }, AUTO_ADVANCE_MS);
+    }, autoAdvanceMs);
 
     return () => {
       if (timerRef.current) {
@@ -60,7 +64,7 @@ export function BlogHeroSlider({ slides, className = "" }: BlogHeroSliderProps) 
         timerRef.current = null;
       }
     };
-  }, [count, paused, slides]);
+  }, [autoAdvanceMs, count, paused, slides]);
 
   if (count === 0) {
     return null;
@@ -89,16 +93,11 @@ export function BlogHeroSlider({ slides, className = "" }: BlogHeroSliderProps) 
             alt=""
             fill
             priority={index === 0}
-            className="object-cover object-center"
+            className={`object-cover ${objectPositionClass(slide.objectPosition)}`}
             sizes="100vw"
           />
         </div>
       ))}
-
-      <div
-        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,9,11,0.35)_0%,rgba(9,9,11,0.2)_40%,rgba(9,9,11,0.75)_100%)]"
-        aria-hidden
-      />
 
       {count > 1 ? (
         <>

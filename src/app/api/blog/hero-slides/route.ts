@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
-import { loadEnabledBlogHeroSlides } from "@/lib/blog/heroSlides.server";
+import { loadBlogHeroDisplaySettings, loadEnabledBlogHeroSlides } from "@/lib/blog/heroSlides.server";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const slides = await loadEnabledBlogHeroSlides();
-  return NextResponse.json({ slides });
+  const [slides, display] = await Promise.all([
+    loadEnabledBlogHeroSlides(),
+    loadBlogHeroDisplaySettings(),
+  ]);
+
+  return NextResponse.json({ slides, display });
 }

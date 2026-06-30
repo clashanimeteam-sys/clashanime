@@ -1,10 +1,15 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import {
+  DEFAULT_BLOG_HERO_DISPLAY,
   MAX_BLOG_HERO_SLIDES,
   createEmptyHeroSlideSlots,
+  objectPositionClass,
+  type BlogHeroDisplaySettings,
+  type BlogHeroObjectPosition,
   type BlogHeroSlide,
 } from "@/lib/blog/heroSlides";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -12,6 +17,7 @@ import { useLocale } from "@/providers/LocaleProvider";
 export function AdminBlogHeroSlidesPanel() {
   const { t } = useLocale();
   const [slides, setSlides] = useState<BlogHeroSlide[]>(createEmptyHeroSlideSlots());
+  const [display, setDisplay] = useState<BlogHeroDisplaySettings>(DEFAULT_BLOG_HERO_DISPLAY);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
@@ -23,17 +29,23 @@ export function AdminBlogHeroSlidesPanel() {
     setError(null);
 
     try {
-      const response = await fetch("/api/admin/blog-hero-slides");
-      const payload = (await response.json()) as { slides?: BlogHeroSlide[]; error?: string };
+      const response = await fetch("/api/admin/blog-hero-slides", { cache: "no-store" });
+      const payload = (await response.json()) as {
+        slides?: BlogHeroSlide[];
+        display?: BlogHeroDisplaySettings;
+        error?: string;
+      };
 
       if (!response.ok) {
         throw new Error(payload.error ?? "Failed to load slides");
       }
 
       setSlides(payload.slides ?? createEmptyHeroSlideSlots());
+      setDisplay(payload.display ?? DEFAULT_BLOG_HERO_DISPLAY);
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : "Failed to load slides");
       setSlides(createEmptyHeroSlideSlots());
+      setDisplay(DEFAULT_BLOG_HERO_DISPLAY);
     } finally {
       setLoading(false);
     }
@@ -47,6 +59,10 @@ export function AdminBlogHeroSlidesPanel() {
     setSlides((current) =>
       current.map((slide, slideIndex) => (slideIndex === index ? { ...slide, ...patch } : slide)),
     );
+  };
+
+  const updateDisplay = (patch: Partial<BlogHeroDisplaySettings>) => {
+    setDisplay((current) => ({ ...current, ...patch }));
   };
 
   const uploadImage = async (index: number, file: File) => {
@@ -86,15 +102,20 @@ export function AdminBlogHeroSlidesPanel() {
       const response = await fetch("/api/admin/blog-hero-slides", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slides }),
+        body: JSON.stringify({ slides, display }),
       });
 
-      const payload = (await response.json()) as { slides?: BlogHeroSlide[]; error?: string };
+      const payload = (await response.json()) as {
+        slides?: BlogHeroSlide[];
+        display?: BlogHeroDisplaySettings;
+        error?: string;
+      };
       if (!response.ok) {
         throw new Error(payload.error ?? "Save failed");
       }
 
       setSlides(payload.slides ?? slides);
+      setDisplay(payload.display ?? display);
       setMessage(t.admin.blog.heroSlides.saved);
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : "Save failed");
@@ -104,6 +125,13 @@ export function AdminBlogHeroSlidesPanel() {
   };
 
   const enabledCount = slides.filter((slide) => slide.enabled && slide.imageUrl).length;
+  const positionOptions: { value: BlogHeroObjectPosition; label: string }[] = [
+    { value: "center", label: t.admin.blog.heroSlides.objectCenter },
+    { value: "top", label: t.admin.blog.heroSlides.objectTop },
+    { value: "bottom", label: t.admin.blog.heroSlides.objectBottom },
+    { value: "left", label: t.admin.blog.heroSlides.objectLeft },
+    { value: "right", label: t.admin.blog.heroSlides.objectRight },
+  ];
 
   return (
     <section className="space-y-4 rounded-2xl border border-zinc-800 bg-zinc-950/50 p-5">
@@ -112,14 +140,80 @@ export function AdminBlogHeroSlidesPanel() {
           <h2 className="text-lg font-bold text-white">{t.admin.blog.heroSlides.title}</h2>
           <p className="mt-1 max-w-3xl text-sm text-zinc-400">{t.admin.blog.heroSlides.subtitle}</p>
         </div>
-        <button
-          type="button"
-          onClick={() => void saveSlides()}
-          disabled={saving || loading}
-          className="rounded-full border border-orange-500/40 bg-orange-950/30 px-4 py-2 text-sm font-bold text-orange-200 disabled:opacity-50"
-        >
-          {saving ? t.admin.blog.heroSlides.saving : t.admin.blog.heroSlides.save}
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href="/blog"
+            target="_blank"
+            className="rounded-full border border-zinc-700 px-4 py-2 text-sm font-bold text-zinc-200 hover:border-orange-500/40"
+          >
+            {t.admin.blog.heroSlides.previewOnSite}
+          </Link>
+          <button
+            type="button"
+            onClick={() => void saveSlides()}
+            disabled={saving || loading}
+            className="rounded-full border border-orange-500/40 bg-orange-950/30 px-4 py-2 text-sm font-bold text-orange-200 disabled:opacity-50"
+          >
+            {saving ? t.admin.blog.heroSlides.saving : t.admin.blog.heroSlides.save}
+          </button>
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
+        <h3 className="text-sm font-bold text-white">{t.admin.blog.heroSlides.displayTitle}</h3>
+        <p className="mt-1 text-xs text-zinc-500">{t.admin.blog.heroSlides.displaySubtitle}</p>
+
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          <label className="flex items-center justify-between gap-3 rounded-lg border border-zinc-800 bg-zinc-950/60 px-3 py-2.5 text-sm text-zinc-200">
+            <span>{t.admin.blog.heroSlides.carouselEnabled}</span>
+            <input
+              type="checkbox"
+              checked={display.carouselEnabled}
+              onChange={(event) => updateDisplay({ carouselEnabled: event.target.checked })}
+              className="rounded border-zinc-600"
+            />
+          </label>
+
+          <label className="flex items-center justify-between gap-3 rounded-lg border border-zinc-800 bg-zinc-950/60 px-3 py-2.5 text-sm text-zinc-200">
+            <span>{t.admin.blog.heroSlides.showTextOverlay}</span>
+            <input
+              type="checkbox"
+              checked={display.showTextOverlay}
+              onChange={(event) => updateDisplay({ showTextOverlay: event.target.checked })}
+              className="rounded border-zinc-600"
+            />
+          </label>
+
+          <label className="space-y-2 rounded-lg border border-zinc-800 bg-zinc-950/60 px-3 py-2.5 text-sm text-zinc-200">
+            <div className="flex items-center justify-between gap-3">
+              <span>{t.admin.blog.heroSlides.overlayOpacity}</span>
+              <span className="text-xs text-zinc-400">{display.overlayOpacity}%</span>
+            </div>
+            <input
+              type="range"
+              min={0}
+              max={80}
+              value={display.overlayOpacity}
+              onChange={(event) => updateDisplay({ overlayOpacity: Number(event.target.value) })}
+              className="w-full accent-orange-500"
+            />
+          </label>
+
+          <label className="space-y-2 rounded-lg border border-zinc-800 bg-zinc-950/60 px-3 py-2.5 text-sm text-zinc-200">
+            <div className="flex items-center justify-between gap-3">
+              <span>{t.admin.blog.heroSlides.autoPlaySeconds}</span>
+              <span className="text-xs text-zinc-400">{display.autoPlaySeconds}s</span>
+            </div>
+            <input
+              type="range"
+              min={3}
+              max={15}
+              value={display.autoPlaySeconds}
+              onChange={(event) => updateDisplay({ autoPlaySeconds: Number(event.target.value) })}
+              className="w-full accent-orange-500"
+            />
+          </label>
+        </div>
       </div>
 
       <p className="text-xs text-zinc-500">
@@ -159,7 +253,7 @@ export function AdminBlogHeroSlidesPanel() {
                     src={slide.imageUrl}
                     alt=""
                     fill
-                    className="object-cover"
+                    className={`object-cover ${objectPositionClass(slide.objectPosition)}`}
                     sizes="(max-width: 768px) 100vw, 320px"
                   />
                 ) : (
@@ -168,6 +262,27 @@ export function AdminBlogHeroSlidesPanel() {
                   </div>
                 )}
               </div>
+
+              {slide.imageUrl ? (
+                <label className="mb-3 block text-xs text-zinc-400">
+                  {t.admin.blog.heroSlides.objectPosition}
+                  <select
+                    value={slide.objectPosition}
+                    onChange={(event) =>
+                      updateSlide(index, {
+                        objectPosition: event.target.value as BlogHeroObjectPosition,
+                      })
+                    }
+                    className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-2 py-1.5 text-sm text-zinc-200"
+                  >
+                    {positionOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              ) : null}
 
               <div className="flex flex-wrap items-center gap-2">
                 <label className="cursor-pointer rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-semibold text-zinc-200 hover:border-orange-500/40">
