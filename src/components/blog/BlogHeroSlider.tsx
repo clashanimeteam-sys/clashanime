@@ -18,7 +18,7 @@ type BlogHeroSliderProps = {
 
 export function BlogHeroSlider({
   slides,
-  autoPlaySeconds = 5,
+  autoPlaySeconds = 3,
   className = "",
 }: BlogHeroSliderProps) {
   const { t } = useLocale();

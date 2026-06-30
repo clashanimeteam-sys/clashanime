@@ -49,7 +49,7 @@ export const DEFAULT_BLOG_HERO_DISPLAY: BlogHeroDisplaySettings = {
   carouselEnabled: true,
   showTextOverlay: true,
   overlayOpacity: 12,
-  autoPlaySeconds: 5,
+  autoPlaySeconds: 3,
 };
 
 const OBJECT_POSITIONS = new Set<BlogHeroObjectPosition>(["center", "top", "bottom", "left", "right"]);

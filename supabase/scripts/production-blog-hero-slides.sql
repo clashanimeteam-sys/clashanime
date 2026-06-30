@@ -15,7 +15,14 @@ values (
     'carouselEnabled', true,
     'showTextOverlay', true,
     'overlayOpacity', 28,
-    'autoPlaySeconds', 5
+    'autoPlaySeconds', 3
   )
 )
 on conflict (key) do nothing;
+
+-- Ensure existing production row uses 3s between slides
+update public.site_settings
+set
+  value = jsonb_set(coalesce(value, '{}'::jsonb), '{autoPlaySeconds}', '3'::jsonb, true),
+  updated_at = now()
+where key = 'blog_hero_display';
