@@ -26,7 +26,8 @@ function HeroGuideText({
   articleTitle?: string;
   belowCover?: boolean;
 }) {
-  const { t, dir } = useLocale();
+  const { t, dir, locale } = useLocale();
+  const isArabic = locale === "ar";
 
   if (belowCover) {
     return (
@@ -35,10 +36,14 @@ function HeroGuideText({
           <p className="font-display text-base font-bold leading-relaxed text-white sm:text-xl md:text-2xl">
             {t.blog.heroTagline}
           </p>
-          <h1 className="mt-3 font-display text-2xl font-black uppercase italic tracking-[0.06em] text-white sm:mt-4 sm:text-3xl md:text-4xl lg:text-5xl">
-            <span className="bg-gradient-to-br from-white via-orange-100 to-amber-200 bg-clip-text text-transparent">
-              {articleTitle ?? t.blog.hubTitle}
-            </span>
+          <h1
+            className={`mt-3 font-display font-extrabold leading-tight text-white sm:mt-4 ${
+              isArabic
+                ? "text-3xl sm:text-4xl md:text-5xl"
+                : "text-2xl uppercase italic tracking-[0.06em] sm:text-3xl md:text-4xl lg:text-5xl"
+            } [text-shadow:0_2px_24px_rgba(251,146,60,0.45)]`}
+          >
+            {articleTitle ?? t.blog.hubTitle}
           </h1>
           <p className="mx-auto mt-3 max-w-prose text-sm leading-relaxed text-zinc-300 sm:mt-4 md:text-base">
             {t.blog.hubSubtitle}

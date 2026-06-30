@@ -68,7 +68,6 @@ export function BlogIndexContent({ latestNews: initialLatestNews = [] }: BlogInd
                 <h2 className="font-display text-xl font-bold text-white sm:text-2xl">
                   {t.blog.animeNews.hubTitle}
                 </h2>
-                <p className="mt-1 text-sm text-zinc-400">{t.blog.animeNews.hubSubtitle}</p>
               </div>
               <Link
                 href="/blog/anime-news"

@@ -62,7 +62,6 @@ export function BlogSeasonalGuideSpotlight() {
         <h2 className="font-display text-xl font-bold text-white sm:text-2xl">
           {t.blog.seasonalGuide.hubTitle}
         </h2>
-        <p className="mt-1 text-sm text-zinc-400">{t.blog.seasonalGuide.hubSubtitle}</p>
       </div>
 
       <div className="overflow-hidden rounded-3xl border border-orange-500/25 bg-gradient-to-br from-zinc-900 via-zinc-950 to-black shadow-2xl shadow-black/50">
