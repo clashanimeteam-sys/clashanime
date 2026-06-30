@@ -53,24 +53,26 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-zinc-950/80" />
       </div>
 
-      {/* Right — Solo Leveling */}
+      {/* Right — Solo Leveling (match left panel weight on mobile) */}
       <div
-        className={`pointer-events-none absolute bottom-0 right-0 top-[6%] ${
+        className={`pointer-events-none absolute bottom-0 right-0 top-0 overflow-hidden ${
           compact
-            ? "w-[38%] max-w-[170px]"
-            : "w-[min(38vw,560px)] max-w-[560px] lg:w-[min(34vw,580px)] lg:max-w-[580px]"
+            ? "w-[44%] max-w-[200px]"
+            : "w-[min(46vw,680px)] max-w-[680px] lg:w-[min(42vw,720px)] lg:max-w-[720px]"
         }`}
         aria-hidden
       >
-        <Image
-          src="/blog/hero-solo-leveling-right.png"
-          alt=""
-          fill
-          priority={!compact}
-          className="origin-bottom-right object-contain object-bottom object-right scale-[1.02] sm:scale-105 lg:scale-[1.08]"
-          sizes="(max-width: 640px) 38vw, 580px"
-        />
-        <div className="absolute inset-0 bg-gradient-to-l from-zinc-950/15 via-transparent to-zinc-950/85" />
+        <div className="relative ms-auto h-full w-[132%]">
+          <Image
+            src="/blog/hero-solo-leveling-right.png"
+            alt=""
+            fill
+            priority={!compact}
+            className="object-cover object-right object-bottom scale-[1.06] sm:scale-[1.1] lg:scale-[1.14]"
+            sizes="(max-width: 640px) 46vw, 720px"
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-zinc-950/80" />
       </div>
 
       {/* Side vignettes + vertical depth */}
