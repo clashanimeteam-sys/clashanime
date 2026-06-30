@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BlogHeroSlideImage } from "@/components/blog/BlogHeroSlideImage";
+import { BlogHeroSlideFrame } from "@/components/blog/BlogHeroSlideFrame";
 import {
   applyPresetToSlide,
   clampFocal,
@@ -142,38 +142,42 @@ export function BlogHeroSlidePositionEditor({
     <div className="space-y-2">
       <p className="text-xs text-zinc-400">{t.admin.blog.heroSlides.objectPosition}</p>
 
-      <div
-        ref={frameRef}
-        tabIndex={0}
-        role="application"
-        aria-label={t.admin.blog.heroSlides.dragHint}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
-        className={`relative aspect-[16/7] overflow-hidden rounded-lg border bg-zinc-950 outline-none ${
+      <BlogHeroSlideFrame
+        slide={slide}
+        sizes="(max-width: 768px) 100vw, 360px"
+        className={`rounded-lg outline-none border ${
           dragging ? "cursor-grabbing border-orange-500/60" : "cursor-grab border-zinc-700 hover:border-orange-500/40"
         }`}
       >
-        <BlogHeroSlideImage slide={slide} sizes="(max-width: 768px) 100vw, 360px" />
-
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.15),rgba(0,0,0,0.35))]" />
-
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-3">
-          <div className="rounded-lg border border-white/20 bg-black/55 px-3 py-2 text-center text-[11px] leading-relaxed text-white backdrop-blur-sm">
-            <span className="mb-1 block text-base" aria-hidden>
-              ✥
-            </span>
-            {t.admin.blog.heroSlides.dragHint}
-          </div>
-        </div>
-
         <div
-          className="pointer-events-none absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-orange-300 bg-orange-500/80 shadow-[0_0_12px_rgba(249,115,22,0.8)]"
-          style={{ left: `${focalX}%`, top: `${focalY}%` }}
-          aria-hidden
-        />
-      </div>
+          ref={frameRef}
+          tabIndex={0}
+          role="application"
+          aria-label={t.admin.blog.heroSlides.dragHint}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+          className="absolute inset-0 z-10"
+        >
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.15),rgba(0,0,0,0.35))]" />
+
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-3">
+            <div className="rounded-lg border border-white/20 bg-black/55 px-3 py-2 text-center text-[11px] leading-relaxed text-white backdrop-blur-sm">
+              <span className="mb-1 block text-base" aria-hidden>
+                ✥
+              </span>
+              {t.admin.blog.heroSlides.dragHint}
+            </div>
+          </div>
+
+          <div
+            className="pointer-events-none absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-orange-300 bg-orange-500/80 shadow-[0_0_12px_rgba(249,115,22,0.8)]"
+            style={{ left: `${focalX}%`, top: `${focalY}%` }}
+            aria-hidden
+          />
+        </div>
+      </BlogHeroSlideFrame>
 
       <p className="text-[11px] text-zinc-500">
         {t.admin.blog.heroSlides.focalMeta

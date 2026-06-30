@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { BlogHeroSlider } from "@/components/blog/BlogHeroSlider";
 import {
+  BLOG_HERO_FRAME_CLASS,
   DEFAULT_BLOG_HERO_DISPLAY,
   type BlogHeroDisplaySettings,
   type BlogHeroSlide,
@@ -144,7 +145,7 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
   if (hasCustomSlides) {
     return (
       <section className="border-b border-zinc-800" aria-label={t.blog.hubTitle}>
-        <div className="relative min-h-[280px] overflow-hidden bg-zinc-950 sm:min-h-[360px] lg:min-h-[440px]">
+        <div className={BLOG_HERO_FRAME_CLASS}>
           <BlogHeroSlider slides={slides} autoPlaySeconds={display.autoPlaySeconds} />
 
           {overlayOpacity > 0 ? (

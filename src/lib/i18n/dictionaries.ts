@@ -3217,7 +3217,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
           subtitle:
             "Upload up to 10 wide banner images for the Heroes Guide hub (/blog). Slides rotate automatically and can be changed manually on the site.",
           displayTitle: "Cover display settings",
-          displaySubtitle: "Control carousel visibility, guide text below the cover, and a light tint on the banner.",
+          displaySubtitle: "The slide editor preview matches the live 16:7 banner. Control carousel visibility, guide text, and a light tint.",
           carouselEnabled: "Show carousel on site",
           showTextOverlay: "Show guide text below cover",
           overlayOpacity: "Light banner tint",
@@ -4951,7 +4951,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
           subtitle:
             "英雄ガイド（/blog）用のワイドバナーを最大10枚アップロード。サイト上で自動・手動切り替えできます。",
           displayTitle: "カバー表示設定",
-          displaySubtitle: "スライダー表示、カバー下のガイド文、バナーの薄いティントを調整します。",
+          displaySubtitle: "プレビューは公開中の16:7バナーと同じ表示です。スライダー、ガイド文、ティントを調整します。",
           carouselEnabled: "サイトでスライダーを表示",
           showTextOverlay: "ガイド文をカバー下に表示",
           overlayOpacity: "バナーの薄いティント",
@@ -6687,7 +6687,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
           subtitle:
             "ارفع حتى 10 صور غلاف عريضة لصفحة دليل الأبطال (/blog). تتحرك تلقائياً ويمكن التنقل يدوياً في الموقع.",
           displayTitle: "إعدادات عرض الغلاف",
-          displaySubtitle: "تحكم في السلايدر، نص الدليل أسفل الغلاف، وتعتيم خفيف على البانر.",
+          displaySubtitle: "معاينة الشريحة تطابق البانر 16:7 على الموقع. تحكم في السلايدر والنص والتعتيم الخفيف.",
           carouselEnabled: "عرض السلايدر على الموقع",
           showTextOverlay: "إظهار نص دليل الأبطال أسفل الغلاف",
           overlayOpacity: "تعتيم خفيف على الغلاف",

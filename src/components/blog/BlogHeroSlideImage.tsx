@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import {
+  parseRotation,
   slideImageTransformStyle,
   slideObjectPositionStyle,
-  type BlogHeroRotation,
   type BlogHeroSlide,
 } from "@/lib/blog/heroSlides";
 
@@ -21,15 +21,12 @@ export function BlogHeroSlideImage({
   sizes,
   className = "object-cover",
 }: BlogHeroSlideImageProps) {
-  const rotation = slide.rotation ?? 0;
+  const rotation = parseRotation(slide.rotation);
   const transformStyle = slideImageTransformStyle(rotation);
 
   return (
-    <div className="absolute inset-0 overflow-hidden">
-      <div
-        className="absolute inset-0 origin-center"
-        style={transformStyle.transform ? transformStyle : undefined}
-      >
+    <div className="relative h-full w-full overflow-hidden">
+      <div className="relative h-full w-full origin-center" style={transformStyle}>
         <Image
           src={slide.imageUrl}
           alt=""

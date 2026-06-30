@@ -1,6 +1,10 @@
 export const BLOG_HERO_SLIDES_KEY = "blog_hero_slides";
 export const BLOG_HERO_DISPLAY_KEY = "blog_hero_display";
 export const MAX_BLOG_HERO_SLIDES = 10;
+export const BLOG_HERO_ASPECT_WIDTH = 16;
+export const BLOG_HERO_ASPECT_HEIGHT = 7;
+export const BLOG_HERO_FRAME_CLASS =
+  "relative w-full aspect-[16/7] overflow-hidden bg-zinc-950";
 
 export type BlogHeroObjectPosition = "center" | "top" | "bottom" | "left" | "right";
 export type BlogHeroRotation = 0 | 90 | 180 | 270;
@@ -96,7 +100,8 @@ export function slideImageTransformStyle(rotation: BlogHeroRotation): { transfor
     return {};
   }
 
-  const scale = rotation === 180 ? 1 : 1.42;
+  const coverScale = BLOG_HERO_ASPECT_WIDTH / BLOG_HERO_ASPECT_HEIGHT;
+  const scale = rotation === 180 ? 1 : coverScale;
   return {
     transform: `rotate(${rotation}deg) scale(${scale})`,
   };
