@@ -157,7 +157,7 @@ export function AnimeNewsArticleContent({ article, related }: AnimeNewsArticleCo
             </div>
           </article>
 
-          <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
+          <aside className="anime-news-sidebar-column space-y-6 lg:sticky lg:top-24 lg:max-h-[calc(100dvh-6rem)] lg:self-start lg:overflow-y-auto lg:overscroll-y-contain lg:pr-1">
             {related.length > 0 ? (
               <AnimeNewsTopSidebar
                 articles={related}

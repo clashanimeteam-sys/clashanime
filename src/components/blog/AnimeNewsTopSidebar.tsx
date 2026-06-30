@@ -22,7 +22,7 @@ export function AnimeNewsTopSidebar({ articles, limit, heading }: AnimeNewsTopSi
   return (
     <aside className="rounded-2xl border border-zinc-800/80 bg-zinc-950/80 p-4 sm:p-5">
       <h2 className="font-display text-lg font-bold text-white">{title}</h2>
-      <ul className="anime-news-top-sidebar-list mt-4 space-y-4 lg:max-h-[min(28rem,calc(100dvh-12rem))] lg:overflow-y-auto lg:overscroll-y-contain lg:pr-1">
+      <ul className="anime-news-top-sidebar-list mt-4 space-y-4">
         {items.map((article) => {
           const copy = getAnimeNewsCopy(article, locale);
           return (

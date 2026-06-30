@@ -1747,26 +1747,31 @@ html[lang="ar-u-nu-latn"] {
   }
 }
 
-/* Anime news — scrollable top stories sidebar */
-.anime-news-top-sidebar-list {
+/* Anime news — scrollable sidebar column (top news + watch now) */
+.anime-news-sidebar-column {
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
   scrollbar-width: thin;
   scrollbar-color: rgba(249, 115, 22, 0.45) rgba(39, 39, 42, 0.5);
 }
 
-.anime-news-top-sidebar-list::-webkit-scrollbar {
+.anime-news-sidebar-column::-webkit-scrollbar {
   width: 6px;
 }
 
-.anime-news-top-sidebar-list::-webkit-scrollbar-track {
+.anime-news-sidebar-column::-webkit-scrollbar-track {
   border-radius: 999px;
   background: rgba(39, 39, 42, 0.5);
 }
 
-.anime-news-top-sidebar-list::-webkit-scrollbar-thumb {
+.anime-news-sidebar-column::-webkit-scrollbar-thumb {
   border-radius: 999px;
   background: rgba(249, 115, 22, 0.45);
+}
+
+/* Anime news — scrollable top stories sidebar */
+.anime-news-top-sidebar-list {
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Footer — centered brand watermark (colors unchanged, subtle opacity only) */

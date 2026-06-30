@@ -198,12 +198,12 @@ export function AnimeNewsIndexContent({ articles }: AnimeNewsIndexContentProps) 
               </section>
             </div>
 
-            <div className="space-y-6 lg:sticky lg:top-24 lg:self-start">
+            <aside className="anime-news-sidebar-column space-y-6 lg:sticky lg:top-24 lg:max-h-[calc(100dvh-6rem)] lg:self-start lg:overflow-y-auto lg:overscroll-y-contain lg:pr-1">
               <AnimeNewsTopSidebar articles={topNewsArticles} />
               <div className="rounded-2xl border border-zinc-800/80 bg-zinc-950/80 p-4 sm:p-5">
                 <AnimeWatchNowRow entries={spotlight} limit={8} compact />
               </div>
-            </div>
+            </aside>
           </div>
         )}
 

@@ -41,7 +41,7 @@ export function AnimeWatchNowRow({ entries, limit = 12, compact = false }: Anime
 
       {!compact && active?.youtubeId ? <YoutubeEmbed youtubeId={active.youtubeId} /> : null}
 
-      <div className="flex gap-3 overflow-x-auto pb-2">
+      <div className="flex gap-3 overflow-x-auto pb-2" data-allow-horizontal-scroll="true">
         {items.map((entry) => (
           <button
             key={entry.key}
