@@ -6,6 +6,7 @@ import { BlogHeroSlideShadow } from "@/components/blog/BlogHeroSlideShadow";
 import {
   BLOG_HERO_IMAGE_QUALITY,
   BLOG_HERO_IMAGE_SIZES,
+  parseAutoPlaySeconds,
   type BlogHeroSlide,
 } from "@/lib/blog/heroSlides";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -27,7 +28,7 @@ export function BlogHeroSlider({
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const count = slides.length;
-  const autoAdvanceMs = Math.min(15, Math.max(3, autoPlaySeconds)) * 1000;
+  const autoAdvanceMs = parseAutoPlaySeconds(autoPlaySeconds) * 1000;
 
   const goTo = useCallback(
     (index: number) => {

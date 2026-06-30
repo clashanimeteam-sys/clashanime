@@ -6,7 +6,9 @@ import { BlogHeroSlidePositionEditor } from "@/components/admin/BlogHeroSlidePos
 import {
   DEFAULT_BLOG_HERO_DISPLAY,
   DEFAULT_BLOG_HERO_SHADOW,
+  MAX_BLOG_HERO_AUTOPLAY_SECONDS,
   MAX_BLOG_HERO_SLIDES,
+  MIN_BLOG_HERO_AUTOPLAY_SECONDS,
   applyPresetToSlide,
   createEmptyHeroSlideSlots,
   type BlogHeroDisplaySettings,
@@ -206,12 +208,18 @@ export function AdminBlogHeroSlidesPanel() {
             </div>
             <input
               type="range"
-              min={3}
-              max={15}
+              min={MIN_BLOG_HERO_AUTOPLAY_SECONDS}
+              max={MAX_BLOG_HERO_AUTOPLAY_SECONDS}
+              step={1}
               value={display.autoPlaySeconds}
               onChange={(event) => updateDisplay({ autoPlaySeconds: Number(event.target.value) })}
               className="w-full accent-orange-500"
             />
+            <p className="text-[10px] text-zinc-500">
+              {t.admin.blog.heroSlides.autoPlaySecondsHint
+                .replace("{min}", String(MIN_BLOG_HERO_AUTOPLAY_SECONDS))
+                .replace("{max}", String(MAX_BLOG_HERO_AUTOPLAY_SECONDS))}
+            </p>
           </label>
         </div>
       </div>

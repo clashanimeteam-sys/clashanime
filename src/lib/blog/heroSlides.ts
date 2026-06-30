@@ -52,6 +52,9 @@ export const DEFAULT_BLOG_HERO_DISPLAY: BlogHeroDisplaySettings = {
   autoPlaySeconds: 3,
 };
 
+export const MIN_BLOG_HERO_AUTOPLAY_SECONDS = 1;
+export const MAX_BLOG_HERO_AUTOPLAY_SECONDS = 60;
+
 const OBJECT_POSITIONS = new Set<BlogHeroObjectPosition>(["center", "top", "bottom", "left", "right"]);
 
 export function clampFocal(value: number): number {
@@ -135,6 +138,17 @@ export function parseShadowOpacity(value: unknown): number {
   }
 
   return Math.min(MAX_BLOG_HERO_SHADOW, Math.max(MIN_BLOG_HERO_SHADOW, Math.round(value)));
+}
+
+export function parseAutoPlaySeconds(value: unknown): number {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return DEFAULT_BLOG_HERO_DISPLAY.autoPlaySeconds;
+  }
+
+  return Math.min(
+    MAX_BLOG_HERO_AUTOPLAY_SECONDS,
+    Math.max(MIN_BLOG_HERO_AUTOPLAY_SECONDS, Math.round(value)),
+  );
 }
 
 /** Crunchyroll-style cinematic fade: bottom + side vignette for text/UI contrast. */
@@ -283,10 +297,7 @@ export function parseBlogHeroDisplaySettings(value: unknown): BlogHeroDisplaySet
     typeof row.overlayOpacity === "number"
       ? Math.min(80, Math.max(0, Math.round(row.overlayOpacity)))
       : DEFAULT_BLOG_HERO_DISPLAY.overlayOpacity;
-  const autoPlaySeconds =
-    typeof row.autoPlaySeconds === "number"
-      ? Math.min(15, Math.max(3, Math.round(row.autoPlaySeconds)))
-      : DEFAULT_BLOG_HERO_DISPLAY.autoPlaySeconds;
+  const autoPlaySeconds = parseAutoPlaySeconds(row.autoPlaySeconds);
 
   return {
     carouselEnabled: row.carouselEnabled !== false,

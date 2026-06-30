@@ -1485,6 +1485,7 @@ export type Dictionary = {
         showTextOverlay: string;
         overlayOpacity: string;
         autoPlaySeconds: string;
+        autoPlaySecondsHint: string;
         objectPosition: string;
         objectCenter: string;
         objectTop: string;
@@ -3260,6 +3261,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
           showTextOverlay: "Show guide text below cover",
           overlayOpacity: "Light banner tint",
           autoPlaySeconds: "Auto-advance interval",
+          autoPlaySecondsHint: "Slide duration: {min}s to {max}s",
           objectPosition: "Image crop focus",
           objectCenter: "Center",
           objectTop: "Top",
@@ -5018,6 +5020,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
           showTextOverlay: "ガイド文をカバー下に表示",
           overlayOpacity: "バナーの薄いティント",
           autoPlaySeconds: "自動切り替え間隔",
+          autoPlaySecondsHint: "表示時間: {min}秒〜{max}秒",
           objectPosition: "画像のトリミング位置",
           objectCenter: "中央",
           objectTop: "上",
@@ -6778,6 +6781,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
           showTextOverlay: "إظهار نص دليل الأبطال أسفل الغلاف",
           overlayOpacity: "تعتيم خفيف على الغلاف",
           autoPlaySeconds: "مدة التبديل التلقائي",
+          autoPlaySecondsHint: "مدة كل صورة: من {min} إلى {max} ثانية",
           objectPosition: "موضع قص الصورة",
           objectCenter: "الوسط",
           objectTop: "أعلى",
