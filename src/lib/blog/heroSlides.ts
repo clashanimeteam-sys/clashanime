@@ -19,6 +19,11 @@ export const MAX_BLOG_HERO_ZOOM = 300;
 export const DEFAULT_BLOG_HERO_ZOOM = 100;
 export const BLOG_HERO_ZOOM_STEP = 10;
 
+export const MIN_BLOG_HERO_SHADOW = 0;
+export const MAX_BLOG_HERO_SHADOW = 100;
+export const DEFAULT_BLOG_HERO_SHADOW = 55;
+export const BLOG_HERO_SHADOW_STEP = 5;
+
 export type BlogHeroSlide = {
   id: string;
   imageUrl: string;
@@ -30,6 +35,7 @@ export type BlogHeroSlide = {
   focalY: number;
   rotation: BlogHeroRotation;
   zoom: number;
+  shadowOpacity: number;
 };
 
 export type BlogHeroDisplaySettings = {
@@ -123,6 +129,32 @@ export function zoomSlideOut(zoom: number): number {
   return parseZoom(zoom - BLOG_HERO_ZOOM_STEP);
 }
 
+export function parseShadowOpacity(value: unknown): number {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return DEFAULT_BLOG_HERO_SHADOW;
+  }
+
+  return Math.min(MAX_BLOG_HERO_SHADOW, Math.max(MIN_BLOG_HERO_SHADOW, Math.round(value)));
+}
+
+/** Crunchyroll-style cinematic fade: bottom + side vignette for text/UI contrast. */
+export function slideShadowOverlayBackground(shadowPercent: number): string | null {
+  const strength = parseShadowOpacity(shadowPercent) / 100;
+  if (strength <= 0) return null;
+
+  const bottomStrong = (0.92 * strength).toFixed(3);
+  const bottomMid = (0.42 * strength).toFixed(3);
+  const endStrong = (0.8 * strength).toFixed(3);
+  const endMid = (0.26 * strength).toFixed(3);
+  const startSoft = (0.32 * strength).toFixed(3);
+
+  return [
+    `linear-gradient(to top, rgba(0,0,0,${bottomStrong}) 0%, rgba(0,0,0,${bottomMid}) 40%, transparent 76%)`,
+    `linear-gradient(to right, rgba(0,0,0,${endStrong}) 0%, rgba(0,0,0,${endMid}) 48%, transparent 74%)`,
+    `linear-gradient(to left, rgba(0,0,0,${startSoft}) 0%, transparent 26%)`,
+  ].join(", ");
+}
+
 export function slideImageTransformStyle(
   rotation: BlogHeroRotation,
   zoom: number = DEFAULT_BLOG_HERO_ZOOM,
@@ -204,6 +236,7 @@ export function createEmptyHeroSlideSlots(): BlogHeroSlide[] {
     focalY: 50,
     rotation: 0,
     zoom: DEFAULT_BLOG_HERO_ZOOM,
+    shadowOpacity: DEFAULT_BLOG_HERO_SHADOW,
   }));
 }
 
@@ -235,6 +268,7 @@ export function parseBlogHeroSlides(value: unknown): BlogHeroSlide[] {
       focalY: focal.focalY,
       rotation: parseRotation(row.rotation),
       zoom: parseZoom(row.zoom),
+      shadowOpacity: parseShadowOpacity(row.shadowOpacity),
     };
   });
 }
@@ -277,6 +311,7 @@ export function normalizeBlogHeroSlidesForSave(slides: BlogHeroSlide[]): BlogHer
       focalY: focal.focalY,
       rotation: parseRotation(slide.rotation),
       zoom: parseZoom(slide.zoom),
+      shadowOpacity: parseShadowOpacity(slide.shadowOpacity),
     };
   });
 }

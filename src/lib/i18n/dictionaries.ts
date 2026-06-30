@@ -1499,6 +1499,9 @@ export type Dictionary = {
         zoomIn: string;
         zoomOut: string;
         zoomMeta: string;
+        shadowOpacity: string;
+        shadowOpacityHint: string;
+        shadowMeta: string;
         imageUrlLabel: string;
         imageUrlPlaceholder: string;
         linkUrlLabel: string;
@@ -3271,6 +3274,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
           zoomIn: "Zoom in",
           zoomOut: "Zoom out",
           zoomMeta: "Zoom: {zoom}%",
+          shadowOpacity: "Cover shadow",
+          shadowOpacityHint: "Cinematic fade like Crunchyroll — bottom and side darkening for each slide.",
+          shadowMeta: "Shadow: {shadow}%",
           imageUrlLabel: "Image URL",
           imageUrlPlaceholder: "https://example.com/image.jpg",
           linkUrlLabel: "Click-through link",
@@ -5026,6 +5032,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
           zoomIn: "拡大",
           zoomOut: "縮小",
           zoomMeta: "ズーム: {zoom}%",
+          shadowOpacity: "カバーの影",
+          shadowOpacityHint: "Crunchyroll風のシネマティックなフェード。各スライドの下と横を暗くします。",
+          shadowMeta: "影: {shadow}%",
           imageUrlLabel: "画像URL",
           imageUrlPlaceholder: "https://example.com/image.jpg",
           linkUrlLabel: "クリック先リンク",
@@ -6783,6 +6792,9 @@ export const dictionaries: Record<Locale, Dictionary> = {
           zoomIn: "تكبير",
           zoomOut: "تصغير",
           zoomMeta: "التكبير: {zoom}%",
+          shadowOpacity: "ظل الغلاف",
+          shadowOpacityHint: "تدرج سينمائي مثل Crunchyroll — تعتيم أسفل وجوانب الصورة لكل شريحة.",
+          shadowMeta: "الظل: {shadow}%",
           imageUrlLabel: "رابط الصورة",
           imageUrlPlaceholder: "https://example.com/image.jpg",
           linkUrlLabel: "رابط عند الضغط على الصورة",

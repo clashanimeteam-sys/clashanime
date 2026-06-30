@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { BlogHeroSlidePositionEditor } from "@/components/admin/BlogHeroSlidePositionEditor";
 import {
   DEFAULT_BLOG_HERO_DISPLAY,
+  DEFAULT_BLOG_HERO_SHADOW,
   MAX_BLOG_HERO_SLIDES,
   applyPresetToSlide,
   createEmptyHeroSlideSlots,
@@ -88,6 +89,7 @@ export function AdminBlogHeroSlidesPanel() {
         enabled: true,
         rotation: 0,
         zoom: 100,
+        shadowOpacity: DEFAULT_BLOG_HERO_SHADOW,
         ...applyPresetToSlide("center"),
       });
       setMessage(t.admin.blog.heroSlides.uploaded.replace("{n}", String(index + 1)));
@@ -281,6 +283,7 @@ export function AdminBlogHeroSlidesPanel() {
                   focalY={slide.focalY}
                   rotation={slide.rotation ?? 0}
                   zoom={slide.zoom ?? 100}
+                  shadowOpacity={slide.shadowOpacity ?? DEFAULT_BLOG_HERO_SHADOW}
                   onChange={(patch) => updateSlide(index, patch)}
                 />
               ) : (

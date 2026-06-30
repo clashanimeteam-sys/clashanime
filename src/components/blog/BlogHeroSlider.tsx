@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { BlogHeroSlideImage } from "@/components/blog/BlogHeroSlideImage";
+import { BlogHeroSlideShadow } from "@/components/blog/BlogHeroSlideShadow";
 import {
   BLOG_HERO_IMAGE_QUALITY,
   BLOG_HERO_IMAGE_SIZES,
@@ -87,13 +88,16 @@ export function BlogHeroSlider({
       {slides.map((slide, index) => {
         const isActive = index === activeIndex;
         const slideContent = (
-          <BlogHeroSlideImage
-            slide={slide}
-            priority={index === 0}
-            sizes={BLOG_HERO_IMAGE_SIZES}
-            quality={BLOG_HERO_IMAGE_QUALITY}
-            unoptimized
-          />
+          <div className="relative h-full w-full">
+            <BlogHeroSlideImage
+              slide={slide}
+              priority={index === 0}
+              sizes={BLOG_HERO_IMAGE_SIZES}
+              quality={BLOG_HERO_IMAGE_QUALITY}
+              unoptimized
+            />
+            <BlogHeroSlideShadow shadowOpacity={slide.shadowOpacity} />
+          </div>
         );
 
         return (

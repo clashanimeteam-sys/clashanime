@@ -2,8 +2,10 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { BlogHeroSlideFrame } from "@/components/blog/BlogHeroSlideFrame";
+import { BlogHeroSlideShadow } from "@/components/blog/BlogHeroSlideShadow";
 import {
   clampFocal,
+  parseShadowOpacity,
   parseZoom,
   rotateSlideClockwise,
   rotateSlideCounterClockwise,
@@ -19,11 +21,13 @@ type BlogHeroSlidePositionEditorProps = {
   focalY: number;
   rotation: BlogHeroRotation;
   zoom: number;
+  shadowOpacity: number;
   onChange: (patch: {
     focalX?: number;
     focalY?: number;
     rotation?: BlogHeroRotation;
     zoom?: number;
+    shadowOpacity?: number;
   }) => void;
 };
 
@@ -33,6 +37,7 @@ export function BlogHeroSlidePositionEditor({
   focalY,
   rotation,
   zoom,
+  shadowOpacity,
   onChange,
 }: BlogHeroSlidePositionEditorProps) {
   const { t } = useLocale();
@@ -42,6 +47,7 @@ export function BlogHeroSlidePositionEditor({
 
   const slide = { imageUrl, focalX, focalY, objectPosition: "center" as const, rotation, zoom };
   const zoomValue = parseZoom(zoom);
+  const shadowValue = parseShadowOpacity(shadowOpacity);
 
   const moveByPointer = useCallback(
     (clientX: number, clientY: number) => {
@@ -131,6 +137,7 @@ export function BlogHeroSlidePositionEditor({
           dragging ? "cursor-grabbing border-orange-500/60" : "cursor-grab border-zinc-700 hover:border-orange-500/40"
         }`}
       >
+        <BlogHeroSlideShadow shadowOpacity={shadowValue} className="rounded-lg" />
         <div
           ref={frameRef}
           tabIndex={0}
@@ -142,8 +149,6 @@ export function BlogHeroSlidePositionEditor({
           onPointerCancel={onPointerUp}
           className="absolute inset-0 z-10"
         >
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.15),rgba(0,0,0,0.35))]" />
-
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-3">
             <div className="rounded-lg border border-white/20 bg-black/55 px-3 py-2 text-center text-[11px] leading-relaxed text-white backdrop-blur-sm">
               <span className="mb-1 block text-base" aria-hidden>
@@ -169,7 +174,26 @@ export function BlogHeroSlidePositionEditor({
         {t.admin.blog.heroSlides.rotationMeta.replace("{deg}", String(rotation))}
         {" · "}
         {t.admin.blog.heroSlides.zoomMeta.replace("{zoom}", String(zoomValue))}
+        {" · "}
+        {t.admin.blog.heroSlides.shadowMeta.replace("{shadow}", String(shadowValue))}
       </p>
+
+      <label className="block space-y-2">
+        <div className="flex items-center justify-between gap-2 text-[11px] text-zinc-500">
+          <span>{t.admin.blog.heroSlides.shadowOpacity}</span>
+          <span>{shadowValue}%</span>
+        </div>
+        <input
+          type="range"
+          min={0}
+          max={100}
+          step={5}
+          value={shadowValue}
+          onChange={(event) => onChange({ shadowOpacity: Number(event.target.value) })}
+          className="w-full accent-orange-500"
+        />
+        <p className="text-[10px] leading-relaxed text-zinc-600">{t.admin.blog.heroSlides.shadowOpacityHint}</p>
+      </label>
 
       <div className="flex flex-wrap gap-1.5">
         <button
