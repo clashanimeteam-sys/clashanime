@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { slideObjectPositionStyle, type BlogHeroSlide } from "@/lib/blog/heroSlides";
+import { BlogHeroSlideImage } from "@/components/blog/BlogHeroSlideImage";
+import type { BlogHeroSlide } from "@/lib/blog/heroSlides";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type BlogHeroSliderProps = {
@@ -88,15 +88,7 @@ export function BlogHeroSlider({
           }`}
           aria-hidden={index !== activeIndex}
         >
-          <Image
-            src={slide.imageUrl}
-            alt=""
-            fill
-            priority={index === 0}
-            className="object-cover"
-            style={{ objectPosition: slideObjectPositionStyle(slide) }}
-            sizes="100vw"
-          />
+          <BlogHeroSlideImage slide={slide} priority={index === 0} sizes="100vw" />
         </div>
       ))}
 

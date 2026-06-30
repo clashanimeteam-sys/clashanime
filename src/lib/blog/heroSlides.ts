@@ -3,6 +3,7 @@ export const BLOG_HERO_DISPLAY_KEY = "blog_hero_display";
 export const MAX_BLOG_HERO_SLIDES = 10;
 
 export type BlogHeroObjectPosition = "center" | "top" | "bottom" | "left" | "right";
+export type BlogHeroRotation = 0 | 90 | 180 | 270;
 
 export type BlogHeroSlide = {
   id: string;
@@ -12,6 +13,7 @@ export type BlogHeroSlide = {
   objectPosition: BlogHeroObjectPosition;
   focalX: number;
   focalY: number;
+  rotation: BlogHeroRotation;
 };
 
 export type BlogHeroDisplaySettings = {
@@ -69,6 +71,37 @@ export function parseSlideFocal(
   return focalFromPreset(parseObjectPosition(row?.objectPosition));
 }
 
+export function parseRotation(value: unknown): BlogHeroRotation {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return 0;
+  }
+
+  const normalized = ((Math.round(value) % 360) + 360) % 360;
+  if (normalized === 90) return 90;
+  if (normalized === 180) return 180;
+  if (normalized === 270) return 270;
+  return 0;
+}
+
+export function rotateSlideClockwise(rotation: BlogHeroRotation): BlogHeroRotation {
+  return parseRotation(rotation + 90);
+}
+
+export function rotateSlideCounterClockwise(rotation: BlogHeroRotation): BlogHeroRotation {
+  return parseRotation(rotation - 90);
+}
+
+export function slideImageTransformStyle(rotation: BlogHeroRotation): { transform?: string } {
+  if (rotation === 0) {
+    return {};
+  }
+
+  const scale = rotation === 180 ? 1 : 1.42;
+  return {
+    transform: `rotate(${rotation}deg) scale(${scale})`,
+  };
+}
+
 export function slideObjectPositionStyle(slide: Pick<BlogHeroSlide, "focalX" | "focalY" | "objectPosition">): string {
   const { focalX, focalY } =
     typeof slide.focalX === "number" && typeof slide.focalY === "number"
@@ -87,6 +120,7 @@ export function createEmptyHeroSlideSlots(): BlogHeroSlide[] {
     objectPosition: "center" as const,
     focalX: 50,
     focalY: 50,
+    rotation: 0,
   }));
 }
 
@@ -115,6 +149,7 @@ export function parseBlogHeroSlides(value: unknown): BlogHeroSlide[] {
       objectPosition: parseObjectPosition(row.objectPosition),
       focalX: focal.focalX,
       focalY: focal.focalY,
+      rotation: parseRotation(row.rotation),
     };
   });
 }
@@ -154,6 +189,7 @@ export function normalizeBlogHeroSlidesForSave(slides: BlogHeroSlide[]): BlogHer
       objectPosition: parseObjectPosition(slide.objectPosition),
       focalX: focal.focalX,
       focalY: focal.focalY,
+      rotation: parseRotation(slide.rotation),
     };
   });
 }

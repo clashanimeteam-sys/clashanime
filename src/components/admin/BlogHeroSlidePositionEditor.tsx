@@ -1,12 +1,14 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { BlogHeroSlideImage } from "@/components/blog/BlogHeroSlideImage";
 import {
   applyPresetToSlide,
   clampFocal,
-  slideObjectPositionStyle,
+  rotateSlideClockwise,
+  rotateSlideCounterClockwise,
   type BlogHeroObjectPosition,
+  type BlogHeroRotation,
 } from "@/lib/blog/heroSlides";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -14,7 +16,13 @@ type BlogHeroSlidePositionEditorProps = {
   imageUrl: string;
   focalX: number;
   focalY: number;
-  onChange: (patch: { focalX: number; focalY: number; objectPosition?: BlogHeroObjectPosition }) => void;
+  rotation: BlogHeroRotation;
+  onChange: (patch: {
+    focalX?: number;
+    focalY?: number;
+    rotation?: BlogHeroRotation;
+    objectPosition?: BlogHeroObjectPosition;
+  }) => void;
 };
 
 const PRESETS: BlogHeroObjectPosition[] = ["center", "top", "bottom", "left", "right"];
@@ -23,12 +31,15 @@ export function BlogHeroSlidePositionEditor({
   imageUrl,
   focalX,
   focalY,
+  rotation,
   onChange,
 }: BlogHeroSlidePositionEditorProps) {
   const { t } = useLocale();
   const frameRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<{ startX: number; startY: number; originX: number; originY: number } | null>(null);
   const [dragging, setDragging] = useState(false);
+
+  const slide = { imageUrl, focalX, focalY, objectPosition: "center" as const, rotation };
 
   const applyPreset = (preset: BlogHeroObjectPosition) => {
     const next = applyPresetToSlide(preset);
@@ -95,7 +106,7 @@ export function BlogHeroSlidePositionEditor({
           nextY = clampFocal(focalY - step);
           break;
         case "ArrowDown":
-          nextY = clampFocal(focalY + step);
+          nextY = clampFocal(focalY - step);
           break;
         default:
           return;
@@ -144,15 +155,7 @@ export function BlogHeroSlidePositionEditor({
           dragging ? "cursor-grabbing border-orange-500/60" : "cursor-grab border-zinc-700 hover:border-orange-500/40"
         }`}
       >
-        <Image
-          src={imageUrl}
-          alt=""
-          fill
-          draggable={false}
-          className="pointer-events-none select-none object-cover"
-          style={{ objectPosition: slideObjectPositionStyle({ focalX, focalY, objectPosition: "center" }) }}
-          sizes="(max-width: 768px) 100vw, 360px"
-        />
+        <BlogHeroSlideImage slide={slide} sizes="(max-width: 768px) 100vw, 360px" />
 
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.15),rgba(0,0,0,0.35))]" />
 
@@ -176,7 +179,28 @@ export function BlogHeroSlidePositionEditor({
         {t.admin.blog.heroSlides.focalMeta
           .replace("{x}", String(focalX))
           .replace("{y}", String(focalY))}
+        {" · "}
+        {t.admin.blog.heroSlides.rotationMeta.replace("{deg}", String(rotation))}
       </p>
+
+      <div className="flex flex-wrap gap-1.5">
+        <button
+          type="button"
+          onClick={() => onChange({ rotation: rotateSlideCounterClockwise(rotation) })}
+          className="rounded-full border border-zinc-700 px-2.5 py-1 text-[11px] font-semibold text-zinc-300 transition hover:border-orange-500/40"
+          title={t.admin.blog.heroSlides.rotateLeft}
+        >
+          ↺ {t.admin.blog.heroSlides.rotateLeft}
+        </button>
+        <button
+          type="button"
+          onClick={() => onChange({ rotation: rotateSlideClockwise(rotation) })}
+          className="rounded-full border border-zinc-700 px-2.5 py-1 text-[11px] font-semibold text-zinc-300 transition hover:border-orange-500/40"
+          title={t.admin.blog.heroSlides.rotateRight}
+        >
+          ↻ {t.admin.blog.heroSlides.rotateRight}
+        </button>
+      </div>
 
       <div className="flex flex-wrap gap-1.5">
         {PRESETS.map((preset) => {

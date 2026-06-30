@@ -86,6 +86,7 @@ export function AdminBlogHeroSlidesPanel() {
       updateSlide(index, {
         imageUrl: payload.imageUrl,
         enabled: true,
+        rotation: 0,
         ...applyPresetToSlide("center"),
       });
       setMessage(t.admin.blog.heroSlides.uploaded.replace("{n}", String(index + 1)));
@@ -248,6 +249,7 @@ export function AdminBlogHeroSlidesPanel() {
                   imageUrl={slide.imageUrl}
                   focalX={slide.focalX}
                   focalY={slide.focalY}
+                  rotation={slide.rotation ?? 0}
                   onChange={(patch) => updateSlide(index, patch)}
                 />
               ) : (
