@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { AdminBlogHeroSlidesPanel } from "@/components/admin/AdminBlogHeroSlidesPanel";
 import { getAllBlogPosts, getBlogPostCopy } from "@/lib/blog/posts";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -26,6 +27,8 @@ export function AdminBlogPanel() {
       <p className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 text-sm text-zinc-300">
         {t.admin.blog.staticNote}
       </p>
+
+      <AdminBlogHeroSlidesPanel />
 
       <p className="text-sm font-semibold text-zinc-300">
         {t.admin.blog.articlesCount.replace("{count}", String(posts.length))}

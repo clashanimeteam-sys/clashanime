@@ -1,6 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { BlogHeroSlider } from "@/components/blog/BlogHeroSlider";
+import type { BlogHeroSlide } from "@/lib/blog/heroSlides";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type BlogHeroBannerProps = {
@@ -10,6 +13,38 @@ type BlogHeroBannerProps = {
 
 export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBannerProps) {
   const { t, dir } = useLocale();
+  const [slides, setSlides] = useState<BlogHeroSlide[]>([]);
+  const [slidesLoaded, setSlidesLoaded] = useState(false);
+
+  useEffect(() => {
+    if (compact) {
+      setSlidesLoaded(true);
+      return;
+    }
+
+    let cancelled = false;
+
+    void fetch("/api/blog/hero-slides")
+      .then((response) => response.json())
+      .then((payload: { slides?: BlogHeroSlide[] }) => {
+        if (!cancelled) {
+          setSlides(payload.slides ?? []);
+          setSlidesLoaded(true);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setSlides([]);
+          setSlidesLoaded(true);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [compact]);
+
+  const hasCustomSlides = !compact && slides.length > 0;
 
   return (
     <section
@@ -21,78 +56,89 @@ export function BlogHeroBanner({ compact = false, articleTitle }: BlogHeroBanner
     >
       <div className="absolute inset-0 bg-zinc-950" aria-hidden />
 
-      {/* Center arena spotlight — keeps text lane clear of characters */}
-      <div
-        className="absolute inset-0 bg-[radial-gradient(ellipse_38%_70%_at_50%_48%,rgba(18,18,22,0.97),rgba(9,9,11,0.85)_52%,rgba(9,9,11,1)_100%)]"
-        aria-hidden
-      />
-      <div
-        className="absolute inset-0 bg-[radial-gradient(ellipse_28%_50%_at_50%_50%,rgba(249,115,22,0.14),transparent_72%)]"
-        aria-hidden
-      />
-
-      {/* Left — Demon Slayer (wider panel + crop empty PNG padding) */}
-      <div
-        className={`pointer-events-none absolute bottom-0 left-0 top-0 overflow-hidden ${
-          compact
-            ? "w-[44%] max-w-[200px]"
-            : "w-[min(46vw,680px)] max-w-[680px] lg:w-[min(42vw,720px)] lg:max-w-[720px]"
-        }`}
-        aria-hidden
-      >
-        <div className="relative h-full w-[132%]">
-          <Image
-            src="/blog/hero-demon-slayer-left.png"
-            alt=""
-            fill
-            priority={!compact}
-            className="object-cover object-left object-bottom scale-[1.06] sm:scale-[1.1] lg:scale-[1.14]"
-            sizes="(max-width: 640px) 46vw, 720px"
+      {hasCustomSlides ? (
+        <>
+          <BlogHeroSlider slides={slides} />
+          <div
+            className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_42%_72%_at_50%_48%,rgba(9,9,11,0.88),rgba(9,9,11,0.55)_55%,rgba(9,9,11,0.92)_100%)]"
+            aria-hidden
           />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-zinc-950/80" />
-      </div>
-
-      {/* Right — Solo Leveling (match left panel weight on mobile) */}
-      <div
-        className={`pointer-events-none absolute bottom-0 right-0 top-0 overflow-hidden ${
-          compact
-            ? "w-[44%] max-w-[200px]"
-            : "w-[min(46vw,680px)] max-w-[680px] lg:w-[min(42vw,720px)] lg:max-w-[720px]"
-        }`}
-        aria-hidden
-      >
-        <div className="relative ms-auto h-full w-[132%]">
-          <Image
-            src="/blog/hero-solo-leveling-right.png"
-            alt=""
-            fill
-            priority={!compact}
-            className="object-cover object-right object-bottom scale-[1.06] sm:scale-[1.1] lg:scale-[1.14]"
-            sizes="(max-width: 640px) 46vw, 720px"
+          <div
+            className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_30%_52%_at_50%_50%,rgba(249,115,22,0.12),transparent_72%)]"
+            aria-hidden
           />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-zinc-950/80" />
-      </div>
+        </>
+      ) : (
+        <>
+          <div
+            className="absolute inset-0 bg-[radial-gradient(ellipse_38%_70%_at_50%_48%,rgba(18,18,22,0.97),rgba(9,9,11,0.85)_52%,rgba(9,9,11,1)_100%)]"
+            aria-hidden
+          />
+          <div
+            className="absolute inset-0 bg-[radial-gradient(ellipse_28%_50%_at_50%_50%,rgba(249,115,22,0.14),transparent_72%)]"
+            aria-hidden
+          />
 
-      {/* Side vignettes + vertical depth */}
-      <div
-        className="absolute inset-0 bg-[linear-gradient(90deg,rgba(9,9,11,0.55)_0%,rgba(9,9,11,0.05)_20%,rgba(9,9,11,0.05)_80%,rgba(9,9,11,0.55)_100%)]"
-        aria-hidden
-      />
-      <div
-        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,9,11,0.45)_0%,transparent_30%,transparent_70%,rgba(9,9,11,0.92)_100%)]"
-        aria-hidden
-      />
+          <div
+            className={`pointer-events-none absolute bottom-0 left-0 top-0 overflow-hidden ${
+              compact
+                ? "w-[44%] max-w-[200px]"
+                : "w-[min(46vw,680px)] max-w-[680px] lg:w-[min(42vw,720px)] lg:max-w-[720px]"
+            }`}
+            aria-hidden
+          >
+            <div className="relative h-full w-[132%]">
+              <Image
+                src="/blog/hero-demon-slayer-left.png"
+                alt=""
+                fill
+                priority={!compact}
+                className="object-cover object-left object-bottom scale-[1.06] sm:scale-[1.1] lg:scale-[1.14]"
+                sizes="(max-width: 640px) 46vw, 720px"
+              />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-zinc-950/80" />
+          </div>
 
-      {!compact ? (
+          <div
+            className={`pointer-events-none absolute bottom-0 right-0 top-0 overflow-hidden ${
+              compact
+                ? "w-[44%] max-w-[200px]"
+                : "w-[min(46vw,680px)] max-w-[680px] lg:w-[min(42vw,720px)] lg:max-w-[720px]"
+            }`}
+            aria-hidden
+          >
+            <div className="relative ms-auto h-full w-[132%]">
+              <Image
+                src="/blog/hero-solo-leveling-right.png"
+                alt=""
+                fill
+                priority={!compact}
+                className="object-cover object-right object-bottom scale-[1.06] sm:scale-[1.1] lg:scale-[1.14]"
+                sizes="(max-width: 640px) 46vw, 720px"
+              />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-zinc-950/80" />
+          </div>
+
+          <div
+            className="absolute inset-0 bg-[linear-gradient(90deg,rgba(9,9,11,0.55)_0%,rgba(9,9,11,0.05)_20%,rgba(9,9,11,0.05)_80%,rgba(9,9,11,0.55)_100%)]"
+            aria-hidden
+          />
+          <div
+            className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,9,11,0.45)_0%,transparent_30%,transparent_70%,rgba(9,9,11,0.92)_100%)]"
+            aria-hidden
+          />
+        </>
+      )}
+
+      {!compact && slidesLoaded && !hasCustomSlides ? (
         <div
           className="pointer-events-none absolute left-1/2 top-[42%] h-28 w-px -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-transparent via-orange-500/35 to-transparent sm:top-1/2 sm:h-40"
           aria-hidden
         />
       ) : null}
 
-      {/* Text column — fixed center lane between characters */}
       <div className="relative z-10 flex min-h-[inherit] items-center justify-center px-[max(1rem,14vw)] py-10 sm:px-[max(1.5rem,18vw)] sm:py-11 lg:px-[max(2rem,20vw)] lg:py-12">
         <div
           dir={dir}

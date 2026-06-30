@@ -173,6 +173,10 @@ export type Dictionary = {
     hubTitle: string;
     hubSubtitle: string;
     heroTagline: string;
+    heroCarouselLabel: string;
+    heroPrev: string;
+    heroNext: string;
+    heroGoToSlide: string;
     navHome: string;
     navAccount: string;
     backToGuide: string;
@@ -1458,6 +1462,22 @@ export type Dictionary = {
       title: string;
       subtitle: string;
       staticNote: string;
+      heroSlides: {
+        title: string;
+        subtitle: string;
+        save: string;
+        saving: string;
+        saved: string;
+        loading: string;
+        upload: string;
+        uploading: string;
+        uploaded: string;
+        remove: string;
+        enabled: string;
+        emptySlot: string;
+        slotLabel: string;
+        slotsMeta: string;
+      };
       articlesCount: string;
       category: string;
       published: string;
@@ -1783,6 +1803,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       hubSubtitle:
         "Guides, radar analysis, winner stories, platform updates, prizes, and FAQ — built to help you rank higher and earn on ClashAnime.",
       heroTagline: "Enter the arena. Raise your clash. Become the legend.",
+      heroCarouselLabel: "Heroes Guide cover carousel",
+      heroPrev: "Previous slide",
+      heroNext: "Next slide",
+      heroGoToSlide: "Go to slide {n}",
       navHome: "Home",
       navAccount: "Account",
       backToGuide: "Back to Arena Guide",
@@ -3170,6 +3194,23 @@ export const dictionaries: Record<Locale, Dictionary> = {
         subtitle: "Static SEO articles published from the codebase — no database CMS.",
         staticNote:
           "Articles are version-controlled files in /blog. Edit content via git deploy; this panel is read-only for visibility.",
+        heroSlides: {
+          title: "Hero cover carousel",
+          subtitle:
+            "Upload up to 10 wide banner images for the Heroes Guide hub (/blog). Slides rotate automatically and can be changed manually on the site.",
+          save: "Save carousel",
+          saving: "Saving...",
+          saved: "Hero carousel saved.",
+          loading: "Loading slides...",
+          upload: "Upload image",
+          uploading: "Uploading...",
+          uploaded: "Slide {n} image uploaded — click Save carousel to publish.",
+          remove: "Remove",
+          enabled: "Show",
+          emptySlot: "No image yet",
+          slotLabel: "Slide {n}",
+          slotsMeta: "{active} active of {max} slots",
+        },
         articlesCount: "{count} published articles",
         category: "Category",
         published: "Published",
@@ -3494,6 +3535,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       hubSubtitle:
         "ガイド、レーダー分析、勝者ストーリー、アップデート、賞金、FAQ — ClashAnimeで順位アップと収益化のための記事。",
       heroTagline: "アリーナへ。クラッシュを上げろ。伝説になれ。",
+      heroCarouselLabel: "英雄ガイドのカバースライダー",
+      heroPrev: "前のスライド",
+      heroNext: "次のスライド",
+      heroGoToSlide: "スライド {n} へ",
       navHome: "ホーム",
       navAccount: "アカウント",
       backToGuide: "ガイド一覧へ",
@@ -4865,6 +4910,23 @@ export const dictionaries: Record<Locale, Dictionary> = {
         title: "アリーナガイド（ブログ）",
         subtitle: "コードベースの静的SEO記事 — DBのCMSはありません。",
         staticNote: "記事は /blog のファイルです。gitデプロイで更新。このパネルは閲覧のみ。",
+        heroSlides: {
+          title: "ヒーローカバースライダー",
+          subtitle:
+            "英雄ガイド（/blog）用のワイドバナーを最大10枚アップロード。サイト上で自動・手動切り替えできます。",
+          save: "スライダーを保存",
+          saving: "保存中...",
+          saved: "ヒーロースライダーを保存しました。",
+          loading: "スライドを読み込み中...",
+          upload: "画像をアップロード",
+          uploading: "アップロード中...",
+          uploaded: "スライド {n} をアップロードしました — 公開するには保存してください。",
+          remove: "削除",
+          enabled: "表示",
+          emptySlot: "画像なし",
+          slotLabel: "スライド {n}",
+          slotsMeta: "{max} 枠中 {active} 件が有効",
+        },
         articlesCount: "公開記事 {count} 件",
         category: "カテゴリ",
         published: "公開日",
@@ -5187,6 +5249,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       hubSubtitle:
         "شروحات، تحليلات الرادار، قصص الفائزين، تحديثات المنصة، الجوائز، وأسئلة شائعة — لترتيب أعلى وربح على ClashAnime.",
       heroTagline: "أدخل الساحة. ارفع نزالك. كُن الأسطورة.",
+      heroCarouselLabel: "سلايدر غلاف دليل الأبطال",
+      heroPrev: "الشريحة السابقة",
+      heroNext: "الشريحة التالية",
+      heroGoToSlide: "الانتقال إلى الشريحة {n}",
       navHome: "الرئيسية",
       navAccount: "الحساب",
       backToGuide: "العودة لدليل الأبطال",
@@ -6562,6 +6628,23 @@ export const dictionaries: Record<Locale, Dictionary> = {
         title: "دليل الأبطال (المدونة)",
         subtitle: "مقالات SEO ثابتة من الكود — بدون قاعدة بيانات.",
         staticNote: "المقالات ملفات في /blog. التحديث عبر git. هذه اللوحة للعرض فقط.",
+        heroSlides: {
+          title: "سلايدر غلاف دليل الأبطال",
+          subtitle:
+            "ارفع حتى 10 صور غلاف عريضة لصفحة دليل الأبطال (/blog). تتحرك تلقائياً ويمكن التنقل يدوياً في الموقع.",
+          save: "حفظ السلايدر",
+          saving: "جاري الحفظ...",
+          saved: "تم حفظ سلايدر الغلاف.",
+          loading: "جاري تحميل الشرائح...",
+          upload: "رفع صورة",
+          uploading: "جاري الرفع...",
+          uploaded: "تم رفع صورة الشريحة {n} — اضغط حفظ السلايدر للنشر.",
+          remove: "إزالة",
+          enabled: "عرض",
+          emptySlot: "لا توجد صورة بعد",
+          slotLabel: "الشريحة {n}",
+          slotsMeta: "{active} نشطة من {max} خانات",
+        },
         articlesCount: "{count} مقالة منشورة",
         category: "القسم",
         published: "تاريخ النشر",
