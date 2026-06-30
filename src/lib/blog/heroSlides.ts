@@ -7,6 +7,9 @@ export const BLOG_HERO_FRAME_CLASS =
   "relative w-full aspect-[21/7] overflow-hidden bg-zinc-950";
 export const BLOG_HERO_LIVE_CONTAINER_CLASS = "w-full pt-3 sm:pt-4";
 export const BLOG_HERO_LIVE_FRAME_CLASS = `${BLOG_HERO_FRAME_CLASS} border-y border-zinc-800 sm:rounded-xl sm:border`;
+/** Full-viewport hero: avoid capping optimizer width (was 1024px → blurry stretch). */
+export const BLOG_HERO_IMAGE_SIZES = "100vw";
+export const BLOG_HERO_IMAGE_QUALITY = 92;
 
 export type BlogHeroObjectPosition = "center" | "top" | "bottom" | "left" | "right";
 export type BlogHeroRotation = 0 | 90 | 180 | 270;

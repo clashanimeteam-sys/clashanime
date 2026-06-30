@@ -2,7 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { BlogHeroSlideImage } from "@/components/blog/BlogHeroSlideImage";
-import type { BlogHeroSlide } from "@/lib/blog/heroSlides";
+import {
+  BLOG_HERO_IMAGE_QUALITY,
+  BLOG_HERO_IMAGE_SIZES,
+  type BlogHeroSlide,
+} from "@/lib/blog/heroSlides";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type BlogHeroSliderProps = {
@@ -83,7 +87,13 @@ export function BlogHeroSlider({
       {slides.map((slide, index) => {
         const isActive = index === activeIndex;
         const slideContent = (
-          <BlogHeroSlideImage slide={slide} priority={index === 0} sizes="(max-width: 1024px) 100vw, 1024px" />
+          <BlogHeroSlideImage
+            slide={slide}
+            priority={index === 0}
+            sizes={BLOG_HERO_IMAGE_SIZES}
+            quality={BLOG_HERO_IMAGE_QUALITY}
+            unoptimized
+          />
         );
 
         return (

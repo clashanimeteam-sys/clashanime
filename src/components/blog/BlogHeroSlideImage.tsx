@@ -17,6 +17,8 @@ type BlogHeroSlideImageProps = {
   >;
   priority?: boolean;
   sizes: string;
+  quality?: number;
+  unoptimized?: boolean;
   className?: string;
 };
 
@@ -24,6 +26,8 @@ export function BlogHeroSlideImage({
   slide,
   priority = false,
   sizes,
+  quality,
+  unoptimized = false,
   className = "object-cover",
 }: BlogHeroSlideImageProps) {
   const rotation = parseRotation(slide.rotation);
@@ -45,6 +49,8 @@ export function BlogHeroSlideImage({
             className={`${className} select-none`}
             style={{ objectPosition }}
             sizes={sizes}
+            quality={quality}
+            unoptimized={unoptimized}
           />
         ) : (
           // eslint-disable-next-line @next/next/no-img-element

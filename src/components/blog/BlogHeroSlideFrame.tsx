@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { BlogHeroSlideImage } from "@/components/blog/BlogHeroSlideImage";
-import { BLOG_HERO_FRAME_CLASS, type BlogHeroSlide } from "@/lib/blog/heroSlides";
+import { BLOG_HERO_FRAME_CLASS, BLOG_HERO_IMAGE_SIZES, type BlogHeroSlide } from "@/lib/blog/heroSlides";
 
 type BlogHeroSlideFrameProps = {
   slide: Pick<
@@ -18,7 +18,7 @@ type BlogHeroSlideFrameProps = {
 export function BlogHeroSlideFrame({
   slide,
   priority = false,
-  sizes = "100vw",
+  sizes = BLOG_HERO_IMAGE_SIZES,
   className = "",
   children,
 }: BlogHeroSlideFrameProps) {
