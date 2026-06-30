@@ -29,6 +29,15 @@ export function BlogIndexContent({ latestNews: initialLatestNews = [] }: BlogInd
   usePageTitle(t.blog.hubTitle);
 
   useEffect(() => {
+    if (typeof window === "undefined" || !window.location.hash) return;
+    const id = window.location.hash.slice(1);
+    const target = document.getElementById(id);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, []);
+
+  useEffect(() => {
     if (initialLatestNews.length > 0) return;
 
     let cancelled = false;
