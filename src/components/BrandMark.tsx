@@ -7,9 +7,16 @@ import { useLocale } from "@/providers/LocaleProvider";
 type BrandMarkProps = {
   className?: string;
   showLabel?: boolean;
+  logoClassName?: string;
+  labelClassName?: string;
 };
 
-export function BrandMark({ className = "", showLabel = true }: BrandMarkProps) {
+export function BrandMark({
+  className = "",
+  showLabel = true,
+  logoClassName = "h-8 w-8 shrink-0",
+  labelClassName = "",
+}: BrandMarkProps) {
   const { t } = useLocale();
 
   return (
@@ -18,9 +25,11 @@ export function BrandMark({ className = "", showLabel = true }: BrandMarkProps) 
       aria-label={t.auth.backHome}
       className={`inline-flex items-center gap-2.5 rounded-lg transition-opacity hover:opacity-80 ${className}`}
     >
-      <BrandLogo className="h-8 w-8 shrink-0" />
+      <BrandLogo className={logoClassName} priority />
       {showLabel && (
-        <span className="font-display text-sm font-bold uppercase tracking-[0.12em] text-black dark:text-white">
+        <span
+          className={`font-display text-sm font-bold uppercase tracking-[0.12em] text-black dark:text-white ${labelClassName}`}
+        >
           Clash<span className="text-brand"> Anime</span>
         </span>
       )}

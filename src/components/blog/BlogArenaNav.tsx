@@ -129,7 +129,9 @@ export function BlogArenaNav() {
     <header className="sticky top-0 z-40 border-b border-zinc-800/80 bg-zinc-950/95 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <BrandMark
-          className="shrink-0 [&_.text-brand]:text-orange-400 [&_span]:text-white"
+          logoClassName="h-12 w-12 shrink-0 sm:h-14 sm:w-14"
+          labelClassName="text-base sm:text-lg tracking-[0.14em]"
+          className="shrink-0 gap-3 [&_.text-brand]:text-orange-400 [&_span]:text-white"
           showLabel
         />
 
