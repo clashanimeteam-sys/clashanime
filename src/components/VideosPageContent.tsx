@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimeReleaseShelfRow } from "@/components/videos/AnimeReleaseShelfRow";
+import { AdPlacementBanner } from "@/components/ads/AdPlacementBanner";
 import { DuelShelfRow } from "@/components/videos/DuelShelfRow";
 import { VideoShelfRow } from "@/components/videos/VideoShelfRow";
 import { useLiveRankedVideos } from "@/hooks/useLiveRankedVideos";
@@ -105,6 +106,7 @@ export function VideosPageContent({
             showRank
             emptyMessage={t.pages.emptyVideos}
           />
+          <AdPlacementBanner page="videos" className="mb-10" />
           <AnimeReleaseShelfRow
             title={t.videosPage.shelfLatestAnime}
             releases={recentAnimeReleases}

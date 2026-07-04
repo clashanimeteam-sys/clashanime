@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { getAdSenseClientId, getAdSenseSlotId, isAdSenseEnabled } from "@/lib/adsense";
+import { getAdSenseClientId, isAdSenseEnabled, resolveAdSenseSlotId } from "@/lib/adsense";
 
 type AdSenseUnitProps = {
-  slot?: "banner" | "sidebar";
+  slot?: "banner" | "sidebar" | "infeed";
+  slotId?: string;
   className?: string;
-  format?: "auto" | "horizontal" | "rectangle";
+  format?: "auto" | "horizontal" | "rectangle" | "fluid";
 };
 
 declare global {
@@ -17,20 +18,22 @@ declare global {
 
 export function AdSenseUnit({
   slot = "banner",
+  slotId: slotIdOverride,
   className = "",
   format = "auto",
 }: AdSenseUnitProps) {
   const pushedRef = useRef(false);
   const [mounted, setMounted] = useState(false);
   const clientId = getAdSenseClientId();
-  const slotId = getAdSenseSlotId(slot);
+  const slotId = resolveAdSenseSlotId(slot, slotIdOverride);
+  const adsReady = Boolean(slotIdOverride?.trim() || isAdSenseEnabled());
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!mounted || !isAdSenseEnabled() || !clientId || !slotId || pushedRef.current) return;
+    if (!mounted || !adsReady || !clientId || !slotId || pushedRef.current) return;
 
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -38,9 +41,9 @@ export function AdSenseUnit({
     } catch {
       // Ad blocker may block push.
     }
-  }, [clientId, mounted, slotId]);
+  }, [adsReady, clientId, mounted, slotId]);
 
-  if (!mounted || !isAdSenseEnabled() || !clientId || !slotId) {
+  if (!mounted || !adsReady || !clientId || !slotId) {
     return null;
   }
 

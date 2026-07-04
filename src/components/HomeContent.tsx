@@ -1,6 +1,7 @@
 "use client";
 
 import { InstantEpisodeClashBanner } from "@/components/clash/InstantEpisodeClashBanner";
+import { AdPlacementBanner } from "@/components/ads/AdPlacementBanner";
 import { LiveClashCounter } from "@/components/clash/LiveClashCounter";
 import { ClashPrizeBanner } from "@/components/clash/ClashPrizeBanner";
 import { ClashVideosBackdrop } from "@/components/clash/ClashVideosBackdrop";
@@ -99,6 +100,8 @@ export function HomeContent({
         )}
 
         <ClashPrizeBanner activeSeason={activeSeason} />
+
+        <AdPlacementBanner page="home" className="mb-8" />
 
         {legendSeasons.length > 0 ? (
           <section className="mb-8">

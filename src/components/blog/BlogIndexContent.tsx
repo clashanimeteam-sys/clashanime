@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BlogPageShell } from "@/components/blog/BlogPageShell";
+import { AdPlacementBanner } from "@/components/ads/AdPlacementBanner";
 import { BlogSeasonalGuideSpotlight } from "@/components/blog/BlogSeasonalGuideSpotlight";
 import { FEATURED_SEASONAL_GUIDE_SLUG } from "@/lib/animeNews/seasonalGuide";
 import type { AnimeNewsArticle } from "@/lib/animeNews/types";
@@ -61,6 +62,7 @@ export function BlogIndexContent({ latestNews: initialLatestNews = [] }: BlogInd
   return (
     <BlogPageShell>
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
+        <AdPlacementBanner page="blog" className="mb-8" />
         {latestNews.length > 0 ? (
           <section id="anime-news" className="mb-12 scroll-mt-28">
             <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-s-4 border-orange-500 ps-4">
