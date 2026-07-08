@@ -2,15 +2,21 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import type { MouseEvent } from "react";
 import { NavIcon } from "@/components/nav/NavIcon";
 import { ElementalSiteTitle } from "@/components/ElementalSiteTitle";
 import { BrandLogo } from "@/components/BrandLogo";
 import { LocaleFlags } from "@/components/LocaleFlags";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { isStaff } from "@/lib/admin";
+import { navigateAppHref } from "@/lib/appNavigation";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
-import { useProfileSection, type ProfileSection } from "@/providers/ProfileSectionProvider";
+import {
+  parseProfileSection,
+  useProfileSection,
+  type ProfileSection,
+} from "@/providers/ProfileSectionProvider";
 
 const mainNavItems = [
   { key: "clash" as const, href: "/", icon: "clash" },
@@ -41,6 +47,13 @@ function profileSectionHref(section: ProfileSection, loggedIn: boolean) {
   return loggedIn ? target : `/login?next=${encodeURIComponent(target)}`;
 }
 
+function profileSectionFromHref(href: string): ProfileSection | null {
+  if (href === "/profile") return "settings";
+  const match = href.match(/^\/profile#(.+)$/);
+  if (!match) return null;
+  return parseProfileSection(match[1]);
+}
+
 function navLinkClass(active: boolean) {
   return `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
     active
@@ -56,6 +69,22 @@ export function Sidebar() {
   const { t } = useLocale();
   const { section, setSection, isProfilePage } = useProfileSection();
   const showAdminLink = isStaff(profile);
+
+  function handleNavClick(event: MouseEvent<HTMLAnchorElement>, href: string) {
+    const profileTarget = profileSectionFromHref(href);
+    if (profileTarget && isProfilePage && user) {
+      event.preventDefault();
+      setSection(profileTarget);
+      return;
+    }
+
+    const [path, hash = ""] = href.split("#");
+    const targetPath = path || pathname;
+    if (hash && targetPath === pathname) {
+      event.preventDefault();
+      navigateAppHref(router, pathname, href);
+    }
+  }
 
   return (
     <aside className="flex h-dvh w-56 shrink-0 flex-col border-e border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black lg:w-60">
@@ -92,7 +121,12 @@ export function Sidebar() {
                 : pathname === item.href;
 
           return (
-            <Link key={item.key} href={href} className={navLinkClass(active)}>
+            <Link
+              key={item.key}
+              href={href}
+              className={navLinkClass(active)}
+              onClick={(event) => handleNavClick(event, href)}
+            >
               <NavIcon icon={item.icon} />
               {t.nav[item.key]}
             </Link>
@@ -108,23 +142,18 @@ export function Sidebar() {
             />
 
             {profileNavItems.map((item) => {
+              const href = profileSectionHref(item.section, Boolean(user));
               const active = section === item.section;
               return (
-                <button
+                <Link
                   key={item.key}
-                  type="button"
-                  onClick={() => {
-                    if (!user) {
-                      router.push(profileSectionHref(item.section, false));
-                      return;
-                    }
-                    setSection(item.section);
-                  }}
+                  href={href}
                   className={navLinkClass(active)}
+                  onClick={(event) => handleNavClick(event, href)}
                 >
                   <NavIcon icon={item.icon} />
                   {t.nav[item.key]}
-                </button>
+                </Link>
               );
             })}
           </>

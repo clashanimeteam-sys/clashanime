@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { AdPlacementBanner } from "@/components/ads/AdPlacementBanner";
 import { CommunityPostActions } from "@/components/CommunityPostActions";
 import { CommunityReportModal } from "@/components/CommunityReportModal";
 import { ComposerMediaButtons } from "@/components/ComposerMediaButtons";
@@ -387,6 +388,8 @@ export function CommunityPageContent() {
           {error}
         </p>
       ) : null}
+
+      <AdPlacementBanner page="community" className="mx-auto mb-6 max-w-sm" />
 
       {loading ? (
         <p className="text-sm text-zinc-500">{t.points.communityLoading}</p>

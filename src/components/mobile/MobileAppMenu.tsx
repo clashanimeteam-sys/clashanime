@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { LocaleFlags } from "@/components/LocaleFlags";
 import { NavIcon } from "@/components/nav/NavIcon";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { navigateAppHref } from "@/lib/appNavigation";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Locale } from "@/lib/types";
@@ -43,16 +44,7 @@ export function MobileAppMenu({ open, onClose }: MobileAppMenuProps) {
 
   const navigateAndClose = useCallback(
     (href: string) => {
-      const [path, hash = ""] = href.split("#");
-      const targetPath = path || pathname;
-
-      if (targetPath === pathname && hash) {
-        window.history.pushState(null, "", `${targetPath}#${hash}`);
-        window.dispatchEvent(new HashChangeEvent("hashchange"));
-      } else {
-        router.push(href);
-      }
-
+      navigateAppHref(router, pathname, href);
       window.setTimeout(onClose, 0);
     },
     [onClose, pathname, router],
