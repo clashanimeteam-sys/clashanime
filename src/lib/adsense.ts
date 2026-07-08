@@ -1,4 +1,4 @@
-const ADSENSE_CLIENT_ID = "ca-pub-6393794735329275";
+const ADSENSE_CLIENT_ID = "ca-pub-9998186124580672";
 
 export function getAdSenseClientId() {
   return process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID?.trim() || ADSENSE_CLIENT_ID;
