@@ -1,12 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { FollowerCount } from "@/components/FollowButton";
-import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { DeleteAccountSection } from "@/components/DeleteAccountSection";
 import { MentionHashtagTextarea } from "@/components/MentionHashtagTextarea";
 import { OwnVideoCard } from "@/components/profile/OwnVideoCard";
@@ -16,9 +13,7 @@ import { ProfileCountrySetupModal } from "@/components/profile/ProfileCountrySet
 import type { ProfileSocialUrls } from "@/lib/socialLinks";
 import type { ChannelCommunityPost } from "@/components/channel/ChannelCommunityPosts";
 import { KYC_COUNTRIES, DEFAULT_KYC_COUNTRY, getKycCountryByCode, getKycCountryLabel } from "@/lib/kycCountries";
-import { VideoCard } from "@/components/VideoCard";
 import { profileToVideoChannel } from "@/components/VideoCardChannel";
-import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 import { deleteMediaObjects } from "@/lib/mediaUpload";
@@ -39,6 +34,7 @@ import {
 } from "@/lib/profileUsername";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
+import { usePageTitle } from "@/providers/PageTitleProvider";
 import { useProfileSection } from "@/providers/ProfileSectionProvider";
 import type { Profile, Video } from "@/lib/types";
 
@@ -72,8 +68,25 @@ function getInitials(name: string) {
 export function ProfileContent() {
   const router = useRouter();
   const { user, loading: authLoading, refreshProfile, signOut } = useAuth();
-  const { t, formatNumber, formatDateTime, locale } = useLocale();
+  const { t, locale } = useLocale();
   const { section: activeSection, setSection } = useProfileSection();
+  const pageTitle =
+    activeSection === "settings"
+      ? t.nav.channelSettings
+      : activeSection === "channel"
+        ? t.nav.channel
+        : activeSection === "my-videos"
+          ? t.nav.myVideos
+          : activeSection === "hunter-system"
+            ? t.nav.hunterSystem
+            : activeSection === "bounty-log"
+              ? t.nav.bountyRewards
+              : activeSection === "referral"
+                ? t.nav.inviteFriends
+                : activeSection === "wallet"
+                  ? t.nav.clashWallet
+                  : null;
+  usePageTitle(pageTitle);
   const supabase = useMemo(() => createBrowserClient(), []);
   const config = useMemo(() => getSupabaseConfig(), []);
 
@@ -546,114 +559,9 @@ export function ProfileContent() {
     >
       {activeSection === "settings" ? (
         <>
-          <div className={settingsBoxClassName("overflow-hidden p-0")}>
-            <div className="relative h-40 overflow-hidden bg-zinc-200 sm:h-52 dark:bg-zinc-900">
-              {profile.banner_url ? (
-                <Image
-                  src={profile.banner_url}
-                  alt=""
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-              ) : null}
-              <label className="absolute top-4 right-4 cursor-pointer rounded-full border border-zinc-300 bg-white/90 px-3 py-1.5 text-xs font-medium text-black backdrop-blur-sm dark:border-zinc-700 dark:bg-black/80 dark:text-white">
-                {uploadingBanner ? t.profile.uploading : t.profile.changeBanner}
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  disabled={uploadingBanner}
-                  onChange={(event) => {
-                    const file = event.target.files?.[0];
-                    if (file) {
-                      uploadImage("banners", file, "banner_url", setUploadingBanner);
-                    }
-                  }}
-                />
-              </label>
-            </div>
-
-            <div className="p-5">
-              <div className="-mt-12 flex flex-col gap-3 sm:-mt-14 sm:flex-row sm:items-start sm:justify-between">
-                <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
-                  <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-white bg-zinc-200 sm:h-28 sm:w-28 dark:border-zinc-950 dark:bg-zinc-900">
-                    {profile.avatar_url ? (
-                      <Image
-                        src={profile.avatar_url}
-                        alt={profile.display_name ?? profile.username}
-                        fill
-                        className="object-cover"
-                        unoptimized
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center text-xl font-bold text-zinc-500">
-                        {getInitials(displayName || profile.username)}
-                      </div>
-                    )}
-                    <label className="absolute inset-x-0 bottom-0 cursor-pointer bg-black/60 py-1 text-center text-[10px] font-medium text-white">
-                      {uploadingAvatar ? "..." : t.profile.changeAvatar}
-                      <input
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        disabled={uploadingAvatar}
-                        onChange={(event) => {
-                          const file = event.target.files?.[0];
-                          if (file) {
-                            uploadImage("avatars", file, "avatar_url", setUploadingAvatar);
-                          }
-                        }}
-                      />
-                    </label>
-                  </div>
-
-                  <div className="min-w-0 pt-12 sm:pt-14">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h1 className="text-2xl font-bold leading-tight text-black sm:text-3xl dark:text-white">
-                        {displayName.trim() || profile.username}
-                      </h1>
-                      {profile.is_verified ? <VerifiedBadge size="md" /> : null}
-                    </div>
-                    <div className="mt-2 flex flex-wrap items-center gap-3">
-                      <HunterLevelBadge level={profile.level} points={profile.points} size="md" />
-                      <span className="text-sm font-semibold text-zinc-600 dark:text-zinc-300">
-                        {formatNumber(profile.points ?? 0)} {t.points.pointsLabel}
-                      </span>
-                    </div>
-                    <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                      <Link
-                        href={`/channel/${profile.username}`}
-                        className="hover:text-black dark:hover:text-white"
-                      >
-                        @{profile.username}
-                      </Link>
-                    </p>
-                    <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-zinc-600 dark:text-zinc-400">
-                      <span>
-                        {videoCount} {t.profile.videosCount}
-                      </span>
-                      <span aria-hidden>·</span>
-                      <FollowerCount count={followerCount} />
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2 pt-12 sm:pt-14">
-                  <Link
-                    href="/upload"
-                    className="rounded-full bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-black"
-                  >
-                    {t.upload.create}
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <form
             id="settings"
-            className={`${settingsBoxClassName("mt-6")} grid gap-4 sm:grid-cols-2`}
+            className={`${settingsBoxClassName()} grid gap-4 sm:grid-cols-2`}
             onSubmit={(event) => {
               event.preventDefault();
               if (hasChanges && !saving) {
@@ -663,6 +571,66 @@ export function ProfileContent() {
           >
             <div className="sm:col-span-2">
               <h2 className="text-lg font-semibold text-black dark:text-white">{t.nav.channelSettings}</h2>
+            </div>
+
+            <div className="sm:col-span-2 grid gap-4 sm:grid-cols-[auto_1fr]">
+              <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900">
+                {profile.avatar_url ? (
+                  <Image
+                    src={profile.avatar_url}
+                    alt={profile.display_name ?? profile.username}
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-lg font-bold text-zinc-500">
+                    {getInitials(displayName || profile.username)}
+                  </div>
+                )}
+                <label className="absolute inset-x-0 bottom-0 cursor-pointer bg-black/60 py-1 text-center text-[10px] font-medium text-white">
+                  {uploadingAvatar ? "..." : t.profile.changeAvatar}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    disabled={uploadingAvatar}
+                    onChange={(event) => {
+                      const file = event.target.files?.[0];
+                      if (file) {
+                        uploadImage("avatars", file, "avatar_url", setUploadingAvatar);
+                      }
+                    }}
+                  />
+                </label>
+              </div>
+
+              <div className="relative min-h-24 overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900">
+                {profile.banner_url ? (
+                  <Image
+                    src={profile.banner_url}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
+                ) : null}
+                <label className="absolute top-3 end-3 cursor-pointer rounded-full border border-zinc-300 bg-white/90 px-3 py-1.5 text-xs font-medium text-black backdrop-blur-sm dark:border-zinc-700 dark:bg-black/80 dark:text-white">
+                  {uploadingBanner ? t.profile.uploading : t.profile.changeBanner}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    disabled={uploadingBanner}
+                    onChange={(event) => {
+                      const file = event.target.files?.[0];
+                      if (file) {
+                        uploadImage("banners", file, "banner_url", setUploadingBanner);
+                      }
+                    }}
+                  />
+                </label>
+              </div>
             </div>
             <label className="block">
               <span className="mb-1 block text-sm font-medium text-black dark:text-white">
@@ -791,21 +759,6 @@ export function ProfileContent() {
             </div>
           </form>
 
-          {previewProfile ? (
-            <section id="channel-preview" className={`${settingsBoxClassName("mt-6")}`}>
-              <ProfileChannelPreview
-                profile={previewProfile}
-                followerCount={followerCount}
-                videos={approvedChannelVideos}
-                communityPosts={communityPosts}
-                onEditSettings={() => {
-                  document.getElementById("settings")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                showEditBar
-              />
-            </section>
-          ) : null}
-
           <div className={`${settingsBoxClassName("mt-6")}`}>
             <button
               type="button"
@@ -821,7 +774,7 @@ export function ProfileContent() {
       ) : null}
 
       {activeSection === "channel" && previewProfile ? (
-        <section id="channel" className={settingsBoxClassName()}>
+        <section id="channel" className="py-2">
           <ProfileChannelPreview
             profile={previewProfile}
             followerCount={followerCount}
