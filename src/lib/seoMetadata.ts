@@ -27,6 +27,7 @@ type PageSeoKey =
   | "exclusives"
   | "music"
   | "about"
+  | "earn"
   | "blog"
   | "animeNews";
 
@@ -75,6 +76,12 @@ export const PAGE_SEO: Record<
     description:
       "ClashAnime.com is a global platform for anime clips, release clashes, competitions, and creator rewards via ClashCoins — منصة انمي عالمية للمسابقات وربح المال — グローバルアニメ対戦プラットフォーム.",
     path: "/about",
+  },
+  earn: {
+    title: "Earn Money — Promote Clash Anime & Get $2 Rewards",
+    description:
+      "Earn $2 in ClashCoins for YouTube videos, forum posts, and blog articles that promote Clash Anime. Submit your link and get paid after review — اربح الأموال — お金を稼ぐ.",
+    path: "/earn",
   },
   blog: {
     title: "Heroes' Arena Guide — ClashAnime Blog & SEO Knowledge Hub",

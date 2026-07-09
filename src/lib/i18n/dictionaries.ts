@@ -31,6 +31,7 @@ export type Dictionary = {
     settings: string;
     clashWallet: string;
     clashCoins: string;
+    earnMoney: string;
     mobileBottomNav: string;
     more: string;
   };
@@ -1179,6 +1180,24 @@ export type Dictionary = {
       replied: string;
       closed: string;
     };
+    earnMoneyTitle: string;
+    earnMoneySubtitle: string;
+    noEarnMoneySubmissions: string;
+    approveEarnMoney: string;
+    rejectEarnMoney: string;
+    earnMoneyApproved: string;
+    earnMoneyRejected: string;
+    earnMoneyNotePlaceholder: string;
+    earnMoneyStatuses: {
+      pending: string;
+      approved: string;
+      rejected: string;
+    };
+    earnMoneyTasks: {
+      youtube: string;
+      forum: string;
+      blog: string;
+    };
     emailsTitle: string;
     emailsSubtitle: string;
     noEmails: string;
@@ -1313,6 +1332,7 @@ export type Dictionary = {
       ads: string;
       animeNews: string;
       contact: string;
+      earnMoney: string;
       emails: string;
       referrals: string;
       broadcast: string;
@@ -1742,6 +1762,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       settings: "Settings",
       clashWallet: "ClashCoins wallet",
       clashCoins: "ClashCoins",
+      earnMoney: "Earn money",
       mobileBottomNav: "Main navigation",
       more: "More",
     },
@@ -2995,6 +3016,24 @@ export const dictionaries: Record<Locale, Dictionary> = {
         replied: "Replied",
         closed: "Closed",
       },
+      earnMoneyTitle: "Earn money submissions",
+      earnMoneySubtitle: "Review promotional tasks and credit $2 ClashCoins per approval.",
+      noEarnMoneySubmissions: "No earn-money submissions yet.",
+      approveEarnMoney: "Approve + $2",
+      rejectEarnMoney: "Reject",
+      earnMoneyApproved: "Submission approved and $2 credited.",
+      earnMoneyRejected: "Submission rejected.",
+      earnMoneyNotePlaceholder: "Optional note for the user",
+      earnMoneyStatuses: {
+        pending: "Pending",
+        approved: "Approved",
+        rejected: "Rejected",
+      },
+      earnMoneyTasks: {
+        youtube: "YouTube video",
+        forum: "Forum post",
+        blog: "Blog article",
+      },
       emailsTitle: "Transactional emails",
       emailsSubtitle: "Welcome emails and other automated messages sent to users.",
       noEmails: "No emails logged yet.",
@@ -3129,6 +3168,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         ads: "Ad placements",
         animeNews: "Anime news",
         contact: "Contact inbox",
+        earnMoney: "Earn money",
         emails: "Emails",
         referrals: "Referrals",
         broadcast: "Broadcast",
@@ -3560,6 +3600,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       settings: "設定",
       clashWallet: "ClashCoinsウォレット",
       clashCoins: "ClashCoins",
+      earnMoney: "お金を稼ぐ",
       mobileBottomNav: "メインナビ",
       more: "その他",
     },
@@ -4801,6 +4842,24 @@ export const dictionaries: Record<Locale, Dictionary> = {
         replied: "返信済み",
         closed: "クローズ",
       },
+      earnMoneyTitle: "お金を稼ぐ申請",
+      earnMoneySubtitle: "紹介タスクを審査し、承認ごとに$2を付与します。",
+      noEarnMoneySubmissions: "申請はまだありません。",
+      approveEarnMoney: "承認 + $2",
+      rejectEarnMoney: "却下",
+      earnMoneyApproved: "承認し$2を付与しました。",
+      earnMoneyRejected: "申請を却下しました。",
+      earnMoneyNotePlaceholder: "ユーザー向けメモ（任意）",
+      earnMoneyStatuses: {
+        pending: "審査中",
+        approved: "承認済み",
+        rejected: "却下",
+      },
+      earnMoneyTasks: {
+        youtube: "YouTube動画",
+        forum: "掲示板投稿",
+        blog: "ブログ記事",
+      },
       emailsTitle: "トランザクションメール",
       emailsSubtitle: "ウェルカムメールなど、ユーザーへ送った自動メールの記録です。",
       noEmails: "まだメール記録がありません。",
@@ -4932,6 +4991,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         ads: "広告配置",
         animeNews: "アニメニュース",
         contact: "お問い合わせ受信箱",
+        earnMoney: "お金を稼ぐ",
         emails: "メール",
         referrals: "招待プログラム",
         broadcast: "一斉メール",
@@ -5362,6 +5422,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       settings: "الإعدادات",
       clashWallet: "محفظة ClashCoins",
       clashCoins: "ClashCoins",
+      earnMoney: "اربح الأموال",
       mobileBottomNav: "التنقل الرئيسي",
       more: "المزيد",
     },
@@ -6605,6 +6666,24 @@ export const dictionaries: Record<Locale, Dictionary> = {
         replied: "تم الرد",
         closed: "مغلقة",
       },
+      earnMoneyTitle: "طلبات اربح الأموال",
+      earnMoneySubtitle: "راجع مهام الترويج واعتمد ٢$ ClashCoins لكل طلب مقبول.",
+      noEarnMoneySubmissions: "لا توجد طلبات حتى الآن.",
+      approveEarnMoney: "قبول + ٢$",
+      rejectEarnMoney: "رفض",
+      earnMoneyApproved: "تم قبول الطلب وإضافة ٢$.",
+      earnMoneyRejected: "تم رفض الطلب.",
+      earnMoneyNotePlaceholder: "ملاحظة اختيارية للمستخدم",
+      earnMoneyStatuses: {
+        pending: "قيد المراجعة",
+        approved: "مقبول",
+        rejected: "مرفوض",
+      },
+      earnMoneyTasks: {
+        youtube: "فيديو يوتيوب",
+        forum: "منشور منتدى",
+        blog: "مقال مدونة",
+      },
       emailsTitle: "الإيميلات التلقائية",
       emailsSubtitle: "إيميلات الترحيب والرسائل التلقائية الأخرى المرسلة للمستخدمين.",
       noEmails: "لا توجد إيميلات مسجّلة بعد.",
@@ -6736,6 +6815,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         ads: "مواضع الإعلانات",
         animeNews: "أخبار الأنمي",
         contact: "صندوق التواصل",
+        earnMoney: "اربح الأموال",
         emails: "الإيميلات",
         referrals: "برنامج الدعوة",
         broadcast: "إيميل جماعي",

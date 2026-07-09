@@ -28,6 +28,7 @@ const navItems: Array<{
   { key: "reports", href: "/admin/reports" },
   { key: "kyc", href: "/admin/kyc" },
   { key: "contact", href: "/admin/contact" },
+  { key: "earnMoney", href: "/admin/earn-money" },
   { key: "emails", href: "/admin/emails" },
   { key: "referrals", href: "/admin/referrals", adminOnly: true },
   { key: "broadcast", href: "/admin/broadcast", adminOnly: true },

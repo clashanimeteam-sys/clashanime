@@ -18,6 +18,7 @@ export type AdminNavKey =
   | "ads"
   | "animeNews"
   | "contact"
+  | "earnMoney"
   | "emails"
   | "referrals"
   | "broadcast"
@@ -31,6 +32,7 @@ export type AdminReviewCounts = {
   pendingWithdrawals: number;
   pendingKyc: number;
   openContactMessages: number;
+  pendingEarnMoneySubmissions: number;
   pendingBeatsTracks: number;
   pendingEmails: number;
 };
@@ -43,6 +45,7 @@ export const EMPTY_ADMIN_REVIEW_COUNTS: AdminReviewCounts = {
   pendingWithdrawals: 0,
   pendingKyc: 0,
   openContactMessages: 0,
+  pendingEarnMoneySubmissions: 0,
   pendingBeatsTracks: 0,
   pendingEmails: 0,
 };
@@ -66,6 +69,7 @@ export async function fetchAdminReviewCounts(
     pendingWithdrawals,
     pendingKyc,
     openContactMessages,
+    pendingEarnMoneySubmissions,
     pendingBeatsTracks,
     pendingEmails,
   ] = await Promise.all([
@@ -108,6 +112,12 @@ export async function fetchAdminReviewCounts(
     ),
     countQuery(
       supabase
+        .from("earn_money_submissions")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "pending"),
+    ),
+    countQuery(
+      supabase
         .from("anime_beats_tracks")
         .select("*", { count: "exact", head: true })
         .eq("status", "pending"),
@@ -128,6 +138,7 @@ export async function fetchAdminReviewCounts(
     pendingWithdrawals,
     pendingKyc,
     openContactMessages,
+    pendingEarnMoneySubmissions,
     pendingBeatsTracks,
     pendingEmails,
   };
@@ -141,6 +152,7 @@ export function totalAdminReviewCount(counts: AdminReviewCounts): number {
     counts.pendingWithdrawals +
     counts.pendingKyc +
     counts.openContactMessages +
+    counts.pendingEarnMoneySubmissions +
     counts.pendingBeatsTracks +
     counts.pendingEmails
   );
@@ -164,6 +176,8 @@ export function getNavReviewCount(key: AdminNavKey, counts: AdminReviewCounts): 
       return counts.pendingKyc;
     case "contact":
       return counts.openContactMessages;
+    case "earnMoney":
+      return counts.pendingEarnMoneySubmissions;
     case "beatsLounge":
       return counts.pendingBeatsTracks;
     case "emails":

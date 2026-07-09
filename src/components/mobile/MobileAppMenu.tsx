@@ -22,6 +22,7 @@ const menuItems = [
   { key: "animeTracker" as const, href: "/tracker", icon: "radar" },
   { key: "inviteFriends" as const, href: "/profile#referral", icon: "invite", auth: true },
   { key: "clashCoins" as const, href: "/profile#wallet", icon: "wallet", auth: true },
+  { key: "earnMoney" as const, href: "/earn", icon: "earn" },
   { key: "channel" as const, href: "/profile#channel", icon: "channel", auth: true },
   { key: "myVideos" as const, href: "/profile#my-videos", icon: "video", auth: true },
   { key: "channelSettings" as const, href: "/profile", icon: "settings", auth: true },
