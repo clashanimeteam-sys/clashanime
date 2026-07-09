@@ -22,6 +22,7 @@ const mainNavItems = [
   { key: "exclusives" as const, href: "/exclusives", icon: "star" },
   { key: "inviteFriends" as const, href: "/profile#referral", icon: "invite", referral: true as const },
   { key: "animeTracker" as const, href: "/tracker", icon: "radar" },
+  { key: "watchAnime" as const, href: "/watch-anime", icon: "video" },
   { key: "clashCoins" as const, href: "/profile#wallet", icon: "wallet", wallet: true as const },
   { key: "earnMoney" as const, href: "/earn", icon: "earn" },
 ];

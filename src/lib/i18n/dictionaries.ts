@@ -22,6 +22,7 @@ export type Dictionary = {
     music: string;
     exclusives: string;
     animeTracker: string;
+    watchAnime: string;
     hunterSystem: string;
     bountyRewards: string;
     inviteFriends: string;
@@ -1805,6 +1806,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       music: "Anime Radio",
       exclusives: "Exclusives",
       animeTracker: "Anime Tracker",
+      watchAnime: "Watch anime",
       hunterSystem: "Bounty Hunter System",
       bountyRewards: "Latest bounty rewards",
       inviteFriends: "Invite friends",
@@ -3696,6 +3698,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       music: "アニメラジオ",
       exclusives: "限定",
       animeTracker: "新作アニメレーダー",
+      watchAnime: "アニメ視聴",
       hunterSystem: "賞金ハンターシステム",
       bountyRewards: "最新の報酬",
       inviteFriends: "友達を招待",
@@ -5571,6 +5574,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       music: "راديو الأنمي",
       exclusives: "حصري",
       animeTracker: "رادار الأنمي الجديد",
+      watchAnime: "شاهد الأنمي",
       hunterSystem: "نظام صياد الجوائز",
       bountyRewards: "آخر مكافآت الجوائز",
       inviteFriends: "ادعُ أصدقاءك",
