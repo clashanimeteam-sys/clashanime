@@ -7,6 +7,7 @@ export type AdminNavKey =
   | "community"
   | "stickers"
   | "reports"
+  | "violations"
   | "moderationLog"
   | "withdrawals"
   | "kyc"

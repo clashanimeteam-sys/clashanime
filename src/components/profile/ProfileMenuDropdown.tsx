@@ -15,11 +15,12 @@ import {
 } from "@/providers/ProfileSectionProvider";
 
 const profileNavItems: {
-  key: "channelSettings" | "channel" | "myVideos" | "hunterSystem" | "bountyRewards" | "clashWallet";
+  key: "channelSettings" | "channelViolations" | "channel" | "myVideos" | "hunterSystem" | "bountyRewards" | "clashWallet";
   section: ProfileSection;
   icon: string;
 }[] = [
   { key: "channelSettings", section: "settings", icon: "settings" },
+  { key: "channelViolations", section: "violations", icon: "warning" },
   { key: "channel", section: "channel", icon: "channel" },
   { key: "myVideos", section: "my-videos", icon: "video" },
   { key: "hunterSystem", section: "hunter-system", icon: "trophy" },

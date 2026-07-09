@@ -26,6 +26,7 @@ const menuItems = [
   { key: "channel" as const, href: "/profile#channel", icon: "channel", auth: true },
   { key: "myVideos" as const, href: "/profile#my-videos", icon: "video", auth: true },
   { key: "channelSettings" as const, href: "/profile", icon: "settings", auth: true },
+  { key: "channelViolations" as const, href: "/profile#violations", icon: "warning", auth: true },
   { key: "hunterSystem" as const, href: "/profile#hunter-system", icon: "trophy", auth: true },
   { key: "bountyRewards" as const, href: "/profile#bounty-log", icon: "coins", auth: true },
 ] as const;

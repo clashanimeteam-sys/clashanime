@@ -53,6 +53,12 @@ const ClashWalletPanel = dynamic(
   { ssr: false },
 );
 
+const ChannelViolationsPanel = dynamic(
+  () =>
+    import("@/components/profile/ChannelViolationsPanel").then((mod) => mod.ChannelViolationsPanel),
+  { ssr: false },
+);
+
 function settingsBoxClassName(extra = "") {
   return `rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950 ${extra}`.trim();
 }
@@ -73,7 +79,9 @@ export function ProfileContent() {
   const pageTitle =
     activeSection === "settings"
       ? t.nav.channelSettings
-      : activeSection === "channel"
+      : activeSection === "violations"
+        ? t.nav.channelViolations
+        : activeSection === "channel"
         ? t.nav.channel
         : activeSection === "my-videos"
           ? t.nav.myVideos
@@ -771,6 +779,10 @@ export function ProfileContent() {
 
           <DeleteAccountSection />
         </>
+      ) : null}
+
+      {activeSection === "violations" && user ? (
+        <ChannelViolationsPanel userId={user.id} />
       ) : null}
 
       {activeSection === "channel" && previewProfile ? (

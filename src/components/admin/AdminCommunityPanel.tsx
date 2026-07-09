@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { logModerationAction } from "@/lib/moderationLog";
+import { issueChannelViolation } from "@/lib/channelViolations";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -89,6 +90,17 @@ export function AdminCommunityPanel() {
     if (deleteError) {
       setError(deleteError.message);
       return;
+    }
+
+    if (targetPost?.user_id) {
+      await issueChannelViolation(supabase, {
+        userId: targetPost.user_id,
+        violationType: "community",
+        contentType: "community_post",
+        contentId: postId,
+        contentTitle: targetPost.body?.slice(0, 120) ?? t.admin.imageOnlyPost,
+        reason: t.violations.communityRemovalReason,
+      });
     }
 
     await logModerationAction(supabase, {

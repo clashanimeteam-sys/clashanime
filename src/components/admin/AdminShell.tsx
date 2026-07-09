@@ -41,6 +41,7 @@ const navItems: Array<{
   { key: "animeNews", href: "/admin/anime-news" },
   { key: "withdrawals", href: "/admin/withdrawals" },
   { key: "moderationLog", href: "/admin/moderation-log" },
+  { key: "violations", href: "/admin/violations" },
   { key: "settings", href: "/admin/settings", adminOnly: true },
 ];
 

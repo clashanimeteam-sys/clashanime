@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { AdminVideoOwnerEvents } from "@/components/admin/AdminVideoOwnerEvents";
 import { getModerationStatusLabel } from "@/lib/moderation";
 import { logModerationAction, moderationActionFromStatus } from "@/lib/moderationLog";
+import { issueChannelViolation, mapRejectionToViolationType } from "@/lib/channelViolations";
 import { notifyAdminReviewCountsChanged } from "@/lib/adminReviewCounts";
 import { isInClashTop } from "@/lib/videoRanking";
 import { createBrowserClient } from "@/lib/supabase/client";
@@ -203,6 +204,7 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
     setError(null);
 
     const previousStatus = videos.find((video) => video.id === videoId)?.moderation_status ?? null;
+    const video = videos.find((entry) => entry.id === videoId);
 
     const updatePayload: {
       moderation_status: ModerationStatus;
@@ -236,6 +238,19 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
       notes: rejectionReason ?? null,
     });
 
+    if (moderationStatus === "rejected" && video?.user_id) {
+      const violationType = mapRejectionToViolationType(rejectionReason);
+      await issueChannelViolation(supabase, {
+        userId: video.user_id,
+        violationType,
+        contentType: "video",
+        contentId: videoId,
+        contentTitle: video.title,
+        reason: rejectionReason ?? t.violations.videoRejectionReason,
+        claimantName: violationType === "copyright" ? t.violations.defaultClaimant : null,
+      });
+    }
+
     setMessage(t.admin.saved);
     notifyAdminReviewCountsChanged();
     await loadVideos();
@@ -265,6 +280,21 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
       newStatus: null,
       notes: video?.title ?? null,
     });
+
+    if (video?.user_id) {
+      await issueChannelViolation(supabase, {
+        userId: video.user_id,
+        violationType: mapRejectionToViolationType(video.rejection_reason),
+        contentType: "video",
+        contentId: videoId,
+        contentTitle: video.title,
+        reason: t.violations.videoRemovalReason,
+        claimantName:
+          mapRejectionToViolationType(video.rejection_reason) === "copyright"
+            ? t.violations.defaultClaimant
+            : null,
+      });
+    }
 
     setMessage(t.admin.deleted);
     await loadVideos();
@@ -373,6 +403,13 @@ export function AdminVideosPanel({ initialStatus = "all" }: { initialStatus?: st
                   className="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-500"
                 >
                   {t.admin.approve}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => moderateVideo(video.id, "rejected", "copyright")}
+                  className="rounded-lg bg-red-800 px-3 py-2 text-xs font-semibold text-white hover:bg-red-700"
+                >
+                  {t.admin.rejectCopyright}
                 </button>
                 <button
                   type="button"

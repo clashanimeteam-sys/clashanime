@@ -26,6 +26,7 @@ export type Dictionary = {
     bountyRewards: string;
     inviteFriends: string;
     channelSettings: string;
+    channelViolations: string;
     channel: string;
     myVideos: string;
     settings: string;
@@ -1059,6 +1060,35 @@ export type Dictionary = {
     previewReelsHint: string;
     reelsSlideLabel: string;
   };
+  violations: {
+    dashboardTitle: string;
+    dashboardSubtitle: string;
+    copyrightStrikesLabel: string;
+    strikeCounter: string;
+    copyrightTitle: string;
+    copyrightDesc: string;
+    loading: string;
+    noCopyrightStrikes: string;
+    receivedOn: string;
+    removedByClaimant: string;
+    contentRemoved: string;
+    contentLabel: string;
+    expiresOn: string;
+    videoRemovedNote: string;
+    actionsTitle: string;
+    actionWaitExpiry: string;
+    actionContactSupport: string;
+    learnMoreCopyright: string;
+    policyTitle: string;
+    policyDesc: string;
+    noPolicyViolations: string;
+    communityViolation: string;
+    termsViolation: string;
+    communityRemovalReason: string;
+    videoRejectionReason: string;
+    videoRemovalReason: string;
+    defaultClaimant: string;
+  };
   admin: {
     panelTitle: string;
     loading: string;
@@ -1309,6 +1339,15 @@ export type Dictionary = {
     reviewNewCreatorsDesc: string;
     rejectSuspiciousUploads: string;
     rejectSuspiciousUploadsDesc: string;
+    rejectCopyright: string;
+    violationsTitle: string;
+    violationsSubtitle: string;
+    confirmRetractViolation: string;
+    violationRetracted: string;
+    violationClaimant: string;
+    violationContent: string;
+    retractViolation: string;
+    noViolations: string;
     moderationLogTitle: string;
     moderationLogSubtitle: string;
     noModerationLog: string;
@@ -1329,6 +1368,7 @@ export type Dictionary = {
       community: string;
       stickers: string;
       reports: string;
+      violations: string;
       moderationLog: string;
       settings: string;
       withdrawals: string;
@@ -1769,6 +1809,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bountyRewards: "Latest bounty rewards",
       inviteFriends: "Invite friends",
       channelSettings: "Channel settings",
+      channelViolations: "Channel violations",
       channel: "Channel",
       myVideos: "Your videos",
       settings: "Settings",
@@ -2907,6 +2948,36 @@ export const dictionaries: Record<Locale, Dictionary> = {
       previewReelsHint: "Shown between videos when enabled in admin.",
       reelsSlideLabel: "Sponsored slide",
     },
+    violations: {
+      dashboardTitle: "Channel violations",
+      dashboardSubtitle: "Review active warnings and copyright strikes on your channel.",
+      copyrightStrikesLabel: "Active copyright strikes",
+      strikeCounter: "{current} of {max}",
+      copyrightTitle: "Copyright infringement strikes ({count})",
+      copyrightDesc:
+        "A video was removed because of a copyright complaint. Receiving 3 active copyright strikes may lead to channel restrictions.",
+      loading: "Loading violations...",
+      noCopyrightStrikes: "No copyright strikes on your channel.",
+      receivedOn: "Strike received: {date}",
+      removedByClaimant: "Content removed by {name}",
+      contentRemoved: "Content was removed for a copyright complaint",
+      contentLabel: "Content",
+      expiresOn: "Expires on {date} if no further issues occur",
+      videoRemovedNote: "The video is no longer available on Clash Anime.",
+      actionsTitle: "Actions you can take",
+      actionWaitExpiry: "Wait for the strike to expire after 90 days if you do not repeat the violation.",
+      actionContactSupport: "Contact support or submit a counter-notification if you believe this was a mistake.",
+      learnMoreCopyright: "Learn more about copyright on Clash Anime",
+      policyTitle: "Community and policy violations",
+      policyDesc: "Warnings issued when posts or videos are removed for breaking community rules or terms.",
+      noPolicyViolations: "No community or policy violations recorded.",
+      communityViolation: "Community violation",
+      termsViolation: "Terms violation",
+      communityRemovalReason: "Community post removed for violating community guidelines.",
+      videoRejectionReason: "Video rejected for violating platform rules.",
+      videoRemovalReason: "Video removed for violating platform rules.",
+      defaultClaimant: "Rights holder",
+    },
     admin: {
       panelTitle: "Admin Panel",
       loading: "Loading admin panel...",
@@ -3157,6 +3228,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reviewNewCreatorsDesc: "Hold first uploads from new accounts for manual review.",
       rejectSuspiciousUploads: "Reject suspicious uploads",
       rejectSuspiciousUploadsDesc: "Block likely re-uploads from YouTube and other platforms.",
+      rejectCopyright: "Copyright strike",
+      violationsTitle: "Channel violations",
+      violationsSubtitle: "Review and retract active copyright strikes and policy warnings.",
+      confirmRetractViolation: "Retract this violation? The user will no longer see it as active.",
+      violationRetracted: "Violation retracted.",
+      violationClaimant: "Claimant",
+      violationContent: "Content",
+      retractViolation: "Retract",
+      noViolations: "No channel violations recorded yet.",
       moderationLogTitle: "Moderation log",
       moderationLogSubtitle: "Audit trail of staff approve, reject, delete, verify, and ban actions.",
       noModerationLog: "No moderation actions recorded yet.",
@@ -3177,6 +3257,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         community: "Community",
         stickers: "Stickers",
         reports: "Reports",
+        violations: "Violations",
         moderationLog: "Moderation log",
         settings: "Settings",
         withdrawals: "Withdrawals",
@@ -3619,6 +3700,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bountyRewards: "最新の報酬",
       inviteFriends: "友達を招待",
       channelSettings: "チャンネル設定",
+      channelViolations: "チャンネル違反",
       channel: "チャンネル",
       myVideos: "あなたの動画",
       settings: "設定",
@@ -4745,6 +4827,36 @@ export const dictionaries: Record<Locale, Dictionary> = {
       previewReelsHint: "管理画面で有効化すると動画の間に表示されます。",
       reelsSlideLabel: "スポンサースライド",
     },
+    violations: {
+      dashboardTitle: "チャンネル違反",
+      dashboardSubtitle: "チャンネルに付いた警告と著作権ストライクを確認できます。",
+      copyrightStrikesLabel: "有効な著作権ストライク",
+      strikeCounter: "{max}件中{current}件",
+      copyrightTitle: "著作権侵害ストライク（{count}）",
+      copyrightDesc:
+        "著作権申し立てにより動画が削除されました。有効な著作権ストライクが3件に達すると、チャンネルに制限がかかる場合があります。",
+      loading: "違反を読み込み中...",
+      noCopyrightStrikes: "著作権ストライクはありません。",
+      receivedOn: "ストライク受領日: {date}",
+      removedByClaimant: "{name} によりコンテンツが削除されました",
+      contentRemoved: "著作権申し立てによりコンテンツが削除されました",
+      contentLabel: "コンテンツ",
+      expiresOn: "追加の問題がなければ {date} に失効します",
+      videoRemovedNote: "この動画は Clash Anime では視聴できません。",
+      actionsTitle: "取れる対応",
+      actionWaitExpiry: "再違反がなければ90日後にストライクは失効します。",
+      actionContactSupport: "誤りだと思う場合はサポートへ連絡するか、反論通知を提出してください。",
+      learnMoreCopyright: "Clash Anime の著作権について詳しく見る",
+      policyTitle: "コミュニティ・規約違反",
+      policyDesc: "コミュニティルールや利用規約違反で投稿や動画が削除された際の警告です。",
+      noPolicyViolations: "コミュニティまたは規約違反の記録はありません。",
+      communityViolation: "コミュニティ違反",
+      termsViolation: "規約違反",
+      communityRemovalReason: "コミュニティガイドライン違反のため投稿が削除されました。",
+      videoRejectionReason: "プラットフォーム規約違反のため動画が却下されました。",
+      videoRemovalReason: "プラットフォーム規約違反のため動画が削除されました。",
+      defaultClaimant: "権利者",
+    },
     admin: {
       panelTitle: "管理パネル",
       loading: "管理パネルを読み込み中...",
@@ -4992,6 +5104,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reviewNewCreatorsDesc: "新規アカウントの最初の投稿を手動審査に回します。",
       rejectSuspiciousUploads: "疑わしいアップロードを拒否",
       rejectSuspiciousUploadsDesc: "YouTubeなどからの再アップロードをブロックします。",
+      rejectCopyright: "著作権ストライク",
+      violationsTitle: "チャンネル違反",
+      violationsSubtitle: "有効な著作権ストライクと規約警告の確認・取り消し。",
+      confirmRetractViolation: "この違反を取り消しますか？ユーザーには有効と表示されなくなります。",
+      violationRetracted: "違反を取り消しました。",
+      violationClaimant: "申立人",
+      violationContent: "コンテンツ",
+      retractViolation: "取り消す",
+      noViolations: "チャンネル違反の記録はまだありません。",
       moderationLogTitle: "モデレーションログ",
       moderationLogSubtitle: "承認・拒否・削除・認証・停止の監査記録。",
       noModerationLog: "まだ記録がありません。",
@@ -5012,6 +5133,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         community: "コミュニティ",
         stickers: "ステッカー",
         reports: "報告",
+        violations: "違反",
         moderationLog: "モデレーションログ",
         settings: "設定",
         withdrawals: "出金",
@@ -5453,6 +5575,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bountyRewards: "آخر مكافآت الجوائز",
       inviteFriends: "ادعُ أصدقاءك",
       channelSettings: "إعدادات القناة",
+      channelViolations: "مخالفات القناة",
       channel: "القناة",
       myVideos: "فيديوهاتك",
       settings: "الإعدادات",
@@ -6581,6 +6704,36 @@ export const dictionaries: Record<Locale, Dictionary> = {
       previewReelsHint: "تظهر بين الفيديوهات عند التفعيل من لوحة التحكم.",
       reelsSlideLabel: "شريحة ممولة",
     },
+    violations: {
+      dashboardTitle: "مخالفات القناة",
+      dashboardSubtitle: "راجع الإنذارات النشطة وإنذارات حقوق الطبع والنشر على قناتك.",
+      copyrightStrikesLabel: "إنذارات نشطة بسبب انتهاك حقوق الطبع والنشر",
+      strikeCounter: "{current} من أصل {max}",
+      copyrightTitle: "إنذارات بسبب انتهاك حقوق الطبع والنشر ({count})",
+      copyrightDesc:
+        "تمت إزالة فيديو بسبب شكوى حقوق طبع ونشر. عند تلقي 3 إنذارات نشطة قد تُفرض قيود على القناة.",
+      loading: "جارٍ تحميل المخالفات...",
+      noCopyrightStrikes: "لا توجد إنذارات حقوق طبع ونشر على قناتك.",
+      receivedOn: "تاريخ تلقي الإنذار: {date}",
+      removedByClaimant: "تمت إزالة المحتوى من قبل {name}",
+      contentRemoved: "تمت إزالة المحتوى بسبب شكوى حقوق طبع ونشر",
+      contentLabel: "المحتوى",
+      expiresOn: "ينتهي في {date} إذا لم تحدث مخالفات إضافية",
+      videoRemovedNote: "الفيديو لم يعد متاحاً على Clash Anime.",
+      actionsTitle: "الإجراءات التي يمكنك اتخاذها",
+      actionWaitExpiry: "انتظر حتى ينتهي الإنذار بعد 90 يوماً إذا لم تكرر المخالفة.",
+      actionContactSupport: "تواصل مع الدعم أو قدّم إشعاراً مضاداً إذا كنت تعتقد أن هذا خطأ.",
+      learnMoreCopyright: "اعرف المزيد عن حقوق الطبع والنشر على Clash Anime",
+      policyTitle: "مخالفات المجتمع والسياسات",
+      policyDesc: "تحذيرات تُصدر عند حذف منشورات أو فيديوهات لمخالفة قواعد المجتمع أو الشروط.",
+      noPolicyViolations: "لا توجد مخالفات مجتمع أو سياسات مسجّلة.",
+      communityViolation: "مخالفة مجتمع",
+      termsViolation: "مخالفة شروط",
+      communityRemovalReason: "تم حذف منشور المجتمع لمخالفة إرشادات المجتمع.",
+      videoRejectionReason: "تم رفض الفيديو لمخالفة قواعد المنصة.",
+      videoRemovalReason: "تم حذف الفيديو لمخالفة قواعد المنصة.",
+      defaultClaimant: "صاحب الحقوق",
+    },
     admin: {
       panelTitle: "لوحة التحكم",
       loading: "جارٍ تحميل لوحة التحكم...",
@@ -6828,6 +6981,15 @@ export const dictionaries: Record<Locale, Dictionary> = {
       reviewNewCreatorsDesc: "إبقاء أول رفع لكل حساب جديد قيد المراجعة.",
       rejectSuspiciousUploads: "رفض الرفعات المشبوهة",
       rejectSuspiciousUploadsDesc: "حظر إعادة رفع المحتوى من YouTube ومنصات أخرى.",
+      rejectCopyright: "إنذار حقوق طبع ونشر",
+      violationsTitle: "مخالفات القنوات",
+      violationsSubtitle: "مراجعة وإلغاء إنذارات حقوق الطبع والنشر والتحذيرات النشطة.",
+      confirmRetractViolation: "إلغاء هذه المخالفة؟ لن تظهر للمستخدم كإنذار نشط.",
+      violationRetracted: "تم إلغاء المخالفة.",
+      violationClaimant: "المُشتكي",
+      violationContent: "المحتوى",
+      retractViolation: "إلغاء الإنذار",
+      noViolations: "لا توجد مخالفات قنوات مسجّلة بعد.",
       moderationLogTitle: "سجل المراجعة",
       moderationLogSubtitle: "سجل قرارات الموافقة والرفض والحذف والتوثيق والحظر.",
       noModerationLog: "لا توجد قرارات مسجّلة بعد.",
@@ -6848,6 +7010,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         community: "المجتمع",
         stickers: "الستيكرات",
         reports: "البلاغات",
+        violations: "المخالفات",
         moderationLog: "سجل المراجعة",
         settings: "الإعدادات",
         withdrawals: "السحوبات",
