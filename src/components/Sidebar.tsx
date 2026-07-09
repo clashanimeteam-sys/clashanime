@@ -8,7 +8,6 @@ import { ElementalSiteTitle } from "@/components/ElementalSiteTitle";
 import { BrandLogo } from "@/components/BrandLogo";
 import { LocaleFlags } from "@/components/LocaleFlags";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { SidebarProfileMenu } from "@/components/sidebar/SidebarProfileMenu";
 import { isStaff } from "@/lib/admin";
 import { navigateAppHref } from "@/lib/appNavigation";
 import { useAuth } from "@/providers/AuthProvider";
@@ -135,8 +134,6 @@ export function Sidebar() {
             {t.admin.panelTitle}
           </Link>
         ) : null}
-
-        <SidebarProfileMenu />
 
         <div className="flex items-center justify-between gap-2">
           <LocaleFlags />
