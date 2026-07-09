@@ -43,13 +43,7 @@ export function NavIcon({ icon, className = "h-5 w-5 shrink-0 object-contain" }:
     return <Image src="/icons/clash-coins.png" alt="" width={20} height={20} className={className} aria-hidden />;
   }
   if (icon === "earn") {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
-        <rect x="2" y="6" width="20" height="12" rx="2" />
-        <circle cx="12" cy="12" r="2.5" />
-        <path d="M6 10h.01M18 14h.01" />
-      </svg>
-    );
+    return <Image src="/icons/earn-money.png" alt="" width={20} height={20} className={className} aria-hidden />;
   }
   if (icon === "invite") {
     return <Image src="/icons/invite-friends.png" alt="" width={20} height={20} className={className} aria-hidden />;
