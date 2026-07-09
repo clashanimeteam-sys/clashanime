@@ -153,7 +153,6 @@ export function PointsPanel({ profile, onProfileRefresh, section }: PointsPanelP
             <li>+{POINT_VALUES.referralWelcome} · {t.points.earn.referralSignupFriend}</li>
             <li>+{POINT_VALUES.referralFirstVideo} · {t.points.earn.referralFirstVideo}</li>
             <li>+{POINT_VALUES.referralFirstBattle} · {t.points.earn.referralFirstBattle}</li>
-            <li>+{POINT_VALUES.videoLike} · {t.points.earn.videoLike}</li>
             <li>+{POINT_VALUES.videoUpload} · {t.points.earn.videoUpload}</li>
             <li>+{POINT_VALUES.communityPost} · {t.points.earn.communityPost}</li>
             <li>+{POINT_VALUES.trendingBonus} · {t.points.earn.trendingBonus}</li>

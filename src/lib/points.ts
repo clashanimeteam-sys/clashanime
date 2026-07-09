@@ -7,10 +7,9 @@ export const POINT_VALUES = {
   referralWelcome: 50,
   referralFirstVideo: 200,
   referralFirstBattle: 150,
-  videoLike: 5,
   videoUpload: 20,
   trendingBonus: 500,
-  communityPost: 50,
+  communityPost: 5,
 } as const;
 
 export type HunterLevel = 1 | 2 | 3 | 4 | 5;

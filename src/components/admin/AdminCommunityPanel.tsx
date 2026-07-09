@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createBrowserClient } from "@/lib/supabase/client";
+import { logModerationAction } from "@/lib/moderationLog";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -81,6 +82,8 @@ export function AdminCommunityPanel() {
     setMessage(null);
     setError(null);
 
+    const targetPost = posts.find((post) => post.id === postId);
+
     const { error: deleteError } = await supabase.from("community_posts").delete().eq("id", postId);
 
     if (deleteError) {
@@ -88,7 +91,18 @@ export function AdminCommunityPanel() {
       return;
     }
 
-    setMessage(t.admin.deleted);
+    await logModerationAction(supabase, {
+      staffId: user.id,
+      action: "delete",
+      targetUserId: targetPost?.user_id ?? null,
+      notes: "Community post removed for policy violation",
+      metadata: {
+        post_id: postId,
+        owner_username: targetPost?.owner_username ?? null,
+      },
+    });
+
+    setMessage(t.admin.communityPostDeletedWithPointsRevoke);
     await loadPosts();
   }
 

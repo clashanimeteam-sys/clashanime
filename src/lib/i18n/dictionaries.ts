@@ -832,7 +832,6 @@ export type Dictionary = {
       signupWelcome: string;
       referralFirstVideo: string;
       referralFirstBattle: string;
-      videoLike: string;
       videoUpload: string;
       communityPost: string;
       trendingBonus: string;
@@ -847,6 +846,7 @@ export type Dictionary = {
       video_like: string;
       video_upload: string;
       community_post: string;
+      community_post_revoke: string;
       trending_bonus: string;
       video_duel_challenge: string;
       points_duel_stake: string;
@@ -1132,6 +1132,7 @@ export type Dictionary = {
     communitySubtitle: string;
     noCommunityPosts: string;
     confirmDeleteCommunityPost: string;
+    communityPostDeletedWithPointsRevoke: string;
     imageOnlyPost: string;
     stickersTitle: string;
     stickersSubtitle: string;
@@ -2633,10 +2634,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communitySubtitle: "Share updates with the community and earn points for every post.",
       communityPostLabel: "Write a post",
       communityPostPlaceholder: "Share your thoughts, clips, or updates...",
-      communityPostReward: "+50 points per post",
+      communityPostReward: "+5 points per post",
       communityPostSubmit: "Publish",
       communityPosting: "Publishing...",
-      communityPostSuccess: "Post published. +50 points added.",
+      communityPostSuccess: "Post published. +5 points added.",
       communitySignupHint: "to view posts, comment, and interact in the community.",
       communityLoading: "Loading community posts...",
       communityEmpty: "No community posts yet. Be the first to publish.",
@@ -2662,7 +2663,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
         signupWelcome: "When you create a new account",
         referralFirstVideo: "When your invited friend uploads their first video",
         referralFirstBattle: "When your invited friend joins their first battle",
-        videoLike: "Like a video",
         videoUpload: "Upload an approved original clip",
         communityPost: "Publish in Community",
         trendingBonus: "Your clip reaches the trending grid",
@@ -2677,6 +2677,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         video_like: "Video like",
         video_upload: "Approved upload",
         community_post: "Community post",
+        community_post_revoke: "Community post removed (admin)",
         trending_bonus: "Trending bounty",
         video_duel_challenge: "Clip challenge duel",
         points_duel_stake: "Points duel stake",
@@ -2979,6 +2980,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communitySubtitle: "Review, preview, or remove community feed posts.",
       noCommunityPosts: "No community posts yet.",
       confirmDeleteCommunityPost: "Delete this community post?",
+      communityPostDeletedWithPointsRevoke: "Post deleted and community post points were revoked from the author.",
       imageOnlyPost: "Image-only post",
       stickersTitle: "Anime stickers",
       stickersSubtitle: "Upload curated anime GIFs and stickers for posts and comments.",
@@ -4473,10 +4475,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communitySubtitle: "コミュニティで投稿して、投稿ごとにポイントを獲得。",
       communityPostLabel: "投稿を書く",
       communityPostPlaceholder: "感想、クリップ、更新情報を共有...",
-      communityPostReward: "投稿ごとに +50 pt",
+      communityPostReward: "投稿ごとに +5 pt",
       communityPostSubmit: "公開",
       communityPosting: "公開中...",
-      communityPostSuccess: "投稿しました。+50 pt 獲得。",
+      communityPostSuccess: "投稿しました。+5 pt 獲得。",
       communitySignupHint: "して投稿を見たり、コメントしたり、交流できます。",
       communityLoading: "投稿を読み込み中...",
       communityEmpty: "まだ投稿がありません。最初の投稿者になりましょう。",
@@ -4502,7 +4504,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
         signupWelcome: "新規アカウント作成時",
         referralFirstVideo: "招待した友達が初動画をアップロード",
         referralFirstBattle: "招待した友達が初バトルに参加",
-        videoLike: "動画にいいね",
         videoUpload: "承認されたオリジナル動画のアップロード",
         communityPost: "コミュニティへの投稿",
         trendingBonus: "トレンドグリッド入り",
@@ -4517,6 +4518,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         video_like: "動画いいね",
         video_upload: "承認済みアップロード",
         community_post: "コミュニティ投稿",
+        community_post_revoke: "コミュニティ投稿削除（管理者）",
         trending_bonus: "トレンド報酬",
         video_duel_challenge: "クリップ挑戦デュエル",
         points_duel_stake: "ポイント対決の賭け",
@@ -4816,6 +4818,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communitySubtitle: "フィード投稿の確認、プレビュー、削除。",
       noCommunityPosts: "コミュニティ投稿はまだありません。",
       confirmDeleteCommunityPost: "この投稿を削除しますか？",
+      communityPostDeletedWithPointsRevoke: "投稿を削除し、獲得ポイントを差し引きました。",
       imageOnlyPost: "画像のみの投稿",
       stickersTitle: "アニメステッカー",
       stickersSubtitle: "投稿とコメント用のアニメGIF・ステッカーを管理します。",
@@ -6307,10 +6310,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communitySubtitle: "انشر في المجتمع واكسب نقاطاً على كل منشور.",
       communityPostLabel: "اكتب منشوراً",
       communityPostPlaceholder: "شارك أفكارك أو مقاطعك أو تحديثاتك...",
-      communityPostReward: "+50 نقطة لكل منشور",
+      communityPostReward: "+5 نقاط لكل منشور",
       communityPostSubmit: "نشر",
       communityPosting: "جارٍ النشر...",
-      communityPostSuccess: "تم النشر. +50 نقطة.",
+      communityPostSuccess: "تم النشر. +5 نقاط.",
       communitySignupHint: "لمشاهدة المنشورات والتعليق والتفاعل في المجتمع.",
       communityLoading: "جارٍ تحميل منشورات المجتمع...",
       communityEmpty: "لا توجد منشورات بعد. كن أول من ينشر.",
@@ -6336,7 +6339,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
         signupWelcome: "عند إنشاء حساب جديد",
         referralFirstVideo: "عند رفع صديقك المدعو أول فيديو",
         referralFirstBattle: "عند مشاركة صديقك المدعو في أول نزال",
-        videoLike: "الإعجاب بفيديو",
         videoUpload: "رفع مقطع أصلي معتمد",
         communityPost: "نشر في صفحة المجتمع",
         trendingBonus: "وصول مقطعك إلى شبكة الترند",
@@ -6351,6 +6353,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         video_like: "إعجاب بفيديو",
         video_upload: "رفع معتمد",
         community_post: "منشور مجتمع",
+        community_post_revoke: "سحب نقاط منشور محذوف",
         trending_bonus: "جائزة الترند",
         video_duel_challenge: "نزال تحدي مقطع",
         points_duel_stake: "رهان نزال نقاط",
@@ -6651,6 +6654,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communitySubtitle: "مراجعة أو معاينة أو حذف منشورات المجتمع.",
       noCommunityPosts: "لا توجد منشورات بعد.",
       confirmDeleteCommunityPost: "حذف هذا المنشور؟",
+      communityPostDeletedWithPointsRevoke: "تم حذف المنشور وسحب نقاطه من المستخدم.",
       imageOnlyPost: "منشور صورة فقط",
       stickersTitle: "ستيكرات الأنمي",
       stickersSubtitle: "ارفع GIF وستيكرات أنمي معتمدة للمنشورات والتعليقات.",
