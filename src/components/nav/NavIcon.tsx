@@ -55,12 +55,7 @@ export function NavIcon({ icon, className = "h-5 w-5 shrink-0 object-contain" }:
     return <Image src="/icons/settings.png" alt="" width={20} height={20} className={className} aria-hidden />;
   }
   if (icon === "warning") {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4 text-red-500" aria-hidden>
-        <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-        <path d="M12 9v4M12 17h.01" />
-      </svg>
-    );
+    return <Image src="/icons/channel-violations.png" alt="" width={20} height={20} className={className} aria-hidden />;
   }
   if (icon === "profile") {
     return (
