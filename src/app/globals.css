@@ -1521,27 +1521,11 @@ html[lang="ar-u-nu-latn"] {
   height: 100%;
   line-height: 1;
   text-align: center;
-  font-size: 1.12em;
+  font-size: 0.92em;
+  letter-spacing: -0.02em;
 }
 
-.rank-letter-glyph-e {
-  padding-inline-end: 0.06em;
-}
-
-.rank-letter-glyph-c {
-  font-style: normal;
-  transform: skewX(-8deg);
-}
-
-.rank-letter-glyph-a {
-  padding-inline-start: 0.03em;
-}
-
-.rank-letter-glyph-s {
-  padding-inline-start: 0.04em;
-}
-
-.rank-letter-e {
+.rank-letter-n {
   border-color: rgba(52, 211, 153, 0.55);
   background: linear-gradient(145deg, #34d399 0%, #059669 52%, #064e3b 100%);
   color: #ecfdf5;
@@ -1550,7 +1534,7 @@ html[lang="ar-u-nu-latn"] {
     0 8px 22px rgba(16, 185, 129, 0.35);
 }
 
-.rank-letter-c {
+.rank-letter-ex {
   border-color: rgba(56, 189, 248, 0.55);
   background: linear-gradient(145deg, #38bdf8 0%, #0284c7 50%, #0c4a6e 100%);
   color: #f0f9ff;
@@ -1559,7 +1543,7 @@ html[lang="ar-u-nu-latn"] {
     0 8px 22px rgba(14, 165, 233, 0.35);
 }
 
-.rank-letter-a {
+.rank-letter-d {
   border-color: rgba(167, 139, 250, 0.6);
   background: linear-gradient(145deg, #c4b5fd 0%, #7c3aed 48%, #4c1d95 100%);
   color: #faf5ff;
@@ -1568,13 +1552,22 @@ html[lang="ar-u-nu-latn"] {
     0 10px 24px rgba(124, 58, 237, 0.42);
 }
 
-.rank-letter-s {
+.rank-letter-m {
   border-color: rgba(252, 211, 77, 0.75);
   background: linear-gradient(145deg, #fde68a 0%, #f59e0b 42%, #b45309 100%);
   color: #fffbeb;
   box-shadow:
     0 0 0 1px rgba(254, 243, 199, 0.35) inset,
     0 12px 28px rgba(245, 158, 11, 0.45);
+}
+
+.rank-letter-cm {
+  border-color: rgba(251, 146, 60, 0.8);
+  background: linear-gradient(145deg, #fdba74 0%, #f97316 42%, #c2410c 100%);
+  color: #fff7ed;
+  box-shadow:
+    0 0 0 1px rgba(255, 237, 213, 0.35) inset,
+    0 12px 28px rgba(249, 115, 22, 0.48);
 }
 
 .public-video-player {

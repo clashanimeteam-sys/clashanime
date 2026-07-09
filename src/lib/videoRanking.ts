@@ -55,7 +55,7 @@ export function calculateTrendingScore(video: Video): number {
     (Date.now() - new Date(video.created_at).getTime()) / (1000 * 60 * 60);
   const engagement = video.likes_count + video.comments_count * 2;
   const legendBoost =
-    video.channel?.is_verified || (video.channel?.level ?? 0) >= 4 ? 1.2 : 1;
+    video.channel?.is_verified || (video.channel?.level ?? 0) >= 5 ? 1.2 : 1;
   return (engagement * legendBoost) / Math.pow(ageHours + 2, 1.5);
 }
 

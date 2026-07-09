@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { ProfileSocialLinksRow } from "@/components/channel/ProfileSocialLinksRow";
+import { HunterLevelBadge } from "@/components/HunterLevelBadge";
+import { getLevelLabel, pointsToLevel } from "@/lib/points";
 import { getKycCountryByCode, getKycCountryLabel } from "@/lib/kycCountries";
 import { absoluteSiteUrl } from "@/lib/siteSeo";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -145,6 +147,24 @@ export function ChannelAboutSection({ profile, stats, showReportAction = true }:
           }
         >
           {t.profile.channelViewsStat.replace("{count}", formatNumber(stats.totalViews))}
+        </AboutRow>
+
+        <AboutRow
+          icon={
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5" aria-hidden>
+              <path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.8 7.2 17l.9-5.4L4.2 7.7l5.4-.8L12 2z" />
+            </svg>
+          }
+        >
+          <span className="flex flex-wrap items-center gap-2">
+            <HunterLevelBadge level={profile.level} points={profile.points} size="sm" />
+            <span>
+              {t.profile.channelRankStat.replace(
+                "{rank}",
+                getLevelLabel(profile.level ?? pointsToLevel(profile.points ?? 0), t.points.levels),
+              )}
+            </span>
+          </span>
         </AboutRow>
 
         <AboutRow

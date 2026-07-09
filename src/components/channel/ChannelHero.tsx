@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { ProfileSocialLinksRow } from "@/components/channel/ProfileSocialLinksRow";
-import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { getReferralAvatarFrameClass, getReferralNameClass } from "@/lib/referrals";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -32,7 +31,7 @@ export function ChannelHero({
   communityPostCount = 0,
   actions,
 }: ChannelHeroProps) {
-  const { t, formatNumber } = useLocale();
+  const { t, formatNumber, formatDateTime } = useLocale();
   const displayName = profile.display_name ?? profile.username;
 
   const statsLine = t.profile.channelStats
@@ -93,12 +92,6 @@ export function ChannelHero({
               <p className="mt-1 text-sm font-medium text-zinc-600 dark:text-zinc-400">
                 @{profile.username}
               </p>
-              <div className="mt-2 flex flex-wrap items-center gap-3">
-                <HunterLevelBadge level={profile.level} points={profile.points} size="md" />
-                <span className="text-sm font-semibold text-zinc-600 dark:text-zinc-300">
-                  {formatNumber(profile.points ?? 0)} {t.points.pointsLabel}
-                </span>
-              </div>
               <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{statsLine}</p>
               <ProfileSocialLinksRow profile={profile} compact />
             </div>

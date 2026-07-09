@@ -3,21 +3,22 @@ import type { LevelDefinition } from "@/lib/points";
 export type RankLetterSize = "sm" | "md" | "lg" | "xl";
 
 const sizeClasses: Record<RankLetterSize, string> = {
-  sm: "h-6 w-6 rounded-md text-[11px]",
-  md: "h-8 w-8 rounded-lg text-sm",
-  lg: "h-10 w-10 rounded-lg text-base",
-  xl: "h-14 w-14 rounded-xl text-2xl",
+  sm: "h-6 min-w-6 rounded-md px-1 text-[10px]",
+  md: "h-8 min-w-8 rounded-lg px-1.5 text-[11px]",
+  lg: "h-10 min-w-10 rounded-lg px-1.5 text-xs",
+  xl: "h-12 min-w-12 rounded-xl px-2 text-sm",
 };
 
-const rankDesign: Record<LevelDefinition["rank"], string> = {
-  E: "rank-letter rank-letter-e",
-  C: "rank-letter rank-letter-c",
-  A: "rank-letter rank-letter-a",
-  S: "rank-letter rank-letter-s",
+const rankDesign: Record<LevelDefinition["shortLabel"], string> = {
+  N: "rank-letter rank-letter-n",
+  EX: "rank-letter rank-letter-ex",
+  D: "rank-letter rank-letter-d",
+  M: "rank-letter rank-letter-m",
+  CM: "rank-letter rank-letter-cm",
 };
 
 type RankLetterProps = {
-  rank: LevelDefinition["rank"];
+  rank: LevelDefinition["shortLabel"];
   size?: RankLetterSize;
   active?: boolean;
   muted?: boolean;
@@ -40,9 +41,9 @@ export function RankLetter({
         muted ? "opacity-45 grayscale" : active ? "" : "opacity-70"
       } ${className}`}
       title={title}
-      aria-label={rank}
+      aria-label={title ?? rank}
     >
-      <span className={`rank-letter-glyph rank-letter-glyph-${rank.toLowerCase()}`}>{rank}</span>
+      <span className="rank-letter-glyph">{rank}</span>
     </span>
   );
 }

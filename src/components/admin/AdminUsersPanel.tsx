@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { RankLetter } from "@/components/RankLetter";
 import { canManageUsers, type UserRole } from "@/lib/admin";
-import { getLevelDefinition } from "@/lib/points";
+import { getLevelDefinition, getLevelLabel } from "@/lib/points";
 import { logModerationAction } from "@/lib/moderationLog";
 import { notifyAdminReviewCountsChanged } from "@/lib/adminReviewCounts";
 import { createBrowserClient } from "@/lib/supabase/client";
@@ -25,6 +25,8 @@ type VerificationRequestRow = {
   created_at: string;
   username?: string;
   display_name?: string | null;
+  level?: number | null;
+  points?: number | null;
 };
 
 export function AdminUsersPanel() {
@@ -100,8 +102,8 @@ export function AdminUsersPanel() {
     const requestRows = requests ?? [];
     const requestUserIds = [...new Set(requestRows.map((row) => row.user_id))];
     const { data: requestProfiles } = requestUserIds.length
-      ? await supabase.from("profiles").select("id, username, display_name").in("id", requestUserIds)
-      : { data: [] as Array<{ id: string; username: string; display_name: string | null }> };
+      ? await supabase.from("profiles").select("id, username, display_name, level, points").in("id", requestUserIds)
+      : { data: [] as Array<{ id: string; username: string; display_name: string | null; level: number | null; points: number | null }> };
     const requestProfileMap = new Map((requestProfiles ?? []).map((profile) => [profile.id, profile]));
 
     setVerificationRequests(
@@ -109,6 +111,8 @@ export function AdminUsersPanel() {
         ...row,
         username: requestProfileMap.get(row.user_id)?.username,
         display_name: requestProfileMap.get(row.user_id)?.display_name ?? null,
+        level: requestProfileMap.get(row.user_id)?.level ?? null,
+        points: requestProfileMap.get(row.user_id)?.points ?? null,
       })),
     );
 
@@ -242,6 +246,16 @@ export function AdminUsersPanel() {
                       {request.display_name ?? request.username ?? request.user_id}
                     </p>
                     <p className="text-sm text-zinc-500">@{request.username ?? "unknown"}</p>
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
+                      <span className="rounded-full bg-orange-500/15 px-2 py-0.5 text-[10px] font-semibold text-orange-300">
+                        Clash Master
+                      </span>
+                      {request.level ? (
+                        <span className="text-xs text-zinc-400">
+                          {getLevelLabel(request.level, t.points.levels)} · {formatNumber(request.points ?? 0)} {t.points.pointsLabel}
+                        </span>
+                      ) : null}
+                    </div>
                     {request.message ? (
                       <p className="mt-2 text-sm text-zinc-300">{request.message}</p>
                     ) : null}
@@ -356,7 +370,16 @@ export function AdminUsersPanel() {
                     {formatNumber(user.lifetime_points_earned ?? user.points ?? 0)}
                   </td>
                   <td className="px-4 py-3">
-                    <RankLetter rank={getLevelDefinition(user.level ?? 1).rank} size="sm" />
+                    <div className="flex items-center gap-2">
+                      <RankLetter
+                        rank={getLevelDefinition(user.level ?? 1).shortLabel}
+                        size="sm"
+                        title={getLevelLabel(user.level ?? 1, t.points.levels)}
+                      />
+                      <span className="text-xs text-zinc-400">
+                        {getLevelLabel(user.level ?? 1, t.points.levels)}
+                      </span>
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <select

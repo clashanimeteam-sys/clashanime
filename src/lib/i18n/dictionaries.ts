@@ -635,6 +635,7 @@ export type Dictionary = {
     channelVideosStat: string;
     channelViewsStat: string;
     channelLifetimePointsStat: string;
+    channelRankStat: string;
     shareChannel: string;
     reportUser: string;
     reportUserHint: string;
@@ -798,7 +799,7 @@ export type Dictionary = {
     verificationSubmitting: string;
     verificationSubmitted: string;
     alreadyVerified: string;
-    legendAutoVerify: string;
+    clashMasterVerificationHint: string;
     communitySubtitle: string;
     communityPostLabel: string;
     communityPostPlaceholder: string;
@@ -810,16 +811,18 @@ export type Dictionary = {
     communityLoading: string;
     communityEmpty: string;
     levels: {
-      rookie: string;
-      challenger: string;
-      elite: string;
-      legend: string;
+      newbie: string;
+      explorer: string;
+      duelist: string;
+      master: string;
+      clashMaster: string;
     };
     perks: {
       voteComment: string;
       upload: string;
       doubleVote: string;
-      legend: string;
+      master: string;
+      clashMaster: string;
     };
     earn: {
       referralClick: string;
@@ -2403,6 +2406,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelVideosStat: "{count} videos",
       channelViewsStat: "{count} views",
       channelLifetimePointsStat: "{count} lifetime points earned",
+      channelRankStat: "Hunter rank: {rank}",
       shareChannel: "Share channel",
       reportUser: "Report user",
       reportUserHint: "Report user channel",
@@ -2619,13 +2623,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       copyReferral: "Copy link",
       linkCopied: "Link copied",
       verificationTitle: "Channel verification",
-      verificationHint: "Request manual verification for your channel. Legend rank unlocks automatic verification.",
+      verificationHint: "Reach Clash Master (10,000–20,000 points) to request channel verification.",
       verificationPlaceholder: "Tell us why your channel should be verified...",
       requestVerification: "Request verification",
       verificationSubmitting: "Submitting...",
       verificationSubmitted: "Verification request sent to the admin team.",
       alreadyVerified: "Your channel is verified.",
-      legendAutoVerify: "Legend rank unlocks automatic verification.",
+      clashMasterVerificationHint: "You reached Clash Master. Submit a verification request and the admin team will review it.",
       communitySubtitle: "Share updates with the community and earn points for every post.",
       communityPostLabel: "Write a post",
       communityPostPlaceholder: "Share your thoughts, clips, or updates...",
@@ -2637,16 +2641,18 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communityLoading: "Loading community posts...",
       communityEmpty: "No community posts yet. Be the first to publish.",
       levels: {
-        rookie: "Rookie",
-        challenger: "Challenger",
-        elite: "Elite",
-        legend: "Legend",
+        newbie: "Newbie",
+        explorer: "Explorer",
+        duelist: "Duelist",
+        master: "Master",
+        clashMaster: "Clash Master",
       },
       perks: {
         voteComment: "Vote and comment on videos",
         upload: "Upload duel clips",
-        doubleVote: "Double-weight votes (Elite)",
-        legend: "Legend badge and ranking priority",
+        doubleVote: "Double-weight votes (Duelist)",
+        master: "Master badge and ranking priority",
+        clashMaster: "Clash Master verification eligibility",
       },
       earn: {
         referralClick: "Unique visit from your invite link",
@@ -2786,7 +2792,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     communityFeed: {
       postPublished: "Post published.",
       postLevelRequired:
-        "Publishing in the community is limited to Hunter ranks C, A, and S (1000+ points). You can still view posts and comment.",
+        "Publishing in the community is limited to Explorer rank and above (1000+ points). Newbie users can view and comment only.",
       animeOnlyNotice: "Community posts must be anime-related only. Off-topic, political, or adult content is prohibited.",
       postPlaceholder:
         "The clash arena is open.. share your favorite moment in the anime world!",
@@ -4241,6 +4247,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelVideosStat: "{count} 本の動画",
       channelViewsStat: "{count} 回視聴",
       channelLifetimePointsStat: "累計獲得 {count} pt",
+      channelRankStat: "ハンターランク: {rank}",
       shareChannel: "チャンネルを共有",
       reportUser: "ユーザーを報告",
       reportUserHint: "チャンネルを報告",
@@ -4456,13 +4463,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       copyReferral: "リンクをコピー",
       linkCopied: "コピーしました",
       verificationTitle: "チャンネル認証",
-      verificationHint: "手動認証をリクエストできます。Legendランクで自動認証されます。",
+      verificationHint: "Clash Master（10,000〜20,000pt）に到達するとチャンネル認証を申請できます。",
       verificationPlaceholder: "認証してほしい理由を入力...",
       requestVerification: "認証をリクエスト",
       verificationSubmitting: "送信中...",
       verificationSubmitted: "認証リクエストを送信しました。",
       alreadyVerified: "このチャンネルは認証済みです。",
-      legendAutoVerify: "Legendランクで自動認証されます。",
+      clashMasterVerificationHint: "Clash Masterに到達しました。認証申請を送信すると管理者が審査します。",
       communitySubtitle: "コミュニティで投稿して、投稿ごとにポイントを獲得。",
       communityPostLabel: "投稿を書く",
       communityPostPlaceholder: "感想、クリップ、更新情報を共有...",
@@ -4474,16 +4481,18 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communityLoading: "投稿を読み込み中...",
       communityEmpty: "まだ投稿がありません。最初の投稿者になりましょう。",
       levels: {
-        rookie: "ルーキー",
-        challenger: "チャレンジャー",
-        elite: "エリート",
-        legend: "レジェンド",
+        newbie: "Newbie",
+        explorer: "Explorer",
+        duelist: "Duelist",
+        master: "Master",
+        clashMaster: "Clash Master",
       },
       perks: {
         voteComment: "動画への投票とコメント",
         upload: "デュエルクリップのアップロード",
-        doubleVote: "投票が2倍カウント（エリート）",
-        legend: "レジェンドバッジとランキング優先",
+        doubleVote: "投票が2倍（Duelist）",
+        master: "Masterバッジとランキング優先",
+        clashMaster: "Clash Master認証の申請資格",
       },
       earn: {
         referralClick: "招待リンクからのユニーク訪問",
@@ -4621,7 +4630,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     communityFeed: {
       postPublished: "投稿しました。",
       postLevelRequired:
-        "コミュニティへの投稿はハンターランク C・A・S（1000pt以上）のみ可能です。投稿の閲覧とコメントはできます。",
+        "コミュニティ投稿はExplorer以上（1000pt以上）のみ可能です。Newbieは閲覧とコメントのみできます。",
       animeOnlyNotice: "コミュニティ投稿はアニメ関連のみ。政治・成人・無関係な内容は禁止です。",
       postPlaceholder: "決闘場は開いています.. アニメ世界の最高の瞬間を共有しよう！",
       addImage: "画像を追加",
@@ -6072,6 +6081,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       channelVideosStat: "{count} فيديو",
       channelViewsStat: "{count} مشاهدة",
       channelLifetimePointsStat: "{count} اجمالي نقاط مكتسبة",
+      channelRankStat: "رتبة الصياد: {rank}",
       shareChannel: "مشاركة القناة",
       reportUser: "الإبلاغ عن المستخدم",
       reportUserHint: "الإبلاغ عن قناة المستخدم",
@@ -6287,13 +6297,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
       copyReferral: "نسخ الرابط",
       linkCopied: "تم نسخ الرابط",
       verificationTitle: "توثيق القناة",
-      verificationHint: "اطلب توثيقاً يدوياً لقناتك. رتبة Legend تمنح توثيقاً تلقائياً.",
+      verificationHint: "عند الوصول إلى Clash Master (من 10,000 إلى 20,000 نقطة) يمكنك طلب توثيق القناة.",
       verificationPlaceholder: "اشرح لماذا تستحق توثيق قناتك...",
       requestVerification: "طلب التوثيق",
       verificationSubmitting: "جارٍ الإرسال...",
       verificationSubmitted: "تم إرسال طلب التوثيق إلى فريق الإدارة.",
       alreadyVerified: "قناتك موثّقة.",
-      legendAutoVerify: "رتبة Legend تمنح توثيقاً تلقائياً.",
+      clashMasterVerificationHint: "وصلت إلى Clash Master. أرسل طلب التوثيق وسيراجعه فريق الإدارة.",
       communitySubtitle: "انشر في المجتمع واكسب نقاطاً على كل منشور.",
       communityPostLabel: "اكتب منشوراً",
       communityPostPlaceholder: "شارك أفكارك أو مقاطعك أو تحديثاتك...",
@@ -6305,16 +6315,18 @@ export const dictionaries: Record<Locale, Dictionary> = {
       communityLoading: "جارٍ تحميل منشورات المجتمع...",
       communityEmpty: "لا توجد منشورات بعد. كن أول من ينشر.",
       levels: {
-        rookie: "مبتدئ",
-        challenger: "منافس",
-        elite: "نخبة",
-        legend: "أسطورة",
+        newbie: "Newbie",
+        explorer: "Explorer",
+        duelist: "Duelist",
+        master: "Master",
+        clashMaster: "Clash Master",
       },
       perks: {
         voteComment: "التصويت والتعليق على الفيديوهات",
         upload: "رفع مقاطع النزال",
-        doubleVote: "صوت بقيمة مضاعفة (نخبة)",
-        legend: "شارة أسطورة وأولوية في الترتيب",
+        doubleVote: "تصويت مضاعف (Duelist)",
+        master: "شارة Master وأولوية في الترتيب",
+        clashMaster: "أهلية توثيق Clash Master",
       },
       earn: {
         referralClick: "زيارة فريدة من رابط دعوتك",
@@ -6453,7 +6465,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     communityFeed: {
       postPublished: "تم النشر.",
       postLevelRequired:
-        "الساحة حصرية لأبطال الرتبة C و A و S. استمر في التفاعل والمشاركة لتُثبت جدارتك وتنضم للنخبة!",
+        "النشر في المجتمع متاح من رتبة Explorer فما فوق (1000+ نقطة). رتبة Newbie للمشاهدة والتعليق فقط.",
       animeOnlyNotice: "منشورات المجتمع يجب أن تكون مرتبطة بالأنمي فقط. يُمنع المحتوى السياسي أو الإباحي أو خارج الموضوع.",
       postPlaceholder: "ساحة النزال مفتوحة.. شاركنا لحظتك المفضلة في عالم الأنمي!",
       addImage: "إضافة صورة",

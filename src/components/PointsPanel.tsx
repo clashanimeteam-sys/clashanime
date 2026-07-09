@@ -5,7 +5,9 @@ import { BountyRewardsGrid } from "@/components/BountyRewardsGrid";
 import { HunterLevelBadge } from "@/components/HunterLevelBadge";
 import { RankPositionTrack } from "@/components/RankPositionTrack";
 import {
+  canRequestVerification,
   canUploadVideos,
+  CLASH_MASTER_LEVEL,
   getReferralUrl,
   POINT_VALUES,
   pointsToLevel,
@@ -48,6 +50,7 @@ export function PointsPanel({ profile, onProfileRefresh, section }: PointsPanelP
 
   const totalPoints = profile.points ?? 0;
   const computedLevel = pointsToLevel(totalPoints);
+  const verificationEligible = canRequestVerification(profile);
   const referralUrl = getReferralUrl(profile.username);
   const uploadUnlocked = canUploadVideos(profile);
 
@@ -136,7 +139,8 @@ export function PointsPanel({ profile, onProfileRefresh, section }: PointsPanelP
             <li>{uploadUnlocked ? "✓" : "○"} {t.points.perks.voteComment}</li>
             <li>{uploadUnlocked ? "✓" : "○"} {t.points.perks.upload}</li>
             <li>{computedLevel >= 3 ? "✓" : "○"} {t.points.perks.doubleVote}</li>
-            <li>{computedLevel >= 4 || profile.is_verified ? "✓" : "○"} {t.points.perks.legend}</li>
+            <li>{computedLevel >= 4 ? "✓" : "○"} {t.points.perks.master}</li>
+            <li>{computedLevel >= CLASH_MASTER_LEVEL || profile.is_verified ? "✓" : "○"} {t.points.perks.clashMaster}</li>
           </ul>
         </div>
 
@@ -163,11 +167,9 @@ export function PointsPanel({ profile, onProfileRefresh, section }: PointsPanelP
         <h3 className="text-sm font-semibold text-black dark:text-white">{t.points.verificationTitle}</h3>
         {profile.is_verified ? (
           <p className="mt-2 text-sm text-emerald-600 dark:text-emerald-400">{t.points.alreadyVerified}</p>
-        ) : computedLevel >= 4 ? (
-          <p className="mt-2 text-sm text-amber-500">{t.points.legendAutoVerify}</p>
-        ) : (
+        ) : verificationEligible ? (
           <>
-            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{t.points.verificationHint}</p>
+            <p className="mt-2 text-sm text-amber-500">{t.points.clashMasterVerificationHint}</p>
             <form onSubmit={submitVerificationRequest} className="mt-3 space-y-3">
               <textarea
                 value={verificationMessage}
@@ -185,6 +187,8 @@ export function PointsPanel({ profile, onProfileRefresh, section }: PointsPanelP
               </button>
             </form>
           </>
+        ) : (
+          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{t.points.verificationHint}</p>
         )}
         {verificationStatus ? (
           <p className="mt-3 text-sm text-emerald-600 dark:text-emerald-400">{verificationStatus}</p>
