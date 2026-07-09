@@ -19,6 +19,7 @@ type SubmissionRow = {
   task_type: EarnMoneyTaskType;
   content_url: string;
   status: EarnMoneySubmissionStatus;
+  reward_cents: number;
   created_at: string;
 };
 
@@ -106,7 +107,8 @@ function TaskCard({
 
 export function EarnMoneyPageContent() {
   const { locale, t } = useLocale();
-  const copy = getEarnMoneyCopy(locale);
+  const [rewardUsd, setRewardUsd] = useState(2);
+  const copy = useMemo(() => getEarnMoneyCopy(locale, rewardUsd), [locale, rewardUsd]);
   usePageTitle(copy.pageTitle);
   const { user } = useAuth();
   const supabase = useMemo(() => createBrowserClient(), []);
@@ -120,6 +122,21 @@ export function EarnMoneyPageContent() {
   const [submissions, setSubmissions] = useState<SubmissionRow[]>([]);
   const [loadingSubmissions, setLoadingSubmissions] = useState(false);
 
+  useEffect(() => {
+    let cancelled = false;
+    void fetch("/api/earn-money/settings", { cache: "no-store" })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload: { settings?: { rewardUsd?: number } } | null) => {
+        if (!cancelled && payload?.settings?.rewardUsd) {
+          setRewardUsd(payload.settings.rewardUsd);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const loadSubmissions = useCallback(async () => {
     if (!supabase || !user) {
       setSubmissions([]);
@@ -129,7 +146,7 @@ export function EarnMoneyPageContent() {
     setLoadingSubmissions(true);
     const { data } = await supabase
       .from("earn_money_submissions")
-      .select("id, task_type, content_url, status, created_at")
+      .select("id, task_type, content_url, status, reward_cents, created_at")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false })
       .limit(20);
@@ -179,8 +196,10 @@ export function EarnMoneyPageContent() {
     }
   }
 
-  function statusLabel(status: EarnMoneySubmissionStatus) {
-    if (status === "approved") return copy.statusApproved;
+  function statusLabel(status: EarnMoneySubmissionStatus, rewardCents?: number) {
+    if (status === "approved") {
+      return getEarnMoneyCopy(locale, (rewardCents ?? Math.round(rewardUsd * 100)) / 100).statusApproved;
+    }
     if (status === "rejected") return copy.statusRejected;
     return copy.statusPending;
   }
@@ -354,7 +373,7 @@ export function EarnMoneyPageContent() {
                             : "bg-amber-500/15 text-amber-700 dark:text-amber-300"
                       }`}
                     >
-                      {statusLabel(row.status)}
+                      {statusLabel(row.status, row.reward_cents)}
                     </span>
                   </li>
                 ))}

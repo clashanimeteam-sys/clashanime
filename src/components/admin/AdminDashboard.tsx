@@ -277,6 +277,12 @@ export function AdminDashboard() {
       href: "/admin/contact",
       review: true,
     },
+    {
+      label: t.admin.stats.pendingEarnMoneySubmissions,
+      value: counts.pendingEarnMoneySubmissions,
+      href: "/admin/earn-money",
+      review: true,
+    },
     { label: t.admin.stats.welcomeEmailsSent, value: stats?.welcomeEmailsSent ?? 0, href: "/admin/emails" },
     { label: t.admin.stats.accountDeletions, value: stats?.accountDeletions ?? 0, href: "/admin/emails" },
     { label: t.admin.stats.inAppNotifications, value: stats?.inAppNotifications ?? 0, href: "/admin/emails" },
@@ -411,6 +417,12 @@ export function AdminDashboard() {
           description={t.admin.quickActions.reviewContactDesc}
           href="/admin/contact"
           badge={counts.openContactMessages}
+        />
+        <QuickLink
+          title={t.admin.quickActions.reviewEarnMoney}
+          description={t.admin.quickActions.reviewEarnMoneyDesc}
+          href="/admin/earn-money"
+          badge={counts.pendingEarnMoneySubmissions}
         />
         <QuickLink
           title={t.admin.quickActions.reviewWithdrawals}

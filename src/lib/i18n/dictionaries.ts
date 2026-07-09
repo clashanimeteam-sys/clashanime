@@ -1188,6 +1188,11 @@ export type Dictionary = {
     earnMoneyApproved: string;
     earnMoneyRejected: string;
     earnMoneyNotePlaceholder: string;
+    earnMoneyRewardLabel: string;
+    earnMoneyRewardHint: string;
+    earnMoneySaveSettings: string;
+    earnMoneySettingsSaved: string;
+    earnMoneyCurrentReward: string;
     earnMoneyStatuses: {
       pending: string;
       approved: string;
@@ -1659,6 +1664,7 @@ export type Dictionary = {
     pendingWithdrawals: string;
     pendingKyc: string;
     openContactMessages: string;
+    pendingEarnMoneySubmissions: string;
     welcomeEmailsSent: string;
     accountDeletions: string;
     inAppNotifications: string;
@@ -1706,6 +1712,8 @@ export type Dictionary = {
       reviewKycDesc: string;
       reviewContact: string;
       reviewContactDesc: string;
+      reviewEarnMoney: string;
+      reviewEarnMoneyDesc: string;
     };
     table: {
       user: string;
@@ -3017,13 +3025,18 @@ export const dictionaries: Record<Locale, Dictionary> = {
         closed: "Closed",
       },
       earnMoneyTitle: "Earn money submissions",
-      earnMoneySubtitle: "Review promotional tasks and credit $2 ClashCoins per approval.",
+      earnMoneySubtitle: "Review promotional tasks and credit ClashCoins after approval.",
       noEarnMoneySubmissions: "No earn-money submissions yet.",
-      approveEarnMoney: "Approve + $2",
+      approveEarnMoney: "Approve + {amount}",
       rejectEarnMoney: "Reject",
-      earnMoneyApproved: "Submission approved and $2 credited.",
+      earnMoneyApproved: "Submission approved and reward credited.",
       earnMoneyRejected: "Submission rejected.",
       earnMoneyNotePlaceholder: "Optional note for the user",
+      earnMoneyRewardLabel: "Reward amount (USD)",
+      earnMoneyRewardHint: "Applies to new submissions. Uses Western digits on the public page.",
+      earnMoneySaveSettings: "Save reward",
+      earnMoneySettingsSaved: "Reward amount saved.",
+      earnMoneyCurrentReward: "Current reward per task: {amount}",
       earnMoneyStatuses: {
         pending: "Pending",
         approved: "Approved",
@@ -3499,6 +3512,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pendingWithdrawals: "Pending withdrawals",
         pendingKyc: "Pending payout KYC",
         openContactMessages: "Open contact messages",
+      pendingEarnMoneySubmissions: "Earn money reviews",
         welcomeEmailsSent: "Welcome emails sent",
         accountDeletions: "Accounts deleted",
         inAppNotifications: "In-app notifications",
@@ -3546,6 +3560,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         reviewKycDesc: "Verify identity documents before enabling user payouts.",
         reviewContact: "Contact messages",
         reviewContactDesc: "Read support requests and record your replies.",
+        reviewEarnMoney: "Earn money reviews",
+        reviewEarnMoneyDesc: "Approve YouTube, forum, and blog promotion links.",
       },
       table: {
         user: "User",
@@ -4845,11 +4861,16 @@ export const dictionaries: Record<Locale, Dictionary> = {
       earnMoneyTitle: "お金を稼ぐ申請",
       earnMoneySubtitle: "紹介タスクを審査し、承認ごとに$2を付与します。",
       noEarnMoneySubmissions: "申請はまだありません。",
-      approveEarnMoney: "承認 + $2",
+      approveEarnMoney: "承認 + {amount}",
       rejectEarnMoney: "却下",
       earnMoneyApproved: "承認し$2を付与しました。",
       earnMoneyRejected: "申請を却下しました。",
       earnMoneyNotePlaceholder: "ユーザー向けメモ（任意）",
+      earnMoneyRewardLabel: "報酬額 (USD)",
+      earnMoneyRewardHint: "新しい申請に適用されます。",
+      earnMoneySaveSettings: "報酬を保存",
+      earnMoneySettingsSaved: "報酬額を保存しました。",
+      earnMoneyCurrentReward: "現在の報酬: {amount}",
       earnMoneyStatuses: {
         pending: "審査中",
         approved: "承認済み",
@@ -5321,6 +5342,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pendingWithdrawals: "保留中の出金",
         pendingKyc: "保留中の出金KYC",
         openContactMessages: "未対応のお問い合わせ",
+      pendingEarnMoneySubmissions: "お金を稼ぐ審査",
         welcomeEmailsSent: "送信済みウェルカムメール",
         accountDeletions: "削除されたアカウント",
         inAppNotifications: "アプリ内通知",
@@ -5368,6 +5390,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         reviewKycDesc: "出金を有効にする前に本人確認書類を確認します。",
         reviewContact: "お問い合わせ",
         reviewContactDesc: "サポート依頼を確認し返信を記録します。",
+        reviewEarnMoney: "お金を稼ぐ審査",
+        reviewEarnMoneyDesc: "YouTube・掲示板・ブログの紹介リンクを承認します。",
       },
       table: {
         user: "ユーザー",
@@ -6667,13 +6691,18 @@ export const dictionaries: Record<Locale, Dictionary> = {
         closed: "مغلقة",
       },
       earnMoneyTitle: "طلبات اربح الأموال",
-      earnMoneySubtitle: "راجع مهام الترويج واعتمد ٢$ ClashCoins لكل طلب مقبول.",
+      earnMoneySubtitle: "راجع مهام الترويج واعتمد ClashCoins بعد كل طلب مقبول.",
       noEarnMoneySubmissions: "لا توجد طلبات حتى الآن.",
-      approveEarnMoney: "قبول + ٢$",
+      approveEarnMoney: "قبول + {amount}",
       rejectEarnMoney: "رفض",
-      earnMoneyApproved: "تم قبول الطلب وإضافة ٢$.",
+      earnMoneyApproved: "تم قبول الطلب وإضافة المكافأة.",
       earnMoneyRejected: "تم رفض الطلب.",
       earnMoneyNotePlaceholder: "ملاحظة اختيارية للمستخدم",
+      earnMoneyRewardLabel: "مبلغ المكافأة (USD)",
+      earnMoneyRewardHint: "يُطبّق على الطلبات الجديدة. الأرقام تظهر بالإنجليزية في الصفحة العامة.",
+      earnMoneySaveSettings: "حفظ المبلغ",
+      earnMoneySettingsSaved: "تم حفظ مبلغ المكافأة.",
+      earnMoneyCurrentReward: "المكافأة الحالية لكل مهمة: {amount}",
       earnMoneyStatuses: {
         pending: "قيد المراجعة",
         approved: "مقبول",
@@ -7145,6 +7174,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         pendingWithdrawals: "سحوبات قيد المراجعة",
         pendingKyc: "KYC سحب قيد المراجعة",
         openContactMessages: "رسائل تواصل مفتوحة",
+        pendingEarnMoneySubmissions: "مراجعة اربح الأموال",
         welcomeEmailsSent: "إيميلات ترحيب مرسلة",
         accountDeletions: "حسابات محذوفة",
         inAppNotifications: "إشعارات داخل التطبيق",
@@ -7192,6 +7222,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
         reviewKycDesc: "تحقق من مستندات الهوية قبل تفعيل السحب للمستخدم.",
         reviewContact: "رسائل التواصل",
         reviewContactDesc: "اقرأ طلبات الدعم وسجّل ردودك.",
+        reviewEarnMoney: "مراجعة اربح الأموال",
+        reviewEarnMoneyDesc: "اعتماد روابط يوتيوب والمنتدى والمدونة.",
       },
       table: {
         user: "المستخدم",

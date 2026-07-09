@@ -1,5 +1,6 @@
 import type { Locale } from "@/lib/types";
 import type { EarnMoneyTaskType } from "@/lib/earnMoney";
+import { formatEarnMoneyUsd } from "@/lib/earnMoney/settings";
 
 export type EarnMoneyTaskCopy = {
   title: string;
@@ -48,15 +49,15 @@ const earnEn: EarnMoneyCopy = {
   pageTitle: "Earn Money",
   heroTitle: "Earn real rewards for promoting Clash Anime",
   heroSubtitle:
-    "Complete simple promotional tasks, submit your proof link, and receive $2 in ClashCoins after our team verifies your work.",
-  rewardBadge: "$2 per approved task",
-  rewardPerTask: "Each verified task pays $2.00 to your ClashCoins wallet.",
+    "Complete simple promotional tasks, submit your proof link, and receive {amount} in ClashCoins after our team verifies your work.",
+  rewardBadge: "{amount} per approved task",
+  rewardPerTask: "Each verified task pays {amount} to your ClashCoins wallet.",
   howItWorksTitle: "How it works",
   howItWorksSteps: [
     "Pick one of the tasks below and follow the instructions carefully.",
     "Publish your video, forum post, or blog article with the required Clash Anime mention.",
     "Submit the public link here. Our team reviews within a few business days.",
-    "Once approved, $2.00 is credited automatically to your ClashCoins wallet.",
+    "Once approved, {amount} is credited automatically to your ClashCoins wallet.",
   ],
   tasks: {
     youtube: {
@@ -122,7 +123,7 @@ const earnEn: EarnMoneyCopy = {
   walletCta: "Open ClashCoins wallet",
   referralNote: "Tip: combine these tasks with your referral link from Invite Friends to earn even more.",
   statusPending: "Under review",
-  statusApproved: "Approved — $2 credited",
+  statusApproved: "Approved — {amount} credited",
   statusRejected: "Rejected",
   yourSubmissions: "Your submissions",
   stepsLabel: "Steps",
@@ -135,15 +136,15 @@ const earnJa: EarnMoneyCopy = {
   pageTitle: "お金を稼ぐ",
   heroTitle: "Clash Animeを紹介して報酬を獲得",
   heroSubtitle:
-    "簡単な紹介タスクを完了し、証明リンクを送信すると、審査後にClashCoinsウォレットへ$2が付与されます。",
-  rewardBadge: "承認ごとに$2",
-  rewardPerTask: "承認されたタスクごとに$2.00がウォレットに入ります。",
+    "簡単な紹介タスクを完了し、証明リンクを送信すると、審査後にClashCoinsウォレットへ{amount}が付与されます。",
+  rewardBadge: "承認ごとに{amount}",
+  rewardPerTask: "承認されたタスクごとに{amount}がウォレットに入ります。",
   howItWorksTitle: "流れ",
   howItWorksSteps: [
     "下のタスクから1つ選び、指示どおりに進めます。",
     "動画・掲示板・ブログにClash Animeの記載を入れて公開します。",
     "公開リンクをここから送信します。数日以内に審査します。",
-    "承認されると$2.00がClashCoinsウォレットに自動付与されます。",
+    "承認されると{amount}がClashCoinsウォレットに自動付与されます。",
   ],
   tasks: {
     youtube: {
@@ -209,7 +210,7 @@ const earnJa: EarnMoneyCopy = {
   walletCta: "ClashCoinsウォレットを開く",
   referralNote: "ヒント: 友達招待リンクと組み合わせるとさらに稼げます。",
   statusPending: "審査中",
-  statusApproved: "承認済み — $2付与",
+  statusApproved: "承認済み — {amount}付与",
   statusRejected: "却下",
   yourSubmissions: "あなたの送信履歴",
   stepsLabel: "手順",
@@ -222,15 +223,15 @@ const earnAr: EarnMoneyCopy = {
   pageTitle: "اربح الأموال",
   heroTitle: "اربح مكافآت حقيقية عند الترويج لـ Clash Anime",
   heroSubtitle:
-    "نفّذ مهاماً ترويجية بسيطة، أرسل رابط الإثبات، واستلم ٢ دولار في محفظة ClashCoins بعد مراجعة فريقنا.",
-  rewardBadge: "٢$ لكل مهمة معتمدة",
-  rewardPerTask: "كل مهمة موثّقة تمنحك ٢.٠٠$ في محفظة ClashCoins.",
+    "نفّذ مهاماً ترويجية بسيطة، أرسل رابط الإثبات، واستلم {amount} في محفظة ClashCoins بعد مراجعة فريقنا.",
+  rewardBadge: "{amount} لكل مهمة معتمدة",
+  rewardPerTask: "كل مهمة موثّقة تمنحك {amount} في محفظة ClashCoins.",
   howItWorksTitle: "كيف يعمل البرنامج؟",
   howItWorksSteps: [
     "اختر إحدى المهام أدناه واتبع التعليمات بدقة.",
     "انشر الفيديو أو المنشور أو المقال مع ذكر Clash Anime كما هو مطلوب.",
     "أرسل الرابط العام هنا. نراجع الطلب خلال أيام عمل قليلة.",
-    "بعد الموافقة، يُضاف ٢.٠٠$ تلقائياً إلى محفظة ClashCoins.",
+    "بعد الموافقة، يُضاف {amount} تلقائياً إلى محفظة ClashCoins.",
   ],
   tasks: {
     youtube: {
@@ -242,7 +243,7 @@ const earnAr: EarnMoneyCopy = {
         "بعد النشر، أرسل رابط الفيديو أدناه للمراجعة.",
       ],
       terms: [
-        "يجب أن تحتوي القناة على أكثر من ١٠٠ مشترك وأكثر من ٥ فيديوهات منشورة.",
+        "يجب أن تحتوي القناة على أكثر من 100 مشترك وأكثر من 5 فيديوهات منشورة.",
         "يجب أن يتضمن عنوان الفيديو «Clash Anime» أو «clashanime.com».",
         "يجب وضع رابط الموقع في وصف الفيديو.",
         "يمكنك إضافة رابط الدعوة من «ادعُ أصدقاءك» لأرباح إضافية.",
@@ -257,7 +258,7 @@ const earnAr: EarnMoneyCopy = {
         "بعد النشر، أرسل رابط المنشور العام أدناه.",
       ],
       terms: [
-        "يجب أن يكون حساب المنتدى أقدم من شهر ويحتوي على ٥ منشورات سابقة على الأقل.",
+        "يجب أن يكون حساب المنتدى أقدم من شهر ويحتوي على 5 منشورات سابقة على الأقل.",
         "يجب ذكر Clash Anime مع رابط clashanime.com بوضوح.",
         "يمكنك إضافة رابط الدعوة لعمولات إضافية.",
       ],
@@ -296,7 +297,7 @@ const earnAr: EarnMoneyCopy = {
   walletCta: "فتح محفظة ClashCoins",
   referralNote: "نصيحة: اجمع هذه المهام مع رابط الدعوة من «ادعُ أصدقاءك» لزيادة أرباحك.",
   statusPending: "قيد المراجعة",
-  statusApproved: "مقبول — تم إضافة ٢$",
+  statusApproved: "مقبول — تم إضافة {amount}",
   statusRejected: "مرفوض",
   yourSubmissions: "طلباتك",
   stepsLabel: "الخطوات",
@@ -311,6 +312,12 @@ const earnMoneyByLocale: Record<Locale, EarnMoneyCopy> = {
   ar: earnAr,
 };
 
-export function getEarnMoneyCopy(locale: Locale): EarnMoneyCopy {
-  return earnMoneyByLocale[locale] ?? earnEn;
+function applyRewardAmount(copy: EarnMoneyCopy, amountLabel: string): EarnMoneyCopy {
+  const json = JSON.stringify(copy).replaceAll("{amount}", amountLabel);
+  return JSON.parse(json) as EarnMoneyCopy;
+}
+
+export function getEarnMoneyCopy(locale: Locale, rewardUsd = 2): EarnMoneyCopy {
+  const base = earnMoneyByLocale[locale] ?? earnEn;
+  return applyRewardAmount(base, formatEarnMoneyUsd(rewardUsd));
 }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { notifyAdminReviewCountsChanged } from "@/lib/adminReviewCounts";
 import type { EarnMoneySubmissionStatus, EarnMoneyTaskType } from "@/lib/earnMoney";
+import { formatEarnMoneyUsd } from "@/lib/earnMoney/settings";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type EarnMoneyRow = {
@@ -31,6 +32,16 @@ export function AdminEarnMoneyPanel() {
   const [statusFilter, setStatusFilter] = useState<EarnMoneySubmissionStatus | "all">("pending");
   const [draftNotes, setDraftNotes] = useState<Record<string, string>>({});
   const [reviewingId, setReviewingId] = useState<string | null>(null);
+  const [rewardUsd, setRewardUsd] = useState("2");
+  const [savingSettings, setSavingSettings] = useState(false);
+
+  const loadSettings = useCallback(async () => {
+    const response = await fetch("/api/admin/earn-money/settings", { cache: "no-store" });
+    const payload = (await response.json()) as { settings?: { rewardUsd?: number }; error?: string };
+    if (response.ok && payload.settings?.rewardUsd) {
+      setRewardUsd(String(payload.settings.rewardUsd));
+    }
+  }, []);
 
   const loadSubmissions = useCallback(async () => {
     setLoading(true);
@@ -53,8 +64,35 @@ export function AdminEarnMoneyPanel() {
   }, [statusFilter]);
 
   useEffect(() => {
+    void loadSettings();
     void loadSubmissions();
-  }, [loadSubmissions]);
+  }, [loadSettings, loadSubmissions]);
+
+  async function saveSettings() {
+    setSavingSettings(true);
+    setMessage(null);
+    setError(null);
+
+    const parsed = Number(rewardUsd);
+    const response = await fetch("/api/admin/earn-money/settings", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ settings: { rewardUsd: parsed } }),
+    });
+
+    const payload = (await response.json()) as { error?: string; settings?: { rewardUsd: number } };
+    setSavingSettings(false);
+
+    if (!response.ok) {
+      setError(payload.error ?? "Failed to save settings");
+      return;
+    }
+
+    if (payload.settings?.rewardUsd) {
+      setRewardUsd(String(payload.settings.rewardUsd));
+    }
+    setMessage(t.admin.earnMoneySettingsSaved);
+  }
 
   async function reviewSubmission(id: string, action: "approve" | "reject") {
     setReviewingId(id);
@@ -95,6 +133,36 @@ export function AdminEarnMoneyPanel() {
         <p className="mt-1 text-sm text-zinc-400">{t.admin.earnMoneySubtitle}</p>
       </div>
 
+      <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
+        <h2 className="text-sm font-bold text-white">{t.admin.earnMoneyRewardLabel}</h2>
+        <p className="mt-1 text-xs text-zinc-500">{t.admin.earnMoneyRewardHint}</p>
+        <div className="mt-4 flex flex-wrap items-end gap-3">
+          <label className="block">
+            <span className="text-xs font-semibold text-zinc-400">USD</span>
+            <input
+              type="number"
+              min={0.5}
+              max={1000}
+              step={0.5}
+              value={rewardUsd}
+              onChange={(event) => setRewardUsd(event.target.value)}
+              className="mt-1 w-32 rounded-xl border border-zinc-700 bg-black px-3 py-2 text-sm text-white"
+            />
+          </label>
+          <button
+            type="button"
+            onClick={saveSettings}
+            disabled={savingSettings}
+            className="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+          >
+            {savingSettings ? t.wallet.processing : t.admin.earnMoneySaveSettings}
+          </button>
+          <p className="text-xs text-amber-200">
+            {t.admin.earnMoneyCurrentReward.replace("{amount}", formatEarnMoneyUsd(Number(rewardUsd) || 0))}
+          </p>
+        </div>
+      </div>
+
       <div className="flex flex-wrap gap-2">
         {(["all", "pending", "approved", "rejected"] as const).map((status) => (
           <button
@@ -130,7 +198,7 @@ export function AdminEarnMoneyPanel() {
                   ) : null}
                 </div>
                 <span className="rounded-full bg-amber-500/15 px-2.5 py-1 text-[11px] font-bold text-amber-200">
-                  ${(row.reward_cents / 100).toFixed(2)}
+                  {formatEarnMoneyUsd(row.reward_cents / 100)}
                 </span>
               </div>
 
@@ -165,7 +233,12 @@ export function AdminEarnMoneyPanel() {
                       onClick={() => reviewSubmission(row.id, "approve")}
                       className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-500 disabled:opacity-60"
                     >
-                      {reviewingId === row.id ? t.wallet.processing : t.admin.approveEarnMoney}
+                      {reviewingId === row.id
+                        ? t.wallet.processing
+                        : t.admin.approveEarnMoney.replace(
+                            "{amount}",
+                            formatEarnMoneyUsd(row.reward_cents / 100),
+                          )}
                     </button>
                     <button
                       type="button"
