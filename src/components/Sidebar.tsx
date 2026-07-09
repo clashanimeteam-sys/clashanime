@@ -8,15 +8,12 @@ import { ElementalSiteTitle } from "@/components/ElementalSiteTitle";
 import { BrandLogo } from "@/components/BrandLogo";
 import { LocaleFlags } from "@/components/LocaleFlags";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { SidebarProfileMenu } from "@/components/sidebar/SidebarProfileMenu";
 import { isStaff } from "@/lib/admin";
 import { navigateAppHref } from "@/lib/appNavigation";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
-import {
-  parseProfileSection,
-  useProfileSection,
-  type ProfileSection,
-} from "@/providers/ProfileSectionProvider";
+import { useProfileSection, parseProfileSection, type ProfileSection } from "@/providers/ProfileSectionProvider";
 
 const mainNavItems = [
   { key: "clash" as const, href: "/", icon: "clash" },
@@ -30,21 +27,8 @@ const mainNavItems = [
   { key: "earnMoney" as const, href: "/earn", icon: "earn" },
 ];
 
-const profileNavItems: {
-  key: "channelSettings" | "channel" | "myVideos" | "hunterSystem" | "bountyRewards" | "clashWallet";
-  section: ProfileSection;
-  icon: string;
-}[] = [
-  { key: "channelSettings", section: "settings", icon: "settings" },
-  { key: "channel", section: "channel", icon: "channel" },
-  { key: "myVideos", section: "my-videos", icon: "video" },
-  { key: "hunterSystem", section: "hunter-system", icon: "trophy" },
-  { key: "bountyRewards", section: "bounty-log", icon: "coins" },
-  { key: "clashWallet", section: "wallet", icon: "wallet" },
-];
-
-function profileSectionHref(section: ProfileSection, loggedIn: boolean) {
-  const target = section === "settings" ? "/profile" : `/profile#${section}`;
+function profileSectionHref(section: "wallet" | "referral", loggedIn: boolean) {
+  const target = section === "referral" ? "/profile#referral" : "/profile#wallet";
   return loggedIn ? target : `/login?next=${encodeURIComponent(target)}`;
 }
 
@@ -134,31 +118,6 @@ export function Sidebar() {
           );
         })}
 
-        {isProfilePage ? (
-          <>
-            <div
-              className="my-2 border-t border-zinc-200 dark:border-zinc-800"
-              role="separator"
-              aria-hidden
-            />
-
-            {profileNavItems.map((item) => {
-              const href = profileSectionHref(item.section, Boolean(user));
-              const active = section === item.section;
-              return (
-                <Link
-                  key={item.key}
-                  href={href}
-                  className={navLinkClass(active)}
-                  onClick={(event) => handleNavClick(event, href)}
-                >
-                  <NavIcon icon={item.icon} />
-                  {t.nav[item.key]}
-                </Link>
-              );
-            })}
-          </>
-        ) : null}
       </nav>
 
       <div className="relative z-50 space-y-3 border-t border-zinc-200 p-3 dark:border-zinc-800">
@@ -176,6 +135,8 @@ export function Sidebar() {
             {t.admin.panelTitle}
           </Link>
         ) : null}
+
+        <SidebarProfileMenu />
 
         <div className="flex items-center justify-between gap-2">
           <LocaleFlags />
