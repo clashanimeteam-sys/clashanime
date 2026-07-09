@@ -1,7 +1,8 @@
 "use client";
 
-import { RankLetter } from "@/components/RankLetter";
+import { HunterRankShield } from "@/components/hunter/HunterRankShield";
 import { getBountiesForLevel, getLevelLabel, LEVELS } from "@/lib/points";
+import { getRankShieldAccent } from "@/lib/rankVisuals";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type BountyRewardsGridProps = {
@@ -9,7 +10,7 @@ type BountyRewardsGridProps = {
 };
 
 export function BountyRewardsGrid({ currentLevel }: BountyRewardsGridProps) {
-  const { t, formatNumber, formatDateTime } = useLocale();
+  const { t, formatNumber } = useLocale();
 
   return (
     <div className="mt-5">
@@ -23,18 +24,25 @@ export function BountyRewardsGrid({ currentLevel }: BountyRewardsGridProps) {
           return (
             <article
               key={levelDef.level}
-              className={`rounded-xl border p-4 ${
-                unlocked
-                  ? "border-accent/40 bg-accent/5"
-                  : "border-zinc-200 bg-zinc-50 opacity-80 dark:border-zinc-800 dark:bg-zinc-950"
+              className={`rounded-xl border p-4 transition-colors ${
+                unlocked ? "" : "border-zinc-200 bg-zinc-50 opacity-80 dark:border-zinc-800 dark:bg-zinc-950"
               }`}
+              style={
+                unlocked
+                  ? {
+                      borderColor: `${getRankShieldAccent(levelDef.level)}66`,
+                      background: `linear-gradient(160deg, ${getRankShieldAccent(levelDef.level)}14 0%, transparent 70%)`,
+                    }
+                  : undefined
+              }
             >
               <div className="flex items-center justify-between gap-2">
-                <RankLetter
-                  rank={levelDef.shortLabel}
+                <HunterRankShield
+                  level={levelDef.level}
                   size="md"
                   active={unlocked}
                   muted={!unlocked}
+                  highlighted={currentLevel === levelDef.level}
                   title={getLevelLabel(levelDef.level, t.points.levels)}
                 />
                 <span

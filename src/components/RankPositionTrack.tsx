@@ -1,7 +1,8 @@
 "use client";
 
-import { RankLetter } from "@/components/RankLetter";
+import { HunterRankShield } from "@/components/hunter/HunterRankShield";
 import { getLevelLabel, getLevelProgress, LEVELS, pointsToLevel } from "@/lib/points";
+import { getRankProgressGlow, getRankProgressGradient } from "@/lib/rankVisuals";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type RankPositionTrackProps = {
@@ -27,11 +28,12 @@ export function RankPositionTrack({ points }: RankPositionTrackProps) {
 
             return (
               <div key={levelDef.level} className="flex min-w-[3.5rem] flex-col items-center gap-2">
-                <RankLetter
-                  rank={levelDef.shortLabel}
+                <HunterRankShield
+                  level={levelDef.level}
                   size="lg"
                   active={isCurrent || isPast}
                   muted={!isCurrent && !isPast}
+                  highlighted={isCurrent}
                   className={isCurrent ? "scale-110" : ""}
                   title={getLevelLabel(levelDef.level, t.points.levels)}
                 />
@@ -53,9 +55,10 @@ export function RankPositionTrack({ points }: RankPositionTrackProps) {
         <div className="mt-5 w-full max-w-xl rounded-xl border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-950/80">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3 text-start">
-              <RankLetter
-                rank={position.current.shortLabel}
+              <HunterRankShield
+                level={position.current.level}
                 size="lg"
+                highlighted
                 title={getLevelLabel(position.current.level, t.points.levels)}
               />
               <div>
@@ -85,10 +88,14 @@ export function RankPositionTrack({ points }: RankPositionTrackProps) {
                 </span>
                 <span>{position.tierProgress}%</span>
               </div>
-              <div className="h-2 overflow-hidden rounded-full bg-black/10 dark:bg-white/10">
+              <div className="h-2.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/10">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-accent to-orange-400"
-                  style={{ width: `${position.tierProgress}%` }}
+                  className="rank-progress-bar h-full rounded-full transition-all duration-700 ease-out"
+                  style={{
+                    width: `${position.tierProgress}%`,
+                    background: getRankProgressGradient(computedLevel),
+                    boxShadow: getRankProgressGlow(computedLevel),
+                  }}
                 />
               </div>
               <p className="mt-2 text-xs text-zinc-500">

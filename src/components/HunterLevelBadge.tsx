@@ -1,6 +1,6 @@
 "use client";
 
-import { RankLetter } from "@/components/RankLetter";
+import { HunterRankShield } from "@/components/hunter/HunterRankShield";
 import { getLevelDefinition, getLevelLabel, pointsToLevel } from "@/lib/points";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -21,25 +21,16 @@ export function HunterLevelBadge({
   const resolvedLevel = points != null ? pointsToLevel(points) : (level ?? 1);
   const definition = getLevelDefinition(resolvedLevel);
   const rankName = getLevelLabel(resolvedLevel, t.points.levels);
+  const title = `${rankName} · ${formatNumber(points ?? 0)} ${t.points.pointsLabel}`;
 
   if (showName) {
     return (
       <span className="inline-flex items-center gap-2">
-        <RankLetter
-          rank={definition.shortLabel}
-          size={size}
-          title={`${rankName} · ${formatNumber(points ?? 0)} ${t.points.pointsLabel}`}
-        />
+        <HunterRankShield level={definition.level} size={size} title={title} highlighted />
         <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-200">{rankName}</span>
       </span>
     );
   }
 
-  return (
-    <RankLetter
-      rank={definition.shortLabel}
-      size={size}
-      title={`${rankName} · ${formatNumber(points ?? 0)} ${t.points.pointsLabel}`}
-    />
-  );
+  return <HunterRankShield level={definition.level} size={size} title={title} highlighted />;
 }

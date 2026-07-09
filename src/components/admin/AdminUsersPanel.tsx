@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { RankLetter } from "@/components/RankLetter";
+import { HunterRankShield } from "@/components/hunter/HunterRankShield";
 import { canManageUsers, type UserRole } from "@/lib/admin";
 import { getLevelDefinition, getLevelLabel } from "@/lib/points";
 import { logModerationAction } from "@/lib/moderationLog";
@@ -371,8 +371,8 @@ export function AdminUsersPanel() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <RankLetter
-                        rank={getLevelDefinition(user.level ?? 1).shortLabel}
+                      <HunterRankShield
+                        level={getLevelDefinition(user.level ?? 1).level}
                         size="sm"
                         title={getLevelLabel(user.level ?? 1, t.points.levels)}
                       />
