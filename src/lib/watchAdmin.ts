@@ -52,14 +52,37 @@ export async function getWatchAutoProvidersEnabled() {
     .eq("key", "auto_providers")
     .maybeSingle();
 
-  return Boolean((data?.value as { enabled?: boolean } | null)?.enabled ?? true);
+  return Boolean((data?.value as { enabled?: boolean; embedAdsEnabled?: boolean } | null)?.enabled ?? false);
+}
+
+export async function getWatchEmbedAdsEnabled() {
+  const supabase = createWatchAdminClient();
+  const { data } = await supabase
+    .from("watch_provider_settings")
+    .select("value")
+    .eq("key", "auto_providers")
+    .maybeSingle();
+
+  const value = data?.value as { embedAdsEnabled?: boolean; enabled?: boolean } | null;
+  return Boolean(value?.embedAdsEnabled ?? value?.enabled ?? false);
 }
 
 export async function setWatchAutoProvidersEnabled(enabled: boolean) {
   const supabase = createWatchAdminClient();
+  const { data } = await supabase
+    .from("watch_provider_settings")
+    .select("value")
+    .eq("key", "auto_providers")
+    .maybeSingle();
+  const current = (data?.value as { providers?: string[] } | null) ?? {};
+
   const { error } = await supabase.from("watch_provider_settings").upsert({
     key: "auto_providers",
-    value: { enabled, providers: ["vidlink", "vidsrcicu", "twoembed"] },
+    value: {
+      enabled,
+      embedAdsEnabled: enabled,
+      providers: current.providers ?? ["vidlink", "vidsrcicu", "twoembed"],
+    },
     updated_at: new Date().toISOString(),
   });
 
