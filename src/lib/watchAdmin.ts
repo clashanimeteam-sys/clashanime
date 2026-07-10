@@ -59,7 +59,7 @@ export async function setWatchAutoProvidersEnabled(enabled: boolean) {
   const supabase = createWatchAdminClient();
   const { error } = await supabase.from("watch_provider_settings").upsert({
     key: "auto_providers",
-    value: { enabled, providers: ["vidplus", "vidsrc"] },
+    value: { enabled, providers: ["vidlink", "vidsrcicu", "twoembed"] },
     updated_at: new Date().toISOString(),
   });
 
