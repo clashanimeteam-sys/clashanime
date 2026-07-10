@@ -1343,6 +1343,26 @@ export type Dictionary = {
     rejectCopyright: string;
     violationsTitle: string;
     violationsSubtitle: string;
+    watchAnimeTitle: string;
+    watchAnimeSubtitle: string;
+    watchAnimeAutoTitle: string;
+    watchAnimeAutoHint: string;
+    watchAnimeAutoOn: string;
+    watchAnimeAutoOff: string;
+    watchAnimeType: string;
+    watchAnimeEpisode: string;
+    watchAnimeMovie: string;
+    watchAnimeEpisodeNumber: string;
+    watchAnimeStreamType: string;
+    watchAnimeStreamUrl: string;
+    watchAnimeSubtitleUrl: string;
+    watchAnimeQualitiesJson: string;
+    watchAnimeAddServer: string;
+    watchAnimeDelete: string;
+    watchAnimeDeleteConfirm: string;
+    watchAnimeSaved: string;
+    watchAnimeLoading: string;
+    watchAnimeEmpty: string;
     confirmRetractViolation: string;
     violationRetracted: string;
     violationClaimant: string;
@@ -1378,6 +1398,7 @@ export type Dictionary = {
       legends: string;
       beatsLounge: string;
       animeTracker: string;
+      watchAnime: string;
       blog: string;
       ads: string;
       animeNews: string;
@@ -3233,6 +3254,26 @@ export const dictionaries: Record<Locale, Dictionary> = {
       rejectCopyright: "Copyright strike",
       violationsTitle: "Channel violations",
       violationsSubtitle: "Review and retract active copyright strikes and policy warnings.",
+      watchAnimeTitle: "Watch Anime servers",
+      watchAnimeSubtitle: "Manage direct HLS/mp4 streams, Arabic .vtt/.srt subtitles, and auto providers for watchclashanime.com.",
+      watchAnimeAutoTitle: "Auto servers",
+      watchAnimeAutoHint: "VidPlus + VidSrc when no manual source exists.",
+      watchAnimeAutoOn: "Enabled",
+      watchAnimeAutoOff: "Disabled",
+      watchAnimeType: "Type",
+      watchAnimeEpisode: "Episode",
+      watchAnimeMovie: "Movie",
+      watchAnimeEpisodeNumber: "Episode number",
+      watchAnimeStreamType: "Stream type",
+      watchAnimeStreamUrl: "Stream URL (m3u8 / mp4 / embed)",
+      watchAnimeSubtitleUrl: "Subtitle URL (.vtt / .srt)",
+      watchAnimeQualitiesJson: "Qualities JSON (optional)",
+      watchAnimeAddServer: "Add server",
+      watchAnimeDelete: "Delete",
+      watchAnimeDeleteConfirm: "Delete this server?",
+      watchAnimeSaved: "Server saved.",
+      watchAnimeLoading: "Loading watch servers…",
+      watchAnimeEmpty: "No manual servers — auto providers are active.",
       confirmRetractViolation: "Retract this violation? The user will no longer see it as active.",
       violationRetracted: "Violation retracted.",
       violationClaimant: "Claimant",
@@ -3268,6 +3309,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         legends: "Hall of Legends",
         beatsLounge: "Anime Beats Lounge",
         animeTracker: "Anime Tracker",
+        watchAnime: "Watch Anime",
         blog: "Arena Guide",
         ads: "Ad placements",
         animeNews: "Anime news",
@@ -5110,6 +5152,26 @@ export const dictionaries: Record<Locale, Dictionary> = {
       rejectCopyright: "著作権ストライク",
       violationsTitle: "チャンネル違反",
       violationsSubtitle: "有効な著作権ストライクと規約警告の確認・取り消し。",
+      watchAnimeTitle: "アニメ視聴サーバー",
+      watchAnimeSubtitle: "watchclashanime.com の HLS/mp4 直リンク、.vtt/.srt 字幕、自動プロバイダを管理。",
+      watchAnimeAutoTitle: "自動サーバー",
+      watchAnimeAutoHint: "手動ソースがない場合 VidPlus + VidSrc。",
+      watchAnimeAutoOn: "有効",
+      watchAnimeAutoOff: "無効",
+      watchAnimeType: "種類",
+      watchAnimeEpisode: "エピソード",
+      watchAnimeMovie: "映画",
+      watchAnimeEpisodeNumber: "話数",
+      watchAnimeStreamType: "ストリーム種別",
+      watchAnimeStreamUrl: "ストリーム URL (m3u8 / mp4 / embed)",
+      watchAnimeSubtitleUrl: "字幕 URL (.vtt / .srt)",
+      watchAnimeQualitiesJson: "画質 JSON（任意）",
+      watchAnimeAddServer: "サーバー追加",
+      watchAnimeDelete: "削除",
+      watchAnimeDeleteConfirm: "このサーバーを削除しますか？",
+      watchAnimeSaved: "サーバーを保存しました。",
+      watchAnimeLoading: "視聴サーバーを読み込み中…",
+      watchAnimeEmpty: "手動サーバーなし — 自動プロバイダが有効です。",
       confirmRetractViolation: "この違反を取り消しますか？ユーザーには有効と表示されなくなります。",
       violationRetracted: "違反を取り消しました。",
       violationClaimant: "申立人",
@@ -5145,6 +5207,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         legends: "伝説の殿堂",
         beatsLounge: "アニメ・ビーツ・ラウンジ",
         animeTracker: "新作アニメレーダー",
+        watchAnime: "アニメ視聴",
         blog: "アリーナガイド",
         ads: "広告配置",
         animeNews: "アニメニュース",
@@ -6988,6 +7051,26 @@ export const dictionaries: Record<Locale, Dictionary> = {
       rejectCopyright: "إنذار حقوق طبع ونشر",
       violationsTitle: "مخالفات القنوات",
       violationsSubtitle: "مراجعة وإلغاء إنذارات حقوق الطبع والنشر والتحذيرات النشطة.",
+      watchAnimeTitle: "سيرفرات مشاهدة الأنمي",
+      watchAnimeSubtitle: "إدارة روابط HLS/mp4 المباشرة وترجمات .vtt/.srt العربية والسيرفرات التلقائية لـ watchclashanime.com.",
+      watchAnimeAutoTitle: "السيرفرات التلقائية",
+      watchAnimeAutoHint: "VidPlus + VidSrc عند عدم وجود مصدر يدوي.",
+      watchAnimeAutoOn: "مفعّل",
+      watchAnimeAutoOff: "معطّل",
+      watchAnimeType: "النوع",
+      watchAnimeEpisode: "حلقة",
+      watchAnimeMovie: "فيلم",
+      watchAnimeEpisodeNumber: "رقم الحلقة",
+      watchAnimeStreamType: "نوع البث",
+      watchAnimeStreamUrl: "رابط البث (m3u8 / mp4 / embed)",
+      watchAnimeSubtitleUrl: "رابط الترجمة (.vtt / .srt)",
+      watchAnimeQualitiesJson: "جودات JSON (اختياري)",
+      watchAnimeAddServer: "إضافة سيرفر",
+      watchAnimeDelete: "حذف",
+      watchAnimeDeleteConfirm: "حذف هذا السيرفر؟",
+      watchAnimeSaved: "تم حفظ السيرفر.",
+      watchAnimeLoading: "جارٍ تحميل السيرفرات…",
+      watchAnimeEmpty: "لا توجد سيرفرات يدوية — السيرفرات التلقائية مفعّلة.",
       confirmRetractViolation: "إلغاء هذه المخالفة؟ لن تظهر للمستخدم كإنذار نشط.",
       violationRetracted: "تم إلغاء المخالفة.",
       violationClaimant: "المُشتكي",
@@ -7023,6 +7106,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         legends: "أرشيف الأساطير",
         beatsLounge: "صالة إيقاعات الأنمي",
         animeTracker: "رادار الأنمي الجديد",
+        watchAnime: "مشاهدة الأنمي",
         blog: "دليل الأبطال",
         ads: "مواضع الإعلانات",
         animeNews: "أخبار الأنمي",
