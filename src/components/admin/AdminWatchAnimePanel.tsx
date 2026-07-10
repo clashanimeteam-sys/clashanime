@@ -15,7 +15,7 @@ export function AdminWatchAnimePanel() {
     mal_id: "",
     content_type: "movie" as "episode" | "movie",
     episode_number: "1",
-    label: "سيرفر 1",
+    label: "ClashAnime",
     stream_type: "hls" as "embed" | "hls" | "mp4",
     embed_url: "",
     subtitle_url: "",
