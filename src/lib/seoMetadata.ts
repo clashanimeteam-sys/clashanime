@@ -29,7 +29,8 @@ type PageSeoKey =
   | "about"
   | "earn"
   | "blog"
-  | "animeNews";
+  | "animeNews"
+  | "watch";
 
 export const PAGE_SEO: Record<
   PageSeoKey,
@@ -94,6 +95,12 @@ export const PAGE_SEO: Record<
     description:
       "Curated anime headlines in English, Arabic, and Japanese. Summaries by ClashAnime with links to Crunchyroll sources — آخر أخبار الأنمي — 最新アニメニュース.",
     path: "/blog/anime-news",
+  },
+  watch: {
+    title: "Watch Anime — Posters, Episodes & Streaming",
+    description:
+      "Browse anime posters, episodes, and movies inside Clash Anime. A dedicated watch experience with covers and episode lists — شاهد الأنمي — アニメ視聴.",
+    path: "/watch",
   },
 };
 
