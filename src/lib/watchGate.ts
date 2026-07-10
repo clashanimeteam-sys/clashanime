@@ -12,8 +12,8 @@ export function watchSiteUrl() {
   return process.env.WATCH_SITE_URL?.replace(/\/$/, "") ?? "https://watchclashanime.com";
 }
 
-export async function createWatchGateToken(expiresIn = "24h") {
-  return new SignJWT({ src: "clashanime" })
+export async function createWatchGateToken(userId: string, expiresIn = "24h") {
+  return new SignJWT({ src: "clashanime", sub: userId })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(expiresIn)
