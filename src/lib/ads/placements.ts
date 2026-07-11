@@ -1,6 +1,6 @@
 export const AD_PLACEMENTS_KEY = "ad_placements";
 
-export type AdPageKey = "home" | "blog" | "videos" | "videoReels" | "community" | "tracker";
+export type AdPageKey = "home" | "blog" | "videos" | "videoReels" | "community" | "tracker" | "watch";
 
 export type AdPlacementSettings = {
   enabled: boolean;
@@ -9,6 +9,8 @@ export type AdPlacementSettings = {
   reelsEveryNVideos: number;
   slotBanner: string;
   slotInFeed: string;
+  slotWatchBanner: string;
+  slotWatchPopunder: string;
 };
 
 export const AD_PAGE_KEYS: AdPageKey[] = [
@@ -18,6 +20,7 @@ export const AD_PAGE_KEYS: AdPageKey[] = [
   "videoReels",
   "community",
   "tracker",
+  "watch",
 ];
 
 export const MIN_REELS_AD_INTERVAL = 2;
@@ -34,10 +37,13 @@ export const DEFAULT_AD_PLACEMENTS: AdPlacementSettings = {
     videoReels: true,
     community: false,
     tracker: false,
+    watch: false,
   },
   reelsEveryNVideos: DEFAULT_REELS_AD_INTERVAL,
   slotBanner: "",
   slotInFeed: "",
+  slotWatchBanner: "",
+  slotWatchPopunder: "",
 };
 
 function clampReelsInterval(value: unknown): number {
@@ -71,6 +77,9 @@ export function parseAdPlacementSettings(raw: unknown): AdPlacementSettings {
     reelsEveryNVideos: clampReelsInterval(value.reelsEveryNVideos),
     slotBanner: typeof value.slotBanner === "string" ? value.slotBanner.trim() : "",
     slotInFeed: typeof value.slotInFeed === "string" ? value.slotInFeed.trim() : "",
+    slotWatchBanner: typeof value.slotWatchBanner === "string" ? value.slotWatchBanner.trim() : "",
+    slotWatchPopunder:
+      typeof value.slotWatchPopunder === "string" ? value.slotWatchPopunder.trim() : "",
   };
 }
 

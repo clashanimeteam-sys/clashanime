@@ -46,6 +46,15 @@ function PageWirePreview({ page, active }: { page: AdPageKey; active: boolean })
     );
   }
 
+  if (page === "watch") {
+    return (
+      <div className="mt-3 space-y-1 rounded-xl border border-zinc-800 bg-zinc-950/80 p-3">
+        {adBlock}
+        <div className="h-16 rounded-md bg-zinc-800/90" />
+      </div>
+    );
+  }
+
   return (
     <div className="mt-3 space-y-2 rounded-xl border border-zinc-800 bg-zinc-950/80 p-3">
       <div className="h-8 rounded-md bg-zinc-800/90" />
@@ -180,6 +189,7 @@ export function AdminAdPlacementsPanel() {
     videoReels: t.admin.ads.pages.videoReels,
     community: t.admin.ads.pages.community,
     tracker: t.admin.ads.pages.tracker,
+    watch: t.admin.ads.pages.watch,
   };
 
   if (loading) {
@@ -203,6 +213,10 @@ export function AdminAdPlacementsPanel() {
 
       <div className="rounded-2xl border border-amber-500/30 bg-amber-950/20 p-4 text-sm text-amber-100/90">
         {t.admin.ads.adsenseNote}
+      </div>
+
+      <div className="rounded-2xl border border-orange-500/30 bg-orange-950/20 p-4 text-sm text-orange-100/90">
+        {t.admin.ads.trafficStarsNote}
       </div>
 
       {message ? (
@@ -282,6 +296,31 @@ export function AdminAdPlacementsPanel() {
                 onChange={(event) => updateSettings({ slotInFeed: event.target.value })}
                 placeholder="1234567890"
                 className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-white"
+              />
+            </label>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label className="block sm:col-span-2">
+              <span className="mb-1 block text-xs font-semibold text-orange-300">
+                {t.admin.ads.slotWatchBanner}
+              </span>
+              <input
+                value={settings.slotWatchBanner}
+                onChange={(event) => updateSettings({ slotWatchBanner: event.target.value })}
+                placeholder="TrafficStars banner spot ID"
+                className="w-full rounded-lg border border-orange-700/50 bg-zinc-950 px-3 py-2 text-sm text-white"
+              />
+            </label>
+            <label className="block sm:col-span-2">
+              <span className="mb-1 block text-xs font-semibold text-orange-300">
+                {t.admin.ads.slotWatchPopunder}
+              </span>
+              <input
+                value={settings.slotWatchPopunder}
+                onChange={(event) => updateSettings({ slotWatchPopunder: event.target.value })}
+                placeholder="https://...trafficstars.../pu-....js"
+                className="w-full rounded-lg border border-orange-700/50 bg-zinc-950 px-3 py-2 text-sm text-white"
               />
             </label>
           </div>

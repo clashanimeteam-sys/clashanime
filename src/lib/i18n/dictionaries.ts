@@ -37,6 +37,10 @@ export type Dictionary = {
     mobileBottomNav: string;
     more: string;
   };
+  sidebar: {
+    hideMenu: string;
+    showMenu: string;
+  };
   home: {
     titlePrimary: string;
     titleSecondary: string;
@@ -1846,6 +1850,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       earnMoney: "Earn money",
       mobileBottomNav: "Main navigation",
       more: "More",
+    },
+    sidebar: {
+      hideMenu: "Hide sidebar",
+      showMenu: "Show sidebar",
     },
     home: {
       titlePrimary: "Clash",
@@ -3766,6 +3774,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       mobileBottomNav: "メインナビ",
       more: "その他",
     },
+    sidebar: {
+      hideMenu: "サイドバーを隠す",
+      showMenu: "サイドバーを表示",
+    },
     home: {
       titlePrimary: "Clash",
       titleSecondary: " Anime",
@@ -5668,6 +5680,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       earnMoney: "اربح الأموال",
       mobileBottomNav: "التنقل الرئيسي",
       more: "المزيد",
+    },
+    sidebar: {
+      hideMenu: "إخفاء القائمة",
+      showMenu: "إظهار القائمة",
     },
     home: {
       titlePrimary: "Clash",

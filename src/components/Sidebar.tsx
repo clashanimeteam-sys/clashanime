@@ -7,11 +7,13 @@ import { NavIcon } from "@/components/nav/NavIcon";
 import { ElementalSiteTitle } from "@/components/ElementalSiteTitle";
 import { BrandLogo } from "@/components/BrandLogo";
 import { LocaleFlags } from "@/components/LocaleFlags";
+import { SidebarMenuToggle } from "@/components/SidebarMenuToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { isStaff } from "@/lib/admin";
 import { navigateAppHref } from "@/lib/appNavigation";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
+import { useSidebar } from "@/providers/SidebarProvider";
 import { useProfileSection, parseProfileSection, type ProfileSection } from "@/providers/ProfileSectionProvider";
 
 const mainNavItems = [
@@ -52,6 +54,7 @@ export function Sidebar() {
   const router = useRouter();
   const { user, profile } = useAuth();
   const { t } = useLocale();
+  const { setDesktopCollapsed } = useSidebar();
   const { section, setSection, isProfilePage } = useProfileSection();
   const showAdminLink = isStaff(profile);
 
@@ -72,7 +75,13 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="flex h-dvh w-56 shrink-0 flex-col border-e border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black lg:w-60">
+    <aside className="relative flex h-dvh w-56 shrink-0 flex-col border-e border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black lg:w-60">
+      <SidebarMenuToggle
+        label={t.sidebar.hideMenu}
+        expanded
+        onClick={() => setDesktopCollapsed(true)}
+        className="absolute end-2 top-2 z-10 !h-9 !w-9"
+      />
       <div className="border-b border-zinc-200 px-2 py-4 dark:border-zinc-800 sm:px-3">
         <Link href="/" className="flex justify-center">
           <BrandLogo priority />
