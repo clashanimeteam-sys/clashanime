@@ -229,14 +229,12 @@ export function EarnMoneyPageContent() {
               {copy.walletCta}
             </Link>
             {user ? (
-              <a
-                href="/api/watch/redirect"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/watch"
                 className="rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
               >
                 {locale === "ar" ? "شاهد الأنمي الآن" : locale === "ja" ? "アニメを視聴" : "Watch anime now"}
-              </a>
+              </Link>
             ) : null}
             <Link
               href="/profile#referral"

@@ -97,10 +97,8 @@ export function Sidebar() {
               ? profileSectionHref("wallet", Boolean(user))
               : "referral" in item && item.referral
                 ? profileSectionHref("referral", Boolean(user))
-                : item.key === "watchAnime"
-                  ? user
-                    ? "/api/watch/redirect"
-                    : "/login?next=%2Fwatch"
+                : item.key === "watchAnime" && !user
+                  ? "/login?next=%2Fwatch"
                   : item.href;
           const active =
             "wallet" in item && item.wallet
@@ -108,21 +106,6 @@ export function Sidebar() {
               : "referral" in item && item.referral
                 ? isProfilePage && section === "referral"
                 : pathname === item.href;
-
-          if (item.key === "watchAnime") {
-            return (
-              <a
-                key={item.key}
-                href={href}
-                target={user ? "_blank" : undefined}
-                rel={user ? "noopener noreferrer" : undefined}
-                className={navLinkClass(active)}
-              >
-                <NavIcon icon={item.icon} />
-                {t.nav[item.key]}
-              </a>
-            );
-          }
 
           return (
             <Link

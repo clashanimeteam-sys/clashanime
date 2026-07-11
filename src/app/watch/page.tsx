@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { WatchLaunchPage } from "@/components/watch/WatchLaunchPage";
+import { WatchBrowseFrame } from "@/components/watch/WatchBrowseFrame";
 import { buildPageMetadata } from "@/lib/seoMetadata";
 import { getWatchAccess } from "@/lib/watchAccess";
 import { createServerClient } from "@/lib/supabase/server";
@@ -38,5 +38,5 @@ export default async function WatchPage() {
     redirect("/earn?next=%2Fwatch");
   }
 
-  return <WatchLaunchPage />;
+  return <WatchBrowseFrame userId={user.id} />;
 }
