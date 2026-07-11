@@ -1057,6 +1057,7 @@ export type Dictionary = {
   ads: {
     placementLabel: string;
     previewBanner: string;
+    previewWatchBanner: string;
     previewReels: string;
     previewReelsHint: string;
     reelsSlideLabel: string;
@@ -1586,6 +1587,9 @@ export type Dictionary = {
       reelsPhoneTitle: string;
       slotBanner: string;
       slotInFeed: string;
+      slotWatchBanner: string;
+      slotWatchPopunder: string;
+      trafficStarsNote: string;
       pagesTitle: string;
       pageOff: string;
       previewAdBlock: string;
@@ -1604,6 +1608,7 @@ export type Dictionary = {
         videoReels: string;
         community: string;
         tracker: string;
+        watch: string;
       };
     };
     blog: {
@@ -2967,6 +2972,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     ads: {
       placementLabel: "Advertisement",
       previewBanner: "Banner ad preview",
+      previewWatchBanner: "Watch page banner (TrafficStars) — add Spot ID in Admin → Ads",
       previewReels: "Reels ad slide",
       previewReelsHint: "Shown between videos when enabled in admin.",
       reelsSlideLabel: "Sponsored slide",
@@ -3485,7 +3491,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       },
       ads: {
         title: "Ad placements",
-        subtitle: "Choose where manual AdSense banners and reels ad slides appear on the site.",
+        subtitle: "Choose where AdSense banners, TrafficStars watch ads, and reels ad slides appear.",
         controlsTitle: "Placement controls",
         livePreviewTitle: "Live preview",
         livePreviewSubtitle: "This mock shows how ads will look before AdSense approval.",
@@ -3498,6 +3504,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
         reelsPhoneTitle: "Mobile reels mock",
         slotBanner: "Banner Slot ID (optional)",
         slotInFeed: "In-feed / Reels Slot ID (optional)",
+        slotWatchBanner: "Watch · TrafficStars Banner Spot ID",
+        slotWatchPopunder: "Watch · TrafficStars Popunder script URL",
+        trafficStarsNote:
+          "Watch ads live on watchclashanime.com only — set TrafficStars env vars on that Vercel project, not clashanime.com.",
         pagesTitle: "Pages",
         pageOff: "Disabled",
         previewAdBlock: "AD",
@@ -3516,6 +3526,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
           videoReels: "Video reels (/video)",
           community: "Community",
           tracker: "Anime tracker",
+          watch: "Watch Anime (/watch)",
         },
       },
       blog: {
@@ -3526,7 +3537,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         heroSlides: {
           title: "Hero cover carousel",
           subtitle:
-            "Upload up to 10 wide banner images for the Heroes Guide hub (/blog). Slides rotate automatically and can be changed manually on the site.",
+            "Upload up to 10 wide banner images for the Heroes Guide hub (/blog) and Watch Anime (watchclashanime.com). Same slides — edit once, both sites update.",
           displayTitle: "Cover display settings",
           displaySubtitle: "The slide editor preview matches the live wide banner. Control carousel visibility, guide text, and a light tint.",
           carouselEnabled: "Show carousel on site",
@@ -4868,6 +4879,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     ads: {
       placementLabel: "広告",
       previewBanner: "バナー広告プレビュー",
+      previewWatchBanner: "視聴ページバナー (TrafficStars) — 管理画面で Spot ID を設定",
       previewReels: "リール広告スライド",
       previewReelsHint: "管理画面で有効化すると動画の間に表示されます。",
       reelsSlideLabel: "スポンサースライド",
@@ -5396,6 +5408,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
         reelsPhoneTitle: "モバイルリール模擬",
         slotBanner: "バナー Slot ID（任意）",
         slotInFeed: "In-feed / リール Slot ID（任意）",
+        slotWatchBanner: "視聴 · TrafficStars バナー Spot ID",
+        slotWatchPopunder: "視聴 · TrafficStars Popunder スクリプト URL",
+        trafficStarsNote:
+          "視聴ページ (/watch): プレイヤー上に TrafficStars バナー + 入室時 Popunder。TrafficStars でサイト承認後にコード取得。",
         pagesTitle: "ページ",
         pageOff: "無効",
         previewAdBlock: "広告",
@@ -5414,6 +5430,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
           videoReels: "動画リール (/video)",
           community: "コミュニティ",
           tracker: "アニメトラッカー",
+          watch: "アニメ視聴 (/watch)",
         },
       },
       blog: {
@@ -5423,7 +5440,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         heroSlides: {
           title: "ヒーローカバースライダー",
           subtitle:
-            "英雄ガイド（/blog）用のワイドバナーを最大10枚アップロード。サイト上で自動・手動切り替えできます。",
+            "英雄ガイド（/blog）と Watch Anime（watchclashanime.com）用のワイドバナーを最大10枚。同じスライドを両サイトで共有します。",
           displayTitle: "カバー表示設定",
           displaySubtitle: "プレビューは公開中のワイドバナーと同じ表示です。スライダー、ガイド文、ティントを調整します。",
           carouselEnabled: "サイトでスライダーを表示",
@@ -6767,6 +6784,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     ads: {
       placementLabel: "إعلان",
       previewBanner: "معاينة بانر إعلاني",
+      previewWatchBanner: "بانر صفحة المشاهدة (TrafficStars) — أضف Spot ID من لوحة الإعلانات",
       previewReels: "شريحة إعلان (ريلز)",
       previewReelsHint: "تظهر بين الفيديوهات عند التفعيل من لوحة التحكم.",
       reelsSlideLabel: "شريحة ممولة",
@@ -7282,7 +7300,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       },
       ads: {
         title: "مواضع الإعلانات",
-        subtitle: "اختر أين تظهر بانرات AdSense وشرائح الإعلان بين الفيديوهات (ريلز).",
+        subtitle: "اختر أين تظهر بانرات AdSense وإعلانات TrafficStars في المشاهدة وشرائح الريلز.",
         controlsTitle: "إعدادات المواضع",
         livePreviewTitle: "معاينة مباشرة",
         livePreviewSubtitle: "هذه معاينة لشكل الإعلانات قبل موافقة AdSense.",
@@ -7295,6 +7313,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
         reelsPhoneTitle: "معاينة موبايل (ريلز)",
         slotBanner: "Slot ID للبانر (اختياري)",
         slotInFeed: "Slot ID للريلز / In-feed (اختياري)",
+        slotWatchBanner: "المشاهدة · TrafficStars Banner Spot ID",
+        slotWatchPopunder: "المشاهدة · TrafficStars Popunder رابط السكربت",
+        trafficStarsNote:
+          "صفحة /watch: بانر TrafficStars فوق المشغّل + Popunder عند الدخول. احصل على الأكواد من admin.trafficstars.com بعد موافقة الموقع.",
         pagesTitle: "الصفحات",
         pageOff: "معطّل",
         previewAdBlock: "إعلان",
@@ -7313,6 +7335,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
           videoReels: "ريلز الفيديو (/video)",
           community: "المجتمع",
           tracker: "متتبع الأنمي",
+          watch: "شاهد الأنمي (/watch)",
         },
       },
       blog: {
@@ -7322,7 +7345,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         heroSlides: {
           title: "سلايدر غلاف دليل الأبطال",
           subtitle:
-            "ارفع حتى 10 صور غلاف عريضة لصفحة دليل الأبطال (/blog). تتحرك تلقائياً ويمكن التنقل يدوياً في الموقع.",
+            "ارفع حتى 10 صور غلاف عريضة لدليل الأبطال (/blog) وشاهد الأنمي (watchclashanime.com) — نفس الشرائح في المكانين، أي تعديل يظهر في الاثنين.",
           displayTitle: "إعدادات عرض الغلاف",
           displaySubtitle: "معاينة الشريحة تطابق البانر العريض على الموقع. تحكم في السلايدر والنص والتعتيم الخفيف.",
           carouselEnabled: "عرض السلايدر على الموقع",
