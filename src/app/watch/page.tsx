@@ -36,7 +36,7 @@ export default async function WatchPage() {
   const entryUrl = `${watchSiteUrl()}/api/gate/accept?token=${encodeURIComponent(token)}&next=${encodeURIComponent("/?embed=1")}`;
 
   return (
-    <div className="fixed inset-0 top-0 z-20 bg-[#f4f6f8] md:start-60">
+    <div className="fixed inset-0 top-0 z-20 bg-[#06060c] md:start-60">
       <iframe
         src={entryUrl}
         title="Watch Anime"
