@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createWatchGateToken, watchSiteUrl } from "@/lib/watchGate";
+import { getWatchAccess } from "@/lib/watchAccess";
 import { createServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -27,18 +28,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
+  const access = await getWatchAccess(supabase, user.id);
+  if (!access.allowed) {
+    const earnUrl = new URL("/earn", request.url);
+    earnUrl.searchParams.set("next", safeNextPath(request.nextUrl.searchParams.get("next")));
+    return NextResponse.redirect(earnUrl);
+  }
+
   try {
     const token = await createWatchGateToken(user.id);
-    let nextPath = safeNextPath(request.nextUrl.searchParams.get("next"));
-    const wantsEmbed = request.nextUrl.searchParams.get("embed") === "1";
-
-    if (wantsEmbed && !nextPath.includes("embed=1")) {
-      const [pathname, query = ""] = nextPath.split("?");
-      const params = new URLSearchParams(query);
-      params.set("embed", "1");
-      const queryString = params.toString();
-      nextPath = queryString ? `${pathname}?${queryString}` : `${pathname}?embed=1`;
-    }
+    const nextPath = safeNextPath(request.nextUrl.searchParams.get("next"));
 
     const acceptUrl = new URL("/api/gate/accept", watchSiteUrl());
     acceptUrl.searchParams.set("token", token);

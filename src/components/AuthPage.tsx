@@ -25,6 +25,9 @@ export function AuthPage({ mode }: { mode: "login" | "signup" }) {
 
   const nextPath = searchParams.get("next") ?? "/profile";
   const safeNext = nextPath.startsWith("/") && !nextPath.startsWith("//") ? nextPath : "/profile";
+  const authToggleHref = isLogin
+    ? `/signup${safeNext !== "/profile" ? `?next=${encodeURIComponent(safeNext)}` : ""}`
+    : `/login${safeNext !== "/profile" ? `?next=${encodeURIComponent(safeNext)}` : ""}`;
 
   useEffect(() => {
     if (!supabase) return;
@@ -124,7 +127,7 @@ export function AuthPage({ mode }: { mode: "login" | "signup" }) {
 
           <p className="mt-8 text-center text-sm text-zinc-600 dark:text-zinc-400">
             {isLogin ? t.auth.noAccount : t.auth.hasAccount}{" "}
-            <Link href={isLogin ? "/signup" : "/login"} className="font-medium text-black hover:underline dark:text-white">
+            <Link href={authToggleHref} className="font-medium text-black hover:underline dark:text-white">
               {isLogin ? t.auth.signUp : t.auth.logIn}
             </Link>
           </p>

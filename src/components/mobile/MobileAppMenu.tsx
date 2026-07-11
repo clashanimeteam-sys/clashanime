@@ -119,7 +119,27 @@ export function MobileAppMenu({ open, onClose }: MobileAppMenuProps) {
               const href =
                 "auth" in item && item.auth && !user
                   ? `/login?next=${encodeURIComponent(item.href)}`
-                  : item.href;
+                  : item.key === "watchAnime" && user
+                    ? "/api/watch/redirect"
+                    : item.key === "watchAnime"
+                      ? "/login?next=%2Fwatch"
+                      : item.href;
+
+              if (item.key === "watchAnime" && user) {
+                return (
+                  <a
+                    key={item.key}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => window.setTimeout(onClose, 0)}
+                    className="flex min-h-[4.5rem] flex-col items-center justify-center gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 px-2 py-3 text-center text-xs font-semibold text-zinc-800 transition-colors active:bg-accent/10 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  >
+                    <NavIcon icon={item.icon} className="h-7 w-7 shrink-0 object-contain" />
+                    <span className="line-clamp-2 leading-tight">{t.nav[item.key]}</span>
+                  </a>
+                );
+              }
 
               return (
                 <Link

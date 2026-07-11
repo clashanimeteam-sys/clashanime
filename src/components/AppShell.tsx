@@ -20,8 +20,7 @@ export function AppShell({ children }: AppShellProps) {
   const isMobile = useIsMobile();
   const isVideoPage = pathname.startsWith("/video/");
   const isBlogPage = pathname.startsWith("/blog");
-  const isWatchPage = pathname === "/watch";
-  const showMobileChrome = !isVideoPage && !isBlogPage && !isWatchPage;
+  const showMobileChrome = !isVideoPage && !isBlogPage;
   const { hasStarted } = useAnimeRadio();
   const reserveMiniBarSpace =
     hasStarted && pathname !== "/music" && !pathname.startsWith("/video/");
@@ -51,17 +50,17 @@ export function AppShell({ children }: AppShellProps) {
             enabled={showMobileChrome && isMobile}
             className={scrollClassName}
           >
-            {!isVideoPage && !isBlogPage && !isWatchPage ? (
+            {!isVideoPage && !isBlogPage ? (
               <div className="hidden md:block">
                 <AuthTopBar />
               </div>
             ) : null}
             <main
-              className={`mobile-app-main flex-1 max-md:overflow-x-hidden max-md:max-w-full ${isBlogPage ? "bg-zinc-950" : isWatchPage ? "bg-black" : "bg-white dark:bg-black"} ${isVideoPage || isWatchPage ? "overflow-hidden max-md:h-dvh max-md:min-h-0" : ""} ${isWatchPage ? "p-0" : ""} ${mainBottomPadding}`}
+              className={`mobile-app-main flex-1 max-md:overflow-x-hidden max-md:max-w-full ${isBlogPage ? "bg-zinc-950" : "bg-white dark:bg-black"} ${isVideoPage ? "overflow-hidden max-md:h-dvh max-md:min-h-0" : ""} ${mainBottomPadding}`}
             >
               {children}
             </main>
-            {!isVideoPage && !isBlogPage && !isWatchPage ? (
+            {!isVideoPage && !isBlogPage ? (
               <div className="hidden md:block">
                 <Footer />
               </div>

@@ -79,7 +79,16 @@ export async function GET(request: Request) {
     }
   }
 
-  const response = NextResponse.redirect(`${origin}${next}`);
+  let redirectNext = next;
+  if (data.user?.created_at) {
+    const createdMs = new Date(data.user.created_at).getTime();
+    const isFreshSignup = !Number.isNaN(createdMs) && Date.now() - createdMs < 5 * 60 * 1000;
+    if (isFreshSignup && !next.startsWith("/earn")) {
+      redirectNext = `/earn?next=${encodeURIComponent(next)}`;
+    }
+  }
+
+  const response = NextResponse.redirect(`${origin}${redirectNext}`);
 
   if (referrerUsername) {
     response.cookies.delete(REFERRAL_COOKIE);

@@ -123,6 +123,11 @@ export function EarnMoneyPageContent() {
   const [loadingSubmissions, setLoadingSubmissions] = useState(false);
 
   useEffect(() => {
+    if (!supabase || !user) return;
+    void supabase.rpc("complete_watch_onboarding");
+  }, [supabase, user]);
+
+  useEffect(() => {
     let cancelled = false;
     void fetch("/api/earn-money/settings", { cache: "no-store" })
       .then((response) => (response.ok ? response.json() : null))
@@ -223,6 +228,16 @@ export function EarnMoneyPageContent() {
             >
               {copy.walletCta}
             </Link>
+            {user ? (
+              <a
+                href="/api/watch/redirect"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
+              >
+                {locale === "ar" ? "شاهد الأنمي الآن" : locale === "ja" ? "アニメを視聴" : "Watch anime now"}
+              </a>
+            ) : null}
             <Link
               href="/profile#referral"
               className="rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
