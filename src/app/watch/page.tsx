@@ -32,7 +32,17 @@ export default async function WatchPage() {
     redirect("/login?next=%2Fwatch");
   }
 
-  const token = await createWatchGateToken(user.id);
+  let token: string;
+  try {
+    token = await createWatchGateToken(user.id);
+  } catch {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center px-6 text-center text-sm text-zinc-500">
+        Watch gate is not configured. Set WATCH_GATE_SECRET on clashanime.com and watchclashanime.com.
+      </div>
+    );
+  }
+
   const entryUrl = `${watchSiteUrl()}/api/gate/accept?token=${encodeURIComponent(token)}&next=${encodeURIComponent("/?embed=1")}`;
 
   return (
