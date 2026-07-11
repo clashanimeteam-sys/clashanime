@@ -75,13 +75,14 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="relative flex h-dvh w-56 shrink-0 flex-col border-e border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black lg:w-60">
-      <SidebarMenuToggle
-        label={t.sidebar.hideMenu}
-        expanded
-        onClick={() => setDesktopCollapsed(true)}
-        className="absolute end-2 top-2 z-10 !h-9 !w-9"
-      />
+    <aside className="flex h-dvh w-56 shrink-0 flex-col border-e border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black lg:w-60">
+      <div className="flex items-center border-b border-zinc-200 px-3 py-3 dark:border-zinc-800">
+        <SidebarMenuToggle
+          label={t.sidebar.hideMenu}
+          expanded
+          onClick={() => setDesktopCollapsed(true)}
+        />
+      </div>
       <div className="border-b border-zinc-200 px-2 py-4 dark:border-zinc-800 sm:px-3">
         <Link href="/" className="flex justify-center">
           <BrandLogo priority />
@@ -152,6 +153,21 @@ export function Sidebar() {
           <ThemeToggle />
         </div>
       </div>
+    </aside>
+  );
+}
+
+export function SidebarRail() {
+  const { t } = useLocale();
+  const { setDesktopCollapsed } = useSidebar();
+
+  return (
+    <aside className="flex h-dvh w-14 shrink-0 flex-col items-center border-e border-zinc-200 bg-white py-4 dark:border-zinc-800 dark:bg-black">
+      <SidebarMenuToggle
+        label={t.sidebar.showMenu}
+        expanded={false}
+        onClick={() => setDesktopCollapsed(false)}
+      />
     </aside>
   );
 }

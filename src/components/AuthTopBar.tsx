@@ -7,18 +7,15 @@ import { AnimeSearchButton } from "@/components/AnimeSearchButton";
 import { ClashLiveBadge } from "@/components/clash/ClashLiveBadge";
 import { NotificationBell } from "@/components/NotificationBell";
 import { ProfileMenuDropdown } from "@/components/profile/ProfileMenuDropdown";
-import { SidebarMenuToggle } from "@/components/SidebarMenuToggle";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitleContext } from "@/providers/PageTitleProvider";
-import { useSidebar } from "@/providers/SidebarProvider";
 
 export function AuthTopBar() {
   const { user, loading } = useAuth();
   const { t } = useLocale();
   const pathname = usePathname();
   const { title: pageTitle } = usePageTitleContext();
-  const { desktopCollapsed, toggleDesktop } = useSidebar();
 
   if (pathname === "/login" || pathname === "/signup" || pathname.startsWith("/auth/")) {
     return null;
@@ -76,15 +73,7 @@ export function AuthTopBar() {
     <div
       className={`flex items-stretch justify-between ${isHome ? "" : "gap-3 px-4 sm:px-6"}`}
     >
-      <div className="flex min-w-0 items-center gap-2">
-        <SidebarMenuToggle
-          label={desktopCollapsed ? t.sidebar.showMenu : t.sidebar.hideMenu}
-          expanded={!desktopCollapsed}
-          onClick={toggleDesktop}
-          className="hidden md:inline-flex"
-        />
-        {leftSlot}
-      </div>
+      <div className="flex min-w-0 items-center">{leftSlot}</div>
       <div
         className={`flex shrink-0 items-center gap-3 py-2 ${isHome ? "px-4 sm:px-6" : ""}`}
       >

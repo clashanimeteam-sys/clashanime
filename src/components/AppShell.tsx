@@ -5,7 +5,7 @@ import { AuthTopBar } from "@/components/AuthTopBar";
 import { Footer } from "@/components/Footer";
 import { MobileBottomNav } from "@/components/mobile/MobileChromeLazy";
 import { MobilePullToRefresh } from "@/components/mobile/MobilePullToRefresh";
-import { Sidebar } from "@/components/Sidebar";
+import { Sidebar, SidebarRail } from "@/components/Sidebar";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { PageTitleProvider } from "@/providers/PageTitleProvider";
 import { ProfileSectionProvider } from "@/providers/ProfileSectionProvider";
@@ -43,9 +43,9 @@ function AppShellLayout({ children }: AppShellProps) {
   return (
     <>
       <div className="flex h-dvh overflow-hidden bg-white dark:bg-black">
-        {!isBlogPage && !isMobile && !desktopCollapsed ? (
+        {!isBlogPage && !isMobile ? (
           <div className="hidden h-dvh shrink-0 md:flex">
-            <Sidebar />
+            {desktopCollapsed ? <SidebarRail /> : <Sidebar />}
           </div>
         ) : null}
         <MobilePullToRefresh
