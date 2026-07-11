@@ -123,9 +123,9 @@ export function EarnMoneyPageContent() {
   const [loadingSubmissions, setLoadingSubmissions] = useState(false);
 
   useEffect(() => {
-    if (!supabase || !user) return;
-    void supabase.rpc("complete_watch_onboarding");
-  }, [supabase, user]);
+    if (!user) return;
+    void fetch("/api/watch/complete-onboarding", { method: "POST" });
+  }, [user]);
 
   useEffect(() => {
     let cancelled = false;

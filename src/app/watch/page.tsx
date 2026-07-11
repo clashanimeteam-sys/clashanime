@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import { WatchBrowseFrame } from "@/components/watch/WatchBrowseFrame";
 import { buildPageMetadata } from "@/lib/seoMetadata";
-import { getWatchAccess } from "@/lib/watchAccess";
 import { createServerClient } from "@/lib/supabase/server";
 
 export const metadata = buildPageMetadata("watch");
@@ -31,11 +30,6 @@ export default async function WatchPage() {
 
   if (!user) {
     redirect("/login?next=%2Fwatch");
-  }
-
-  const access = await getWatchAccess(supabase, user.id);
-  if (!access.allowed) {
-    redirect("/earn?next=%2Fwatch");
   }
 
   return <WatchBrowseFrame userId={user.id} />;

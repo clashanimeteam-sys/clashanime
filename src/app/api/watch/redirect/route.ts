@@ -21,8 +21,9 @@ export async function GET(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const nextPath = safeNextPath(request.nextUrl.searchParams.get("next"));
   const loginUrl = new URL("/login", request.url);
-  loginUrl.searchParams.set("next", "/watch");
+  loginUrl.searchParams.set("next", nextPath === "/" ? "/watch" : nextPath);
 
   if (!user) {
     return NextResponse.redirect(loginUrl);
@@ -31,13 +32,12 @@ export async function GET(request: NextRequest) {
   const access = await getWatchAccess(supabase, user.id);
   if (!access.allowed) {
     const earnUrl = new URL("/earn", request.url);
-    earnUrl.searchParams.set("next", safeNextPath(request.nextUrl.searchParams.get("next")));
+    earnUrl.searchParams.set("next", nextPath);
     return NextResponse.redirect(earnUrl);
   }
 
   try {
     const token = await createWatchGateToken(user.id);
-    const nextPath = safeNextPath(request.nextUrl.searchParams.get("next"));
 
     const acceptUrl = new URL("/api/gate/accept", watchSiteUrl());
     acceptUrl.searchParams.set("token", token);
