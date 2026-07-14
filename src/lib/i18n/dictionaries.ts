@@ -1385,6 +1385,7 @@ export type Dictionary = {
     bulkImportInvalidJson: string;
     bulkImportMustBeArray: string;
     bulkImportResultTitle: string;
+    bulkImportResetExample: string;
     confirmRetractViolation: string;
     violationRetracted: string;
     violationClaimant: string;
@@ -3326,6 +3327,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bulkImportInvalidJson: "Invalid JSON — paste a valid array.",
       bulkImportMustBeArray: "Payload must be a JSON array of episodes.",
       bulkImportResultTitle: "Imported sources",
+      bulkImportResetExample: "Reset example JSON",
       confirmRetractViolation: "Retract this violation? The user will no longer see it as active.",
       violationRetracted: "Violation retracted.",
       violationClaimant: "Claimant",
@@ -5255,6 +5257,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bulkImportInvalidJson: "JSON が不正です — 有効な配列を貼り付けてください。",
       bulkImportMustBeArray: "ペイロードはエピソードの JSON 配列である必要があります。",
       bulkImportResultTitle: "インポートされたソース",
+      bulkImportResetExample: "サンプル JSON をリセット",
       confirmRetractViolation: "この違反を取り消しますか？ユーザーには有効と表示されなくなります。",
       violationRetracted: "違反を取り消しました。",
       violationClaimant: "申立人",
@@ -7185,6 +7188,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       bulkImportInvalidJson: "JSON غير صالح — الصق مصفوفة صحيحة.",
       bulkImportMustBeArray: "يجب أن تكون الحمولة مصفوفة JSON من الحلقات.",
       bulkImportResultTitle: "المصادر المستوردة",
+      bulkImportResetExample: "إعادة مثال JSON",
       confirmRetractViolation: "إلغاء هذه المخالفة؟ لن تظهر للمستخدم كإنذار نشط.",
       violationRetracted: "تم إلغاء المخالفة.",
       violationClaimant: "المُشتكي",

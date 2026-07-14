@@ -6,9 +6,35 @@ import type { WatchSourceRow } from "@/lib/watchAdmin";
 import { useLocale } from "@/providers/LocaleProvider";
 
 const EXAMPLE_JSON = `[
-  { "episode": 1, "video_url": "https://server.com/ep1.m3u8", "subtitle_url": "https://server.com/sub1.vtt" },
-  { "episode": 2, "video_url": "https://server.com/ep2.m3u8", "subtitle_url": "https://server.com/sub2.vtt" }
+  {
+    "episode": 1,
+    "video_url": "https://cdn.example.com/ep1.m3u8",
+    "subtitle_url": "https://cdn.example.com/sub1.vtt"
+  },
+  {
+    "episode": 2,
+    "video_url": "https://cdn.example.com/ep2.m3u8",
+    "subtitle_url": "https://cdn.example.com/sub2.vtt"
+  }
 ]`;
+
+/** Fix common paste/RTL corruption: reversed array brackets, leading commas, missing commas between objects. */
+function normalizeEpisodesJson(raw: string): string {
+  let text = raw.trim().replace(/^\uFEFF/, "");
+
+  // RTL sometimes stores `[` / `]` visually flipped at the edges.
+  if (text.startsWith("]") && text.endsWith("[")) {
+    text = `[${text.slice(1, -1)}]`;
+  }
+
+  // Leading comma after `[`
+  text = text.replace(/^\[\s*,/, "[");
+
+  // Missing comma between } and {
+  text = text.replace(/}\s*{/g, "},\n{");
+
+  return text;
+}
 
 export function AdminBulkImportPanel() {
   const { t } = useLocale();
@@ -28,11 +54,20 @@ export function AdminBulkImportPanel() {
     setResultSources([]);
     setSaving(true);
 
+    const normalized = normalizeEpisodesJson(episodesJson);
+    if (normalized !== episodesJson.trim()) {
+      setEpisodesJson(normalized);
+    }
+
     let episodes: unknown;
     try {
-      episodes = JSON.parse(episodesJson);
-    } catch {
-      setError(t.admin.bulkImportInvalidJson);
+      episodes = JSON.parse(normalized);
+    } catch (parseError) {
+      setError(
+        `${t.admin.bulkImportInvalidJson} (${
+          parseError instanceof Error ? parseError.message : "parse error"
+        })`,
+      );
       setSaving(false);
       return;
     }
@@ -43,39 +78,62 @@ export function AdminBulkImportPanel() {
       return;
     }
 
-    const response = await fetch("/api/admin/watch-sources/bulk", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        mal_id: Number(malId),
-        label: label.trim() || "ClashAnime",
-        stream_type: streamType || undefined,
-        episodes,
-      }),
-    });
-
-    const payload = (await response.json()) as {
-      error?: string;
-      count?: number;
-      inserted?: number;
-      updated?: number;
-      sources?: WatchSourceRow[];
-    };
-
-    setSaving(false);
-
-    if (!response.ok) {
-      setError(payload.error ?? t.admin.bulkImportFailed);
+    if (episodes.length === 0) {
+      setError(t.admin.bulkImportMustBeArray);
+      setSaving(false);
       return;
     }
 
-    setResultSources(payload.sources ?? []);
-    setMessage(
-      t.admin.bulkImportSuccess
-        .replace("{count}", String(payload.count ?? 0))
-        .replace("{inserted}", String(payload.inserted ?? 0))
-        .replace("{updated}", String(payload.updated ?? 0)),
-    );
+    try {
+      const response = await fetch("/api/admin/watch-sources/bulk", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mal_id: Number(malId),
+          label: label.trim() || "ClashAnime",
+          stream_type: streamType || undefined,
+          episodes,
+        }),
+      });
+
+      let payload: {
+        error?: string;
+        count?: number;
+        inserted?: number;
+        updated?: number;
+        sources?: WatchSourceRow[];
+      } = {};
+
+      try {
+        payload = (await response.json()) as typeof payload;
+      } catch {
+        setError(`${t.admin.bulkImportFailed} (HTTP ${response.status})`);
+        setSaving(false);
+        return;
+      }
+
+      setSaving(false);
+
+      if (!response.ok) {
+        setError(payload.error || `${t.admin.bulkImportFailed} (HTTP ${response.status})`);
+        return;
+      }
+
+      setResultSources(payload.sources ?? []);
+      setMessage(
+        t.admin.bulkImportSuccess
+          .replace("{count}", String(payload.count ?? 0))
+          .replace("{inserted}", String(payload.inserted ?? 0))
+          .replace("{updated}", String(payload.updated ?? 0)),
+      );
+    } catch (fetchError) {
+      setSaving(false);
+      setError(
+        fetchError instanceof Error
+          ? `${t.admin.bulkImportFailed}: ${fetchError.message}`
+          : t.admin.bulkImportFailed,
+      );
+    }
   }
 
   return (
@@ -98,12 +156,13 @@ export function AdminBulkImportPanel() {
           {t.admin.bulkImportMalId}
           <input
             required
+            dir="ltr"
             type="number"
             min={1}
             value={malId}
             onChange={(event) => setMalId(event.target.value)}
-            className="mt-1 w-full rounded-xl border border-zinc-800 bg-black px-3 py-2 text-white"
-            placeholder="e.g. 52991"
+            className="mt-1 w-full rounded-xl border border-zinc-800 bg-black px-3 py-2 text-left text-white"
+            placeholder="11061"
           />
           <span className="mt-1 block text-xs text-zinc-500">{t.admin.bulkImportMalHint}</span>
         </label>
@@ -133,17 +192,33 @@ export function AdminBulkImportPanel() {
           </select>
         </label>
 
-        <label className="text-sm text-zinc-300 md:col-span-2">
-          {t.admin.bulkImportEpisodesJson}
+        <div className="md:col-span-2">
+          <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
+            <span className="text-sm text-zinc-300">{t.admin.bulkImportEpisodesJson}</span>
+            <button
+              type="button"
+              onClick={() => {
+                setEpisodesJson(EXAMPLE_JSON);
+                setError(null);
+                setMessage(null);
+              }}
+              className="rounded-lg border border-zinc-700 px-3 py-1 text-xs text-zinc-300 hover:border-violet-500 hover:text-white"
+            >
+              {t.admin.bulkImportResetExample}
+            </button>
+          </div>
           <textarea
             required
+            dir="ltr"
+            lang="en"
             value={episodesJson}
             onChange={(event) => setEpisodesJson(event.target.value)}
             spellCheck={false}
-            className="mt-1 min-h-64 w-full rounded-xl border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-white"
+            className="min-h-64 w-full rounded-xl border border-zinc-800 bg-black px-3 py-2 text-left font-mono text-sm text-white"
+            style={{ unicodeBidi: "isolate" }}
           />
           <span className="mt-1 block text-xs text-zinc-500">{t.admin.bulkImportJsonHint}</span>
-        </label>
+        </div>
 
         <button
           type="submit"
@@ -171,7 +246,7 @@ export function AdminBulkImportPanel() {
                 <p className="font-semibold text-white">
                   MAL {source.mal_id} · #{source.episode_number} · {source.stream_type}
                 </p>
-                <p className="mt-1 break-all text-xs text-zinc-500">
+                <p className="mt-1 break-all text-left text-xs text-zinc-500" dir="ltr">
                   {source.embed_url}
                   {source.subtitle_url ? ` · ${source.subtitle_url}` : ""}
                 </p>
