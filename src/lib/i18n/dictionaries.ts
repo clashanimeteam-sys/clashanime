@@ -1368,6 +1368,23 @@ export type Dictionary = {
     watchAnimeSaved: string;
     watchAnimeLoading: string;
     watchAnimeEmpty: string;
+    bulkImportTitle: string;
+    bulkImportSubtitle: string;
+    bulkImportBackToWatch: string;
+    bulkImportMalId: string;
+    bulkImportMalHint: string;
+    bulkImportLabel: string;
+    bulkImportDefaultStreamType: string;
+    bulkImportInferStreamType: string;
+    bulkImportEpisodesJson: string;
+    bulkImportJsonHint: string;
+    bulkImportSubmit: string;
+    bulkImportSaving: string;
+    bulkImportSuccess: string;
+    bulkImportFailed: string;
+    bulkImportInvalidJson: string;
+    bulkImportMustBeArray: string;
+    bulkImportResultTitle: string;
     confirmRetractViolation: string;
     violationRetracted: string;
     violationClaimant: string;
@@ -1404,6 +1421,7 @@ export type Dictionary = {
       beatsLounge: string;
       animeTracker: string;
       watchAnime: string;
+      bulkImport: string;
       blog: string;
       ads: string;
       animeNews: string;
@@ -3288,6 +3306,26 @@ export const dictionaries: Record<Locale, Dictionary> = {
       watchAnimeSaved: "Server saved.",
       watchAnimeLoading: "Loading watch servers…",
       watchAnimeEmpty: "No manual servers — auto providers are active.",
+      bulkImportTitle: "Bulk import episodes",
+      bulkImportSubtitle:
+        "Paste a full season as JSON and upsert watch_sources for one MAL title in a single submit.",
+      bulkImportBackToWatch: "← Back to Watch Anime servers",
+      bulkImportMalId: "MAL ID",
+      bulkImportMalHint:
+        "Watch sources use MyAnimeList ID (not AniList). Same field as the single-server form.",
+      bulkImportLabel: "Server label",
+      bulkImportDefaultStreamType: "Default stream type",
+      bulkImportInferStreamType: "Infer from URL (.m3u8 / .mp4)",
+      bulkImportEpisodesJson: "Episodes JSON array",
+      bulkImportJsonHint:
+        'Fields: episode, video_url (or embed_url), optional subtitle_url. Example key "episode" is required.',
+      bulkImportSubmit: "Import season",
+      bulkImportSaving: "Importing…",
+      bulkImportSuccess: "Imported {count} episodes ({inserted} new, {updated} updated).",
+      bulkImportFailed: "Bulk import failed",
+      bulkImportInvalidJson: "Invalid JSON — paste a valid array.",
+      bulkImportMustBeArray: "Payload must be a JSON array of episodes.",
+      bulkImportResultTitle: "Imported sources",
       confirmRetractViolation: "Retract this violation? The user will no longer see it as active.",
       violationRetracted: "Violation retracted.",
       violationClaimant: "Claimant",
@@ -3324,6 +3362,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         beatsLounge: "Anime Beats Lounge",
         animeTracker: "Anime Tracker",
         watchAnime: "Watch Anime",
+        bulkImport: "Bulk import",
         blog: "Arena Guide",
         ads: "Ad placements",
         animeNews: "Anime news",
@@ -5196,6 +5235,26 @@ export const dictionaries: Record<Locale, Dictionary> = {
       watchAnimeSaved: "サーバーを保存しました。",
       watchAnimeLoading: "視聴サーバーを読み込み中…",
       watchAnimeEmpty: "手動サーバーなし — 自動プロバイダが有効です。",
+      bulkImportTitle: "エピソード一括インポート",
+      bulkImportSubtitle:
+        "シーズン全体の JSON を貼り付けて、1つの MAL ID の watch_sources を一括 upsert します。",
+      bulkImportBackToWatch: "← Watch Anime サーバーへ戻る",
+      bulkImportMalId: "MAL ID",
+      bulkImportMalHint:
+        "視聴ソースは MyAnimeList ID を使用します（AniList ではありません）。単体追加フォームと同じです。",
+      bulkImportLabel: "サーバーラベル",
+      bulkImportDefaultStreamType: "デフォルトストリーム種別",
+      bulkImportInferStreamType: "URLから推測 (.m3u8 / .mp4)",
+      bulkImportEpisodesJson: "エピソード JSON 配列",
+      bulkImportJsonHint:
+        "フィールド: episode、video_url（または embed_url）、任意の subtitle_url。episode は必須です。",
+      bulkImportSubmit: "シーズンをインポート",
+      bulkImportSaving: "インポート中…",
+      bulkImportSuccess: "{count} 話をインポート（新規 {inserted} / 更新 {updated}）。",
+      bulkImportFailed: "一括インポートに失敗しました",
+      bulkImportInvalidJson: "JSON が不正です — 有効な配列を貼り付けてください。",
+      bulkImportMustBeArray: "ペイロードはエピソードの JSON 配列である必要があります。",
+      bulkImportResultTitle: "インポートされたソース",
       confirmRetractViolation: "この違反を取り消しますか？ユーザーには有効と表示されなくなります。",
       violationRetracted: "違反を取り消しました。",
       violationClaimant: "申立人",
@@ -5232,6 +5291,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         beatsLounge: "アニメ・ビーツ・ラウンジ",
         animeTracker: "新作アニメレーダー",
         watchAnime: "アニメ視聴",
+        bulkImport: "一括インポート",
         blog: "アリーナガイド",
         ads: "広告配置",
         animeNews: "アニメニュース",
@@ -7105,6 +7165,26 @@ export const dictionaries: Record<Locale, Dictionary> = {
       watchAnimeSaved: "تم حفظ السيرفر.",
       watchAnimeLoading: "جارٍ تحميل السيرفرات…",
       watchAnimeEmpty: "لا توجد سيرفرات يدوية — السيرفرات التلقائية مفعّلة.",
+      bulkImportTitle: "استيراد حلقات دفعة واحدة",
+      bulkImportSubtitle:
+        "الصق موسمًا كاملًا كـ JSON وقم بتحديث/إضافة watch_sources لمعرّف MAL واحد دفعة واحدة.",
+      bulkImportBackToWatch: "← العودة إلى سيرفرات مشاهدة الأنمي",
+      bulkImportMalId: "معرّف MAL",
+      bulkImportMalHint:
+        "مصادر المشاهدة تستخدم معرّف MyAnimeList (وليس AniList) — نفس حقل نموذج السيرفر الواحد.",
+      bulkImportLabel: "تسمية السيرفر",
+      bulkImportDefaultStreamType: "نوع البث الافتراضي",
+      bulkImportInferStreamType: "استنتاج من الرابط (.m3u8 / .mp4)",
+      bulkImportEpisodesJson: "مصفوفة JSON للحلقات",
+      bulkImportJsonHint:
+        "الحقول: episode و video_url (أو embed_url) و subtitle_url اختياري. الحقل episode مطلوب.",
+      bulkImportSubmit: "استيراد الموسم",
+      bulkImportSaving: "جارٍ الاستيراد…",
+      bulkImportSuccess: "تم استيراد {count} حلقة ({inserted} جديدة، {updated} محدّثة).",
+      bulkImportFailed: "فشل الاستيراد الجماعي",
+      bulkImportInvalidJson: "JSON غير صالح — الصق مصفوفة صحيحة.",
+      bulkImportMustBeArray: "يجب أن تكون الحمولة مصفوفة JSON من الحلقات.",
+      bulkImportResultTitle: "المصادر المستوردة",
       confirmRetractViolation: "إلغاء هذه المخالفة؟ لن تظهر للمستخدم كإنذار نشط.",
       violationRetracted: "تم إلغاء المخالفة.",
       violationClaimant: "المُشتكي",
@@ -7141,6 +7221,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         beatsLounge: "صالة إيقاعات الأنمي",
         animeTracker: "رادار الأنمي الجديد",
         watchAnime: "مشاهدة الأنمي",
+        bulkImport: "استيراد دفعة",
         blog: "دليل الأبطال",
         ads: "مواضع الإعلانات",
         animeNews: "أخبار الأنمي",

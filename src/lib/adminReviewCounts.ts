@@ -16,6 +16,7 @@ export type AdminNavKey =
   | "beatsLounge"
   | "animeTracker"
   | "watchAnime"
+  | "bulkImport"
   | "blog"
   | "ads"
   | "animeNews"

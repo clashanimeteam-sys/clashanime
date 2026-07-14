@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { WatchSourceRow } from "@/lib/watchAdmin";
 import { useLocale } from "@/providers/LocaleProvider";
@@ -118,6 +119,11 @@ export function AdminWatchAnimePanel() {
       <div>
         <h1 className="text-2xl font-bold text-white">{t.admin.watchAnimeTitle}</h1>
         <p className="mt-2 text-sm text-zinc-400">{t.admin.watchAnimeSubtitle}</p>
+        <p className="mt-2 text-sm">
+          <Link href="/admin/bulk-import" className="text-violet-400 hover:underline">
+            {t.admin.nav.bulkImport}
+          </Link>
+        </p>
       </div>
 
       <section className="rounded-2xl border border-violet-500/20 bg-violet-950/20 p-5">

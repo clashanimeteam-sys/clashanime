@@ -130,3 +130,135 @@ export async function deleteWatchSourceForAdmin(id: string) {
   const { error } = await supabase.from("watch_sources").delete().eq("id", id);
   if (error) throw error;
 }
+
+export type BulkEpisodeInput = {
+  episode: number;
+  video_url?: string;
+  embed_url?: string;
+  subtitle_url?: string | null;
+  stream_type?: "embed" | "hls" | "mp4";
+  label?: string;
+  referer?: string | null;
+};
+
+function inferStreamType(url: string): "embed" | "hls" | "mp4" {
+  const lower = url.toLowerCase();
+  if (lower.includes(".m3u8") || lower.includes("/hls")) return "hls";
+  if (lower.includes(".mp4")) return "mp4";
+  return "embed";
+}
+
+function sourceKey(episodeNumber: number, label: string) {
+  return `${episodeNumber}:${label}`;
+}
+
+/** Upsert many episode rows for one MAL title into Watch Supabase `watch_sources`. */
+export async function bulkUpsertWatchEpisodesForAdmin(input: {
+  mal_id: number;
+  episodes: BulkEpisodeInput[];
+  default_label?: string;
+  default_stream_type?: "embed" | "hls" | "mp4";
+  default_referer?: string | null;
+  language?: string;
+}) {
+  if (!Number.isFinite(input.mal_id) || input.mal_id <= 0) {
+    throw new Error("Invalid mal_id");
+  }
+  if (!Array.isArray(input.episodes) || input.episodes.length === 0) {
+    throw new Error("episodes must be a non-empty array");
+  }
+
+  const supabase = createWatchAdminClient();
+  const defaultLabel = (input.default_label ?? "ClashAnime").trim() || "ClashAnime";
+  const language = input.language ?? "ar";
+
+  const { data: existing, error: listError } = await supabase
+    .from("watch_sources")
+    .select("*")
+    .eq("mal_id", input.mal_id)
+    .eq("content_type", "episode");
+
+  if (listError) throw listError;
+
+  const byKey = new Map<string, WatchSourceRow>();
+  for (const row of (existing ?? []) as WatchSourceRow[]) {
+    if (row.episode_number == null) continue;
+    byKey.set(sourceKey(row.episode_number, row.label), row);
+  }
+
+  const inserted: WatchSourceRow[] = [];
+  const updated: WatchSourceRow[] = [];
+
+  for (const raw of input.episodes) {
+    const episodeNumber = Number(raw.episode);
+    if (!Number.isFinite(episodeNumber) || episodeNumber < 1) {
+      throw new Error(`Invalid episode number: ${String(raw.episode)}`);
+    }
+
+    const embedUrl = String(raw.embed_url ?? raw.video_url ?? "").trim();
+    if (!embedUrl) {
+      throw new Error(`Episode ${episodeNumber}: missing video_url / embed_url`);
+    }
+
+    const label = (raw.label ?? defaultLabel).trim() || defaultLabel;
+    const streamType =
+      raw.stream_type ?? input.default_stream_type ?? inferStreamType(embedUrl);
+    const subtitleUrl = raw.subtitle_url?.trim() ? raw.subtitle_url.trim() : null;
+    const referer =
+      raw.referer?.trim() || input.default_referer?.trim() || null;
+    const key = sourceKey(episodeNumber, label);
+    const existingRow = byKey.get(key);
+
+    if (existingRow) {
+      const { data, error } = await supabase
+        .from("watch_sources")
+        .update({
+          embed_url: embedUrl,
+          stream_type: streamType,
+          subtitle_url: subtitleUrl,
+          referer,
+          language,
+          is_active: true,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", existingRow.id)
+        .select("*")
+        .single();
+
+      if (error) throw error;
+      const row = data as WatchSourceRow;
+      updated.push(row);
+      byKey.set(key, row);
+    } else {
+      const { data, error } = await supabase
+        .from("watch_sources")
+        .insert({
+          mal_id: input.mal_id,
+          content_type: "episode",
+          episode_number: episodeNumber,
+          label,
+          embed_url: embedUrl,
+          stream_type: streamType,
+          subtitle_url: subtitleUrl,
+          qualities: null,
+          referer,
+          language,
+          sort_order: episodeNumber,
+          is_active: true,
+        })
+        .select("*")
+        .single();
+
+      if (error) throw error;
+      const row = data as WatchSourceRow;
+      inserted.push(row);
+      byKey.set(key, row);
+    }
+  }
+
+  return {
+    inserted,
+    updated,
+    count: inserted.length + updated.length,
+  };
+}
