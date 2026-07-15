@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { HilltopAdsPopunder } from "@/components/ads/HilltopAdsPopunder";
 import { AnimeRadioMiniBar } from "@/components/AnimeRadioMiniBar";
 import { BeatsLoungeMiniBar } from "@/components/lounge/BeatsLoungeMiniBar";
 import { AnimeRadioController } from "@/components/radio/AnimeRadioController";
@@ -67,6 +68,7 @@ export function Providers({ children }: ProvidersProps) {
                           children
                         ) : (
                           <>
+                            <HilltopAdsPopunder />
                             {!videoRoute ? <MobileAppHeader /> : null}
                             <MobileViewportLock />
                             <AppShell>{children}</AppShell>
