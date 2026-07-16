@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { BlogAds } from "@/components/ads/BlogAds";
 import { BlogPageShell } from "@/components/blog/BlogPageShell";
 import type { BlogCategory } from "@/lib/blog/types";
 import { getAllBlogPosts, getBlogPostCopy } from "@/lib/blog/posts";
@@ -59,27 +60,27 @@ export function BlogPostContent({ slug, category, publishedAt, readingMinutes }:
         </p>
 
         <div className="mt-8 space-y-8">
-          {copy.sections.map((section) => (
-            <section
-              key={section.heading}
-              className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-5 sm:p-6"
-            >
-              <h2 className="text-lg font-semibold text-white">{section.heading}</h2>
-              <div className="mt-3 whitespace-pre-line text-sm leading-relaxed text-zinc-300">
-                {section.body.split("\n").map((line, index) => {
-                  const trimmed = line.trim();
-                  if (trimmed.startsWith("•")) {
-                    return (
-                      <p key={`${section.heading}-${index}`} className="ms-1 ps-3">
-                        {line}
-                      </p>
-                    );
-                  }
-                  if (!trimmed) return <br key={`${section.heading}-${index}`} />;
-                  return <p key={`${section.heading}-${index}`}>{line}</p>;
-                })}
-              </div>
-            </section>
+          {copy.sections.map((section, index) => (
+            <div key={section.heading}>
+              <section className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-5 sm:p-6">
+                <h2 className="text-lg font-semibold text-white">{section.heading}</h2>
+                <div className="mt-3 whitespace-pre-line text-sm leading-relaxed text-zinc-300">
+                  {section.body.split("\n").map((line, lineIndex) => {
+                    const trimmed = line.trim();
+                    if (trimmed.startsWith("•")) {
+                      return (
+                        <p key={`${section.heading}-${lineIndex}`} className="ms-1 ps-3">
+                          {line}
+                        </p>
+                      );
+                    }
+                    if (!trimmed) return <br key={`${section.heading}-${lineIndex}`} />;
+                    return <p key={`${section.heading}-${lineIndex}`}>{line}</p>;
+                  })}
+                </div>
+              </section>
+              {index === 0 ? <BlogAds variant="mid" /> : null}
+            </div>
           ))}
         </div>
 

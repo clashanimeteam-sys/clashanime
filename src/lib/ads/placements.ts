@@ -28,8 +28,8 @@ export const MAX_REELS_AD_INTERVAL = 10;
 export const DEFAULT_REELS_AD_INTERVAL = 4;
 
 export const DEFAULT_AD_PLACEMENTS: AdPlacementSettings = {
-  enabled: false,
-  showPreviewPlaceholders: true,
+  enabled: true,
+  showPreviewPlaceholders: false,
   pages: {
     home: false,
     blog: true,
