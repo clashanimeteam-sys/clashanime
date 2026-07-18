@@ -8,9 +8,21 @@ export type BlogCategory =
   | "earnings-prizes"
   | "faq";
 
+export type BlogRoadmapStep = {
+  label: string;
+  title: string;
+  detail: string;
+};
+
 export type BlogPostSection = {
   heading: string;
   body: string;
+  /** Short hype line shown under the heading */
+  hype?: string;
+  /** Visual timeline steps (replaces dense numbered lists when present) */
+  roadmap?: BlogRoadmapStep[];
+  /** “Hero tip” callout at the end of the section */
+  tip?: string;
 };
 
 export type BlogPostCopy = {
