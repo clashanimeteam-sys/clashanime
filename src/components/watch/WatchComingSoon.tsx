@@ -32,27 +32,47 @@ export function WatchComingSoon() {
   const copy = COPY[locale] ?? COPY.en;
 
   return (
-    <div className="flex min-h-[70vh] flex-col items-center justify-center px-6 py-16 text-center">
-      <span className="rounded-full bg-orange-500/15 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-orange-200 ring-1 ring-orange-500/30">
-        {copy.badge}
-      </span>
-      <h1 className="mt-6 max-w-xl text-3xl font-black tracking-tight text-white sm:text-4xl">
-        {copy.title}
-      </h1>
-      <p className="mt-4 max-w-lg text-sm leading-relaxed text-zinc-400 sm:text-base">{copy.body}</p>
-      <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <Link
-          href="/"
-          className="rounded-full bg-gradient-to-r from-orange-500 to-red-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-orange-900/30"
-        >
-          {copy.ctaHome}
-        </Link>
-        <Link
-          href="/blog"
-          className="rounded-full border border-zinc-600 bg-zinc-900 px-5 py-2.5 text-sm font-semibold text-zinc-200 transition hover:border-zinc-500 hover:bg-zinc-800"
-        >
-          {copy.ctaBlog}
-        </Link>
+    <div className="relative flex min-h-[70vh] flex-col items-center justify-center overflow-hidden px-6 py-16 text-center">
+      <video
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden
+      >
+        <source src="/animevideo.mp4" type="video/mp4" />
+      </video>
+      <div
+        className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/70 to-black/85"
+        aria-hidden
+      />
+
+      <div className="relative z-10 flex flex-col items-center">
+        <span className="rounded-full bg-orange-500/20 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-orange-100 ring-1 ring-orange-400/40 backdrop-blur-sm">
+          {copy.badge}
+        </span>
+        <h1 className="mt-6 max-w-xl text-3xl font-black tracking-tight text-white drop-shadow-lg sm:text-4xl">
+          {copy.title}
+        </h1>
+        <p className="mt-4 max-w-lg text-sm leading-relaxed text-zinc-200 drop-shadow sm:text-base">
+          {copy.body}
+        </p>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <Link
+            href="/"
+            className="rounded-full bg-gradient-to-r from-orange-500 to-red-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-orange-900/40"
+          >
+            {copy.ctaHome}
+          </Link>
+          <Link
+            href="/blog"
+            className="rounded-full border border-white/25 bg-black/45 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:border-white/40 hover:bg-black/60"
+          >
+            {copy.ctaBlog}
+          </Link>
+        </div>
       </div>
     </div>
   );
