@@ -97,9 +97,9 @@ export const PAGE_SEO: Record<
     path: "/blog/anime-news",
   },
   watch: {
-    title: "Member watch catalog — Clash Anime",
+    title: "Watch Anime — Coming soon | ClashAnime",
     description:
-      "Signed-in members can browse the Clash Anime catalog. Not a public streaming index — community arena first.",
+      "Watch Anime is coming soon on ClashAnime. Join the arena, upload duel clips, and climb hunter ranks.",
     path: "/watch",
   },
 };

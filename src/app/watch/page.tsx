@@ -1,36 +1,13 @@
-import { redirect } from "next/navigation";
-import { WatchBrowseFrame } from "@/components/watch/WatchBrowseFrame";
+import { WatchComingSoon } from "@/components/watch/WatchComingSoon";
 import { buildPageMetadata } from "@/lib/seoMetadata";
-import { createServerClient } from "@/lib/supabase/server";
 
-export const metadata = buildPageMetadata("watch", { indexable: false });
-export const dynamic = "force-dynamic";
+export const metadata = buildPageMetadata("watch", {
+  indexable: false,
+  title: "Watch Anime — Coming soon | ClashAnime",
+  description:
+    "Watch Anime on ClashAnime is coming soon. Compete in clashes and climb hunter ranks meanwhile.",
+});
 
-export default async function WatchPage() {
-  if (!process.env.WATCH_GATE_SECRET?.trim()) {
-    return (
-      <div className="flex min-h-[60vh] items-center justify-center px-6 text-center text-sm text-zinc-500">
-        Watch Anime is not configured yet. Add WATCH_GATE_SECRET and WATCH_SITE_URL in Vercel.
-      </div>
-    );
-  }
-
-  const supabase = await createServerClient();
-  if (!supabase) {
-    return (
-      <div className="flex min-h-[60vh] items-center justify-center px-6 text-center text-sm text-zinc-500">
-        Watch Anime is not available right now.
-      </div>
-    );
-  }
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect("/login?next=%2Fwatch");
-  }
-
-  return <WatchBrowseFrame userId={user.id} />;
+export default function WatchPage() {
+  return <WatchComingSoon />;
 }
