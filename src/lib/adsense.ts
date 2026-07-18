@@ -13,7 +13,11 @@ export function getAdSenseSlotId(variant: "banner" | "sidebar" | "infeed" = "ban
     );
   }
   if (variant === "sidebar") {
-    return process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR?.trim() || process.env.NEXT_PUBLIC_ADSENSE_SLOT?.trim() || null;
+    return (
+      process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR?.trim() ||
+      process.env.NEXT_PUBLIC_ADSENSE_SLOT?.trim() ||
+      null
+    );
   }
   return process.env.NEXT_PUBLIC_ADSENSE_SLOT?.trim() || null;
 }
@@ -31,8 +35,17 @@ export function isAdSenseScriptReady() {
   return Boolean(getAdSenseClientId());
 }
 
+/** Manual ad units — needs client + at least one slot id. */
 export function isAdSenseEnabled() {
   return Boolean(getAdSenseClientId() && getAdSenseSlotId());
+}
+
+/**
+ * Auto ads (configured in AdSense dashboard) only need the client script.
+ * Enable in AdSense → Ads → By site → clashanime.com → Auto ads.
+ */
+export function isAdSenseAutoAdsPreferred() {
+  return process.env.NEXT_PUBLIC_ADSENSE_AUTO_ADS !== "false" && Boolean(getAdSenseClientId());
 }
 
 export function getAdSenseScriptUrl(clientId: string) {
