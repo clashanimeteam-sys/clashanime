@@ -58,7 +58,7 @@ function AppShellLayout({ children }: AppShellProps) {
             </div>
           ) : null}
           <main
-            className={`mobile-app-main flex-1 max-md:overflow-x-hidden max-md:max-w-full ${isBlogPage ? "bg-zinc-950" : isWatchPage ? "bg-black" : "bg-white dark:bg-black"} ${isVideoPage || isWatchPage ? "overflow-hidden max-md:h-dvh max-md:min-h-0" : ""} ${isWatchPage ? "p-0" : ""} ${mainBottomPadding}`}
+            className={`mobile-app-main flex-1 max-md:overflow-x-hidden max-md:max-w-full ${isBlogPage ? "bg-zinc-950" : isWatchPage ? "bg-black" : "bg-white dark:bg-black"} ${isVideoPage || isWatchPage ? "overflow-hidden max-md:h-dvh max-md:min-h-0 md:min-h-0 md:h-full" : ""} ${isWatchPage ? "relative p-0" : ""} ${mainBottomPadding}`}
           >
             {children}
           </main>

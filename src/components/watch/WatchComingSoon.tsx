@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { useLocale } from "@/providers/LocaleProvider";
 
 const COPY = {
@@ -30,33 +31,52 @@ const COPY = {
 export function WatchComingSoon() {
   const { locale } = useLocale();
   const copy = COPY[locale] ?? COPY.en;
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    video.defaultMuted = true;
+    video.volume = 0;
+    const play = () => {
+      void video.play().catch(() => {
+        /* autoplay can still fail on some browsers */
+      });
+    };
+    play();
+    video.addEventListener("canplay", play);
+    return () => video.removeEventListener("canplay", play);
+  }, []);
 
   return (
-    <div className="relative flex min-h-[70vh] flex-col items-center justify-center overflow-hidden px-6 py-16 text-center">
+    <div className="relative flex h-full min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden px-6 py-16 text-center md:min-h-0">
       <video
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+        ref={videoRef}
+        className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover"
+        src="/animevideo.mp4"
+        poster="/animevideo-poster.jpg"
         autoPlay
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="auto"
+        disablePictureInPicture
         aria-hidden
-      >
-        <source src="/animevideo.mp4" type="video/mp4" />
-      </video>
+      />
       <div
-        className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/70 to-black/85"
+        className="absolute inset-0 z-[1] bg-gradient-to-b from-black/45 via-black/35 to-black/55"
         aria-hidden
       />
 
       <div className="relative z-10 flex flex-col items-center">
-        <span className="rounded-full bg-orange-500/20 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-orange-100 ring-1 ring-orange-400/40 backdrop-blur-sm">
+        <span className="rounded-full bg-orange-500/25 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-orange-50 ring-1 ring-orange-300/50 backdrop-blur-sm">
           {copy.badge}
         </span>
-        <h1 className="mt-6 max-w-xl text-3xl font-black tracking-tight text-white drop-shadow-lg sm:text-4xl">
+        <h1 className="mt-6 max-w-xl text-3xl font-black tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)] sm:text-4xl">
           {copy.title}
         </h1>
-        <p className="mt-4 max-w-lg text-sm leading-relaxed text-zinc-200 drop-shadow sm:text-base">
+        <p className="mt-4 max-w-lg text-sm leading-relaxed text-zinc-100 drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)] sm:text-base">
           {copy.body}
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -68,7 +88,7 @@ export function WatchComingSoon() {
           </Link>
           <Link
             href="/blog"
-            className="rounded-full border border-white/25 bg-black/45 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:border-white/40 hover:bg-black/60"
+            className="rounded-full border border-white/30 bg-black/50 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:border-white/50 hover:bg-black/65"
           >
             {copy.ctaBlog}
           </Link>
