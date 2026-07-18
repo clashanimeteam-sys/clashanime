@@ -14,6 +14,8 @@ export async function WatchBrowseFrame({ userId }: WatchBrowseFrameProps) {
         src={entryUrl}
         title="Watch Anime"
         className="h-full w-full border-0"
+        // Block Hilltop/TrafficStars popunders from opening tabs on clashanime.com.
+        sandbox="allow-scripts allow-same-origin allow-forms allow-presentation allow-downloads"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
         referrerPolicy="no-referrer"
       />
