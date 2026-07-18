@@ -30,7 +30,9 @@ type PageSeoKey =
   | "earn"
   | "blog"
   | "animeNews"
-  | "watch";
+  | "watch"
+  | "faq"
+  | "howItWorks";
 
 export const PAGE_SEO: Record<
   PageSeoKey,
@@ -77,6 +79,18 @@ export const PAGE_SEO: Record<
     description:
       "ClashAnime.com is a global platform for anime clips, release clashes, competitions, and creator rewards via ClashCoins — منصة انمي عالمية للمسابقات وربح المال — グローバルアニメ対戦プラットフォーム.",
     path: "/about",
+  },
+  faq: {
+    title: "ClashAnime FAQ — Arena, Hunter Ranks & ClashCoins",
+    description:
+      "Answers about ClashAnime clashes, hunter ranks, ClashCoins, copyright rules, privacy, and how beginners start — الأسئلة الشائعة — よくある質問.",
+    path: "/faq",
+  },
+  howItWorks: {
+    title: "How ClashAnime Works — Step-by-Step Arena Guide",
+    description:
+      "Learn signup, clashes, hashtags, hunter ranks, Earn money, ClashCoins, moderation, and fair play on ClashAnime — كيف يعمل الموقع — 仕組みガイド.",
+    path: "/how-it-works",
   },
   earn: {
     title: "Earn Money — Promote Clash Anime & Get $2 Rewards",

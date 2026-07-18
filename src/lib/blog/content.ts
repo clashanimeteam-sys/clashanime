@@ -1,3 +1,4 @@
+import { ADSENSE_GUIDE_POSTS } from "@/lib/blog/adsenseGuides";
 import type { BlogPost } from "@/lib/blog/types";
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -10,7 +11,7 @@ export const BLOG_POSTS: BlogPost[] = [
       en: {
         title: "Start Your Journey: How Do You Become a ClashAnime Legend?",
         excerpt:
-          "Curiosity-first guide: hunter ranks, ClashCoins power path, hero perks behind the gate, and a 3-step visual roadmap from signup to watchclashanime.com.",
+          "Curiosity-first guide: hunter ranks, ClashCoins power path, hero perks behind the gate, and a 3-step visual roadmap from signup to your first live clash.",
         sections: [
           {
             heading: "Start your journey: how do you become a ClashAnime legend?",
@@ -79,7 +80,7 @@ export const BLOG_POSTS: BlogPost[] = [
       ar: {
         title: "ابدأ رحلتك: كيف تصبح أسطورة ClashAnime؟",
         excerpt:
-          "دليل يثير الفضول: رتب الصياد، طريق القوة لـ ClashCoins، امتيازات الأبطال خلف البوابة، ومخطط بصري بثلاث خطوات من التسجيل إلى watchclashanime.com.",
+          "دليل يثير الفضول: رتب الصياد، طريق القوة لـ ClashCoins، امتيازات الأبطال خلف البوابة، ومخطط بصري بثلاث خطوات من التسجيل إلى أول نزال مباشر.",
         sections: [
           {
             heading: "ابدأ رحلتك: كيف تصبح أسطورة ClashAnime؟",
@@ -668,7 +669,7 @@ export const BLOG_POSTS: BlogPost[] = [
         sections: [
           {
             heading: "ハンターポイント",
-            body: "アップロード、投票、コメント、シェア、紹介、勝利で獲得。ランクD〜S。",
+            body: "アップロード、投票、コメント、シェア、紹介、勝利で獲得。ランクは Newbie → Explorer → Duelist → Master → Clash Master。",
           },
           {
             heading: "エピソードクラッシュ +2,000",
@@ -803,4 +804,5 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     },
   },
+  ...ADSENSE_GUIDE_POSTS,
 ];

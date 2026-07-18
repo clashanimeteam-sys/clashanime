@@ -9,6 +9,8 @@ export const PUBLIC_STATIC_PATHS = [
   "/exclusives",
   "/tracker",
   "/about",
+  "/how-it-works",
+  "/faq",
   "/earn",
   "/contact",
   "/terms",

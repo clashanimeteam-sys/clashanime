@@ -1,10 +1,8 @@
 import { Cairo, Geist, Geist_Mono, Orbitron, Plus_Jakarta_Sans } from "next/font/google";
 import { AdSenseScript } from "@/components/ads/AdSenseScript";
 import { Providers } from "@/components/Providers";
-import { AppBootSkeleton } from "@/components/AppBootSkeleton";
 import { BlockTranslateScript } from "@/components/BlockTranslateScript";
 import { ClientErrorBoundary } from "@/components/ClientErrorBoundary";
-import { ClientOnly } from "@/components/ClientOnly";
 import { buildRootLayoutMetadata } from "@/lib/seoMetadata";
 import "./globals.css";
 
@@ -75,9 +73,7 @@ export default function RootLayout({
         <BlockTranslateScript />
         <AdSenseScript />
         <ClientErrorBoundary>
-          <ClientOnly fallback={<AppBootSkeleton />}>
-            <Providers>{children}</Providers>
-          </ClientOnly>
+          <Providers>{children}</Providers>
         </ClientErrorBoundary>
         <div id="clashanime-portal" />
       </body>

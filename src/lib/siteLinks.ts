@@ -1,5 +1,7 @@
 export const informationLinks = [
   { key: "about" as const, href: "/about" },
+  { key: "howItWorks" as const, href: "/how-it-works" },
+  { key: "faq" as const, href: "/faq" },
   { key: "privacy" as const, href: "/privacy" },
   { key: "cookies" as const, href: "/cookies" },
   { key: "disclaimer" as const, href: "/disclaimer" },

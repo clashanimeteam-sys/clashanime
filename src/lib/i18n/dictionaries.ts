@@ -174,6 +174,8 @@ export type Dictionary = {
     dmca: string;
     reportContent: string;
     arenaGuide: string;
+    faq: string;
+    howItWorks: string;
   };
   blog: {
     hubBadge: string;
@@ -2011,6 +2013,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       dmca: "Digital Millennium Copyright Act",
       reportContent: "Report Content",
       arenaGuide: "Heroes' Arena Guide",
+      faq: "FAQ",
+      howItWorks: "How ClashAnime works",
     },
     blog: {
       hubBadge: "Knowledge hub",
@@ -3956,6 +3960,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       dmca: "デジタルミレニアム著作権法",
       reportContent: "コンテンツの報告",
       arenaGuide: "英雄アリーナガイド",
+      faq: "よくある質問",
+      howItWorks: "ClashAnimeの仕組み",
     },
     blog: {
       hubBadge: "ナレッジハブ",
@@ -5883,6 +5889,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       dmca: "قانون الألفية الرقمية لحقوق المؤلف",
       reportContent: "تقرير المحتوى",
       arenaGuide: "دليل الأبطال",
+      faq: "الأسئلة الشائعة",
+      howItWorks: "كيف يعمل ClashAnime",
     },
     blog: {
       hubBadge: "مركز المعرفة",

@@ -7,6 +7,7 @@ import { ClashPrizeBanner } from "@/components/clash/ClashPrizeBanner";
 import { ClashVideosBackdrop } from "@/components/clash/ClashVideosBackdrop";
 import { SeasonCountdown } from "@/components/clash/SeasonCountdown";
 import { HallOfLegends } from "@/components/exclusives/HallOfLegends";
+import { HomeEditorial } from "@/components/HomeEditorial";
 import { VideoCard } from "@/components/VideoCard";
 import type { ClashSeason } from "@/lib/clashSeasons";
 import type { HallOfLegendsSeason } from "@/lib/hallOfLegends";
@@ -149,6 +150,9 @@ export function HomeContent({
             ) : null}
           </div>
         </div>
+      </div>
+      <div className="px-4 pb-10 sm:px-6">
+        <HomeEditorial />
       </div>
     </div>
   );
