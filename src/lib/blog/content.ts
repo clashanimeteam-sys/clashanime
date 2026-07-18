@@ -8,155 +8,143 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 14,
     locales: {
       en: {
-        title: "Complete Guide: ClashAnime, Rewards, Watch Access & Real Earnings",
+        title: "Complete Guide: ClashAnime, Earn Money, Watch Access & Real Earnings",
         excerpt:
-          "Everything you need to know about ClashAnime — the arena, excitement, privacy, credibility, Rewards activation, exclusive watch access, and how real ClashCoins cash prizes work.",
+          "Everything about ClashAnime — the arena, hunter ranks (Newbie → Clash Master), Earn money (/earn) activation, privacy, credibility, and how much you can earn with ClashCoins.",
         sections: [
           {
             heading: "What is ClashAnime?",
-            body: "ClashAnime is a competitive anime community platform — not a random clip dump. Creators upload duel clips, join timed episode clashes, climb hunter ranks (D → S), invite friends, and unlock Rewards. Members who complete onboarding on the Rewards (/earn) page unlock exclusive streaming on watchclashanime.com.\n\nThe ecosystem has three pillars:\n• clashanime.com — arena, uploads, community, tracker, Rewards\n• watchclashanime.com — members-only anime watching with Arabic softsubs\n• Blog / Heroes Guide — tutorials, news, and seasonal lineup tips\n\nYou create once, compete, earn points, and watch — all under one Clash Anime identity.",
+            body: "ClashAnime is a competitive anime community platform — not a random clip dump. Creators upload duel clips, join timed episode clashes, climb the Bounty Hunter ranks, invite friends, and unlock Earn money. Members who finish onboarding on the Earn money page (/earn) unlock exclusive streaming on watchclashanime.com.\n\nThree pillars:\n• clashanime.com — arena, uploads, community, tracker, Earn money\n• watchclashanime.com — members-only anime watching with Arabic softsubs\n• Blog / Heroes Guide — tutorials, news, seasonal tips\n\nOne Clash Anime account: compete, earn points, and watch.",
           },
           {
             heading: "The excitement of the arena",
-            body: "Every major episode drop can open a 24-hour clash window. The homepage countdown, Anime Radar (/tracker), and clash pages show live hashtags, rules, and the leaderboard in real time.\n\nWhy it feels intense:\n• Short windows — early uploads get more vote time\n• Public ranking — likes + comments×2 + shares×3 decide the winner\n• Instant payoff — top clip of a finished episode clash receives +2,000 hunter points automatically\n• Seasonal heat — Top performers chase exclusives and ClashCoins prize pools\n\nThis is built for fans who want competition, recognition, and community energy — not passive scrolling.",
+            body: "Major episode drops can open a 24-hour clash. Home, Anime Radar (/tracker), and clash pages show countdown, hashtags, rules, and live leaderboards.\n\nWhy it feels intense:\n• Limited time — early uploads get more vote hours\n• Public ranking — likes + comments×2 + shares×3 decide the winner\n• Instant reward — episode clash #1 gets +2,000 hunter points automatically\n• Season heat — top hunters chase exclusives and ClashCoins prize pools",
+          },
+          {
+            heading: "Bounty Hunter ranks (نظام صياد الجوائز)",
+            body: "Open Profile → Bounty Hunter System. Your total points set your hunter rank. There are 5 ranks:\n\n1. Newbie — 0 to 999 points\n   Perks: vote and comment on videos\n2. Explorer — 1,000 to 2,999 points\n   Unlocks: upload duel clips (+ community posting at 1,000+)\n3. Duelist — 3,000 to 5,999 points\n   Unlocks: double-weight votes\n4. Master — 6,000 to 9,999 points\n   Unlocks: Master badge and ranking priority\n5. Clash Master — 10,000 to 20,000 points\n   Unlocks: eligibility to request channel verification\n\nHow you earn points (examples from the hunter system):\n• +25 new account welcome\n• +10 unique visit via your invite link\n• +100 when a friend signs up with your link\n• +50 bonus when you signed up via a friend’s link\n• +200 when your invited friend uploads their first video\n• +150 when your invited friend joins their first duel\n• +20 certified original clip upload\n• +5 community post\n• +2,000 when you win a 24-hour episode clash (#1)\n• +500 trending bonus (when awarded)\n\nTrack progress on /profile#hunter-system — the bar shows points left to the next rank.",
+          },
+          {
+            heading: "How much real money can you earn?",
+            body: "Cash is paid in ClashCoins (USD cents in your wallet), not as a guaranteed salary.\n\nTypical configured prize paths:\n• Season / Top podium prizes can reach about $100 / $500 / $1,000 equivalent depending on the live prize pool (Top 12, Hall of Legends, exclusive duels)\n• Instant episode clash #1 pays +2,000 hunter points (rank boost) — not cash by itself\n• Point conversion (when eligible): about 10,000 hunter points = $10 in ClashCoins\n• Minimum withdrawal: $10 after KYC approval\n• Payout methods: international bank transfer, PayPal, or USDT where allowed\n• Review time: usually 24–72 hours after KYC\n\nImportant: amounts and eligibility change with campaigns. Always check Earn money (/earn) and wallet rules on the live site. Fake engagement voids prizes.",
           },
           {
             heading: "Create your account & profile",
-            body: "1. Sign up at clashanime.com (email or social login).\n2. Choose a unique username — it becomes your public channel URL for clips and invites.\n3. Add avatar, banner, and bio so voters recognize your brand.\n4. Read Community Guidelines and Terms — you own responsibility for what you upload.\n\nA complete profile looks more trustworthy and converts better when you share clash links.",
+            body: "1. Sign up at clashanime.com (email or social).\n2. Pick a unique username — your public channel URL.\n3. Add avatar, banner, and bio.\n4. Read Community Guidelines and Terms.\n\nA complete profile converts better when you share clash links.",
           },
           {
-            heading: "Activate Rewards (required for watch access)",
-            body: "New members must visit the Rewards page (/earn) to unlock exclusive watching on watchclashanime.com.\n\nWhat to do:\n1. After signup, open Rewards from the menu (or land there from the watch gate).\n2. Complete the onboarding tasks shown on that page (follow instructions carefully).\n3. Once activated, return to watchclashanime.com — the gate opens for your account.\n\nWithout Rewards activation, the watch gate stays closed for non-members / incomplete accounts. This protects the streaming site for real community members.",
+            heading: "Activate Earn money (required for watch access)",
+            body: "New members must open Earn money (/earn) to unlock watchclashanime.com.\n\nSteps:\n1. After signup, open Earn money from the menu (or from the watch gate).\n2. Complete the onboarding tasks on that page.\n3. Return to watchclashanime.com — the gate opens for your account.\n\nWithout Earn money activation, exclusive watching stays locked.",
           },
           {
             heading: "How to join your first clash",
-            body: "1. Open Home or Anime Radar (/tracker) and pick a live clash with a countdown.\n2. Tap Enter the Clash — read rules, required hashtags, and current leaders.\n3. Go to Upload, attach your clip (ideally 15–60s, clear audio, sharp quality).\n4. Add #clashanime plus every hashtag listed on the clash page.\n5. Share your clip link on X, Discord, WhatsApp, or Telegram to gather votes.\n\nWrong hashtags or off-theme clips may not rank in that clash’s leaderboard.",
+            body: "1. Open Home or /tracker and pick a live clash.\n2. Enter the Clash — read rules, hashtags, leaders.\n3. Upload a sharp 15–60s clip.\n4. Add #clashanime plus every clash hashtag.\n5. Share the clip link to gather votes.\n\nWrong tags or off-theme clips may not rank.",
           },
           {
-            heading: "Hunter points, ranks & real money (ClashCoins)",
-            body: "ClashAnime rewards real activity:\n• Uploads, votes, comments, shares, referrals, and clash wins all build hunter points\n• Points raise your hunter rank and leaderboard standing\n• Episode clash #1 wins +2,000 points when the 24-hour window closes\n\nReal cash path (ClashCoins):\n• Season leaders and exclusive prize programs may convert ClashCoins to cash\n• Cash-out requires KYC identity verification — this protects both you and the platform from fraud\n• Fake accounts, bots, or bought engagement violate Terms and can forfeit points / prizes\n\nEarnings are not a get-rich-overnight promise. They reward consistent quality clips, fair engagement, and verified winners. Always check the live Rewards / prize rules on the site for current amounts and eligibility.",
-          },
-          {
-            heading: "Privacy & what we protect",
-            body: "We take member privacy seriously:\n• Account data (email, profile, OAuth IDs) is used to run the platform — authentication, moderation, Rewards, and watch access\n• We do not sell your personal information to third parties\n• Uploads may be hashed to detect duplicates / abuse; moderation actions are logged for safety\n• Session cookies and security logs help prevent account takeover\n\nYou control what you publish. Do not upload private personal data about others. Review the Privacy Policy and Terms on clashanime.com for full legal detail.",
-          },
-          {
-            heading: "Credibility & trust signals",
-            body: "ClashAnime is designed as a transparent arena:\n• Public clash leaderboards and timed windows anyone can verify\n• Written Terms, Privacy Policy, and Community Guidelines\n• Manual / automated moderation on uploads and reports\n• KYC before cash prizes — winners must be real people\n• Separate member watch site (watchclashanime.com) behind account + Rewards activation\n\nIf something looks wrong (stolen clips, harassment, scams), use Report tools. Credibility grows when the community and staff enforce the same rules for everyone.",
+            heading: "Privacy & credibility",
+            body: "We use account data to run auth, moderation, Earn money, and watch access. We do not sell your personal data. Uploads may be hashed against abuse; KYC is required before cash. Public clash boards, written Terms/Privacy, and report tools keep the arena credible.",
           },
           {
             heading: "Watch Clash Anime — exclusive streaming",
-            body: "watchclashanime.com is for activated Clash Anime members only.\n\nFlow:\n1. Create account on clashanime.com\n2. Complete Rewards (/earn) activation\n3. Open watchclashanime.com (or use Watch links from the main site)\n4. Stream anime with Japanese audio and Arabic soft subtitle overlay where available\n\nThe gate message is intentional — it keeps exclusive watching for real members who joined the community.",
-          },
-          {
-            heading: "Fair play checklist",
-            body: "• Upload original edits you have rights to share\n• Use correct clash hashtags only\n• Never buy fake likes/bots\n• Never harass voters or competitors\n• Complete KYC honestly if you qualify for cash\n• Keep one real account — multi-account abuse can lead to bans\n\nPlay fair → grow faster → stay eligible for Rewards and prizes.",
+            body: "1. Create account on clashanime.com\n2. Finish Earn money (/earn)\n3. Open watchclashanime.com\n4. Watch with Japanese audio + soft Arabic subs when available\n\nThe gate keeps streaming for real activated members.",
           },
           {
             heading: "Quick start checklist",
-            body: "☐ Sign up on clashanime.com\n☐ Finish profile (username + avatar)\n☐ Open Rewards (/earn) and activate\n☐ Confirm watchclashanime.com gate opens\n☐ Enter a live clash from Home or /tracker\n☐ Upload a sharp short clip with correct tags\n☐ Share for votes and climb the board\n☐ Aim for season ranks / ClashCoins when eligible\n\nWelcome to the arena. Enter. Climb. Be the legend.",
+            body: "☐ Sign up on clashanime.com\n☐ Finish profile\n☐ Open Earn money (/earn) and activate\n☐ Confirm watchclashanime.com opens\n☐ Climb Newbie → Explorer → Duelist → Master → Clash Master\n☐ Enter a live clash and upload with correct tags\n☐ Aim for season ClashCoins when eligible ($10 minimum cash-out after KYC)\n\nWelcome to the arena. Enter. Climb. Be the legend.",
           },
         ],
       },
       ar: {
-        title: "دليل كامل: ClashAnime والربح والمشاهدة الحصرية والمصداقية",
+        title: "دليل كامل: ClashAnime واربح الأموال والمشاهدة والرتب والكسب الحقيقي",
         excerpt:
-          "شرح مفصّل عن الموقع، إثارة الساحة، تفعيل Rewards، مشاهدة watchclashanime، الخصوصية، المصداقية، وكيف يعمل كسب المال الحقيقي عبر ClashCoins.",
+          "شرح مفصّل عن الموقع، إثارة الساحة، رتب الصياد، تفعيل «اربح الأموال» (/earn)، الخصوصية، المصداقية، وكم يمكن أن تربح عبر ClashCoins.",
         sections: [
           {
             heading: "ما هو ClashAnime؟",
-            body: "ClashAnime منصة مجتمع أنمي تنافسية — ليست مجرد رفع مقاطع عشوائية. ترفع لقطات النزال، تدخل نزالات حلقات مؤقتة، تصعد رتب الصياد (من D إلى S)، تدعو أصدقاءك، وتفعّل Rewards. الأعضاء الذين يكملون التفعيل من صفحة Rewards (/earn) يفتحون مشاهدة حصرية على watchclashanime.com.\n\nثلاث ركائز للمنظومة:\n• clashanime.com — الساحة، الرفع، المجتمع، الرادار، Rewards\n• watchclashanime.com — مشاهدة أنمي للأعضاء فقط مع ترجمة عربية ناعمة\n• المدونة / دليل الأبطال — شروحات، أخبار، ودلائل الموسم\n\nحساب واحد: تنافس، اجمع نقاطاً، وشاهد — تحت هوية Clash Anime.",
+            body: "ClashAnime منصة مجتمع أنمي تنافسية — ليست مجرد رفع مقاطع عشوائية. ترفع لقطات النزال، تدخل نزالات حلقات مؤقتة، تصعد رتب الصياد، تدعو أصدقاءك، وتفعّل «اربح الأموال». الأعضاء الذين يكملون التفعيل من صفحة اربح الأموال (/earn) يفتحون مشاهدة حصرية على watchclashanime.com.\n\nثلاث ركائز:\n• clashanime.com — الساحة، الرفع، المجتمع، الرادار، اربح الأموال\n• watchclashanime.com — مشاهدة أنمي للأعضاء فقط مع ترجمة عربية ناعمة\n• المدونة / دليل الأبطال — شروحات وأخبار ودلائل الموسم\n\nحساب واحد: تنافس، اجمع نقاطاً، وشاهد — تحت هوية Clash Anime.",
           },
           {
             heading: "إثارة الساحة",
-            body: "كل حلقة كبيرة قد تفتح نافذة نزال 24 ساعة. الصفحة الرئيسية ورادار الأنمي (/tracker) وصفحات النزال تعرض العدّاد والهاشتاغات والقواعد ولوحة المتصدرين مباشرة.\n\nليش الجو حماسي؟\n• وقت محدود — الرفع المبكر يعطيك وقت تصويت أطول\n• ترتيب علني — إعجابات + تعليقات×2 + مشاركات×3 تحدد الفائز\n• مكافأة فورية — أفضل مقطع في نزال الحلقة يحصل على +2,000 نقطة صياد تلقائياً\n• حرارة الموسم — المتصدرون ينافسون على حصريات وجوائز ClashCoins\n\nالمنصة لمحبّي المنافسة والاعتراف وطاقة المجتمع — مو للتمرير البارد فقط.",
+            body: "كل حلقة كبيرة قد تفتح نزال 24 ساعة. الرئيسية ورادار الأنمي (/tracker) وصفحات النزال تعرض العدّاد والهاشتاغات والقواعد والمتصدرين مباشرة.\n\n• وقت محدود — الرفع المبكر = وقت تصويت أطول\n• ترتيب علني — إعجابات + تعليقات×2 + مشاركات×3\n• مكافأة فورية — المركز الأول +2,000 نقطة صياد\n• حرارة الموسم — جوائز ClashCoins للمتصدرين",
+          },
+          {
+            heading: "نظام صياد الجوائز ورتبة الصياد",
+            body: "من الملف الشخصي → نظام صياد الجوائز (#hunter-system). مجموع نقاطك يحدد رتبتك. الرتب الخمس:\n\n1. Newbie (مبتدئ) — من 0 إلى 999 نقطة\n   المزايا: التصويت والتعليق على الفيديوهات\n2. Explorer (مستكشف) — من 1,000 إلى 2,999 نقطة\n   يفتح: رفع مقاطع النزال (+ النشر في المجتمع من 1,000 نقطة)\n3. Duelist (مبارز) — من 3,000 إلى 5,999 نقطة\n   يفتح: تصويت مزدوج الوزن\n4. Master (ماستر) — من 6,000 إلى 9,999 نقطة\n   يفتح: شارة ماستر وأولوية في الترتيب\n5. Clash Master — من 10,000 إلى 20,000 نقطة\n   يفتح: أهلية طلب توثيق القناة\n\nكيف تكسب النقاط (حسب نظام الصياد):\n• +25 ترحيب بحساب جديد\n• +10 زيارة فريدة عبر رابط دعوتك\n• +100 عند تسجيل صديق عبر رابطك\n• +50 إضافية إذا سجّلت أنت عبر رابط صديق\n• +200 عندما يرفع صديقك أول فيديو\n• +150 عندما يشارك صديقك أول نزال\n• +20 رفع مقطع أصلي موثّق\n• +5 منشور في المجتمع\n• +2,000 فوز نزال حلقة 24 ساعة (المركز الأول)\n• +500 مكافأة ترند عند منحها\n\nتابع شريط التقدّم في الملف لمعرفة كم نقطة تفصلك عن الرتبة التالية.",
+          },
+          {
+            heading: "كم يمكن أن تربح من المال؟",
+            body: "المال يُدفع عبر ClashCoins (سنتات بالدولار في المحفظة) — مو راتباً مضموناً.\n\nمسارات الجوائز المعتادة على المنصة:\n• جوائز منصة الموسم / Top قد تصل تقريباً إلى ما يعادل 100$ / 500$ / 1,000$ حسب صندوق الجوائز الحي (Top 12، Hall of Legends، نزالات حصرية)\n• فوز نزال الحلقة الفوري يعطي +2,000 نقطة صياد (تسريع رتبة) — مو كاش مباشرة\n• تحويل النقاط عند الاستحقاق: تقريباً 10,000 نقطة صياد = 10$ ClashCoins\n• الحد الأدنى للسحب: 10$ بعد موافقة KYC\n• طرق السحب: تحويل بنكي دولي أو PayPal أو USDT حيث يُسمح\n• المراجعة عادة خلال 24–72 ساعة بعد KYC\n\nمهم: المبالغ وشروط الاستحقاق تتغيّر حسب الحملات. راجع دائماً صفحة اربح الأموال (/earn) والمحفظة على الموقع. التفاعل الوهمي يلغي الجوائز.",
           },
           {
             heading: "أنشئ حسابك وملفك",
-            body: "1. سجّل في clashanime.com (بريد أو تسجيل اجتماعي).\n2. اختر اسم مستخدم فريداً — يصبح رابط قناتك للمقاطع والدعوات.\n3. أضف صورة وبانر ونبذة ليتعرّف عليك المصوّتون.\n4. اقرأ إرشادات المجتمع والشروط — أنت مسؤول عن محتواك.\n\nالملف المكتمل يبدو أكثر مصداقية ويحوّل أفضل عند مشاركة روابط النزال.",
+            body: "1. سجّل في clashanime.com (بريد أو اجتماعي).\n2. اسم مستخدم فريد = رابط قناتك.\n3. أضف صورة وبانر ونبذة.\n4. اقرأ إرشادات المجتمع والشروط.",
           },
           {
-            heading: "فعّل Rewards (شرط للمشاهدة الحصرية)",
-            body: "الأعضاء الجدد يجب أن يزوروا صفحة Rewards (/earn) لفتح المشاهدة على watchclashanime.com.\n\nالخطوات:\n1. بعد التسجيل افتح Rewards من القائمة (أو تصل إليها من بوابة المشاهدة).\n2. أكمل مهام التفعيل الظاهرة في الصفحة بدقة.\n3. بعد التفعيل عُد إلى watchclashanime.com — البوابة تفتح لحسابك.\n\nبدون تفعيل Rewards تبقى بوابة المشاهدة مغلقة لغير الأعضاء / الحسابات غير المكتملة. هذا يحمي موقع البث لأعضاء المجتمع الحقيقيين.",
+            heading: "فعّل «اربح الأموال» (شرط للمشاهدة الحصرية)",
+            body: "الأعضاء الجدد يجب أن يفتحوا صفحة اربح الأموال (/earn) لفتح watchclashanime.com.\n\n1. بعد التسجيل افتح «اربح الأموال» من القائمة (أو من بوابة المشاهدة).\n2. أكمل مهام التفعيل في الصفحة.\n3. عُد إلى watchclashanime.com — البوابة تفتح لحسابك.\n\nبدون تفعيل اربح الأموال تبقى المشاهدة الحصرية مقفلة.",
           },
           {
             heading: "كيف تدخل نزالك الأول",
-            body: "1. افتح الرئيسية أو رادار الأنمي (/tracker) واختر نزالاً مباشراً بعدّاد.\n2. اضغط «ادخل النزال» — اقرأ القواعد والهاشتاغات والمتصدرين.\n3. اذهب للرفع وأرفق مقطعك (يفضّل 15–60 ثانية، صوت واضح، جودة حادة).\n4. أضف #clashanime مع كل هاشتاغات صفحة النزال.\n5. شارك رابط المقطع على X أو Discord أو واتساب أو تيليجرام لجلب الأصوات.\n\nالهاشتاغات الخاطئة أو المقاطع خارج الموضوع قد لا تظهر في لوحة ذلك النزال.",
+            body: "1. الرئيسية أو /tracker → نزال مباشر.\n2. ادخل النزال — قواعد وهاشتاغات ومتصدرون.\n3. ارفع مقطعاً حاداً 15–60 ثانية.\n4. #clashanime + هاشتاغات النزال.\n5. شارك الرابط لجلب الأصوات.",
           },
           {
-            heading: "نقاط الصياد والرتب وكسب مال حقيقي (ClashCoins)",
-            body: "ClashAnime يكافئ النشاط الحقيقي:\n• الرفع، التصويت، التعليقات، المشاركات، الإحالات، وفوز النزال تبني نقاط الصياد\n• النقاط ترفع رتبتك وترتيبك\n• المركز الأول في نزال الحلقة يحصل على +2,000 نقطة عند انتهاء الـ 24 ساعة\n\nمسار المال الحقيقي (ClashCoins):\n• متصدرون الموسم وبرامج الجوائز الحصرية قد يحوّلون ClashCoins إلى نقد\n• السحب يتطلب تحقق هوية KYC — يحميك ويحمي المنصة من الاحتيال\n• الحسابات الوهمية والبوتات وشراء التفاعل مخالف للشروط وقد يلغي النقاط/الجوائز\n\nالربح ليس وعداً بالإثراء بين ليلة وضحاها. يكافئ جودة المقاطع، تفاعلاً نظيفاً، وفائزين موثّقين. راجع دائماً قواعد Rewards والجوائز الحالية على الموقع للمبالغ وشروط الاستحقاق.",
-          },
-          {
-            heading: "الخصوصية وما نحميه",
-            body: "نحترم خصوصية الأعضاء:\n• بيانات الحساب (البريد، الملف، معرفات الدخول) تُستخدم لتشغيل المنصة — الدخول، الإشراف، Rewards، والمشاهدة\n• لا نبيع معلوماتك الشخصية لأطراف ثالثة\n• قد تُبصم المقاطع لاكتشاف التكرار/الإساءة؛ تُسجَّل إجراءات الإشراف للسلامة\n• ملفات الجلسة وسجلات الأمان تساعد على منع اختراق الحساب\n\nأنت تتحكم بما تنشره. لا ترفع بيانات شخصية خاصة عن الآخرين. راجع سياسة الخصوصية والشروط على clashanime.com للتفاصيل القانونية الكاملة.",
-          },
-          {
-            heading: "المصداقية وإشارات الثقة",
-            body: "ClashAnime مصمّم كساحة شفافة:\n• لوحات نزالات عامة ونوافذ زمنية يمكن لأي شخص التحقق منها\n• شروط وسياسة خصوصية وإرشادات مجتمع مكتوبة\n• إشراف يدوي/تلقائي على الرفع والبلاغات\n• KYC قبل الجوائز النقدية — الفائزون أشخاص حقيقيون\n• موقع مشاهدة منفصل للأعضاء بعد الحساب + تفعيل Rewards\n\nإذا رأيت مخالفة (سرقة مقاطع، تحرش، احتيال) استخدم أدوات الإبلاغ. المصداقية تنمو عندما يطبّق المجتمع والفريق نفس القواعد على الجميع.",
+            heading: "الخصوصية والمصداقية",
+            body: "نستخدم بيانات الحساب للدخول والإشراف واربح الأموال والمشاهدة — ولا نبيع بياناتك. قد تُبصم المقاطع ضد الإساءة. KYC إلزامي قبل الكاش. لوحات النزال العامة والشروط وأدوات الإبلاغ تحافظ على مصداقية الساحة.",
           },
           {
             heading: "Watch Clash Anime — مشاهدة حصرية",
-            body: "watchclashanime.com مخصّص لأعضاء Clash Anime المفعّلين فقط.\n\nالمسار:\n1. أنشئ حساباً على clashanime.com\n2. أكمل تفعيل Rewards (/earn)\n3. افتح watchclashanime.com (أو روابط المشاهدة من الموقع الرئيسي)\n4. شاهد بأنمي بصوت ياباني وترجمة عربية ناعمة حيث تتوفر\n\nرسالة البوابة مقصودة — تبقي المشاهدة الحصرية للأعضاء الحقيقيين المنضمين للمجتمع.",
-          },
-          {
-            heading: "قائمة اللعب النظيف",
-            body: "• ارفع مونتاجاً أصلياً لديك حق مشاركته\n• استخدم هاشتاغات النزال الصحيحة فقط\n• لا تشترِ إعجابات أو بوتات\n• لا تحرّض أو تضايق المصوّتين والمنافسين\n• أكمل KYC بصدق إن استحقت نقداً\n• حساب حقيقي واحد — إساءة الحسابات المتعددة قد تؤدي للحظر\n\nالعب بنزاهة → انمُ أسرع → ابقَ مؤهلاً لـ Rewards والجوائز.",
+            body: "1. حساب على clashanime.com\n2. أكمل اربح الأموال (/earn)\n3. افتح watchclashanime.com\n4. شاهد بصوت ياباني وترجمة عربية ناعمة عند التوفر\n\nالبوابة تحمي المشاهدة للأعضاء المفعّلين.",
           },
           {
             heading: "قائمة بداية سريعة",
-            body: "☐ سجّل في clashanime.com\n☐ أكمل الملف (اسم مستخدم + صورة)\n☐ افتح Rewards (/earn) وفعّل\n☐ تأكد أن بوابة watchclashanime.com تفتح\n☐ ادخل نزالاً مباشراً من الرئيسية أو /tracker\n☐ ارفع مقطعاً قصيراً حاداً بالهاشتاغات الصحيحة\n☐ شارك للتصويت واصعد اللوحة\n☐ استهدف رتب الموسم / ClashCoins عند الاستحقاق\n\nأهلاً بك في الساحة. ادخل. اصعد. كُن الأسطورة.",
+            body: "☐ سجّل في clashanime.com\n☐ أكمل الملف\n☐ افتح اربح الأموال (/earn) وفعّل\n☐ تأكد أن watchclashanime.com يفتح\n☐ اصعد: Newbie → Explorer → Duelist → Master → Clash Master\n☐ ادخل نزالاً وارفع بالهاشتاغات الصحيحة\n☐ استهدف ClashCoins الموسم (حد أدنى سحب 10$ بعد KYC)\n\nأهلاً في الساحة. ادخل. اصعد. كُن الأسطورة.",
           },
         ],
       },
       ja: {
-        title: "完全ガイド：ClashAnime・報酬・限定視聴・信頼性・現金化",
+        title: "完全ガイド：ClashAnime・お金を稼ぐ・ハンターランク・現金化",
         excerpt:
-          "ClashAnimeの仕組み、アリーナの熱量、Rewards有効化、watchclashanime限定視聴、プライバシー、信頼性、ClashCoinsによる現金報酬までを詳しく解説。",
+          "アリーナ、ハンターランク（Newbie〜Clash Master）、「お金を稼ぐ」(/earn) 有効化、プライバシー、信頼性、ClashCoinsでいくら稼げるかを詳しく解説。",
         sections: [
           {
             heading: "ClashAnimeとは？",
-            body: "ClashAnimeは競争型アニメコミュニティです。クリップを上げて対戦し、24時間エピソードクラッシュに参加し、ハンターランク（D→S）を上げ、友達を招待し、Rewardsを有効化します。Rewards（/earn）のオンボーディングを終えた会員だけが watchclashanime.com の限定視聴を利用できます。\n\n3つの柱：\n• clashanime.com — アリーナ、投稿、コミュニティ、レーダー、Rewards\n• watchclashanime.com — 会員限定のアニメ視聴（ソフト字幕）\n• ブログ／ヒーローズガイド — 解説・ニュース・季節ラインナップ\n\n1つのClash Animeアカウントで、競い、ポイントを稼ぎ、視聴します。",
+            body: "競争型アニメコミュニティです。クリップ投稿、24時間クラッシュ、ハンターランク上昇、招待、「お金を稼ぐ」の有効化まで。お金を稼ぐ（/earn）のオンボーディングを終えた会員だけが watchclashanime.com を利用できます。\n\n3つの柱：\n• clashanime.com — アリーナ・投稿・コミュニティ・レーダー・お金を稼ぐ\n• watchclashanime.com — 会員限定視聴\n• ブログ／ヒーローズガイド — 解説・ニュース\n\n1アカウントで競い、ポイントを稼ぎ、視聴します。",
           },
           {
             heading: "アリーナの熱量",
-            body: "大型エピソード公開時に24時間クラッシュが開くことがあります。ホーム、新作レーダー（/tracker）、クラッシュページにカウントダウン、タグ、ルール、ライブ順位が表示されます。\n\n熱い理由：\n• 時間が限られる — 早く上げるほど投票時間が長い\n• 公開順位 — いいね + コメント×2 + シェア×3で優勝が決まる\n• 即時リワード — 終了時1位クリップに+2,000ハンターポイント自動付与\n• シーズン競争 — 上位は限定特典とClashCoins賞金を狙う\n\n受け身のスクロールではなく、勝負と認知とコミュニティの熱量のための場所です。",
+            body: "大型エピソードで24時間クラッシュが開くことがあります。ホーム、/tracker、クラッシュページにカウントダウンとライブ順位。\n\n• 時間制限 — 早く上げるほど投票時間が長い\n• 公開順位 — いいね + コメント×2 + シェア×3\n• 即時報酬 — 1位に+2,000ハンターポイント\n• シーズン競争 — ClashCoins賞金",
           },
           {
-            heading: "アカウントとプロフィール作成",
-            body: "1. clashanime.com で登録（メールまたはソーシャル）。\n2. ユニークなユーザー名を設定 — クリップ共有・招待のチャンネルURLになります。\n3. アバター・バナー・自己紹介を入れて投票者に覚えてもらいましょう。\n4. コミュニティガイドラインと利用規約を読む — 投稿内容の責任は自分にあります。\n\n完成度の高いプロフィールは信頼感が高く、クラッシュリンクの反応も良くなります。",
+            heading: "賞金ハンターシステムとランク",
+            body: "プロフィール → 賞金ハンターシステム。合計ポイントでランクが決まります（5段階）：\n\n1. Newbie — 0〜999pt\n   特典：投票・コメント\n2. Explorer — 1,000〜2,999pt\n   解除：デュエルクリップ投稿（コミュニティ投稿も1,000+）\n3. Duelist — 3,000〜5,999pt\n   解除：投票が2倍\n4. Master — 6,000〜9,999pt\n   解除：Masterバッジと順位優先\n5. Clash Master — 10,000〜20,000pt\n   解除：チャンネル認証申請資格\n\nポイント例：\n• +25 新規登録\n• +10 招待リンクのユニーク訪問\n• +100 友達が招待リンクで登録\n• +50 自分が招待リンク経由で登録\n• +200 招待した友達が初投稿\n• +150 招待した友達が初デュエル参加\n• +20 認定オリジナル投稿\n• +5 コミュニティ投稿\n• +2,000 24時間エピソードクラッシュ1位\n• +500 トレンドボーナス（付与時）\n\n次ランクまでの残りはプロフィールのゲージで確認。",
           },
           {
-            heading: "Rewardsを有効化（限定視聴の条件）",
-            body: "新規会員は Rewards（/earn）を完了して watchclashanime.com の視聴を解放する必要があります。\n\n手順：\n1. 登録後、メニューから Rewards を開く（視聴ゲートから誘導される場合あり）。\n2. ページのオンボーディング手順を正確に完了する。\n3. 有効化後、watchclashanime.com に戻るとゲートが開きます。\n\nRewards未完了のアカウントでは視聴ゲートが閉じたままです。本物のコミュニティ会員向けに配信サイトを守る仕組みです。",
+            heading: "いくら稼げる？（現金）",
+            body: "現金はClashCoins（ウォレット内のUSDセント）で支払われます。固定給ではありません。\n\n目安：\n• シーズン／表彰台はプールにより約 $100 / $500 / $1,000 相当の可能性（Top 12、Hall of Legends、限定デュエル）\n• エピソードクラッシュ1位は+2,000ポイント（ランク加速）— それ自体は現金ではない\n• 変換目安：10,000ポイント = $10 ClashCoins（対象ランク時）\n• 最低出金：$10（KYC承認後）\n• 出金：国際銀行振込 / PayPal / USDT（許可地域）\n• 審査：通常KYC後24〜72時間\n\n金額・条件はキャンペーンで変わります。必ず「お金を稼ぐ」(/earn) とウォレットの最新ルールを確認。不正エンゲージは賞金無効。",
           },
           {
-            heading: "最初のクラッシュ参加方法",
-            body: "1. ホームまたは /tracker でカウントダウン中のクラッシュを選ぶ。\n2. 「クラッシュに入る」でルール・必須タグ・順位を確認。\n3. アップロードでクリップを添付（目安15–60秒、明瞭な音声、シャープな画質）。\n4. #clashanime とクラッシュページのタグをすべて付ける。\n5. X / Discord / WhatsApp / Telegram でリンクを共有して票を集める。\n\nタグ違いやテーマ外クリップは、そのクラッシュの順位に載らないことがあります。",
+            heading: "アカウント作成",
+            body: "1. clashanime.com で登録\n2. ユニークなユーザー名\n3. アバター・バナー・自己紹介\n4. ガイドラインと規約を読む",
           },
           {
-            heading: "ハンターポイント・ランク・現金化（ClashCoins）",
-            body: "本物の活動が報酬になります：\n• 投稿・投票・コメント・シェア・招待・クラッシュ勝利でポイント増加\n• ポイントでランクと順位が上がる\n• エピソードクラッシュ1位は24時間終了時に+2,000ポイント\n\n現金化（ClashCoins）：\n• シーズン上位や限定賞プログラムでClashCoinsを現金に換えられる場合あり\n• 出金にはKYC本人確認が必要 — 不正防止のため\n• 偽垢・ボット・購入エンゲージメントは規約違反でポイント／賞を失う可能性\n\n一攫千金の約束ではありません。質の高いクリップ、公正な拡散、本人確認済みの勝者を評価します。金額・条件はサイト上の最新Rewards／賞規約を確認してください。",
+            heading: "「お金を稼ぐ」を有効化（限定視聴の条件）",
+            body: "新規は「お金を稼ぐ」(/earn) を完了して watchclashanime.com を解放します。\n\n1. メニュー（または視聴ゲート）から開く\n2. オンボーディングを完了\n3. watchclashanime.com に戻るとゲートが開く\n\n未完了だと限定視聴はロックされたままです。",
           },
           {
-            heading: "プライバシー",
-            body: "会員のプライバシーを重視します：\n• アカウント情報は認証・モデレーション・Rewards・視聴のために使用\n• 個人情報を第三者に販売しません\n• 重複／不正検出のためハッシュ処理やモデレーションログを行う場合があります\n• セッションとセキュリティログでアカウント乗っ取りを防ぎます\n\n公開する内容は自分で管理してください。他人の個人情報を上げないでください。詳細は clashanime.com のプライバシーポリシーと利用規約を参照。",
+            heading: "最初のクラッシュ",
+            body: "1. ホームまたは /tracker\n2. クラッシュに入る\n3. 15〜60秒のシャープなクリップ\n4. #clashanime + 必須タグ\n5. リンクを共有して票を集める",
           },
           {
-            heading: "信頼性と透明性",
-            body: "ClashAnimeは透明なアリーナを目指します：\n• 誰でも確認できる公開ランキングと時間制限\n• 明文化された規約・プライバシー・ガイドライン\n• 投稿と通報のモデレーション\n• 現金賞前のKYC — 勝者は実在の人物\n• アカウント＋Rewards有効化後の会員限定視聴サイト\n\n盗用・嫌がらせ・詐欺を見つけたら通報機能を使ってください。同じルールが全員に適用されるほど信頼が育ちます。",
+            heading: "プライバシーと信頼性",
+            body: "アカウント情報は認証・モデレーション・お金を稼ぐ・視聴に使用し、第三者に販売しません。現金前にKYC必須。公開ランキングと通報で信頼性を守ります。",
           },
           {
             heading: "Watch Clash Anime — 限定視聴",
-            body: "watchclashanime.com は有効化済みClash Anime会員専用です。\n\n流れ：\n1. clashanime.com で登録\n2. Rewards（/earn）を完了\n3. watchclashanime.com を開く（または本サイトの視聴リンク）\n4. 日本語音声＋利用可能なソフト字幕で視聴\n\nゲート表示は意図的です — コミュニティに参加した本物の会員のための限定視聴を守ります。",
-          },
-          {
-            heading: "フェアプレイチェック",
-            body: "• 権利のあるオリジナル編集を投稿\n• 正しいクラッシュタグのみ使用\n• 偽いいね／ボット購入禁止\n• 投票者・対戦相手への嫌がらせ禁止\n• 現金対象なら正直にKYC\n• 本物の1アカウント — 多重垢はBAN対象\n\n公正に遊ぶほど早く伸び、Rewardsと賞金の資格を保てます。",
+            body: "1. clashanime.com 登録\n2. お金を稼ぐ（/earn）完了\n3. watchclashanime.com を開く\n4. 日本語音声＋ソフト字幕（ある場合）\n\nゲートは有効化会員のための仕組みです。",
           },
           {
             heading: "クイックスタート",
-            body: "☐ clashanime.com で登録\n☐ プロフィール完成（ユーザー名＋アバター）\n☐ Rewards（/earn）を有効化\n☐ watchclashanime.com のゲートが開くことを確認\n☐ ホームまたは /tracker からライブクラッシュへ\n☐ 正しいタグで短いシャープなクリップを投稿\n☐ 共有して順位を上げる\n☐ 対象ならシーズン順位／ClashCoinsを目指す\n\nアリーナへようこそ。入れ。登れ。伝説になれ。",
+            body: "☐ clashanime.com 登録\n☐ プロフィール完成\n☐ お金を稼ぐ（/earn）を有効化\n☐ watchclashanime.com が開くことを確認\n☐ Newbie → Explorer → Duelist → Master → Clash Master\n☐ ライブクラッシュに参加\n☐ ClashCoinsを目指す（KYC後最低出金$10）\n\nアリーナへようこそ。入れ。登れ。伝説になれ。",
           },
         ],
       },
