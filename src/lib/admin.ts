@@ -31,7 +31,7 @@ export const DEFAULT_GENERAL_SETTINGS: SiteGeneralSettings = {
 };
 
 export const DEFAULT_MODERATION_SETTINGS: SiteModerationSettings = {
-  auto_approve_enabled: true,
+  auto_approve_enabled: false,
   review_new_creators: true,
   reject_suspicious_uploads: true,
 };

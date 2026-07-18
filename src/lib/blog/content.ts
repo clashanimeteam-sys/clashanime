@@ -15,14 +15,14 @@ export const BLOG_POSTS: BlogPost[] = [
           {
             heading: "Start your journey: how do you become a ClashAnime legend?",
             hype: "The arena is not for spectators — it is for hunters who climb.",
-            body: "ClashAnime is a competitive anime community: upload duel clips, enter timed episode clashes, climb bounty hunter ranks, invite friends, and unlock Earn money (/earn). Finish onboarding there to open exclusive streaming on watchclashanime.com.\n\nThree pillars:\n• clashanime.com — arena, uploads, community, tracker, Earn money\n• watchclashanime.com — members-only watching with soft Arabic subs\n• Blog / Heroes Guide — tips, news, seasonal intel",
-            tip: "Don’t only watch — engaging with clashes multiplies your points. Stay active, stay strongest!",
+            body: "ClashAnime is a competitive anime community: upload duel clips, enter timed episode clashes, climb bounty hunter ranks, invite friends, and unlock Earn money (/earn). clashanime.com is the arena — compete, earn points, and grow your channel.\n\nWhat you get on this site:\n• Arena clashes, uploads, community, tracker, Earn money\n• Blog / Heroes Guide — tips, news, seasonal intel\n• Member tools after signup (profile, ranks, referrals)",
+            tip: "Don’t only watch clips — engaging with clashes multiplies your points. Stay active, stay strongest!",
           },
           {
             heading: "Hero privileges: what waits behind the gate?",
-            hype: "Cross the gate and the arena finally opens for you.",
-            body: "Activated members unlock exclusive watch access, hunter rank progress, clash competition, and ClashCoins paths tied to real activity.\n\nInside the heat:\n• 24-hour episode windows with live leaderboards\n• Ranking by likes + comments×2 + shares×3\n• Episode clash #1 auto-grants +2,000 hunter points\n• Season heat for exclusives and prize pools",
-            tip: "Finish Earn money (/earn) before you chase the gate — without it, watchclashanime.com stays locked.",
+            hype: "Finish Earn money and the arena tools open for you.",
+            body: "Activated members unlock hunter rank progress, clash competition, referrals, and ClashCoins paths tied to real activity.\n\nInside the heat:\n• 24-hour episode windows with live leaderboards\n• Ranking by likes + comments×2 + shares×3\n• Episode clash #1 auto-grants +2,000 hunter points\n• Season heat for exclusives and prize pools",
+            tip: "Finish Earn money (/earn) first — it unlocks membership tools and keeps the arena fair.",
           },
           {
             heading: "Path of power: fastest ways to stack ClashCoins",
@@ -43,8 +43,8 @@ export const BLOG_POSTS: BlogPost[] = [
             tip: "Send the link with a live clash hashtag so new hunters enter a fight on day one.",
           },
           {
-            heading: "Visual roadmap: three steps to the gate",
-            body: "Follow the path — foundation, challenge, then the open gate.",
+            heading: "Visual roadmap: three steps into the arena",
+            body: "Follow the path — foundation, challenge, then your first clash.",
             roadmap: [
               {
                 label: "Step 1 · Foundation",
@@ -54,15 +54,15 @@ export const BLOG_POSTS: BlogPost[] = [
               {
                 label: "Step 2 · Challenge",
                 title: "Enter Earn money",
-                detail: "Open Earn money (/earn) from the menu or watch gate, complete onboarding tasks, and activate your membership.",
+                detail: "Open Earn money (/earn) from the menu, complete onboarding tasks, and activate your membership.",
               },
               {
-                label: "Step 3 · Open the gate",
-                title: "Launch watchclashanime.com",
-                detail: "Return to watchclashanime.com and stream — Japanese audio with soft Arabic subs when available.",
+                label: "Step 3 · Compete",
+                title: "Join a live clash",
+                detail: "Open Home or /tracker, enter a live clash, upload a sharp short clip with the correct hashtags, and climb.",
               },
             ],
-            tip: "Don’t only watch; clash interaction multiplies your points ~3× via comments and shares. Be active, be strongest!",
+            tip: "Don’t only browse; clash interaction multiplies your points via comments and shares. Be active, be strongest!",
           },
           {
             heading: "Enter your first clash — make noise",
@@ -84,14 +84,14 @@ export const BLOG_POSTS: BlogPost[] = [
           {
             heading: "ابدأ رحلتك: كيف تصبح أسطورة ClashAnime؟",
             hype: "الساحة ليست للمتفرجين — هي للصيادين الذين يصعدون.",
-            body: "ClashAnime منصة مجتمع أنمي تنافسية: ترفع لقطات النزال، تدخل نزالات حلقات مؤقتة، تصعد رتب الصياد، تدعو أصدقاءك، وتفعّل «اربح الأموال» (/earn). من يكمل التفعيل يفتح مشاهدة حصرية على watchclashanime.com.\n\nثلاث ركائز:\n• clashanime.com — الساحة، الرفع، المجتمع، الرادار، اربح الأموال\n• watchclashanime.com — مشاهدة للأعضاء مع ترجمة عربية ناعمة\n• المدونة / دليل الأبطال — نصائح وأخبار وذكاء الموسم",
-            tip: "لا تكتفِ بالمشاهدة فقط؛ التفاعل مع النزالات يضاعف نقاطك. كن نشطاً، تكن الأقوى!",
+            body: "ClashAnime منصة مجتمع أنمي تنافسية: ترفع لقطات النزال، تدخل نزالات حلقات مؤقتة، تصعد رتب الصياد، تدعو أصدقاءك، وتفعّل «اربح الأموال» (/earn). clashanime.com هي الساحة — تنافس، اجمع نقاطاً، وابنِ قناتك.\n\nعلى هذا الموقع:\n• نزالات، رفع، مجتمع، رادار، اربح الأموال\n• المدونة / دليل الأبطال — نصائح وأخبار وذكاء الموسم\n• أدوات العضوية بعد التسجيل (ملف، رتب، إحالات)",
+            tip: "لا تكتفِ بمشاهدة المقاطع فقط؛ التفاعل مع النزالات يضاعف نقاطك. كن نشطاً، تكن الأقوى!",
           },
           {
             heading: "امتيازات الأبطال: ماذا تنتظرك خلف البوابة؟",
-            hype: "اعبر البوابة… والساحة تنفتح أخيراً أمامك.",
-            body: "الأعضاء المفعّلون يحصلون على مشاهدة حصرية، تقدّم رتب الصياد، منافسة النزال، ومسارات ClashCoins مربوطة بنشاط حقيقي.\n\nداخل الحرارة:\n• نوافذ حلقات 24 ساعة مع لوحات مباشرة\n• ترتيب: إعجابات + تعليقات×2 + مشاركات×3\n• المركز الأول في نزال الحلقة: +2,000 نقطة صياد تلقائياً\n• حرارة الموسم للحصريات وصناديق الجوائز",
-            tip: "أكمل «اربح الأموال» (/earn) قبل ملاحقة البوابة — بدونها تبقى watchclashanime.com مقفلة.",
+            hype: "أكمل اربح الأموال وأدوات الساحة تنفتح أمامك.",
+            body: "الأعضاء المفعّلون يحصلون على تقدّم رتب الصياد، منافسة النزال، الإحالات، ومسارات ClashCoins مربوطة بنشاط حقيقي.\n\nداخل الحرارة:\n• نوافذ حلقات 24 ساعة مع لوحات مباشرة\n• ترتيب: إعجابات + تعليقات×2 + مشاركات×3\n• المركز الأول في نزال الحلقة: +2,000 نقطة صياد تلقائياً\n• حرارة الموسم للحصريات وصناديق الجوائز",
+            tip: "أكمل «اربح الأموال» (/earn) أولاً — يفتح أدوات العضوية ويبقي الساحة عادلة.",
           },
           {
             heading: "طريق القوة: أسرع الطرق لجمع الـ ClashCoins",
@@ -112,8 +112,8 @@ export const BLOG_POSTS: BlogPost[] = [
             tip: "أرسل الرابط مع هاشتاغ نزال مباشر ليدخل الصياد الجديد القتال من اليوم الأول.",
           },
           {
-            heading: "المخطط البصري: ثلاث خطوات للبوابة",
-            body: "اتبع المسار — الأساس، ثم التحدي، ثم انفتاح البوابة.",
+            heading: "المخطط البصري: ثلاث خطوات إلى الساحة",
+            body: "اتبع المسار — الأساس، ثم التحدي، ثم أول نزال.",
             roadmap: [
               {
                 label: "الخطوة الأولى · الأساس",
@@ -123,12 +123,12 @@ export const BLOG_POSTS: BlogPost[] = [
               {
                 label: "الخطوة الثانية · التحدي",
                 title: "ابدأ التحدي — ادخل صفحة اربح الأموال",
-                detail: "افتح «اربح الأموال» (/earn) من القائمة أو بوابة المشاهدة، أكمل مهام التفعيل، وفعّل عضويتك.",
+                detail: "افتح «اربح الأموال» (/earn) من القائمة، أكمل مهام التفعيل، وفعّل عضويتك.",
               },
               {
-                label: "الخطوة الثالثة · افتح البوابة",
-                title: "انطلق للمشاهدة على watchclashanime.com",
-                detail: "عُد إلى watchclashanime.com وشاهد — صوت ياباني مع ترجمة عربية ناعمة عند التوفر.",
+                label: "الخطوة الثالثة · نافس",
+                title: "ادخل نزالاً مباشراً",
+                detail: "افتح الرئيسية أو /tracker، ادخل نزالاً حياً، ارفع مقطعاً قصيراً حاداً بالهاشتاغات الصحيحة، واصعد.",
               },
             ],
             tip: "لا تكتفِ بالمشاهدة فقط؛ التفاعل مع النزالات يضاعف نقاطك 3 مرات. كن نشطاً، تكن الأقوى!",
@@ -148,19 +148,19 @@ export const BLOG_POSTS: BlogPost[] = [
       ja: {
         title: "旅を始めよう：ClashAnimeの伝説になるには？",
         excerpt:
-          "好奇心を刺激するガイド。ハンターランク、ClashCoinsの力への道、ゲートの向こうの特典、登録から watchclashanime.com までの3ステップ視覚ロードマップ。",
+          "好奇心を刺激するガイド。ハンターランク、ClashCoinsの力への道、英雄の特典、登録から最初のクラッシュまでの3ステップ視覚ロードマップ。",
         sections: [
           {
             heading: "旅を始めよう：ClashAnimeの伝説になるには？",
             hype: "アリーナは観客の場所ではない — 登るハンターのための場所だ。",
-            body: "ClashAnimeは競争型アニメコミュニティ。クリップ投稿、時間制限クラッシュ、ハンターランク上昇、招待、「お金を稼ぐ」(/earn) 有効化。完了すると watchclashanime.com の限定視聴が開きます。\n\n3つの柱：\n• clashanime.com — アリーナ・投稿・コミュニティ・レーダー・お金を稼ぐ\n• watchclashanime.com — 会員限定視聴（ソフト字幕）\n• ブログ／ヒーローズガイド — ヒント・ニュース",
-            tip: "見るだけはやめよう。クラッシュへの参加がポイントを倍増させる。動け、最強であれ！",
+            body: "ClashAnimeは競争型アニメコミュニティ。クリップ投稿、時間制限クラッシュ、ハンターランク上昇、招待、「お金を稼ぐ」(/earn) 有効化。clashanime.com はアリーナ — 競い、ポイントを稼ぎ、チャンネルを育てます。\n\nこのサイトでできること：\n• クラッシュ・投稿・コミュニティ・レーダー・お金を稼ぐ\n• ブログ／ヒーローズガイド — ヒント・ニュース\n• 登録後の会員ツール（プロフィール・ランク・招待）",
+            tip: "クリップを見るだけはやめよう。クラッシュへの参加がポイントを倍増させる。動け、最強であれ！",
           },
           {
             heading: "英雄の特典：ゲートの向こうに何がある？",
-            hype: "ゲートを越えれば、アリーナがついに開く。",
-            body: "有効化会員は限定視聴、ランク進行、クラッシュ競争、活動連動のClashCoinsにアクセスできます。\n\n熱量の中身：\n• 24時間エピソード枠とライブ順位\n• いいね + コメント×2 + シェア×3\n• クラッシュ1位で+2,000ハンターポイント\n• シーズン限定と賞金プール",
-            tip: "ゲートを追う前に「お金を稼ぐ」(/earn) を完了せよ — 未完了だと視聴はロックのまま。",
+            hype: "「お金を稼ぐ」を完了すれば、アリーナのツールが開く。",
+            body: "有効化会員はランク進行、クラッシュ競争、招待、活動連動のClashCoinsにアクセスできます。\n\n熱量の中身：\n• 24時間エピソード枠とライブ順位\n• いいね + コメント×2 + シェア×3\n• クラッシュ1位で+2,000ハンターポイント\n• シーズン限定と賞金プール",
+            tip: "まず「お金を稼ぐ」(/earn) を完了せよ — 会員ツールが開き、アリーナが公正に保たれる。",
           },
           {
             heading: "力への道：ClashCoinsを最速で積む方法",
@@ -181,8 +181,8 @@ export const BLOG_POSTS: BlogPost[] = [
             tip: "ライブクラッシュのタグ付きでリンクを送れ — 初日に戦場へ入れ。",
           },
           {
-            heading: "視覚ロードマップ：ゲートへの3ステップ",
-            body: "道をたどれ — 基盤、挑戦、そして開いたゲート。",
+            heading: "視覚ロードマップ：アリーナへの3ステップ",
+            body: "道をたどれ — 基盤、挑戦、そして最初のクラッシュ。",
             roadmap: [
               {
                 label: "ステップ1 · 基盤",
@@ -192,12 +192,12 @@ export const BLOG_POSTS: BlogPost[] = [
               {
                 label: "ステップ2 · 挑戦",
                 title: "「お金を稼ぐ」へ進め",
-                detail: "メニューまたは視聴ゲートから「お金を稼ぐ」(/earn) を開き、オンボーディングを完了して有効化する。",
+                detail: "メニューから「お金を稼ぐ」(/earn) を開き、オンボーディングを完了して有効化する。",
               },
               {
-                label: "ステップ3 · ゲートを開く",
-                title: "watchclashanime.com で視聴開始",
-                detail: "watchclashanime.com に戻り、日本語音声＋ソフト字幕（ある場合）で視聴する。",
+                label: "ステップ3 · 勝負",
+                title: "ライブクラッシュに参加",
+                detail: "ホームまたは /tracker からライブクラッシュへ入り、正しいタグで短いシャープなクリップを投稿して順位を上げる。",
               },
             ],
             tip: "見るだけはやめよう。クラッシュへの反応はコメントとシェアでポイントを約3倍にする。動け、最強であれ！",
@@ -209,7 +209,7 @@ export const BLOG_POSTS: BlogPost[] = [
           },
           {
             heading: "伝説の信頼：プライバシーと信頼性",
-            body: "アカウント情報は認証・モデレーション・お金を稼ぐ・視聴に使い、販売しません。現金前にKYC。公開順位と通報で公平を守る。",
+            body: "アカウント情報は認証・モデレーション・お金を稼ぐに使い、販売しません。現金前にKYC。公開順位と通報で公平を守る。",
             tip: "本物の1アカウントだけ。多重垢は登攀ごとBANされ得る。",
           },
         ],

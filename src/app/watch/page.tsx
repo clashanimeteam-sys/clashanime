@@ -3,7 +3,7 @@ import { WatchBrowseFrame } from "@/components/watch/WatchBrowseFrame";
 import { buildPageMetadata } from "@/lib/seoMetadata";
 import { createServerClient } from "@/lib/supabase/server";
 
-export const metadata = buildPageMetadata("watch");
+export const metadata = buildPageMetadata("watch", { indexable: false });
 export const dynamic = "force-dynamic";
 
 export default async function WatchPage() {

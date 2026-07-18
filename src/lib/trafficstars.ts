@@ -1,19 +1,20 @@
-/** TrafficStars publisher config — banner spot ID + popunder script URL from dashboard. */
+/**
+ * TrafficStars — disabled on clashanime.com (AdSense property).
+ * Keep helpers inert so admin/env values cannot load a second ad network.
+ */
 
 export function getTrafficStarsBannerSpot() {
-  return process.env.NEXT_PUBLIC_TRAFFICSTARS_BANNER_SPOT?.trim() ?? "";
+  return "";
 }
 
 export function getTrafficStarsPopunderUrl() {
-  const raw = process.env.NEXT_PUBLIC_TRAFFICSTARS_POPUNDER_URL?.trim() ?? "";
-  if (!raw) return "";
-  if (raw.startsWith("//")) return `https:${raw}`;
-  return raw;
+  return "";
 }
 
-export function normalizeTrafficStarsScriptUrl(value: string) {
-  const trimmed = value.trim();
-  if (!trimmed) return "";
-  if (trimmed.startsWith("//")) return `https:${trimmed}`;
-  return trimmed;
+export function normalizeTrafficStarsScriptUrl(_value: string) {
+  return "";
+}
+
+export function isTrafficStarsEnabled() {
+  return false;
 }

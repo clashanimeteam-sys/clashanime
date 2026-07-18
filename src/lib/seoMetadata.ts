@@ -97,9 +97,9 @@ export const PAGE_SEO: Record<
     path: "/blog/anime-news",
   },
   watch: {
-    title: "Watch Anime — Posters, Episodes & Streaming",
+    title: "Member watch catalog — Clash Anime",
     description:
-      "Browse anime posters, episodes, and movies inside Clash Anime. A dedicated watch experience with covers and episode lists — شاهد الأنمي — アニメ視聴.",
+      "Signed-in members can browse the Clash Anime catalog. Not a public streaming index — community arena first.",
     path: "/watch",
   },
 };
@@ -116,6 +116,8 @@ type BuildPageMetadataOptions = {
   modifiedTime?: string;
   authors?: string[];
   tags?: string[];
+  /** When false, page is noindex/nofollow (e.g. member-only /watch). */
+  indexable?: boolean;
 };
 
 function buildOpenGraphArticleFields(options: BuildPageMetadataOptions) {
@@ -143,17 +145,18 @@ export function buildPageMetadata(
   const ogImage = options.image?.startsWith("http")
     ? options.image
     : absoluteSiteUrl(imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`);
+  const indexable = options.indexable !== false;
 
   return {
     title,
     description,
     keywords,
     robots: {
-      index: true,
-      follow: true,
+      index: indexable,
+      follow: indexable,
       googleBot: {
-        index: true,
-        follow: true,
+        index: indexable,
+        follow: indexable,
         "max-image-preview": "large",
         "max-snippet": -1,
       },

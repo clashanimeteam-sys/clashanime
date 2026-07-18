@@ -31,6 +31,7 @@ export const DISALLOWED_PATH_PREFIXES = [
   "/upload",
   "/settings",
   "/profile",
+  "/watch",
 ] as const;
 
 export function absoluteSiteUrl(path: string): string {
