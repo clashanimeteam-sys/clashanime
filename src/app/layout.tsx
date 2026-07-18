@@ -65,11 +65,6 @@ export default function RootLayout({
       className={`notranslate ${geistSans.variable} ${geistMono.variable} ${orbitron.variable} ${plusJakarta.variable} ${cairo.variable} h-full antialiased`}
     >
       <head>
-        {/* HilltopAds ownership verification for clashanime.com */}
-        <meta
-          name="0be7b26edd3604db725c1d72212e0ff3bd5d6770"
-          content="0be7b26edd3604db725c1d72212e0ff3bd5d6770"
-        />
         <meta name="referrer" content="no-referrer-when-downgrade" />
       </head>
       <body
