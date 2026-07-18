@@ -12,47 +12,56 @@ import { useLocale } from "@/providers/LocaleProvider";
 const COPY = {
   en: {
     title: "Coming Soon cover video",
-    hint: "Background video for /watch (Coming Soon). Upload MP4/WebM or paste a URL, then save. Max ~200 MB.",
+    hint: "Background for /watch. Prefer a short compressed MP4 (under ~15 MB) so it starts fast. Poster hides after the timer below.",
     videoFile: "Upload video",
     posterFile: "Upload poster image (optional)",
     videoUrl: "Video URL",
     posterUrl: "Poster image URL",
+    posterHide: "Hide poster after (seconds)",
+    muted: "Mute video (no sound)",
+    overlay: "Black overlay strength (%)",
     save: "Save cover",
     saving: "Saving…",
     uploading: "Uploading…",
     reset: "Reset to default",
     preview: "Open /watch",
-    saved: "Cover saved. Refresh /watch to see it.",
+    saved: "Cover saved. Hard-refresh /watch (Cmd+Shift+R).",
     resetDone: "Cover reset to default.",
   },
   ar: {
     title: "فيديو غلاف «قريباً»",
-    hint: "فيديو خلفية صفحة /watch (قريباً). ارفع MP4/WebM أو الصق رابطاً ثم احفظ. الحد تقريباً 200 ميغابايت.",
+    hint: "خلفية /watch. يُفضّل MP4 قصير ومضغوط (أقل من ~15 ميغابايت) ليبدأ سريعاً. صورة الغلاف تختفي بعد المدة أدناه.",
     videoFile: "تحميل فيديو",
     posterFile: "تحميل صورة غلاف (اختياري)",
     videoUrl: "رابط الفيديو",
     posterUrl: "رابط صورة الغلاف",
+    posterHide: "إخفاء الغلاف بعد (ثوانٍ)",
+    muted: "كتم صوت الفيديو",
+    overlay: "قوة التظليل الأسود (%)",
     save: "حفظ الغلاف",
     saving: "جارٍ الحفظ…",
     uploading: "جارٍ الرفع…",
     reset: "إعادة الافتراضي",
     preview: "فتح /watch",
-    saved: "تم حفظ الغلاف. حدّث /watch لتشاهده.",
+    saved: "تم الحفظ. حدّث /watch بقوة (Cmd+Shift+R).",
     resetDone: "تمت إعادة الغلاف للافتراضي.",
   },
   ja: {
     title: "Coming Soon カバー動画",
-    hint: "/watch（近日公開）の背景動画。MP4/WebMをアップロードするかURLを貼って保存。最大約200MB。",
+    hint: "/watch の背景。短い圧縮MP4（目安15MB以下）推奨。ポスターは下の秒数で消えます。",
     videoFile: "動画をアップロード",
     posterFile: "ポスター画像（任意）",
     videoUrl: "動画URL",
     posterUrl: "ポスターURL",
+    posterHide: "ポスター非表示まで（秒）",
+    muted: "ミュート（無音）",
+    overlay: "黒オーバーレイ強度（%）",
     save: "カバーを保存",
     saving: "保存中…",
     uploading: "アップロード中…",
     reset: "デフォルトに戻す",
     preview: "/watch を開く",
-    saved: "保存しました。/watch を更新してください。",
+    saved: "保存しました。/watch を強制更新してください。",
     resetDone: "デフォルトに戻しました。",
   },
 } as const;
@@ -243,6 +252,52 @@ export function AdminWatchComingSoonCoverPanel() {
             className="mt-1 w-full rounded-xl border border-zinc-800 bg-black px-3 py-2 text-white"
           />
         </label>
+
+        <label className="text-sm text-zinc-300">
+          {copy.posterHide}
+          <input
+            type="number"
+            min={0}
+            max={10}
+            step={0.5}
+            value={cover.posterHideSeconds}
+            onChange={(event) =>
+              setCover((current) => ({
+                ...current,
+                posterHideSeconds: Number(event.target.value),
+              }))
+            }
+            className="mt-1 w-full rounded-xl border border-zinc-800 bg-black px-3 py-2 text-white"
+          />
+        </label>
+
+        <label className="flex items-center gap-3 text-sm text-zinc-300 md:pt-7">
+          <input
+            type="checkbox"
+            checked={cover.muted}
+            onChange={(event) => setCover((current) => ({ ...current, muted: event.target.checked }))}
+            className="h-4 w-4 rounded border-zinc-600"
+          />
+          {copy.muted}
+        </label>
+
+        <label className="text-sm text-zinc-300 md:col-span-2">
+          {copy.overlay}: {cover.overlayOpacity}%
+          <input
+            type="range"
+            min={0}
+            max={90}
+            step={5}
+            value={cover.overlayOpacity}
+            onChange={(event) =>
+              setCover((current) => ({
+                ...current,
+                overlayOpacity: Number(event.target.value),
+              }))
+            }
+            className="mt-2 w-full accent-orange-500"
+          />
+        </label>
       </div>
 
       {cover.videoUrl ? (
@@ -250,8 +305,7 @@ export function AdminWatchComingSoonCoverPanel() {
           key={cover.videoUrl}
           className="max-h-48 w-full rounded-xl border border-zinc-800 object-cover"
           src={cover.videoUrl}
-          poster={cover.posterUrl || undefined}
-          muted
+          muted={cover.muted}
           loop
           playsInline
           controls

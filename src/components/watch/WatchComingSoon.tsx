@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   DEFAULT_WATCH_COMING_SOON_COVER,
   type WatchComingSoonCover,
@@ -40,24 +40,61 @@ export function WatchComingSoon({ cover }: WatchComingSoonProps) {
   const { locale } = useLocale();
   const copy = COPY[locale] ?? COPY.en;
   const videoRef = useRef<HTMLVideoElement>(null);
-  const videoSrc = cover?.videoUrl || DEFAULT_WATCH_COMING_SOON_COVER.videoUrl;
-  const posterSrc = cover?.posterUrl || DEFAULT_WATCH_COMING_SOON_COVER.posterUrl;
+  const settings = cover ?? DEFAULT_WATCH_COMING_SOON_COVER;
+  const videoSrc = settings.videoUrl || DEFAULT_WATCH_COMING_SOON_COVER.videoUrl;
+  const posterSrc = settings.posterUrl || DEFAULT_WATCH_COMING_SOON_COVER.posterUrl;
+  const muted = settings.muted !== false;
+  const posterHideMs = Math.round((settings.posterHideSeconds ?? 1.5) * 1000);
+  const overlayOpacity = Math.min(100, Math.max(0, settings.overlayOpacity ?? 40)) / 100;
+
+  const [showPoster, setShowPoster] = useState(true);
+  const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
+    setShowPoster(true);
+    setVideoReady(false);
+
     const video = videoRef.current;
     if (!video) return;
-    video.muted = true;
-    video.defaultMuted = true;
-    video.volume = 0;
-    const play = () => {
-      void video.play().catch(() => {
-        /* autoplay can still fail on some browsers */
+
+    const applyMute = () => {
+      video.muted = muted;
+      video.defaultMuted = muted;
+      if (muted) video.volume = 0;
+    };
+
+    const tryPlay = () => {
+      applyMute();
+      void video.play().then(() => setVideoReady(true)).catch(() => {
+        /* autoplay can fail; poster timer still clears */
       });
     };
-    play();
-    video.addEventListener("canplay", play);
-    return () => video.removeEventListener("canplay", play);
-  }, [videoSrc]);
+
+    applyMute();
+    video.load();
+    tryPlay();
+
+    const onPlaying = () => setVideoReady(true);
+    const onCanPlay = () => tryPlay();
+    const onLoadedData = () => tryPlay();
+
+    video.addEventListener("playing", onPlaying);
+    video.addEventListener("canplay", onCanPlay);
+    video.addEventListener("loadeddata", onLoadedData);
+
+    const hideTimer = window.setTimeout(() => setShowPoster(false), posterHideMs);
+
+    return () => {
+      window.clearTimeout(hideTimer);
+      video.removeEventListener("playing", onPlaying);
+      video.removeEventListener("canplay", onCanPlay);
+      video.removeEventListener("loadeddata", onLoadedData);
+    };
+  }, [videoSrc, muted, posterHideMs]);
+
+  useEffect(() => {
+    if (videoReady) setShowPoster(false);
+  }, [videoReady]);
 
   return (
     <div className="relative flex h-full min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden px-6 py-16 text-center md:min-h-0">
@@ -66,17 +103,29 @@ export function WatchComingSoon({ cover }: WatchComingSoonProps) {
         ref={videoRef}
         className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover"
         src={videoSrc}
-        poster={posterSrc}
         autoPlay
-        muted
+        muted={muted}
         loop
         playsInline
         preload="auto"
         disablePictureInPicture
         aria-hidden
       />
+
+      {/* Separate poster layer — hides after timer or when video starts (native poster sticks too long on big files). */}
+      {showPoster ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={posterSrc}
+          alt=""
+          className="pointer-events-none absolute inset-0 z-[1] h-full w-full object-cover transition-opacity duration-500"
+          aria-hidden
+        />
+      ) : null}
+
       <div
-        className="absolute inset-0 z-[1] bg-gradient-to-b from-black/45 via-black/35 to-black/55"
+        className="pointer-events-none absolute inset-0 z-[2]"
+        style={{ backgroundColor: `rgba(0,0,0,${overlayOpacity})` }}
         aria-hidden
       />
 
