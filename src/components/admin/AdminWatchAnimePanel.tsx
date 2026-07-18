@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { AdminWatchComingSoonCoverPanel } from "@/components/admin/AdminWatchComingSoonCoverPanel";
 import type { WatchSourceRow } from "@/lib/watchAdmin";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -110,10 +111,6 @@ export function AdminWatchAnimePanel() {
     }
   }
 
-  if (loading) {
-    return <p className="text-sm text-zinc-400">{t.admin.watchAnimeLoading}</p>;
-  }
-
   return (
     <div className="space-y-8">
       <div>
@@ -126,6 +123,12 @@ export function AdminWatchAnimePanel() {
         </p>
       </div>
 
+      <AdminWatchComingSoonCoverPanel />
+
+      {loading ? (
+        <p className="text-sm text-zinc-400">{t.admin.watchAnimeLoading}</p>
+      ) : (
+        <>
       <section className="rounded-2xl border border-violet-500/20 bg-violet-950/20 p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
@@ -259,8 +262,13 @@ export function AdminWatchAnimePanel() {
             </button>
           </article>
         ))}
-        {sources.length === 0 ? <p className="text-sm text-zinc-500">{t.admin.watchAnimeEmpty}</p> : null}
+        {sources.length === 0 && !error ? (
+          <p className="text-sm text-zinc-500">{t.admin.watchAnimeEmpty}</p>
+        ) : null}
+        {error ? <p className="text-sm text-red-400">{error}</p> : null}
       </div>
+        </>
+      )}
     </div>
   );
 }

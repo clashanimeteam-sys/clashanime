@@ -2,6 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import {
+  DEFAULT_WATCH_COMING_SOON_COVER,
+  type WatchComingSoonCover,
+} from "@/lib/watchComingSoonCover";
 import { useLocale } from "@/providers/LocaleProvider";
 
 const COPY = {
@@ -28,10 +32,16 @@ const COPY = {
   },
 } as const;
 
-export function WatchComingSoon() {
+type WatchComingSoonProps = {
+  cover?: WatchComingSoonCover;
+};
+
+export function WatchComingSoon({ cover }: WatchComingSoonProps) {
   const { locale } = useLocale();
   const copy = COPY[locale] ?? COPY.en;
   const videoRef = useRef<HTMLVideoElement>(null);
+  const videoSrc = cover?.videoUrl || DEFAULT_WATCH_COMING_SOON_COVER.videoUrl;
+  const posterSrc = cover?.posterUrl || DEFAULT_WATCH_COMING_SOON_COVER.posterUrl;
 
   useEffect(() => {
     const video = videoRef.current;
@@ -47,15 +57,16 @@ export function WatchComingSoon() {
     play();
     video.addEventListener("canplay", play);
     return () => video.removeEventListener("canplay", play);
-  }, []);
+  }, [videoSrc]);
 
   return (
     <div className="relative flex h-full min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden px-6 py-16 text-center md:min-h-0">
       <video
+        key={videoSrc}
         ref={videoRef}
         className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover"
-        src="/animevideo.mp4"
-        poster="/animevideo-poster.jpg"
+        src={videoSrc}
+        poster={posterSrc}
         autoPlay
         muted
         loop
