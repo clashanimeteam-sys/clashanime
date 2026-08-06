@@ -138,26 +138,8 @@ function FeaturedHero({ articles }: { articles: AnimeNewsArticle[] }) {
 
 export function AnimeNewsIndexContent({ articles }: AnimeNewsIndexContentProps) {
   const { t } = useLocale();
-  const [spotlight, setSpotlight] = useState<FeaturedAnimeEntry[]>([]);
 
   usePageTitle(t.blog.animeNews.hubTitle);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    void fetch("/api/anime-news/spotlight")
-      .then((response) => (response.ok ? response.json() : { catalog: [] }))
-      .then((payload: { catalog?: FeaturedAnimeEntry[] }) => {
-        if (!cancelled) setSpotlight(payload.catalog ?? []);
-      })
-      .catch(() => {
-        /* optional spotlight */
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   const feedArticles = articles.filter((article) => article.slug !== FEATURED_SEASONAL_GUIDE_SLUG);
   const latestArticles = feedArticles;
@@ -200,21 +182,24 @@ export function AnimeNewsIndexContent({ articles }: AnimeNewsIndexContentProps) 
 
             <aside className="anime-news-sidebar-column space-y-6 lg:sticky lg:top-24 lg:max-h-[calc(100dvh-6rem)] lg:self-start lg:overflow-y-auto lg:overscroll-y-contain lg:pr-1">
               <AnimeNewsTopSidebar articles={topNewsArticles} />
-              <div className="rounded-2xl border border-zinc-800/80 bg-zinc-950/80 p-4 sm:p-5">
-                <AnimeWatchNowRow entries={spotlight} limit={8} compact />
+              <div className="rounded-2xl border border-zinc-800/80 bg-zinc-950/80 p-4 text-sm text-zinc-300 sm:p-5">
+                <p className="font-semibold text-white">{t.nav.gallery}</p>
+                <p className="mt-2 text-xs text-zinc-400">{t.nav.manga}</p>
+                <div className="mt-4 flex flex-col gap-2">
+                  <Link href="/gallery" className="rounded-lg bg-orange-500/15 px-3 py-2 text-xs font-semibold text-orange-200">
+                    {t.nav.gallery}
+                  </Link>
+                  <Link href="/manga" className="rounded-lg bg-zinc-800 px-3 py-2 text-xs font-semibold text-zinc-200">
+                    {t.nav.manga}
+                  </Link>
+                  <Link href="/tracker" className="rounded-lg bg-zinc-800 px-3 py-2 text-xs font-semibold text-zinc-200">
+                    {t.nav.animeTracker}
+                  </Link>
+                </div>
               </div>
             </aside>
           </div>
         )}
-
-        {spotlight.length > 0 ? (
-          <section id="watch-now" className="mt-14 scroll-mt-28 border-t border-zinc-800 pt-12">
-            <FeaturedAnimeSpotlightSections catalog={spotlight} />
-            <div className="mt-10 rounded-2xl border border-zinc-800/80 bg-zinc-950/80 p-5 sm:p-6">
-              <AnimeWatchNowRow entries={spotlight} limit={16} />
-            </div>
-          </section>
-        ) : null}
 
         <div className="mt-10 text-center">
           <Link

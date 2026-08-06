@@ -9,10 +9,10 @@ import { useLocale } from "@/providers/LocaleProvider";
 
 const tabItems = [
   {
-    key: "stories" as const,
-    href: "/stories",
-    icon: "book",
-    match: (path: string) => path === "/" || path.startsWith("/stories"),
+    key: "heroesGuide" as const,
+    href: "/blog/anime-news",
+    icon: "guide",
+    match: (path: string) => path === "/" || path.startsWith("/blog"),
   },
   {
     key: "manga" as const,
@@ -82,11 +82,11 @@ export function MobileBottomNav() {
 
             <li className="flex justify-center">
               <Link
-                href="/blog"
+                href="/stories"
                 className="-mt-5 inline-flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-lg shadow-accent/35 ring-4 ring-white transition-transform active:scale-95 dark:ring-black"
-                aria-label={t.nav.heroesGuide}
+                aria-label={t.nav.stories}
               >
-                <NavIcon icon="guide" className="h-7 w-7 shrink-0 text-white" />
+                <NavIcon icon="book" className="h-7 w-7 shrink-0 text-white" />
               </Link>
             </li>
 

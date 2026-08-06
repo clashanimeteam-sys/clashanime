@@ -53,17 +53,17 @@ export const PAGE_SEO: Record<
       "Original anime storytelling essays and cultural notes. Text-first, copyright-safe commentary — قصص وحكايات أنمي — アニメ物語エッセイ.",
     path: "/stories",
   },
-  manga: {
-    title: "Manga Notes — Panels, Pacing & Reading Culture | ClashAnime",
-    description:
-      "Educational manga craft notes without scanlations — ملاحظات مانغا — マンガノート.",
-    path: "/manga",
-  },
   gallery: {
-    title: "Image Moodboard — Visual Inspiration | ClashAnime",
+    title: "Image Gallery — Popular Anime & Characters | ClashAnime",
     description:
-      "Atmosphere and composition inspiration without stolen key-art dumps — معرض صور — 画像ムードボード.",
+      "Discovery gallery of popular anime posters and famous characters via MyAnimeList metadata. No episode streams or stolen art packs — معرض صور أنمي وشخصيات — 画像ギャラリー.",
     path: "/gallery",
+  },
+  manga: {
+    title: "Manga Catalog — Popular Titles Discovery | ClashAnime",
+    description:
+      "Browse popular manga covers and titles for discovery. No chapter scans hosted — كتالوج مانغا — マンガカタログ.",
+    path: "/manga",
   },
   tracker: {
     title: "Anime Radar — New Episodes & Upcoming Releases",

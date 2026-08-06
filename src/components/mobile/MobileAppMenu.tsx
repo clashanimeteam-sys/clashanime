@@ -16,12 +16,12 @@ type MobileAppMenuProps = {
 };
 
 const menuItems = [
+  { key: "heroesGuide" as const, href: "/blog/anime-news", icon: "guide" },
   { key: "stories" as const, href: "/stories", icon: "book" },
   { key: "manga" as const, href: "/manga", icon: "manga" },
   { key: "gallery" as const, href: "/gallery", icon: "image" },
   { key: "animeTracker" as const, href: "/tracker", icon: "radar" },
   { key: "music" as const, href: "/music", icon: "music" },
-  { key: "heroesGuide" as const, href: "/blog", icon: "guide" },
 ] as const;
 
 const locales: { code: Locale; label: string }[] = [
