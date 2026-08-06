@@ -2,12 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AnimeNewsTopSidebar } from "@/components/blog/AnimeNewsTopSidebar";
 import { AnimeWatchNowRow } from "@/components/blog/AnimeWatchNowRow";
 import { BlogPageShell } from "@/components/blog/BlogPageShell";
-import { FeaturedAnimeSpotlightSections } from "@/components/blog/FeaturedAnimeSpotlightSections";
-import type { FeaturedAnimeEntry } from "@/lib/animeNews/featuredAnimeCatalog";
 import { FEATURED_SEASONAL_GUIDE_SLUG } from "@/lib/animeNews/seasonalGuide";
 import type { AnimeNewsArticle } from "@/lib/animeNews/types";
 import { getAnimeNewsCopy } from "@/lib/animeNews/types";
