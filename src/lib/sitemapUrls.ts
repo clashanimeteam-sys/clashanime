@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { listPublishedAnimeNewsSlugs } from "@/lib/animeNews.server";
 import { getBlogSlugs } from "@/lib/blog/posts";
+import { getStorySlugs } from "@/lib/storiesLibrary";
 import { absoluteSiteUrl, PUBLIC_STATIC_PATHS } from "@/lib/siteSeo";
 
 function staticEntries(now: Date): MetadataRoute.Sitemap {
@@ -31,6 +32,10 @@ export async function buildSitemapEntries(): Promise<MetadataRoute.Sitemap> {
 
   for (const slug of getBlogSlugs()) {
     addEntry(`/blog/${slug}`, null, 0.7);
+  }
+
+  for (const slug of getStorySlugs()) {
+    addEntry(`/stories/${slug}`, null, 0.72);
   }
 
   try {

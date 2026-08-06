@@ -12,7 +12,7 @@ const COPY = {
     back: "Back to anime news",
     noticeTitle: "Discovery catalog — not piracy",
     noticeBody:
-      "Thumbnails and titles come from MyAnimeList (via Jikan) for identification only. Rights stay with creators and publishers. We do not host episodes or manga chapters. Use official/legal stores and apps to read or watch.",
+      "Covers and names come from AniList (with MyAnimeList links when available) for identification only. Rights stay with creators and publishers. We do not host episodes or manga chapters. Use official/legal stores and apps to read or watch.",
     score: "Score",
     openMal: "Open on MyAnimeList",
     empty: "Catalog temporarily unavailable. Try again soon.",
@@ -21,7 +21,7 @@ const COPY = {
     back: "العودة لأخبار الأنمي",
     noticeTitle: "كتالوج اكتشاف — ليس قرصنة",
     noticeBody:
-      "الصور المصغّرة والعناوين من MyAnimeList (عبر Jikan) للتعرّف فقط. الحقوق للمبدعين والناشرين. لا نستضيف حلقات أو فصول مانغا. للقراءة/المشاهدة استخدم المتاجر والتطبيقات الرسمية القانونية.",
+      "الأغلفة والأسماء من AniList (مع روابط MyAnimeList عند التوفّر) للتعرّف فقط. الحقوق للمبدعين والناشرين. لا نستضيف حلقات أو فصول مانغا. للقراءة/المشاهدة استخدم المتاجر والتطبيقات الرسمية القانونية.",
     score: "التقييم",
     openMal: "فتح على MyAnimeList",
     empty: "الكتالوج غير متاح مؤقتاً. حاول لاحقاً.",
@@ -30,7 +30,7 @@ const COPY = {
     back: "アニメニュースへ戻る",
     noticeTitle: "発見カタログ — 海賊版ではありません",
     noticeBody:
-      "サムネイルとタイトルは識別用に MyAnimeList（Jikan経由）から取得。権利は作者・出版社にあります。本編やマンガ全話は置きません。視聴・購読は公式サービスで。",
+      "表紙とタイトルは識別用に AniList（必要に応じてMALリンク）から取得。権利は作者・出版社にあります。本編やマンガ全話は置きません。視聴・購読は公式サービスで。",
     score: "スコア",
     openMal: "MyAnimeListで開く",
     empty: "カタログを一時取得できません。後でもう一度。",
