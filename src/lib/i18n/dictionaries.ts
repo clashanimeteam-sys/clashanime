@@ -1878,7 +1878,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       stories: "Stories & Tales",
       manga: "Manga",
       gallery: "Images",
-      heroesGuide: "Anime News",
+      heroesGuide: "Heroes Guide",
     },
     sidebar: {
       hideMenu: "Hide sidebar",
@@ -3829,7 +3829,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       stories: "物語",
       manga: "マンガ",
       gallery: "画像",
-      heroesGuide: "アニメニュース",
+      heroesGuide: "ヒーローズガイド",
     },
     sidebar: {
       hideMenu: "サイドバーを隠す",
@@ -5764,7 +5764,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       stories: "قصص وحكايات",
       manga: "مانغا",
       gallery: "صور",
-      heroesGuide: "أخبار الأنمي",
+      heroesGuide: "دليل الأبطال",
     },
     sidebar: {
       hideMenu: "إخفاء القائمة",

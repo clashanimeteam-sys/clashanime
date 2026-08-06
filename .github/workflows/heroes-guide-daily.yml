@@ -1,15 +1,16 @@
-name: Anime news sync
+name: Heroes Guide daily
 
-# Heroes Guide daily workflow already runs news sync + daily brief.
-# Keep this for manual/emergency sync only.
 on:
+  schedule:
+    - cron: "0 6 * * *"
+    - cron: "0 18 * * *"
   workflow_dispatch:
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Sync Crunchyroll RSS into anime news drafts
+      - name: Sync news + publish Heroes Daily Brief
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
           SITE_URL: ${{ vars.SITE_URL || 'https://www.clashanime.com' }}
@@ -20,4 +21,4 @@ jobs:
           fi
           curl --fail-with-body -sS \
             -H "Authorization: Bearer ${CRON_SECRET}" \
-            "${SITE_URL}/api/cron/anime-news"
+            "${SITE_URL}/api/cron/heroes-guide"

@@ -14,7 +14,7 @@ import { useLocale } from "@/providers/LocaleProvider";
 import { useSidebar } from "@/providers/SidebarProvider";
 
 const mainNavItems = [
-  { key: "heroesGuide" as const, href: "/blog/anime-news", icon: "guide" },
+  { key: "heroesGuide" as const, href: "/blog", icon: "guide" },
   { key: "stories" as const, href: "/stories", icon: "book" },
   { key: "manga" as const, href: "/manga", icon: "manga" },
   { key: "gallery" as const, href: "/gallery", icon: "image" },
@@ -66,9 +66,12 @@ export function Sidebar() {
       <nav className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-3" aria-label="Main navigation">
         {mainNavItems.map((item) => {
           const active =
-            item.href === "/"
-              ? pathname === "/"
-              : pathname === item.href || pathname.startsWith(`${item.href}/`);
+            item.key === "heroesGuide"
+              ? pathname === "/blog" ||
+                (pathname.startsWith("/blog/") && !pathname.startsWith("/blog/anime-news"))
+              : item.href === "/"
+                ? pathname === "/"
+                : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
           return (
             <Link key={item.key} href={item.href} className={navLinkClass(active)}>

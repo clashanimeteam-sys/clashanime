@@ -16,7 +16,7 @@ type MobileAppMenuProps = {
 };
 
 const menuItems = [
-  { key: "heroesGuide" as const, href: "/blog/anime-news", icon: "guide" },
+  { key: "heroesGuide" as const, href: "/blog", icon: "guide" },
   { key: "stories" as const, href: "/stories", icon: "book" },
   { key: "manga" as const, href: "/manga", icon: "manga" },
   { key: "gallery" as const, href: "/gallery", icon: "image" },

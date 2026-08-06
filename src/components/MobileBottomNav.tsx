@@ -10,9 +10,10 @@ import { useLocale } from "@/providers/LocaleProvider";
 const tabItems = [
   {
     key: "heroesGuide" as const,
-    href: "/blog/anime-news",
+    href: "/blog",
     icon: "guide",
-    match: (path: string) => path === "/" || path.startsWith("/blog"),
+    match: (path: string) =>
+      path === "/blog" || (path.startsWith("/blog/") && !path.startsWith("/blog/anime-news")),
   },
   {
     key: "manga" as const,
@@ -37,7 +38,7 @@ export function MobileBottomNav() {
     menuOpen ||
     pathname.startsWith("/music") ||
     pathname.startsWith("/tracker") ||
-    pathname.startsWith("/blog") ||
+    pathname.startsWith("/blog/anime-news") ||
     pathname === "/legal" ||
     pathname.startsWith("/about") ||
     pathname.startsWith("/contact");

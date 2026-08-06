@@ -20,9 +20,13 @@ function categoryLabel(category: BlogCategory, t: ReturnType<typeof useLocale>["
 
 type BlogIndexContentProps = {
   latestNews?: AnimeNewsArticle[];
+  dailyBrief?: { slug: string; date: string } | null;
 };
 
-export function BlogIndexContent({ latestNews: initialLatestNews = [] }: BlogIndexContentProps) {
+export function BlogIndexContent({
+  latestNews: initialLatestNews = [],
+  dailyBrief = null,
+}: BlogIndexContentProps) {
   const { t, locale, formatDateTime } = useLocale();
   const posts = getAllBlogPosts();
   const [latestNews, setLatestNews] = useState<AnimeNewsArticle[]>(initialLatestNews);
@@ -62,6 +66,34 @@ export function BlogIndexContent({ latestNews: initialLatestNews = [] }: BlogInd
   return (
     <BlogPageShell>
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
+        {dailyBrief ? (
+          <section className="mb-10 rounded-2xl border border-orange-500/40 bg-gradient-to-br from-orange-500/15 via-zinc-950 to-zinc-950 p-5 sm:p-6">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-orange-300">
+              {locale === "ar" ? "تحديث يومي" : locale === "ja" ? "日次更新" : "Daily update"}
+            </p>
+            <h2 className="mt-2 font-display text-xl font-bold text-white sm:text-2xl">
+              {locale === "ar"
+                ? `موجز دليل الأبطال — ${dailyBrief.date}`
+                : locale === "ja"
+                  ? `ヒーローズデイリー — ${dailyBrief.date}`
+                  : `Heroes Daily Brief — ${dailyBrief.date}`}
+            </h2>
+            <p className="mt-2 text-sm text-zinc-300">
+              {locale === "ar"
+                ? "يُحدَّث تلقائياً كل يوم بملخص عناوين وأخبار آمنة لحقوق النشر."
+                : locale === "ja"
+                  ? "著作権に配慮した見出し要約を毎日自動更新します。"
+                  : "Auto-refreshed every day with copyright-safe headline summaries."}
+            </p>
+            <Link
+              href={`/blog/anime-news/${dailyBrief.slug}`}
+              className="mt-4 inline-flex rounded-full bg-orange-500 px-4 py-2 text-xs font-bold text-white"
+            >
+              {locale === "ar" ? "اقرأ الموجز اليومي" : locale === "ja" ? "今日のブリーフを読む" : "Read today’s brief"}
+            </Link>
+          </section>
+        ) : null}
+
         {latestNews.length > 0 ? (
           <section id="anime-news" className="mb-12 scroll-mt-28">
             <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-s-4 border-orange-500 ps-4">
