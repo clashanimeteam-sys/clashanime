@@ -5,43 +5,41 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MobileAppMenu } from "@/components/mobile/MobileAppMenu";
 import { NavIcon } from "@/components/nav/NavIcon";
-import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 
 const tabItems = [
-  { key: "clash" as const, href: "/", icon: "clash", match: (path: string) => path === "/" },
   {
-    key: "videos" as const,
-    href: "/videos",
-    icon: "video",
-    match: (path: string) => path.startsWith("/videos") || path.startsWith("/video/"),
+    key: "stories" as const,
+    href: "/stories",
+    icon: "book",
+    match: (path: string) => path === "/" || path.startsWith("/stories"),
   },
   {
-    key: "community" as const,
-    href: "/community",
-    icon: "users",
-    match: (path: string) => path.startsWith("/community"),
+    key: "manga" as const,
+    href: "/manga",
+    icon: "manga",
+    match: (path: string) => path.startsWith("/manga"),
+  },
+  {
+    key: "gallery" as const,
+    href: "/gallery",
+    icon: "image",
+    match: (path: string) => path.startsWith("/gallery"),
   },
 ] as const;
 
 export function MobileBottomNav() {
   const pathname = usePathname();
-  const { user } = useAuth();
   const { t } = useLocale();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const uploadHref = user ? "/upload" : `/login?next=${encodeURIComponent("/upload")}`;
   const moreActive =
     menuOpen ||
     pathname.startsWith("/music") ||
-    pathname.startsWith("/exclusives") ||
     pathname.startsWith("/tracker") ||
-    pathname.startsWith("/earn") ||
-    pathname.startsWith("/profile") ||
-    pathname === "/settings" ||
+    pathname.startsWith("/blog") ||
     pathname === "/legal" ||
-    pathname.startsWith("/terms") ||
-    pathname.startsWith("/privacy") ||
+    pathname.startsWith("/about") ||
     pathname.startsWith("/contact");
 
   useEffect(() => {
@@ -84,26 +82,24 @@ export function MobileBottomNav() {
 
             <li className="flex justify-center">
               <Link
-                href={uploadHref}
+                href="/blog"
                 className="-mt-5 inline-flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-lg shadow-accent/35 ring-4 ring-white transition-transform active:scale-95 dark:ring-black"
-                aria-label={t.upload.create}
+                aria-label={t.nav.heroesGuide}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="h-7 w-7" aria-hidden>
-                  <path strokeLinecap="round" d="M12 5v14M5 12h14" />
-                </svg>
+                <NavIcon icon="guide" className="h-7 w-7 shrink-0 text-white" />
               </Link>
             </li>
 
             <li>
               <Link
-                href="/community"
+                href="/gallery"
                 className={`flex flex-col items-center gap-1 px-1 py-2.5 text-[10px] font-semibold transition-colors ${
                   tabItems[2].match(pathname) ? "text-accent" : "text-zinc-500 dark:text-zinc-400"
                 }`}
                 aria-current={tabItems[2].match(pathname) ? "page" : undefined}
               >
-                <NavIcon icon={tabItems[2].icon} className="h-6 w-6 shrink-0 object-contain" />
-                <span className="max-w-full truncate leading-none">{t.nav[tabItems[2].key]}</span>
+                <NavIcon icon="image" className="h-6 w-6 shrink-0 object-contain" />
+                <span className="max-w-full truncate leading-none">{t.nav.gallery}</span>
               </Link>
             </li>
 
@@ -115,12 +111,9 @@ export function MobileBottomNav() {
                   moreActive ? "text-accent" : "text-zinc-500 dark:text-zinc-400"
                 }`}
                 aria-expanded={menuOpen}
-                aria-haspopup="dialog"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-6 w-6" aria-hidden>
-                  <path d="M4 7h16M4 12h16M4 17h16" />
-                </svg>
-                <span className="max-w-full truncate leading-none">{t.nav.more}</span>
+                <NavIcon icon="settings" className="h-6 w-6 shrink-0 object-contain" />
+                <span className="leading-none">{t.nav.more}</span>
               </button>
             </li>
           </ul>

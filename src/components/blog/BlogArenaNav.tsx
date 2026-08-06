@@ -1,60 +1,28 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BrandMark } from "@/components/BrandMark";
 import { AnimeSearchButton } from "@/components/AnimeSearchButton";
-import { NotificationBell } from "@/components/NotificationBell";
-import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
-
 import { getBlogPost } from "@/lib/blog/posts";
 import type { BlogCategory } from "@/lib/blog/types";
 
 type NavItem = {
-  key: "home" | "clash" | "community" | "animeNews" | "watchNow" | "arenaGuide" | "userGuide";
+  key: "home" | "stories" | "manga" | "animeNews" | "arenaGuide" | "userGuide";
   href: string;
   category?: BlogCategory;
 };
 
 const NAV_ITEMS: NavItem[] = [
   { key: "home", href: "/" },
-  { key: "clash", href: "/" },
-  { key: "community", href: "/community" },
+  { key: "stories", href: "/stories" },
+  { key: "manga", href: "/manga" },
   { key: "animeNews", href: "/blog/anime-news" },
-  { key: "watchNow", href: "/blog/anime-news/watch-now" },
   { key: "arenaGuide", href: "/blog" },
   { key: "userGuide", href: "/blog#user-guide", category: "user-guide" },
 ];
-
-function UserAvatar({ name, avatarUrl }: { name: string; avatarUrl?: string | null }) {
-  if (avatarUrl) {
-    return (
-      <Image
-        src={avatarUrl}
-        alt={name}
-        width={32}
-        height={32}
-        className="h-8 w-8 rounded-full object-cover ring-2 ring-zinc-700"
-        unoptimized
-      />
-    );
-  }
-
-  const initials = name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() ?? "")
-    .join("");
-
-  return (
-    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-800 text-xs font-semibold text-white ring-2 ring-zinc-700">
-      {initials || "CA"}
-    </span>
-  );
-}
 
 function blogSlugFromPath(pathname: string) {
   if (!pathname.startsWith("/blog/")) return null;
@@ -65,7 +33,6 @@ function blogSlugFromPath(pathname: string) {
 export function BlogArenaNav() {
   const pathname = usePathname();
   const [hash, setHash] = useState("");
-  const { user, profile, loading } = useAuth();
   const { t } = useLocale();
 
   useEffect(() => {
@@ -75,41 +42,22 @@ export function BlogArenaNav() {
     return () => window.removeEventListener("hashchange", updateHash);
   }, [pathname]);
 
-  const displayName =
-    profile?.display_name ??
-    user?.user_metadata?.full_name ??
-    user?.email ??
-    "Clash Anime";
-
-  const avatarUrl =
-    profile?.avatar_url ??
-    user?.user_metadata?.avatar_url ??
-    user?.user_metadata?.picture ??
-    null;
-
   const labelFor = (key: NavItem["key"]) => {
     if (key === "home") return t.blog.navHome;
+    if (key === "stories") return t.nav.stories;
+    if (key === "manga") return t.nav.manga;
     if (key === "animeNews") return t.blog.animeNews.hubTitle;
-    if (key === "watchNow") return t.blog.animeNews.watchNowHeading;
     if (key === "arenaGuide") return t.footer.arenaGuide;
     if (key === "userGuide") return t.blog.categories["user-guide"];
-    return t.nav[key];
+    return key;
   };
 
   const isNavActive = (item: NavItem) => {
     if (item.key === "home") return pathname === "/";
-    if (item.key === "clash") return pathname === "/" || pathname.startsWith("/tracker");
-    if (item.key === "community") {
-      return pathname === item.href || pathname.startsWith(`${item.href}/`);
-    }
+    if (item.key === "stories") return pathname.startsWith("/stories");
+    if (item.key === "manga") return pathname.startsWith("/manga");
     if (item.key === "animeNews") {
-      return (
-        pathname === "/blog/anime-news" ||
-        (pathname.startsWith("/blog/anime-news/") && !pathname.startsWith("/blog/anime-news/watch-now"))
-      );
-    }
-    if (item.key === "watchNow") {
-      return pathname === "/blog/anime-news/watch-now" || pathname.startsWith("/blog/anime-news/watch-now/");
+      return pathname === "/blog/anime-news" || pathname.startsWith("/blog/anime-news/");
     }
     if (item.key === "arenaGuide") {
       if (pathname === "/blog") return hash !== "#user-guide";
@@ -159,41 +107,7 @@ export function BlogArenaNav() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          {loading ? (
-            <span className="h-9 w-20 animate-pulse rounded-lg bg-zinc-800" />
-          ) : user ? (
-            <>
-              <AnimeSearchButton tone="dark" />
-              <NotificationBell />
-              <Link
-                href="/profile"
-                className="hidden items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white transition hover:border-zinc-600 sm:inline-flex"
-                aria-label={t.profile.customize}
-              >
-                <UserAvatar name={displayName} avatarUrl={avatarUrl} />
-                <span className="max-w-[120px] truncate">{t.blog.navAccount}</span>
-              </Link>
-              <Link href="/profile" className="sm:hidden" aria-label={t.profile.customize}>
-                <UserAvatar name={displayName} avatarUrl={avatarUrl} />
-              </Link>
-            </>
-          ) : (
-            <>
-              <AnimeSearchButton tone="dark" />
-              <Link
-                href="/login?next=%2Fblog"
-                className="text-sm font-medium text-zinc-300 transition hover:text-white"
-              >
-                {t.auth.logIn}
-              </Link>
-              <Link
-                href="/signup?next=%2Fblog"
-                className="rounded-lg border border-zinc-600 bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-zinc-800"
-              >
-                {t.auth.signUp}
-              </Link>
-            </>
-          )}
+          <AnimeSearchButton tone="dark" />
         </div>
       </div>
     </header>

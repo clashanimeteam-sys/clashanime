@@ -3,15 +3,14 @@ export const SITE_URL = "https://www.clashanime.com";
 /** Public marketing and content pages safe for search indexing. */
 export const PUBLIC_STATIC_PATHS = [
   "/",
-  "/videos",
-  "/community",
+  "/stories",
+  "/manga",
+  "/gallery",
   "/music",
-  "/exclusives",
   "/tracker",
   "/about",
   "/how-it-works",
   "/faq",
-  "/earn",
   "/contact",
   "/terms",
   "/privacy",
@@ -34,6 +33,15 @@ export const DISALLOWED_PATH_PREFIXES = [
   "/settings",
   "/profile",
   "/watch",
+  "/earn",
+  "/videos",
+  "/community",
+  "/exclusives",
+  "/login",
+  "/signup",
+  "/channel",
+  "/video",
+  "/duel",
 ] as const;
 
 export function absoluteSiteUrl(path: string): string {

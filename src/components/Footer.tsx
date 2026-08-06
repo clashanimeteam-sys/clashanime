@@ -6,12 +6,12 @@ import { communicationLinks, informationLinks } from "@/lib/siteLinks";
 import { useLocale } from "@/providers/LocaleProvider";
 
 const discoverLinks = [
-  { key: "clash" as const, href: "/" },
-  { key: "videos" as const, href: "/videos" },
-  { key: "community" as const, href: "/community" },
+  { key: "stories" as const, href: "/stories" },
+  { key: "manga" as const, href: "/manga" },
+  { key: "gallery" as const, href: "/gallery" },
   { key: "music" as const, href: "/music" },
-  { key: "exclusives" as const, href: "/exclusives" },
   { key: "animeTracker" as const, href: "/tracker" },
+  { key: "heroesGuide" as const, href: "/blog" },
 ] as const;
 
 function FooterColumnHeading({ children }: { children: React.ReactNode }) {

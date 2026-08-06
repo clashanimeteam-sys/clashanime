@@ -1,7 +1,39 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+/** Public product surfaces removed for copyright-safe content-only mode. Admin/login stay reachable by direct URL. */
+const BLOCKED_PREFIXES = [
+  "/watch",
+  "/earn",
+  "/videos",
+  "/community",
+  "/exclusives",
+  "/upload",
+  "/video",
+  "/duel",
+  "/channel",
+  "/profile",
+  "/settings",
+  "/blog/anime-news/watch-now",
+  "/tracker/clash",
+] as const;
+
+function isBlockedPath(pathname: string): boolean {
+  return BLOCKED_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+}
+
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  if (isBlockedPath(pathname)) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
+    url.search = "";
+    return NextResponse.redirect(url);
+  }
+
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
 

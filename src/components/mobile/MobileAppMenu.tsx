@@ -7,7 +7,6 @@ import { LocaleFlags } from "@/components/LocaleFlags";
 import { NavIcon } from "@/components/nav/NavIcon";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { navigateAppHref } from "@/lib/appNavigation";
-import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Locale } from "@/lib/types";
 
@@ -17,19 +16,12 @@ type MobileAppMenuProps = {
 };
 
 const menuItems = [
-  { key: "music" as const, href: "/music", icon: "music" },
-  { key: "exclusives" as const, href: "/exclusives", icon: "star" },
+  { key: "stories" as const, href: "/stories", icon: "book" },
+  { key: "manga" as const, href: "/manga", icon: "manga" },
+  { key: "gallery" as const, href: "/gallery", icon: "image" },
   { key: "animeTracker" as const, href: "/tracker", icon: "radar" },
-  { key: "watchAnime" as const, href: "/watch", icon: "video" },
-  { key: "inviteFriends" as const, href: "/profile#referral", icon: "invite", auth: true },
-  { key: "clashCoins" as const, href: "/profile#wallet", icon: "wallet", auth: true },
-  { key: "earnMoney" as const, href: "/earn", icon: "earn" },
-  { key: "channel" as const, href: "/profile#channel", icon: "channel", auth: true },
-  { key: "myVideos" as const, href: "/profile#my-videos", icon: "video", auth: true },
-  { key: "channelSettings" as const, href: "/profile", icon: "settings", auth: true },
-  { key: "channelViolations" as const, href: "/profile#violations", icon: "warning", auth: true },
-  { key: "hunterSystem" as const, href: "/profile#hunter-system", icon: "trophy", auth: true },
-  { key: "bountyRewards" as const, href: "/profile#bounty-log", icon: "coins", auth: true },
+  { key: "music" as const, href: "/music", icon: "music" },
+  { key: "heroesGuide" as const, href: "/blog", icon: "guide" },
 ] as const;
 
 const locales: { code: Locale; label: string }[] = [
@@ -41,7 +33,6 @@ const locales: { code: Locale; label: string }[] = [
 export function MobileAppMenu({ open, onClose }: MobileAppMenuProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { user } = useAuth();
   const { locale, setLocale, t } = useLocale();
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -116,20 +107,13 @@ export function MobileAppMenu({ open, onClose }: MobileAppMenuProps) {
         <div className="overflow-y-auto px-4 pb-4">
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
             {menuItems.map((item) => {
-              const href =
-                "auth" in item && item.auth && !user
-                  ? `/login?next=${encodeURIComponent(item.href)}`
-                  : item.key === "watchAnime" && !user
-                    ? "/login?next=%2Fwatch"
-                    : item.href;
-
               return (
                 <Link
                   key={item.key}
-                  href={href}
+                  href={item.href}
                   onClick={(event) => {
                     event.preventDefault();
-                    navigateAndClose(href);
+                    navigateAndClose(item.href);
                   }}
                   className="flex min-h-[4.5rem] flex-col items-center justify-center gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 px-2 py-3 text-center text-xs font-semibold text-zinc-800 transition-colors active:bg-accent/10 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                 >

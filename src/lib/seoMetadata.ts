@@ -32,22 +32,43 @@ type PageSeoKey =
   | "animeNews"
   | "watch"
   | "faq"
-  | "howItWorks";
+  | "howItWorks"
+  | "stories"
+  | "manga"
+  | "gallery";
 
 export const PAGE_SEO: Record<
   PageSeoKey,
   { title: string; description: string; path: string }
 > = {
   home: {
-    title: "Clash Anime — Anime Duels, Challenges & Earn Real Prizes 2026",
+    title: "Clash Anime — Stories, Manga, Images, Radar & Anime Radio",
     description:
-      "Best anime challenge site 2026: vote on fights, upload clips, join release clashes for JJK, Solo Leveling, Demon Slayer, One Piece and more. Earn ClashCoins and compete for top clip — أفضل موقع لتحديات الأنمي وربح المال — アニメ対戦・投票・賞金プラットフォーム.",
+      "Copyright-safe anime culture hub: original stories and essays, manga notes, image moodboards, release radar, anime radio, and Heroes Guide — قصص ومانغا وصور ورادار وراديو — 物語・マンガ・画像・レーダー・ラジオ.",
     path: "/",
   },
-  tracker: {
-    title: "Anime Tracker — New Episodes, Upcoming Releases & Clashes",
+  stories: {
+    title: "Anime Stories & Tales — Original Essays | ClashAnime",
     description:
-      "Follow today's anime episodes and upcoming releases. Trending spotlight for Jujutsu Kaisen, Sakamoto Days, MHA, Dandadan and more. Join #clashanime release contests — متتبع حلقات الانمي والمسابقات — 新作アニメ・放送予定.",
+      "Original anime storytelling essays and cultural notes. Text-first, copyright-safe commentary — قصص وحكايات أنمي — アニメ物語エッセイ.",
+    path: "/stories",
+  },
+  manga: {
+    title: "Manga Notes — Panels, Pacing & Reading Culture | ClashAnime",
+    description:
+      "Educational manga craft notes without scanlations — ملاحظات مانغا — マンガノート.",
+    path: "/manga",
+  },
+  gallery: {
+    title: "Image Moodboard — Visual Inspiration | ClashAnime",
+    description:
+      "Atmosphere and composition inspiration without stolen key-art dumps — معرض صور — 画像ムードボード.",
+    path: "/gallery",
+  },
+  tracker: {
+    title: "Anime Radar — New Episodes & Upcoming Releases",
+    description:
+      "Follow anime episode calendars and upcoming releases — رادار حلقات الأنمي — アニメ放送予定.",
     path: "/tracker",
   },
   videos: {
@@ -75,21 +96,21 @@ export const PAGE_SEO: Record<
     path: "/music",
   },
   about: {
-    title: "About Clash Anime — Global Anime Duel Platform",
+    title: "About Clash Anime — Stories, Manga & Culture Hub",
     description:
-      "ClashAnime.com is a global platform for anime clips, release clashes, competitions, and creator rewards via ClashCoins — منصة انمي عالمية للمسابقات وربح المال — グローバルアニメ対戦プラットフォーム.",
+      "ClashAnime.com is a copyright-safe anime culture site for stories, manga notes, images, radar, radio, and Heroes Guide — منصة ثقافة أنمي آمنة — 著作権に配慮したアニカルチャー.",
     path: "/about",
   },
   faq: {
-    title: "ClashAnime FAQ — Arena, Hunter Ranks & ClashCoins",
+    title: "ClashAnime FAQ — Stories, Copyright & Safe Browsing",
     description:
-      "Answers about ClashAnime clashes, hunter ranks, ClashCoins, copyright rules, privacy, and how beginners start — الأسئلة الشائعة — よくある質問.",
+      "Answers about ClashAnime stories, manga notes, copyright stance, privacy, and how to explore the hub — الأسئلة الشائعة — よくある質問.",
     path: "/faq",
   },
   howItWorks: {
-    title: "How ClashAnime Works — Step-by-Step Arena Guide",
+    title: "How ClashAnime Works — Content Hubs Explained",
     description:
-      "Learn signup, clashes, hashtags, hunter ranks, Earn money, ClashCoins, moderation, and fair play on ClashAnime — كيف يعمل الموقع — 仕組みガイド.",
+      "Learn how Stories, Manga, Images, Radar, Radio, and Heroes Guide fit together — كيف يعمل الموقع — 仕組みガイド.",
     path: "/how-it-works",
   },
   earn: {
@@ -99,9 +120,9 @@ export const PAGE_SEO: Record<
     path: "/earn",
   },
   blog: {
-    title: "Heroes' Arena Guide — ClashAnime Blog & SEO Knowledge Hub",
+    title: "Heroes Guide — ClashAnime Editorial Blog",
     description:
-      "Guides to anime clashes, Anime Radar trends, winner stories, platform updates, prizes, ClashCoins, and FAQ. Learn how to rank and earn on ClashAnime — دليل الأبطال وSEO — 英雄アリーナガイド.",
+      "Editorial guides, anime news summaries, and culture notes for a copyright-safe fandom hub — دليل الأبطال — ヒーローズガイド.",
     path: "/blog",
   },
   animeNews: {

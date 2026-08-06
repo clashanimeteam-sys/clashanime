@@ -210,7 +210,7 @@ export function AboutPageContent() {
           <h2 className="text-xl font-bold sm:text-2xl">{copy.ctaHeading}</h2>
           <p className="mt-3 text-sm text-white/90 sm:text-base">{copy.ctaBody}</p>
           <Link
-            href="/signup"
+            href="/stories"
             className="mt-6 inline-flex items-center justify-center rounded-full bg-white px-8 py-3 text-sm font-semibold text-brand transition-transform hover:scale-[1.02]"
           >
             {copy.ctaButton}

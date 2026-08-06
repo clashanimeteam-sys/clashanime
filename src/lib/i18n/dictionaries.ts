@@ -36,6 +36,10 @@ export type Dictionary = {
     earnMoney: string;
     mobileBottomNav: string;
     more: string;
+    stories: string;
+    manga: string;
+    gallery: string;
+    heroesGuide: string;
   };
   sidebar: {
     hideMenu: string;
@@ -1856,7 +1860,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       community: "Community",
       music: "Anime Radio",
       exclusives: "Exclusives",
-      animeTracker: "Anime Tracker",
+      animeTracker: "Anime Radar",
       watchAnime: "Watch anime",
       hunterSystem: "Bounty Hunter System",
       bountyRewards: "Latest bounty rewards",
@@ -1871,6 +1875,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       earnMoney: "Earn money",
       mobileBottomNav: "Main navigation",
       more: "More",
+      stories: "Stories & Tales",
+      manga: "Manga",
+      gallery: "Images",
+      heroesGuide: "Heroes Guide",
     },
     sidebar: {
       hideMenu: "Hide sidebar",
@@ -3818,6 +3826,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       earnMoney: "お金を稼ぐ",
       mobileBottomNav: "メインナビ",
       more: "その他",
+      stories: "物語",
+      manga: "マンガ",
+      gallery: "画像",
+      heroesGuide: "ヒーローズガイド",
     },
     sidebar: {
       hideMenu: "サイドバーを隠す",
@@ -5749,6 +5761,10 @@ export const dictionaries: Record<Locale, Dictionary> = {
       earnMoney: "اربح الأموال",
       mobileBottomNav: "التنقل الرئيسي",
       more: "المزيد",
+      stories: "قصص وحكايات",
+      manga: "مانغا",
+      gallery: "صور",
+      heroesGuide: "دليل الأبطال",
     },
     sidebar: {
       hideMenu: "إخفاء القائمة",
