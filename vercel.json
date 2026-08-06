@@ -1,15 +1,5 @@
 {
   "framework": "nextjs",
   "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "crons": [
-    {
-      "path": "/api/cron/anime-news",
-      "schedule": "0 6 * * *"
-    },
-    {
-      "path": "/api/cron/anime-tracker",
-      "schedule": "0 */6 * * *"
-    }
-  ]
+  "installCommand": "npm install"
 }
