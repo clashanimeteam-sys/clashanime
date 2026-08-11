@@ -1,5 +1,4 @@
 import { Cairo, Geist, Geist_Mono, Orbitron, Plus_Jakarta_Sans } from "next/font/google";
-import { AdSenseScript } from "@/components/ads/AdSenseScript";
 import { Providers } from "@/components/Providers";
 import { BlockTranslateScript } from "@/components/BlockTranslateScript";
 import { ClientErrorBoundary } from "@/components/ClientErrorBoundary";
@@ -71,7 +70,6 @@ export default function RootLayout({
         className="notranslate min-h-full bg-white text-black dark:bg-black dark:text-white"
       >
         <BlockTranslateScript />
-        <AdSenseScript />
         <ClientErrorBoundary>
           <Providers>{children}</Providers>
         </ClientErrorBoundary>

@@ -1,10 +1,15 @@
-const ADSENSE_CLIENT_ID = "ca-pub-9998186124580672";
+/**
+ * AdSense is disabled on clashanime.com (removed by request).
+ * Re-enable only with NEXT_PUBLIC_ADSENSE_ENABLED=true + client/slot env vars.
+ */
 
 export function getAdSenseClientId() {
-  return process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID?.trim() || ADSENSE_CLIENT_ID;
+  if (process.env.NEXT_PUBLIC_ADSENSE_ENABLED !== "true") return "";
+  return process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID?.trim() || "";
 }
 
 export function getAdSenseSlotId(variant: "banner" | "sidebar" | "infeed" = "banner") {
+  if (process.env.NEXT_PUBLIC_ADSENSE_ENABLED !== "true") return null;
   if (variant === "infeed") {
     return (
       process.env.NEXT_PUBLIC_ADSENSE_SLOT_INFEED?.trim() ||
@@ -26,6 +31,7 @@ export function resolveAdSenseSlotId(
   variant: "banner" | "sidebar" | "infeed",
   override?: string | null,
 ): string | null {
+  if (process.env.NEXT_PUBLIC_ADSENSE_ENABLED !== "true") return null;
   const trimmed = override?.trim();
   if (trimmed) return trimmed;
   return getAdSenseSlotId(variant);
@@ -35,17 +41,13 @@ export function isAdSenseScriptReady() {
   return Boolean(getAdSenseClientId());
 }
 
-/** Manual ad units — needs client + at least one slot id. */
+/** Manual ad units — needs explicit enable + client + slot. */
 export function isAdSenseEnabled() {
   return Boolean(getAdSenseClientId() && getAdSenseSlotId());
 }
 
-/**
- * Auto ads (configured in AdSense dashboard) only need the client script.
- * Enable in AdSense → Ads → By site → clashanime.com → Auto ads.
- */
 export function isAdSenseAutoAdsPreferred() {
-  return process.env.NEXT_PUBLIC_ADSENSE_AUTO_ADS !== "false" && Boolean(getAdSenseClientId());
+  return process.env.NEXT_PUBLIC_ADSENSE_ENABLED === "true" && Boolean(getAdSenseClientId());
 }
 
 export function getAdSenseScriptUrl(clientId: string) {

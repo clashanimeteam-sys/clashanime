@@ -1,6 +1,5 @@
 "use client";
 
-import { BlogAds } from "@/components/ads/BlogAds";
 import { BlogHeroSlider } from "@/components/blog/BlogHeroSlider";
 import {
   BLOG_HERO_LIVE_CONTAINER_CLASS,
@@ -53,9 +52,6 @@ function HeroGuideText({
           >
             {t.blog.hubBadge}
           </a>
-          <div className="mx-auto mt-8 max-w-3xl">
-            <BlogAds variant="rectangle" />
-          </div>
         </div>
       </div>
     );
@@ -80,11 +76,6 @@ function HeroGuideText({
         >
           {articleTitle ?? t.blog.hubTitle}
         </h1>
-        {!compact ? (
-          <div className="mx-auto mt-6 max-w-3xl">
-            <BlogAds variant="rectangle" />
-          </div>
-        ) : null}
       </div>
     </div>
   );

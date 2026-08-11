@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { BlogAds } from "@/components/ads/BlogAds";
 import { BlogPageShell } from "@/components/blog/BlogPageShell";
 import type { BlogCategory, BlogPostSection } from "@/lib/blog/types";
 import { getAllBlogPosts, getBlogPostCopy } from "@/lib/blog/posts";
@@ -137,22 +136,15 @@ export function BlogPostContent({ slug, category, publishedAt, readingMinutes }:
           {copy.excerpt}
         </p>
 
-        <BlogAds variant="mid" />
-
         <div className="mt-8 space-y-8">
           {copy.sections.map((section, index) => (
-            <div key={`${section.heading}-${index}`}>
-              <BlogSection
-                section={section}
-                tipLabel={HERO_TIP_LABEL[locale] ?? HERO_TIP_LABEL.en}
-              />
-              {index % 2 === 0 ? <BlogAds variant="between" /> : null}
-              {index % 2 === 1 ? <BlogAds variant="rectangle" /> : null}
-            </div>
+            <BlogSection
+              key={`${section.heading}-${index}`}
+              section={section}
+              tipLabel={HERO_TIP_LABEL[locale] ?? HERO_TIP_LABEL.en}
+            />
           ))}
         </div>
-
-        <BlogAds variant="mid" />
 
         {related.length > 0 ? (
           <aside className="mt-12 border-t border-zinc-800 pt-8">
@@ -175,8 +167,6 @@ export function BlogPostContent({ slug, category, publishedAt, readingMinutes }:
             </ul>
           </aside>
         ) : null}
-
-        <BlogAds variant="bottom" />
 
         <div className="mt-10 flex flex-wrap gap-3">
           <Link
