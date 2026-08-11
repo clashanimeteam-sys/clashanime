@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { AnimeSearchResult } from "@/lib/animeSearch.server";
+import { publicWatchAnimeUrl } from "@/lib/watchSiteLinks";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type AnimeSearchButtonProps = {
@@ -146,6 +147,9 @@ export function AnimeSearchButton({ tone = "default" }: AnimeSearchButtonProps) 
                 {results.map((hit) => {
                   const title = localizedTitle(hit, locale);
                   const clipsHref = `/videos?q=${encodeURIComponent(title)}`;
+                  const watchHref = publicWatchAnimeUrl(hit.malId);
+                  const watchLabel =
+                    locale === "ar" ? "شاهد" : locale === "ja" ? "視聴" : "Watch";
 
                   return (
                     <li
@@ -153,11 +157,13 @@ export function AnimeSearchButton({ tone = "default" }: AnimeSearchButtonProps) 
                       className="rounded-xl border border-transparent p-2 transition-colors hover:border-zinc-200 hover:bg-zinc-50 dark:hover:border-zinc-800 dark:hover:bg-zinc-900/80"
                     >
                       <div className="flex gap-3">
-                        <Link
-                          href={hit.guidePath}
+                        <a
+                          href={watchHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           onClick={() => setOpen(false)}
                           className="relative h-16 w-11 shrink-0 overflow-hidden rounded-lg bg-zinc-200 ring-1 ring-transparent transition hover:ring-orange-500/50 dark:bg-zinc-800"
-                          aria-label={`${t.animeSearch.openGuide}: ${title}`}
+                          aria-label={`${watchLabel}: ${title}`}
                         >
                           {hit.posterUrl ? (
                             <Image
@@ -173,16 +179,18 @@ export function AnimeSearchButton({ tone = "default" }: AnimeSearchButtonProps) 
                               📺
                             </div>
                           )}
-                        </Link>
+                        </a>
 
                         <div className="min-w-0 flex-1">
-                          <Link
-                            href={hit.guidePath}
+                          <a
+                            href={watchHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             onClick={() => setOpen(false)}
                             className="block truncate text-sm font-semibold text-zinc-900 transition hover:text-orange-500 dark:text-white dark:hover:text-orange-300"
                           >
                             {title}
-                          </Link>
+                          </a>
                           {hit.score ? (
                             <p className="mt-0.5 text-xs text-zinc-500">
                               {t.animeSearch.scoreLabel.replace("{score}", formatNumber(hit.score))}
@@ -190,10 +198,19 @@ export function AnimeSearchButton({ tone = "default" }: AnimeSearchButtonProps) 
                           ) : null}
 
                           <div className="mt-2 flex flex-wrap gap-1.5">
+                            <a
+                              href={watchHref}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={() => setOpen(false)}
+                              className="rounded-full border border-orange-500/40 bg-orange-500/10 px-2.5 py-1 text-[11px] font-semibold text-orange-600 transition hover:bg-orange-500/20 dark:text-orange-300"
+                            >
+                              ▶ {watchLabel}
+                            </a>
                             <Link
                               href={hit.guidePath}
                               onClick={() => setOpen(false)}
-                              className="rounded-full border border-orange-500/40 bg-orange-500/10 px-2.5 py-1 text-[11px] font-semibold text-orange-600 transition hover:bg-orange-500/20 dark:text-orange-300"
+                              className="rounded-full border border-zinc-300 px-2.5 py-1 text-[11px] font-semibold text-zinc-700 transition hover:border-accent hover:text-accent dark:border-zinc-600 dark:text-zinc-200"
                             >
                               {t.animeSearch.openGuide}
                             </Link>

@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { FeaturedAnimeEntry } from "@/lib/animeNews/featuredAnimeCatalog";
-import { watchNowAnimePath } from "@/lib/animeNews/watchNowPaths";
 import { BlogPageShell } from "@/components/blog/BlogPageShell";
+import { publicWatchAnimeUrl, publicWatchHomeUrl } from "@/lib/watchSiteLinks";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
 
@@ -32,16 +32,17 @@ export function AnimeWatchNowDetailContent({ entry }: AnimeWatchNowDetailContent
   usePageTitle(entry.title);
 
   const categoryLabel = t.blog.animeNews.spotlightCategories[entry.category];
+  const watchHref = entry.malId ? publicWatchAnimeUrl(entry.malId) : publicWatchHomeUrl();
 
   return (
     <BlogPageShell heroCompact articleTitle={entry.title}>
       <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-12">
         <Link
-          href="/blog/anime-news/watch-now"
+          href="/blog"
           className="inline-flex items-center gap-2 text-sm font-medium text-zinc-400 transition hover:text-orange-300"
         >
           <span aria-hidden>←</span>
-          {t.blog.animeNews.backToWatchNow}
+          {t.footer.arenaGuide}
         </Link>
 
         <div className="mt-8 grid gap-8 md:grid-cols-[minmax(0,220px)_1fr] md:items-start">
@@ -68,12 +69,21 @@ export function AnimeWatchNowDetailContent({ entry }: AnimeWatchNowDetailContent
             <h1 className="mt-4 font-display text-3xl font-bold leading-tight text-white sm:text-4xl">
               {entry.title}
             </h1>
+            <a
+              href={watchHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-orange-500 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-orange-950/40 transition hover:bg-orange-400"
+            >
+              <span aria-hidden>▶</span>
+              {t.blog.animeNews.watchNowCta}
+            </a>
             {entry.malUrl ? (
               <a
                 href={entry.malUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-flex text-sm font-semibold text-orange-300 transition hover:text-orange-200 hover:underline"
+                className="mt-4 ms-3 inline-flex text-sm font-semibold text-zinc-400 transition hover:text-orange-200 hover:underline"
               >
                 MyAnimeList
                 <span className="ms-1" aria-hidden>
@@ -99,12 +109,14 @@ export function AnimeWatchNowDetailContent({ entry }: AnimeWatchNowDetailContent
         ) : null}
 
         <div className="mt-10">
-          <Link
-            href="/tracker"
+          <a
+            href={watchHref}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex rounded-full border border-orange-500/35 bg-black/40 px-4 py-2 text-xs font-bold uppercase tracking-wide text-orange-200 transition hover:bg-orange-500/10"
           >
-            {t.blog.animeNews.openTrackerPage}
-          </Link>
+            {t.blog.animeNews.watchNowCta} — Watch Clash Anime
+          </a>
         </div>
       </div>
     </BlogPageShell>

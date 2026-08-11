@@ -3,15 +3,17 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
 import { communicationLinks, informationLinks } from "@/lib/siteLinks";
+import { publicWatchHomeUrl } from "@/lib/watchSiteLinks";
 import { useLocale } from "@/providers/LocaleProvider";
 
 const discoverLinks = [
-  { key: "stories" as const, href: "/stories" },
-  { key: "manga" as const, href: "/manga" },
-  { key: "gallery" as const, href: "/gallery" },
-  { key: "music" as const, href: "/music" },
-  { key: "animeTracker" as const, href: "/tracker" },
-  { key: "heroesGuide" as const, href: "/blog" },
+  { key: "stories" as const, href: "/stories", external: false },
+  { key: "manga" as const, href: "/manga", external: false },
+  { key: "gallery" as const, href: "/gallery", external: false },
+  { key: "music" as const, href: "/music", external: false },
+  { key: "animeTracker" as const, href: "/tracker", external: false },
+  { key: "heroesGuide" as const, href: "/blog", external: false },
+  { key: "watchAnime" as const, href: publicWatchHomeUrl(), external: true },
 ] as const;
 
 function FooterColumnHeading({ children }: { children: React.ReactNode }) {
@@ -26,11 +28,26 @@ function FooterLink({
   href,
   children,
   className = "",
+  external = false,
 }: {
   href: string;
   children: React.ReactNode;
   className?: string;
+  external?: boolean;
 }) {
+  if (external) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`block text-xs leading-snug text-zinc-600 transition-colors hover:text-black md:text-sm dark:text-zinc-400 dark:hover:text-white ${className}`}
+      >
+        {children}
+      </a>
+    );
+  }
+
   return (
     <Link
       href={href}
@@ -98,7 +115,7 @@ export function Footer() {
             <FooterColumnHeading>{t.footer.discoverHeading}</FooterColumnHeading>
             <nav className="flex flex-col gap-2.5" aria-label={t.footer.discoverHeading}>
               {discoverLinks.map((item) => (
-                <FooterLink key={item.key} href={item.href}>
+                <FooterLink key={item.key} href={item.href} external={item.external}>
                   {t.nav[item.key]}
                 </FooterLink>
               ))}

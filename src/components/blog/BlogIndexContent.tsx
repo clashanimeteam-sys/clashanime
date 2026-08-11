@@ -10,6 +10,7 @@ import type { AnimeNewsArticle } from "@/lib/animeNews/types";
 import { getAnimeNewsCopy } from "@/lib/animeNews/types";
 import type { BlogCategory } from "@/lib/blog/types";
 import { BLOG_CATEGORIES, getAllBlogPosts, getBlogPostCopy } from "@/lib/blog/posts";
+import { publicWatchHomeUrl } from "@/lib/watchSiteLinks";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
 
@@ -65,6 +66,35 @@ export function BlogIndexContent({
   return (
     <BlogPageShell>
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
+        <section className="mb-10 overflow-hidden rounded-2xl border border-orange-500/35 bg-gradient-to-br from-orange-500/20 via-zinc-950 to-zinc-950 p-5 sm:p-6">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-orange-300">
+            Watch Clash Anime
+          </p>
+          <h2 className="mt-2 font-display text-xl font-bold text-white sm:text-2xl">
+            {locale === "ar"
+              ? "شاهد الأنمي مترجماً على Watch Clash Anime"
+              : locale === "ja"
+                ? "Watch Clash Anime でアニメを視聴"
+                : "Watch subtitled anime on Watch Clash Anime"}
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm text-zinc-300">
+            {locale === "ar"
+              ? "دليل الأبطال مدخلك للمكتبة — اضغط أي أنمي للانتقال مباشرة إلى صفحة المشاهدة."
+              : locale === "ja"
+                ? "ヒーローズガイドからライブラリへ。作品をタップすると視聴ページが開きます。"
+                : "Heroes Guide is your portal — tap any anime to open its watch page."}
+          </p>
+          <a
+            href={publicWatchHomeUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-2 rounded-full bg-orange-500 px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-orange-950/40 transition hover:bg-orange-400"
+          >
+            <span aria-hidden>▶</span>
+            {locale === "ar" ? "دخول المشاهدة" : locale === "ja" ? "視聴サイトへ" : "Enter Watch Clash Anime"}
+          </a>
+        </section>
+
         {dailyBrief ? (
           <section className="mb-10 rounded-2xl border border-orange-500/40 bg-gradient-to-br from-orange-500/15 via-zinc-950 to-zinc-950 p-5 sm:p-6">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-orange-300">

@@ -1,4 +1,5 @@
 import { SignJWT } from "jose";
+import { watchSiteUrl as publicWatchSiteUrl } from "@/lib/watchSiteLinks";
 
 function getSecret() {
   const secret = process.env.WATCH_GATE_SECRET?.trim();
@@ -9,7 +10,7 @@ function getSecret() {
 }
 
 export function watchSiteUrl() {
-  return process.env.WATCH_SITE_URL?.replace(/\/$/, "") ?? "https://watchclashanime.com";
+  return publicWatchSiteUrl();
 }
 
 export async function createWatchGateToken(userId: string, expiresIn = "24h") {

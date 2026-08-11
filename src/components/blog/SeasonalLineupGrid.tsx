@@ -7,6 +7,7 @@ import {
   formatSeasonalPremiereDate,
   groupSeasonalLineup,
 } from "@/lib/animeNews/seasonalLineupTypes";
+import { publicWatchAnimeUrl } from "@/lib/watchSiteLinks";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type SeasonalLineupGridProps = {
@@ -17,6 +18,12 @@ type SeasonalLineupGridProps = {
 };
 
 const CATEGORY_KEYS = ["new", "returning", "continuing", "coming-soon"] as const;
+
+const WATCH_LABEL = {
+  ar: "شاهد الآن",
+  en: "Watch now",
+  ja: "視聴する",
+} as const;
 
 function LineupCard({
   entry,
@@ -36,9 +43,11 @@ function LineupCard({
   const dateLabel = entry.weekday
     ? `${entry.weekday} · ${weeklySimulcast}`
     : formatSeasonalPremiereDate(entry.premiereDate, locale, comingSoon);
+  const watchHref = entry.malId ? publicWatchAnimeUrl(entry.malId) : null;
+  const watchLabel = WATCH_LABEL[locale === "ar" || locale === "ja" ? locale : "en"];
 
-  return (
-    <article className="group flex flex-col overflow-hidden rounded-xl border border-zinc-800/80 bg-zinc-950/80 transition hover:border-orange-500/40 hover:shadow-lg hover:shadow-orange-950/20">
+  const cardInner = (
+    <>
       <div className="relative aspect-[2/3] overflow-hidden bg-zinc-900">
         {entry.posterUrl ? (
           <Image
@@ -57,6 +66,11 @@ function LineupCard({
         <span className="absolute start-2 top-2 rounded-full bg-black/75 px-2 py-0.5 text-[10px] font-bold text-orange-200 ring-1 ring-orange-500/30">
           {dateLabel}
         </span>
+        {watchHref ? (
+          <span className="absolute inset-x-2 bottom-2 rounded-lg bg-orange-500/95 py-1.5 text-center text-[11px] font-bold text-white shadow-lg">
+            ▶ {watchLabel}
+          </span>
+        ) : null}
       </div>
 
       <div className="flex flex-1 flex-col p-3">
@@ -78,25 +92,53 @@ function LineupCard({
         ) : null}
 
         <div className="mt-3 flex flex-wrap gap-2">
-          <Link
-            href="/tracker"
-            className="inline-flex items-center gap-1 rounded-full border border-orange-500/40 px-3 py-1 text-[11px] font-semibold text-orange-200 transition hover:bg-orange-500/10"
-          >
-            <span aria-hidden>▶</span>
-            Tracker
-          </Link>
+          {watchHref ? (
+            <span className="inline-flex items-center gap-1 rounded-full border border-orange-500/40 bg-orange-500/10 px-3 py-1 text-[11px] font-semibold text-orange-200">
+              <span aria-hidden>▶</span>
+              {watchLabel}
+            </span>
+          ) : (
+            <Link
+              href="/tracker"
+              className="inline-flex items-center gap-1 rounded-full border border-orange-500/40 px-3 py-1 text-[11px] font-semibold text-orange-200 transition hover:bg-orange-500/10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <span aria-hidden>▶</span>
+              Tracker
+            </Link>
+          )}
           {entry.malUrl ? (
             <a
               href={entry.malUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center rounded-full border border-zinc-700 px-3 py-1 text-[11px] font-semibold text-zinc-400 transition hover:text-zinc-200"
+              onClick={(e) => e.stopPropagation()}
             >
               MAL
             </a>
           ) : null}
         </div>
       </div>
+    </>
+  );
+
+  if (watchHref) {
+    return (
+      <a
+        href={watchHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group flex flex-col overflow-hidden rounded-xl border border-zinc-800/80 bg-zinc-950/80 transition hover:border-orange-500/40 hover:shadow-lg hover:shadow-orange-950/20"
+      >
+        {cardInner}
+      </a>
+    );
+  }
+
+  return (
+    <article className="group flex flex-col overflow-hidden rounded-xl border border-zinc-800/80 bg-zinc-950/80 transition hover:border-orange-500/40 hover:shadow-lg hover:shadow-orange-950/20">
+      {cardInner}
     </article>
   );
 }

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BrandMark } from "@/components/BrandMark";
 import { AnimeSearchButton } from "@/components/AnimeSearchButton";
+import { publicWatchHomeUrl } from "@/lib/watchSiteLinks";
 import { useLocale } from "@/providers/LocaleProvider";
 import { getBlogPost } from "@/lib/blog/posts";
 import type { BlogCategory } from "@/lib/blog/types";
@@ -33,7 +34,7 @@ function blogSlugFromPath(pathname: string) {
 export function BlogArenaNav() {
   const pathname = usePathname();
   const [hash, setHash] = useState("");
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   useEffect(() => {
     const updateHash = () => setHash(window.location.hash);
@@ -107,6 +108,14 @@ export function BlogArenaNav() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <a
+            href={publicWatchHomeUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden rounded-full bg-orange-500 px-3 py-1.5 text-xs font-bold text-white shadow-sm shadow-orange-950/40 transition hover:bg-orange-400 sm:inline-flex"
+          >
+            {locale === "ar" ? "شاهد الأنمي" : locale === "ja" ? "視聴する" : "Watch Anime"}
+          </a>
           <AnimeSearchButton tone="dark" />
         </div>
       </div>

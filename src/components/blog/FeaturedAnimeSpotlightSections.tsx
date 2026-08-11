@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import type { FeaturedAnimeCategory, FeaturedAnimeEntry } from "@/lib/animeNews/featuredAnimeCatalog";
-import { watchNowAnimePath } from "@/lib/animeNews/watchNowPaths";
+import { publicWatchAnimeUrl, publicWatchHomeUrl } from "@/lib/watchSiteLinks";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type FeaturedAnimeSpotlightSectionsProps = {
@@ -22,10 +21,13 @@ const SECTION_ORDER: FeaturedAnimeCategory[] = [
 
 function SpotlightCard({ entry }: { entry: FeaturedAnimeEntry }) {
   const { t } = useLocale();
+  const href = entry.malId ? publicWatchAnimeUrl(entry.malId) : publicWatchHomeUrl();
 
   return (
-    <Link
-      href={watchNowAnimePath(entry.key)}
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
       className="group flex flex-col overflow-hidden rounded-xl border border-zinc-800/80 bg-zinc-950/80 transition hover:-translate-y-0.5 hover:border-orange-500/35"
     >
       <div className="relative aspect-[2/3] bg-zinc-900">
@@ -39,6 +41,9 @@ function SpotlightCard({ entry }: { entry: FeaturedAnimeEntry }) {
             unoptimized
           />
         ) : null}
+        <span className="absolute inset-x-2 bottom-2 rounded-lg bg-orange-500/95 py-1.5 text-center text-[11px] font-bold text-white shadow-lg">
+          ▶ {t.blog.animeNews.watchNowCta}
+        </span>
       </div>
       <div className="flex flex-1 flex-col p-3">
         <h3 className="font-display text-sm font-bold leading-snug text-white group-hover:text-orange-200">
@@ -52,7 +57,7 @@ function SpotlightCard({ entry }: { entry: FeaturedAnimeEntry }) {
           {t.blog.animeNews.watchNowCta}
         </span>
       </div>
-    </Link>
+    </a>
   );
 }
 
