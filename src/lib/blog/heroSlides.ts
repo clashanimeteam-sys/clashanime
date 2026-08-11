@@ -21,7 +21,7 @@ export const BLOG_HERO_ZOOM_STEP = 10;
 
 export const MIN_BLOG_HERO_SHADOW = 0;
 export const MAX_BLOG_HERO_SHADOW = 100;
-export const DEFAULT_BLOG_HERO_SHADOW = 55;
+export const DEFAULT_BLOG_HERO_SHADOW = 0;
 export const BLOG_HERO_SHADOW_STEP = 5;
 
 export type BlogHeroSlide = {
@@ -300,8 +300,8 @@ export function parseBlogHeroDisplaySettings(value: unknown): BlogHeroDisplaySet
   const autoPlaySeconds = parseAutoPlaySeconds(row.autoPlaySeconds);
 
   return {
-    carouselEnabled: row.carouselEnabled !== false,
-    showTextOverlay: row.showTextOverlay !== false,
+    carouselEnabled: typeof row.carouselEnabled === "boolean" ? row.carouselEnabled : true,
+    showTextOverlay: typeof row.showTextOverlay === "boolean" ? row.showTextOverlay : true,
     overlayOpacity,
     autoPlaySeconds,
   };

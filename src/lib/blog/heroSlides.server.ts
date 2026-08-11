@@ -63,12 +63,15 @@ export async function saveBlogHeroSlides(slides: BlogHeroSlide[], userId: string
   const normalized = normalizeBlogHeroSlidesForSave(slides);
   const timestamp = new Date().toISOString();
 
-  const { error } = await supabase.from("site_settings").upsert({
-    key: BLOG_HERO_SLIDES_KEY,
-    value: normalized,
-    updated_at: timestamp,
-    updated_by: userId,
-  });
+  const { error } = await supabase.from("site_settings").upsert(
+    {
+      key: BLOG_HERO_SLIDES_KEY,
+      value: normalized,
+      updated_at: timestamp,
+      updated_by: userId,
+    },
+    { onConflict: "key" },
+  );
 
   if (error) {
     console.error("saveBlogHeroSlides", error.message);
@@ -90,12 +93,15 @@ export async function saveBlogHeroDisplaySettings(
   const normalized = parseBlogHeroDisplaySettings(display);
   const timestamp = new Date().toISOString();
 
-  const { error } = await supabase.from("site_settings").upsert({
-    key: BLOG_HERO_DISPLAY_KEY,
-    value: normalized,
-    updated_at: timestamp,
-    updated_by: userId,
-  });
+  const { error } = await supabase.from("site_settings").upsert(
+    {
+      key: BLOG_HERO_DISPLAY_KEY,
+      value: normalized,
+      updated_at: timestamp,
+      updated_by: userId,
+    },
+    { onConflict: "key" },
+  );
 
   if (error) {
     console.error("saveBlogHeroDisplaySettings", error.message);

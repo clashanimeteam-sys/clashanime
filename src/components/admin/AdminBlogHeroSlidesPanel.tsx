@@ -125,7 +125,12 @@ export function AdminBlogHeroSlidesPanel() {
 
       setSlides(payload.slides ?? slides);
       setDisplay(payload.display ?? display);
-      setMessage(t.admin.blog.heroSlides.saved);
+      const enabled = (payload.display ?? display).carouselEnabled;
+      setMessage(
+        enabled
+          ? t.admin.blog.heroSlides.saved
+          : `${t.admin.blog.heroSlides.saved} — ${t.admin.blog.heroSlides.carouselEnabled}: OFF`,
+      );
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : "Save failed");
     } finally {
