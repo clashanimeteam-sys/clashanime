@@ -94,6 +94,8 @@ export function BlogIndexContent({
           </section>
         ) : null}
 
+        <BlogAds variant="between" />
+
         {latestNews.length > 0 ? (
           <section id="anime-news" className="mb-12 scroll-mt-28">
             <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-s-4 border-orange-500 ps-4">
@@ -148,55 +150,62 @@ export function BlogIndexContent({
           </section>
         ) : null}
 
-        <BlogSeasonalGuideSpotlight />
-
         <BlogAds variant="mid" />
 
-        {BLOG_CATEGORIES.map((category) => {
+        <BlogSeasonalGuideSpotlight />
+
+        <BlogAds variant="rectangle" />
+
+        {BLOG_CATEGORIES.map((category, categoryIndex) => {
           const categoryPosts = posts.filter((post) => post.category === category);
           if (categoryPosts.length === 0) return null;
 
           return (
-            <section key={category} id={category} className="mb-12 scroll-mt-28 last:mb-0">
-              <div className="mb-5 border-s-4 border-orange-500 ps-4">
-                <h2 className="font-display text-xl font-bold text-white sm:text-2xl">
-                  {categoryLabel(category, t)}
-                </h2>
-                <p className="mt-1 text-sm text-zinc-400">{t.blog.categoryHint[category]}</p>
-              </div>
+            <div key={category}>
+              {categoryIndex > 0 ? <BlogAds variant="between" /> : null}
+              <section id={category} className="mb-12 scroll-mt-28 last:mb-0">
+                <div className="mb-5 border-s-4 border-orange-500 ps-4">
+                  <h2 className="font-display text-xl font-bold text-white sm:text-2xl">
+                    {categoryLabel(category, t)}
+                  </h2>
+                  <p className="mt-1 text-sm text-zinc-400">{t.blog.categoryHint[category]}</p>
+                </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                {categoryPosts.map((post) => {
-                  const copy = getBlogPostCopy(post.slug, locale);
-                  if (!copy) return null;
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {categoryPosts.map((post) => {
+                    const copy = getBlogPostCopy(post.slug, locale);
+                    if (!copy) return null;
 
-                  return (
-                    <Link
-                      key={post.slug}
-                      href={`/blog/${post.slug}`}
-                      className="group flex flex-col rounded-2xl border border-zinc-700/80 bg-zinc-900/95 p-5 shadow-lg shadow-black/30 transition hover:-translate-y-0.5 hover:border-orange-500/50 hover:bg-zinc-900 hover:shadow-orange-950/20"
-                    >
-                      <span className="inline-flex w-fit rounded-full bg-orange-500/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-orange-200 ring-1 ring-orange-500/25">
-                        {categoryLabel(post.category, t)}
-                      </span>
-                      <h3 className="mt-3 font-display text-lg font-bold leading-snug text-white group-hover:text-orange-200">
-                        {copy.title}
-                      </h3>
-                      <p className="mt-2 flex-1 text-sm leading-relaxed text-zinc-400 group-hover:text-zinc-300">
-                        {copy.excerpt}
-                      </p>
-                      <p className="mt-4 text-xs text-zinc-500">
-                        {formatDateTime(post.publishedAt, { dateStyle: "medium" })}
-                        {" · "}
-                        {t.blog.minRead.replace("{minutes}", String(post.readingMinutes))}
-                      </p>
-                    </Link>
-                  );
-                })}
-              </div>
-            </section>
+                    return (
+                      <Link
+                        key={post.slug}
+                        href={`/blog/${post.slug}`}
+                        className="group flex flex-col rounded-2xl border border-zinc-700/80 bg-zinc-900/95 p-5 shadow-lg shadow-black/30 transition hover:-translate-y-0.5 hover:border-orange-500/50 hover:bg-zinc-900 hover:shadow-orange-950/20"
+                      >
+                        <span className="inline-flex w-fit rounded-full bg-orange-500/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-orange-200 ring-1 ring-orange-500/25">
+                          {categoryLabel(post.category, t)}
+                        </span>
+                        <h3 className="mt-3 font-display text-lg font-bold leading-snug text-white group-hover:text-orange-200">
+                          {copy.title}
+                        </h3>
+                        <p className="mt-2 flex-1 text-sm leading-relaxed text-zinc-400 group-hover:text-zinc-300">
+                          {copy.excerpt}
+                        </p>
+                        <p className="mt-4 text-xs text-zinc-500">
+                          {formatDateTime(post.publishedAt, { dateStyle: "medium" })}
+                          {" · "}
+                          {t.blog.minRead.replace("{minutes}", String(post.readingMinutes))}
+                        </p>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </section>
+            </div>
           );
         })}
+
+        <BlogAds variant="bottom" />
       </div>
     </BlogPageShell>
   );

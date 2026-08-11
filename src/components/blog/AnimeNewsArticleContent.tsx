@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { BlogAds } from "@/components/ads/BlogAds";
 import { AnimeNewsTopSidebar } from "@/components/blog/AnimeNewsTopSidebar";
 import { AnimeWatchNowRow } from "@/components/blog/AnimeWatchNowRow";
 import { BlogPageShell } from "@/components/blog/BlogPageShell";
@@ -122,6 +123,8 @@ export function AnimeNewsArticleContent({ article, related }: AnimeNewsArticleCo
               <p className="mt-6 text-base leading-relaxed text-zinc-300 sm:text-lg">{copy.excerpt}</p>
             ) : null}
 
+            <BlogAds variant="mid" />
+
             {copy.story ? (
               <section className="mt-8 rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-5 sm:p-6">
                 <h2 className="font-display text-lg font-bold text-white sm:text-xl">
@@ -134,6 +137,8 @@ export function AnimeNewsArticleContent({ article, related }: AnimeNewsArticleCo
                 </div>
               </section>
             ) : null}
+
+            <BlogAds variant="between" />
 
             {isSeasonalGuide && lineup.length > 0 ? (
               <section className="mt-8 rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-5 sm:p-6">
@@ -155,9 +160,12 @@ export function AnimeNewsArticleContent({ article, related }: AnimeNewsArticleCo
                 <span aria-hidden>↗</span>
               </a>
             </div>
+
+            <BlogAds variant="bottom" />
           </article>
 
           <aside className="anime-news-sidebar-column space-y-6 lg:sticky lg:top-24 lg:max-h-[calc(100dvh-6rem)] lg:self-start lg:overflow-y-auto lg:overscroll-y-contain lg:pr-1">
+            <BlogAds variant="rectangle" />
             {related.length > 0 ? (
               <AnimeNewsTopSidebar
                 articles={related}

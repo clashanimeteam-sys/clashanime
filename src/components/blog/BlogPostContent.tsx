@@ -137,6 +137,8 @@ export function BlogPostContent({ slug, category, publishedAt, readingMinutes }:
           {copy.excerpt}
         </p>
 
+        <BlogAds variant="mid" />
+
         <div className="mt-8 space-y-8">
           {copy.sections.map((section, index) => (
             <div key={`${section.heading}-${index}`}>
@@ -144,10 +146,13 @@ export function BlogPostContent({ slug, category, publishedAt, readingMinutes }:
                 section={section}
                 tipLabel={HERO_TIP_LABEL[locale] ?? HERO_TIP_LABEL.en}
               />
-              {index === 0 ? <BlogAds variant="mid" /> : null}
+              {index % 2 === 0 ? <BlogAds variant="between" /> : null}
+              {index % 2 === 1 ? <BlogAds variant="rectangle" /> : null}
             </div>
           ))}
         </div>
+
+        <BlogAds variant="mid" />
 
         {related.length > 0 ? (
           <aside className="mt-12 border-t border-zinc-800 pt-8">
@@ -170,6 +175,8 @@ export function BlogPostContent({ slug, category, publishedAt, readingMinutes }:
             </ul>
           </aside>
         ) : null}
+
+        <BlogAds variant="bottom" />
 
         <div className="mt-10 flex flex-wrap gap-3">
           <Link

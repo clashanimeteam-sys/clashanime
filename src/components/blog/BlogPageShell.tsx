@@ -21,6 +21,9 @@ export function BlogPageShell({ children, heroCompact = false, articleTitle }: B
         <BlogAds variant="top" />
       </div>
       {children}
+      <div className="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
+        <BlogAds variant="bottom" />
+      </div>
       <Footer />
     </div>
   );
