@@ -48,10 +48,10 @@ export function AdSenseUnit({
   }
 
   return (
-    <div className={`overflow-hidden ${className}`.trim()}>
+    <div className={`min-h-[90px] overflow-hidden ${className}`.trim()}>
       <ins
         className="adsbygoogle"
-        style={{ display: "block" }}
+        style={{ display: "block", minHeight: format === "rectangle" ? 250 : 90, width: "100%" }}
         data-ad-client={clientId}
         data-ad-slot={slotId}
         data-ad-format={format}
