@@ -19,9 +19,9 @@ export default async function MangaPage() {
         ja: "マンガカタログ — 人気作品を発見",
       }}
       intro={{
-        en: "Browse popular manga covers and titles for discovery. We do not host chapters or scans — open MyAnimeList for official reading options.",
-        ar: "تصفّح أغلفة وعناوين مانغا شهيرة للاكتشاف. لا نستضيف فصولاً أو مسوحات — افتح MyAnimeList لخيارات القراءة الرسمية.",
-        ja: "人気マンガの表紙とタイトルを発見。話のスキャンや全話配信は置きません。公式購読はMyAnimeListから。",
+        en: "Browse popular manga titles, then open the matching anime on Watch Clash Anime.",
+        ar: "تصفّح عناوين مانغا شهيرة، ثم افتح الأنمي المطابق على Watch Clash Anime.",
+        ja: "人気マンガを一覧し、対応アニメを Watch Clash Anime で開きます。",
       }}
       sections={[
         {

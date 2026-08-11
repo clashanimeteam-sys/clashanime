@@ -11,6 +11,7 @@ import {
   localizedAnimeTitle,
   localizedTrendingEditorial,
 } from "@/lib/animeTracker";
+import { publicWatchAnimeUrl } from "@/lib/watchSiteLinks";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type TrendingSpotlightSectionProps = {
@@ -31,19 +32,35 @@ function TrendingSpotlightCardView({ card }: { card: TrendingSpotlightCard }) {
   const hasClash = Boolean(card.clashId);
   const matchTags =
     card.matchTags.length > 0 ? card.matchTags : buildMatchTagsFromTitle(title);
+  const watchHref = card.malId > 0 ? publicWatchAnimeUrl(card.malId) : null;
+  const watchLabel =
+    locale === "ar" ? "شاهد الآن" : locale === "ja" ? "視聴する" : "Watch now";
 
   return (
     <article className="overflow-hidden rounded-3xl border border-orange-200 bg-gradient-to-br from-orange-50 via-white to-amber-50 p-6 shadow-lg dark:border-orange-500/30 dark:from-orange-950/50 dark:via-zinc-950 dark:to-red-950/30 sm:p-8">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
         {card.posterUrl ? (
-          <Image
-            src={card.posterUrl}
-            alt={title}
-            width={120}
-            height={170}
-            className="h-[170px] w-[120px] shrink-0 rounded-2xl object-cover shadow-xl ring-1 ring-black/10 dark:ring-white/10"
-            unoptimized
-          />
+          watchHref ? (
+            <a href={watchHref} target="_blank" rel="noopener noreferrer" className="shrink-0">
+              <Image
+                src={card.posterUrl}
+                alt={title}
+                width={120}
+                height={170}
+                className="h-[170px] w-[120px] rounded-2xl object-cover shadow-xl ring-1 ring-black/10 dark:ring-white/10"
+                unoptimized
+              />
+            </a>
+          ) : (
+            <Image
+              src={card.posterUrl}
+              alt={title}
+              width={120}
+              height={170}
+              className="h-[170px] w-[120px] shrink-0 rounded-2xl object-cover shadow-xl ring-1 ring-black/10 dark:ring-white/10"
+              unoptimized
+            />
+          )
         ) : (
           <div className="flex h-[170px] w-[120px] shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 text-4xl shadow-xl">
             🔥
@@ -68,7 +85,13 @@ function TrendingSpotlightCardView({ card }: { card: TrendingSpotlightCard }) {
           </div>
 
           <h3 className="mt-4 font-display text-2xl font-bold leading-tight text-zinc-900 dark:text-white sm:text-3xl">
-            {title}
+            {watchHref ? (
+              <a href={watchHref} target="_blank" rel="noopener noreferrer" className="hover:text-orange-600">
+                {title}
+              </a>
+            ) : (
+              title
+            )}
           </h3>
 
           {card.broadcastLabel || card.airingStatus ? (
@@ -88,6 +111,16 @@ function TrendingSpotlightCardView({ card }: { card: TrendingSpotlightCard }) {
           <AnimeSynopsisBlock synopsis={card} variant="compact" />
 
           <div className="mt-5 flex flex-wrap items-center gap-3">
+            {watchHref ? (
+              <a
+                href={watchHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full bg-orange-500 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-orange-500/30 transition hover:bg-orange-400"
+              >
+                ▶ {watchLabel}
+              </a>
+            ) : null}
             <span className="rounded-xl border border-orange-200 bg-white px-4 py-2 text-sm font-bold text-orange-800 dark:border-orange-500/40 dark:bg-zinc-900/60 dark:text-orange-200">
               {t.animeTracker.clipCount.replace("{count}", formatNumber(card.clipCount))}
             </span>

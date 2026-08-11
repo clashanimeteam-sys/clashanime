@@ -22,9 +22,9 @@ export default async function GalleryPage() {
         ja: "画像ギャラリー — 人気アニメとキャラ",
       }}
       intro={{
-        en: "Popular anime posters and famous characters for discovery. Identification thumbnails only — no episode streams and no stolen art packs.",
-        ar: "ملصقات أنمي شهيرة وشخصيات معروفة للاكتشاف. صور تعرّف فقط — بلا بث حلقات وبلا حزم فن مسروق.",
-        ja: "人気アニメのポスターと有名キャラの発見カタログ。識別用サムネのみ。本編配信や盗用素材はありません。",
+        en: "Popular anime posters and characters — tap to watch on Watch Clash Anime.",
+        ar: "ملصقات أنمي وشخصيات شهيرة — اضغط للمشاهدة على Watch Clash Anime.",
+        ja: "人気アニメのポスターとキャラ — タップして Watch Clash Anime で視聴。",
       }}
       sections={[
         {

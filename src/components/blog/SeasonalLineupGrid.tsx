@@ -107,17 +107,6 @@ function LineupCard({
               Tracker
             </Link>
           )}
-          {entry.malUrl ? (
-            <a
-              href={entry.malUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center rounded-full border border-zinc-700 px-3 py-1 text-[11px] font-semibold text-zinc-400 transition hover:text-zinc-200"
-              onClick={(e) => e.stopPropagation()}
-            >
-              MAL
-            </a>
-          ) : null}
         </div>
       </div>
     </>

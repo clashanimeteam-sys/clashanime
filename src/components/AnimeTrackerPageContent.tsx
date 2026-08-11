@@ -13,6 +13,7 @@ import type { JikanAnimeEntry } from "@/lib/jikan";
 import { AnimeSynopsisBlock } from "@/components/tracker/AnimeSynopsisBlock";
 import { MatchTagUsageBadges } from "@/components/tracker/MatchTagUsageBadges";
 import { TrendingSpotlightSection } from "@/components/tracker/TrendingSpotlightSection";
+import { publicWatchAnimeUrl, publicWatchSearchUrl } from "@/lib/watchSiteLinks";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
 
@@ -174,10 +175,18 @@ function ReleaseCard({
   const title = localizedJikanTitle(release, locale);
   const clashId = "clashId" in release ? release.clashId : null;
   const hasClash = Boolean(clashId);
+  const watchHref =
+    release.malId && release.malId > 0
+      ? publicWatchAnimeUrl(release.malId)
+      : publicWatchSearchUrl(title);
+  const watchLabel =
+    locale === "ar" ? "شاهد الآن" : locale === "ja" ? "視聴する" : "Watch now";
 
   return (
     <article className="flex gap-4 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm transition hover:border-violet-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900/90 dark:hover:border-violet-500/40 sm:p-5">
-      <ReleasePoster url={release.posterUrl} title={title} />
+      <a href={watchHref} target="_blank" rel="noopener noreferrer" className="shrink-0">
+        <ReleasePoster url={release.posterUrl} title={title} />
+      </a>
 
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
@@ -190,7 +199,9 @@ function ReleaseCard({
         </div>
 
         <h3 className="mt-3 text-lg font-bold leading-snug text-zinc-900 dark:text-white sm:text-xl">
-          {title}
+          <a href={watchHref} target="_blank" rel="noopener noreferrer" className="hover:text-orange-500">
+            {title}
+          </a>
         </h3>
 
         <AnimeSynopsisBlock synopsis={release} variant="compact" />
@@ -221,6 +232,14 @@ function ReleaseCard({
         )}
 
         <div className="mt-4 flex flex-wrap items-center gap-3">
+          <a
+            href={watchHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex rounded-full bg-orange-500 px-4 py-2 text-xs font-bold uppercase tracking-wide text-white shadow-md shadow-orange-500/25 transition hover:bg-orange-400"
+          >
+            ▶ {watchLabel}
+          </a>
           {hasClash && showClashLink ? (
             <Link
               href={`/tracker/clash/${clashId}`}
@@ -230,16 +249,6 @@ function ReleaseCard({
             </Link>
           ) : showClashLink ? (
             <p className="text-sm text-zinc-500 dark:text-zinc-400">{t.animeTracker.scheduledHint}</p>
-          ) : null}
-          {release.malUrl ? (
-            <a
-              href={release.malUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-semibold text-violet-700 underline-offset-2 hover:underline dark:text-violet-300"
-            >
-              {t.animeTracker.malLink}
-            </a>
           ) : null}
         </div>
       </div>

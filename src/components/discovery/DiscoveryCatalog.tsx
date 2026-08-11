@@ -4,35 +4,36 @@ import Image from "next/image";
 import Link from "next/link";
 import { PageBackLink } from "@/components/PageBackLink";
 import type { CatalogCard } from "@/lib/jikanCatalog";
+import { publicWatchAnimeUrl, publicWatchSearchUrl } from "@/lib/watchSiteLinks";
 import { useLocale } from "@/providers/LocaleProvider";
 import { usePageTitle } from "@/providers/PageTitleProvider";
 
 const COPY = {
   en: {
     back: "Back to anime news",
-    noticeTitle: "Discovery catalog — not piracy",
+    noticeTitle: "Discovery catalog",
     noticeBody:
-      "Covers and names come from AniList (with MyAnimeList links when available) for identification only. Rights stay with creators and publishers. We do not host episodes or manga chapters. Use official/legal stores and apps to read or watch.",
+      "Tap any title to open it on Watch Clash Anime. Covers and names are for identification — watch episodes on watchclashanime.com.",
     score: "Score",
-    openMal: "Open on MyAnimeList",
+    openWatch: "Watch on Watch Clash Anime",
     empty: "Catalog temporarily unavailable. Try again soon.",
   },
   ar: {
     back: "العودة لأخبار الأنمي",
-    noticeTitle: "كتالوج اكتشاف — ليس قرصنة",
+    noticeTitle: "كتالوج اكتشاف",
     noticeBody:
-      "الأغلفة والأسماء من AniList (مع روابط MyAnimeList عند التوفّر) للتعرّف فقط. الحقوق للمبدعين والناشرين. لا نستضيف حلقات أو فصول مانغا. للقراءة/المشاهدة استخدم المتاجر والتطبيقات الرسمية القانونية.",
+      "اضغط أي عنوان لفتحه على Watch Clash Anime. الأغلفة والأسماء للتعرّف — شاهد الحلقات على watchclashanime.com.",
     score: "التقييم",
-    openMal: "فتح على MyAnimeList",
+    openWatch: "شاهد على Watch Clash Anime",
     empty: "الكتالوج غير متاح مؤقتاً. حاول لاحقاً.",
   },
   ja: {
     back: "アニメニュースへ戻る",
-    noticeTitle: "発見カタログ — 海賊版ではありません",
+    noticeTitle: "発見カタログ",
     noticeBody:
-      "表紙とタイトルは識別用に AniList（必要に応じてMALリンク）から取得。権利は作者・出版社にあります。本編やマンガ全話は置きません。視聴・購読は公式サービスで。",
+      "タイトルをタップすると Watch Clash Anime で開きます。表紙は識別用 — 視聴は watchclashanime.com で。",
     score: "スコア",
-    openMal: "MyAnimeListで開く",
+    openWatch: "Watch Clash Animeで視聴",
     empty: "カタログを一時取得できません。後でもう一度。",
   },
 } as const;
@@ -44,6 +45,13 @@ type DiscoveryCatalogProps = {
   intro: LocalizedText;
   sections: Array<{ heading: LocalizedText; items: CatalogCard[] }>;
 };
+
+function catalogWatchHref(item: CatalogCard): string {
+  if (item.kind === "anime" && item.id > 0) {
+    return publicWatchAnimeUrl(item.id);
+  }
+  return publicWatchSearchUrl(item.title);
+}
 
 export function DiscoveryCatalog({ title, intro, sections }: DiscoveryCatalogProps) {
   const { locale } = useLocale();
@@ -63,7 +71,7 @@ export function DiscoveryCatalog({ title, intro, sections }: DiscoveryCatalogPro
         {intro[locale] ?? intro.en}
       </p>
 
-      <div className="mt-5 rounded-2xl border border-emerald-500/30 bg-emerald-50/80 p-4 text-sm text-emerald-950 dark:border-emerald-500/20 dark:bg-emerald-950/30 dark:text-emerald-100">
+      <div className="mt-5 rounded-2xl border border-orange-500/30 bg-orange-50/80 p-4 text-sm text-orange-950 dark:border-orange-500/20 dark:bg-orange-950/30 dark:text-orange-100">
         <p className="font-semibold">{copy.noticeTitle}</p>
         <p className="mt-1 leading-relaxed opacity-90">{copy.noticeBody}</p>
       </div>
@@ -80,7 +88,7 @@ export function DiscoveryCatalog({ title, intro, sections }: DiscoveryCatalogPro
               {section.items.map((item) => (
                 <a
                   key={`${item.kind}-${item.id}`}
-                  href={item.malUrl}
+                  href={catalogWatchHref(item)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-orange-400 dark:border-zinc-800 dark:bg-zinc-950"
@@ -95,6 +103,9 @@ export function DiscoveryCatalog({ title, intro, sections }: DiscoveryCatalogPro
                         sizes="(max-width: 640px) 50vw, 180px"
                       />
                     ) : null}
+                    <span className="absolute inset-x-2 bottom-2 rounded-lg bg-orange-500/95 py-1.5 text-center text-[10px] font-bold text-white shadow-lg">
+                      ▶ {copy.openWatch}
+                    </span>
                   </div>
                   <div className="space-y-1 p-3">
                     <p className="line-clamp-2 text-sm font-semibold text-zinc-900 dark:text-white">
@@ -108,8 +119,8 @@ export function DiscoveryCatalog({ title, intro, sections }: DiscoveryCatalogPro
                         {copy.score}: {item.score.toFixed(1)}
                       </p>
                     ) : null}
-                    <p className="text-[10px] font-semibold uppercase tracking-wide text-zinc-400">
-                      {copy.openMal}
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-orange-500">
+                      {copy.openWatch}
                     </p>
                   </div>
                 </a>

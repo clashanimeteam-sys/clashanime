@@ -16,6 +16,13 @@ export function publicWatchHomeUrl() {
   return `${watchSiteUrl()}/`;
 }
 
+/** Search titles on Watch Clash Anime (manga/characters → find the anime). */
+export function publicWatchSearchUrl(query: string) {
+  const q = query.trim();
+  if (!q) return publicWatchHomeUrl();
+  return `${watchSiteUrl()}/search?q=${encodeURIComponent(q)}`;
+}
+
 /**
  * Member gate through clashanime → watchclashanime with JWT.
  * Guests are sent to login first.

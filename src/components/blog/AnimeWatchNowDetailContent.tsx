@@ -78,19 +78,6 @@ export function AnimeWatchNowDetailContent({ entry }: AnimeWatchNowDetailContent
               <span aria-hidden>▶</span>
               {t.blog.animeNews.watchNowCta}
             </a>
-            {entry.malUrl ? (
-              <a
-                href={entry.malUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 ms-3 inline-flex text-sm font-semibold text-zinc-400 transition hover:text-orange-200 hover:underline"
-              >
-                MyAnimeList
-                <span className="ms-1" aria-hidden>
-                  ↗
-                </span>
-              </a>
-            ) : null}
           </div>
         </div>
 
