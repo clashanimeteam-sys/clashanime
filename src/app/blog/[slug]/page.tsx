@@ -10,6 +10,7 @@ import {
   buildBlogTrilingualHeadline,
 } from "@/lib/blog/seo";
 import { absoluteSiteUrl } from "@/lib/siteSeo";
+import { notifyIndexNow } from "@/lib/indexnow";
 import { buildBlogPostingJsonLd, buildPageMetadata } from "@/lib/seoMetadata";
 
 type BlogPostPageProps = {
@@ -49,6 +50,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   if (!post) notFound();
 
   const url = absoluteSiteUrl(`/blog/${slug}`);
+  await notifyIndexNow(url);
   const headline = buildBlogTrilingualHeadline(post);
   const description = buildBlogTrilingualDescription(post);
 

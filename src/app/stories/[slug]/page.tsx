@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { StoryArticleContent } from "@/components/stories/StoryArticleContent";
 import { getStoryArticle, getStoryCopy, getStorySlugs } from "@/lib/storiesLibrary";
 import { absoluteSiteUrl } from "@/lib/siteSeo";
+import { notifyIndexNow } from "@/lib/indexnow";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -40,5 +41,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function StoryArticlePage({ params }: PageProps) {
   const { slug } = await params;
   if (!getStoryArticle(slug)) notFound();
+  await notifyIndexNow(absoluteSiteUrl(`/stories/${slug}`));
   return <StoryArticleContent slug={slug} />;
 }

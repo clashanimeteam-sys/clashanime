@@ -17,6 +17,7 @@ import {
   featuredGuideToArticle,
 } from "@/lib/animeNews/seasonalGuide";
 import { absoluteSiteUrl } from "@/lib/siteSeo";
+import { notifyIndexNow } from "@/lib/indexnow";
 import { buildBlogHubJsonLd, buildNewsArticleJsonLd, buildPageMetadata, PAGE_SEO } from "@/lib/seoMetadata";
 
 export const dynamic = "force-dynamic";
@@ -63,10 +64,12 @@ export default async function AnimeNewsArticlePage({ params }: AnimeNewsArticleP
 
   if (!article) notFound();
 
+  const url = absoluteSiteUrl(`/blog/anime-news/${slug}`);
+  await notifyIndexNow(url);
+
   const all = await listPublishedAnimeNews(12, 0);
   const related = all.filter((item) => item.slug !== slug).slice(0, 6);
 
-  const url = absoluteSiteUrl(`/blog/anime-news/${slug}`);
   const headline = buildAnimeNewsTrilingualHeadline(article);
   const description = buildAnimeNewsTrilingualDescription(article);
 

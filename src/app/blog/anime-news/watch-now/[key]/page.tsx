@@ -4,6 +4,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { loadWatchNowCatalog } from "@/lib/animeNews/watchNow.server";
 import { watchNowAnimePath } from "@/lib/animeNews/watchNowPaths";
 import { absoluteSiteUrl } from "@/lib/siteSeo";
+import { notifyIndexNow } from "@/lib/indexnow";
 import { buildBlogHubJsonLd, buildPageMetadata } from "@/lib/seoMetadata";
 
 export const dynamic = "force-dynamic";
@@ -41,6 +42,9 @@ export default async function AnimeWatchNowDetailPage({ params }: PageProps) {
   const entry = catalog.find((item) => item.key === decodedKey);
 
   if (!entry) notFound();
+
+  const pageUrl = absoluteSiteUrl(watchNowAnimePath(entry.key));
+  await notifyIndexNow(pageUrl);
 
   return (
     <>
