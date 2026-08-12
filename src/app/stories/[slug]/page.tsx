@@ -13,11 +13,27 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const copy = getStoryCopy(slug, "en");
-  if (!copy) return { title: "Story" };
+  if (!copy) return { title: "Story", robots: { index: false, follow: false } };
+
+  const title = `${copy.title} | قصص أنمي — Clash Anime`;
+  const description =
+    copy.excerpt?.trim() ||
+    `اقرأ مقالة ${copy.title} ضمن مكتبة قصص Clash Anime — مقالات أنمي أصلية.`;
+
   return {
-    title: `${copy.title} | ClashAnime Stories`,
-    description: copy.excerpt,
+    title: { absolute: title },
+    description,
+    keywords: [copy.title, "قصص أنمي", "مقالات أنمي", "Clash Anime Stories", "أنمي"],
     alternates: { canonical: absoluteSiteUrl(`/stories/${slug}`) },
+    robots: { index: true, follow: true },
+    openGraph: {
+      title,
+      description,
+      url: absoluteSiteUrl(`/stories/${slug}`),
+      siteName: "Clash Anime",
+      type: "article",
+      locale: "ar_SA",
+    },
   };
 }
 
