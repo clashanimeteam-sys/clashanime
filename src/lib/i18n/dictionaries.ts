@@ -5747,7 +5747,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       music: "راديو الأنمي",
       exclusives: "حصري",
       animeTracker: "رادار الأنمي الجديد",
-      watchAnime: "شاهد الأنمي",
+      watchAnime: "مشاهدة أنمي",
       hunterSystem: "نظام صياد الجوائز",
       bountyRewards: "آخر مكافآت الجوائز",
       inviteFriends: "ادعُ أصدقاءك",

@@ -9,17 +9,19 @@ import { LocaleFlags } from "@/components/LocaleFlags";
 import { SidebarMenuToggle } from "@/components/SidebarMenuToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { isStaff } from "@/lib/admin";
+import { publicWatchHomeUrl } from "@/lib/watchSiteLinks";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocale } from "@/providers/LocaleProvider";
 import { useSidebar } from "@/providers/SidebarProvider";
 
 const mainNavItems = [
-  { key: "heroesGuide" as const, href: "/blog", icon: "guide" },
-  { key: "stories" as const, href: "/stories", icon: "book" },
-  { key: "manga" as const, href: "/manga", icon: "manga" },
-  { key: "gallery" as const, href: "/gallery", icon: "image" },
-  { key: "animeTracker" as const, href: "/tracker", icon: "radar" },
-  { key: "music" as const, href: "/music", icon: "music" },
+  { key: "heroesGuide" as const, href: "/blog", icon: "guide", external: false },
+  { key: "stories" as const, href: "/stories", icon: "book", external: false },
+  { key: "manga" as const, href: "/manga", icon: "manga", external: false },
+  { key: "gallery" as const, href: "/gallery", icon: "image", external: false },
+  { key: "animeTracker" as const, href: "/tracker", icon: "radar", external: false },
+  { key: "music" as const, href: "/music", icon: "music", external: false },
+  { key: "watchAnime" as const, href: publicWatchHomeUrl(), icon: "video", external: true },
 ];
 
 function navLinkClass(active: boolean) {
@@ -65,13 +67,29 @@ export function Sidebar() {
 
       <nav className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-3" aria-label="Main navigation">
         {mainNavItems.map((item) => {
-          const active =
-            item.key === "heroesGuide"
+          const active = item.external
+            ? false
+            : item.key === "heroesGuide"
               ? pathname === "/blog" ||
                 (pathname.startsWith("/blog/") && !pathname.startsWith("/blog/anime-news"))
               : item.href === "/"
                 ? pathname === "/"
                 : pathname === item.href || pathname.startsWith(`${item.href}/`);
+
+          if (item.external) {
+            return (
+              <a
+                key={item.key}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={navLinkClass(false)}
+              >
+                <NavIcon icon={item.icon} />
+                {t.nav[item.key]}
+              </a>
+            );
+          }
 
           return (
             <Link key={item.key} href={item.href} className={navLinkClass(active)}>

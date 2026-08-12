@@ -7,6 +7,7 @@ import { LocaleFlags } from "@/components/LocaleFlags";
 import { NavIcon } from "@/components/nav/NavIcon";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { navigateAppHref } from "@/lib/appNavigation";
+import { publicWatchHomeUrl } from "@/lib/watchSiteLinks";
 import { useLocale } from "@/providers/LocaleProvider";
 import type { Locale } from "@/lib/types";
 
@@ -16,12 +17,13 @@ type MobileAppMenuProps = {
 };
 
 const menuItems = [
-  { key: "heroesGuide" as const, href: "/blog", icon: "guide" },
-  { key: "stories" as const, href: "/stories", icon: "book" },
-  { key: "manga" as const, href: "/manga", icon: "manga" },
-  { key: "gallery" as const, href: "/gallery", icon: "image" },
-  { key: "animeTracker" as const, href: "/tracker", icon: "radar" },
-  { key: "music" as const, href: "/music", icon: "music" },
+  { key: "heroesGuide" as const, href: "/blog", icon: "guide", external: false },
+  { key: "stories" as const, href: "/stories", icon: "book", external: false },
+  { key: "manga" as const, href: "/manga", icon: "manga", external: false },
+  { key: "gallery" as const, href: "/gallery", icon: "image", external: false },
+  { key: "animeTracker" as const, href: "/tracker", icon: "radar", external: false },
+  { key: "music" as const, href: "/music", icon: "music", external: false },
+  { key: "watchAnime" as const, href: publicWatchHomeUrl(), icon: "video", external: true },
 ] as const;
 
 const locales: { code: Locale; label: string }[] = [
@@ -107,6 +109,22 @@ export function MobileAppMenu({ open, onClose }: MobileAppMenuProps) {
         <div className="overflow-y-auto px-4 pb-4">
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
             {menuItems.map((item) => {
+              if (item.external) {
+                return (
+                  <a
+                    key={item.key}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={onClose}
+                    className="flex min-h-[4.5rem] flex-col items-center justify-center gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 px-2 py-3 text-center text-xs font-semibold text-zinc-800 transition-colors active:bg-accent/10 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  >
+                    <NavIcon icon={item.icon} className="h-7 w-7 shrink-0 object-contain" />
+                    <span className="line-clamp-2 leading-tight">{t.nav[item.key]}</span>
+                  </a>
+                );
+              }
+
               return (
                 <Link
                   key={item.key}

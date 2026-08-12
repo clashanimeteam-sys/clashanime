@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { PageBackLink } from "@/components/PageBackLink";
 import { getStoryArticle } from "@/lib/storiesLibrary";
@@ -27,6 +28,19 @@ export function StoryArticleContent({ slug }: { slug: string }) {
   return (
     <article className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
       <PageBackLink href="/stories" label={locale === "ar" ? "كل القصص" : "All stories"} />
+      <div className="relative mt-6 aspect-[21/9] overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 sm:aspect-[2.4/1]">
+        <Image
+          src={article.coverImageUrl}
+          alt={article.coverAnimeTitle}
+          fill
+          priority
+          sizes="(max-width: 768px) 100vw, 768px"
+          className="object-cover object-top"
+        />
+        <span className="absolute bottom-3 start-3 rounded-full bg-black/65 px-3 py-1 text-xs font-bold text-white">
+          {article.coverAnimeTitle}
+        </span>
+      </div>
       <p className="mt-6 text-xs text-zinc-500">
         {formatDateTime(article.publishedAt, { dateStyle: "medium" })} · {article.readingMinutes} min
       </p>

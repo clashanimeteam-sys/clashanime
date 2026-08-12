@@ -4,6 +4,9 @@ export type StoryArticle = {
   slug: string;
   publishedAt: string;
   readingMinutes: number;
+  /** Anime cover for library cards (MAL CDN). */
+  coverImageUrl: string;
+  coverAnimeTitle: string;
   locales: Record<
     Locale,
     {
@@ -20,6 +23,8 @@ export const STORY_ARTICLES: StoryArticle[] = [
     slug: "why-found-family-stories-hit-so-hard",
     publishedAt: "2026-08-01",
     readingMinutes: 8,
+    coverImageUrl: "https://cdn.myanimelist.net/images/anime/1244/138851l.jpg",
+    coverAnimeTitle: "One Piece",
     locales: {
       en: {
         title: "Why “Found Family” Stories Hit So Hard in Anime",
@@ -95,6 +100,8 @@ export const STORY_ARTICLES: StoryArticle[] = [
     slug: "silence-and-sound-in-anime-storytelling",
     publishedAt: "2026-08-02",
     readingMinutes: 7,
+    coverImageUrl: "https://cdn.myanimelist.net/images/anime/5/87048.jpg",
+    coverAnimeTitle: "Your Name",
     locales: {
       en: {
         title: "Silence and Sound: How Anime Directs Emotion Without Dialogue",
@@ -157,6 +164,8 @@ export const STORY_ARTICLES: StoryArticle[] = [
     slug: "rivalries-that-build-character",
     publishedAt: "2026-08-03",
     readingMinutes: 7,
+    coverImageUrl: "https://cdn.myanimelist.net/images/anime/13/17405.jpg",
+    coverAnimeTitle: "Naruto",
     locales: {
       en: {
         title: "Rivalries That Build Character (Not Just Power Levels)",
@@ -219,6 +228,8 @@ export const STORY_ARTICLES: StoryArticle[] = [
     slug: "worldbuilding-small-details",
     publishedAt: "2026-08-04",
     readingMinutes: 6,
+    coverImageUrl: "https://cdn.myanimelist.net/images/anime/1015/138006.jpg",
+    coverAnimeTitle: "Frieren",
     locales: {
       en: {
         title: "Worldbuilding Through Small Details: Signs, Snacks, and Side Characters",
@@ -281,6 +292,8 @@ export const STORY_ARTICLES: StoryArticle[] = [
     slug: "endings-that-respect-the-audience",
     publishedAt: "2026-08-05",
     readingMinutes: 7,
+    coverImageUrl: "https://cdn.myanimelist.net/images/anime/1935/127974l.jpg",
+    coverAnimeTitle: "Steins;Gate",
     locales: {
       en: {
         title: "Endings That Respect the Audience",
@@ -343,6 +356,8 @@ export const STORY_ARTICLES: StoryArticle[] = [
     slug: "daily-heroes-brief-how-we-update",
     publishedAt: "2026-08-06",
     readingMinutes: 5,
+    coverImageUrl: "https://cdn.myanimelist.net/images/anime/10/47347l.jpg",
+    coverAnimeTitle: "Attack on Titan",
     locales: {
       en: {
         title: "Daily Heroes Brief: How ClashAnime Updates the Guide",
