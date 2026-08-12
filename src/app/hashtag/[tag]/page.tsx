@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: HashtagPageProps): Promise<Me
     const slug = normalizeHashtagSlug(decodeURIComponent(tag));
     return {
       title: slug ? `#${slug} — Clash Anime` : "Hashtag — Clash Anime",
+      robots: { index: false, follow: false },
     };
   }
 
@@ -33,6 +34,8 @@ export async function generateMetadata({ params }: HashtagPageProps): Promise<Me
     description,
     path,
     extraKeywords: [stats.tag, `#${stats.tag}`, "anime hashtag", "anime clips"],
+    // Thin tag pages waste crawl budget — keep them out of Google index.
+    indexable: false,
   });
 }
 

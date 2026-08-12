@@ -42,6 +42,7 @@ export const DISALLOWED_PATH_PREFIXES = [
   "/channel",
   "/video",
   "/duel",
+  "/hashtag",
 ] as const;
 
 export function absoluteSiteUrl(path: string): string {

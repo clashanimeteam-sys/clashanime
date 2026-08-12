@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: AnimeReleaseClashPageProps): 
   const { id } = await params;
   const clash = await getAnimeReleaseClashDetail(id);
   if (!clash) {
-    return { title: "Anime Release Clash" };
+    return { title: "Anime Release Clash", robots: { index: false, follow: false } };
   }
 
   const title = `${clash.animeTitle} Episode ${clash.episodeNumber} — Release Clash`;
@@ -45,6 +45,8 @@ export async function generateMetadata({ params }: AnimeReleaseClashPageProps): 
     extraKeywords: [clash.clashTitle, ...clash.matchTags].filter((value): value is string =>
       Boolean(value?.trim()),
     ),
+    // Individual clash rooms are thin/ephemeral — index the /tracker hub instead.
+    indexable: false,
   });
 }
 
